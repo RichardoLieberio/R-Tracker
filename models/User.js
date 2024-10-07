@@ -3,18 +3,22 @@ const mongoose = require('mongoose');
 const userSchema = mongoose.Schema({
     name: {
         type: String,
-        maxlength: 30,
+        maxlength: 50,
         required: true
     },
     email: {
         type: String,
-        maxlength: 255,
         unique: true,
         required: true
     },
     pwd: {
         type: String,
         minLength: 6,
+        required: true
+    },
+    active: {
+        type: Boolean,
+        default: false,
         required: true
     },
     role: {
