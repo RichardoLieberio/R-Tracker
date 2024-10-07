@@ -3,8 +3,8 @@ const User = require('../models/User');
 async function registerValidation(req, res, next) {
     const {name: rawName, email: rawEmail, pwd: rawPwd} = req.body;
     const name = rawName ? String(rawName).trim() : '';
-    const email = rawEmail ? String(rawEmail).trim() : '';
-    const pwd = rawPwd ? String(rawPwd).trim() : '';
+    const email = rawEmail ? String(rawEmail).trim().toLowerCase() : '';
+    const pwd = rawPwd ? String(rawPwd) : '';
     const errorMsg = {};
 
     const nameErrorMsg = validateName(name);
@@ -30,6 +30,8 @@ function validateName(name) {
 async function validateEmail(email) {
     if (!email) return 'Email is required';
     if (await User.isEmailRegistered(email)) return 'Email is registered';
+    const emailRegex = /^(?!.*\.\.)(?!^\.)(?!.*\.$)(?!.*-$)(?!.*\.-)([a-zA-Z0-9._%+-]+@[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*\.[a-zA-Z]{2,}(?:\.[a-zA-Z]{2,})?)$/;
+    if (!emailRegex.test(email)) return 'Email is invalid';
 }
 
 function validatePwd(pwd) {

@@ -1,5 +1,9 @@
-function register(req, res) {
-    res.send(req.data);
+const User = require('../models/User');
+
+async function register(req, res) {
+    const user = new User();
+    await user.register(req.data);
+    res.json({status: 201, msg: 'User registered successfully'});
 }
 
 function getInfo(req, res) {
