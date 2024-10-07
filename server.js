@@ -1,5 +1,8 @@
 require('dotenv').config();
 const express = require('express');
+const connectDB = require('./connection.js');
+
+connectDB();
 
 const userRoutes = require('./routes/user');
 
@@ -9,6 +12,6 @@ app.use(express.json());
 
 app.use('/api/user/', userRoutes);
 
-app.listen(process.env.PORT, function () {
+app.listen(process.env.PORT, function() {
     console.log(`Listening on port ${process.env.PORT}`);
 });

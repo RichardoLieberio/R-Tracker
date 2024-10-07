@@ -8,6 +8,7 @@ const userBlacklistSchema = mongoose.Schema({
     },
     reason: {
         type: String,
+        trim: true,
         required: true
     },
     blacklisted_by: {

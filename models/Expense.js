@@ -4,6 +4,7 @@ const expenseSchema = mongoose.Schema({
     expense: {
         type: String,
         maxlength: 255,
+        trim: true,
         required: true
     },
     expense_date: {

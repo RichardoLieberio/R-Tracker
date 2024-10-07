@@ -4,11 +4,13 @@ const userSchema = mongoose.Schema({
     name: {
         type: String,
         maxlength: 50,
+        trim: true,
         required: true
     },
     email: {
         type: String,
         unique: true,
+        trim: true,
         required: true
     },
     pwd: {
@@ -25,6 +27,7 @@ const userSchema = mongoose.Schema({
         type: String,
         enum: ['admin', 'user'],
         default: 'user',
+        trim: true,
         required: true
     },
     created_at: {
@@ -36,6 +39,10 @@ const userSchema = mongoose.Schema({
         type: Date
     }
 });
+
+userSchema.statics.isEmailRegistered = function(email) {
+    return this.findOne({email});
+}
 
 const User = mongoose.model('User', userSchema);
 

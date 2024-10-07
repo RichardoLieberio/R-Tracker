@@ -4,10 +4,12 @@ const expenseCategorySchema = mongoose.Schema({
     name: {
         type: String,
         maxlength: 30,
+        trim: true,
         required: true
     },
     icon_path: {
         type: String,
+        trim: true,
         required: true
     },
     hidden: {
