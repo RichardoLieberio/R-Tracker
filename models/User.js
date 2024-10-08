@@ -11,6 +11,7 @@ const userSchema = mongoose.Schema({
     email: {
         type: String,
         trim: true,
+        lowercase: true,
         unique: true,
         required: true
     },
@@ -22,6 +23,7 @@ const userSchema = mongoose.Schema({
     role: {
         type: String,
         trim: true,
+        lowercase: true,
         enum: ['admin', 'user'],
         default: 'user',
         required: true
