@@ -1,10 +1,7 @@
 const User = require('../models/User');
 
-async function registerValidation(req, res, next) {
-    const {name: rawName, email: rawEmail, pwd: rawPwd} = req.body;
-    const name = rawName ? String(rawName).trim() : '';
-    const email = rawEmail ? String(rawEmail).trim().toLowerCase() : '';
-    const pwd = rawPwd ? String(rawPwd) : '';
+async function register(req, res, next) {
+    const {name, email, pwd} = req.body;
     const errorMsg = {};
 
     const nameErrorMsg = validateName(name);
@@ -18,24 +15,41 @@ async function registerValidation(req, res, next) {
 
     if (Object.entries(errorMsg).length) return res.json(errorMsg);
 
-    req.data = {name, email, pwd};
+    req.data = {
+        name: name.trim(),
+        email: email.trim().toLowerCase(),
+        pwd
+    };
+
     next();
 }
 
 function validateName(name) {
+    if (!name) return 'Name is required';
+    if (typeof(name) !== 'string') return 'Name must be string';
+
+    name = name.trim();
+
     if (!name) return 'Name is required';
     if (name.length > 50) return 'Name length exceeds 50 characters';
 }
 
 async function validateEmail(email) {
     if (!email) return 'Email is required';
+    if (typeof(email) !== 'string') return 'Email must be string';
+
+    email = email.trim().toLowerCase();
+
+    if (!email) return 'Email is required';
     if (await User.isEmailRegistered(email)) return 'Email is registered';
+
     const emailRegex = /^(?!.*\.\.)(?!^\.)(?!.*\.$)(?!.*-$)(?!.*\.-)([a-zA-Z0-9._%+-]+@[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*\.[a-zA-Z]{2,}(?:\.[a-zA-Z]{2,})?)$/;
     if (!emailRegex.test(email)) return 'Email is invalid';
 }
 
 function validatePwd(pwd) {
     if (!pwd) return 'Password is required';
+    if (typeof(pwd) !== 'string') return 'Password must be string';
     if (pwd.length < 6) return 'Minimum password length is 6 characters';
 
     const pwdRegexError = {};
@@ -47,5 +61,5 @@ function validatePwd(pwd) {
 }
 
 module.exports = {
-    registerValidation
+    register
 };
