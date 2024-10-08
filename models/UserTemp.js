@@ -24,22 +24,21 @@ const userTempSchema = mongoose.Schema({
     otp: {
         type: String,
         trim: true,
-        minLength: process.env.OTP_LENGTH,
-        maxLength: process.env.OTP_LENGTH,
+        minLength: 4,
+        maxLength: 10,
         required: true
     },
     expires_at: {
         type: Date,
-        default: Date.now,
+        default: () => Date.now() + 30000,
         required: true,
         expires: 30
-        // expires: 60 * process.env.OTP_LIFETIME_IN_MIN
     }
 });
 
 userTempSchema.methods.register = async function(data, otp) {
     const {name, email, pwd} = data;
-    const hashedPwd = await bcrypt.hash(pwd, process.env.SALT_ROUNDS);
+    const hashedPwd = await bcrypt.hash(pwd, +process.env.SALT_ROUNDS);
 
     this.name = name;
     this.email = email;
