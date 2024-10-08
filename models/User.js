@@ -10,8 +10,8 @@ const userSchema = mongoose.Schema({
     },
     email: {
         type: String,
-        unique: true,
         trim: true,
+        unique: true,
         required: true
     },
     pwd: {
@@ -19,16 +19,11 @@ const userSchema = mongoose.Schema({
         minLength: 6,
         required: true
     },
-    active: {
-        type: Boolean,
-        default: false,
-        required: true
-    },
     role: {
         type: String,
+        trim: true,
         enum: ['admin', 'user'],
         default: 'user',
-        trim: true,
         required: true
     },
     created_at: {

@@ -2,8 +2,9 @@ const mongoose = require('mongoose');
 
 const userBlacklistSchema = mongoose.Schema({
     userId: {
-        type: mongoose.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
+        trim: true,
         required: true
     },
     reason: {
@@ -12,8 +13,9 @@ const userBlacklistSchema = mongoose.Schema({
         required: true
     },
     blacklisted_by: {
-        type: mongoose.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
+        trim: true,
         required: true
     },
     blacklisted_at: {

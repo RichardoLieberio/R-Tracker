@@ -1,14 +1,15 @@
-require('dotenv').config();
 const mongoose = require('mongoose');
 
 const userPwdResetTokenSchema = mongoose.Schema({
     userId: {
-        type: mongoose.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
+        trim: true,
         required: true
     },
     token: {
         type: String,
+        trim: true,
         required: true
     },
     created_at: {

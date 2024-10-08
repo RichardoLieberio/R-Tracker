@@ -12,13 +12,15 @@ const expenseSchema = mongoose.Schema({
         required: true
     },
     userId: {
-        type: mongoose.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
+        trim: true,
         required: true
     },
     categoryId: {
-        type: mongoose.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'ExpenseCategory',
+        trim: true,
         required: true
     }
 });

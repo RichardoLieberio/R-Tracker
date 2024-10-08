@@ -18,8 +18,9 @@ const expenseCategorySchema = mongoose.Schema({
         required: true
     },
     created_by: {
-        type: mongoose.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
+        trim: true,
         required: true
     },
     created_at: {
@@ -28,8 +29,9 @@ const expenseCategorySchema = mongoose.Schema({
         required: true
     },
     updated_by: {
-        type: mongoose.Types.ObjectId,
-        ref: 'User'
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        trim: true
     },
     updated_at: {
         type: Date
