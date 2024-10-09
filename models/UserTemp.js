@@ -30,16 +30,22 @@ const userTempSchema = mongoose.Schema({
     },
     expires_at: {
         type: Date,
-        default: () => Date.now() + 30000,
+        default: () => Date.now() + 15 * 60 * 1000,
         required: true,
-        expires: 30
+        expires: 15 * 60
     }
 });
 
+userTempSchema.methods.cleanUp = async function(email) {
+    await this.model('UserTemp').deleteMany({email});
+}
+
 userTempSchema.methods.register = async function(data, otp) {
     const {name, email, pwd} = data;
-    const hashedPwd = await bcrypt.hash(pwd, +process.env.SALT_ROUNDS);
 
+    await this.cleanUp(email);
+
+    const hashedPwd = await bcrypt.hash(pwd, +process.env.SALT_ROUNDS);
     this.name = name;
     this.email = email;
     this.pwd = hashedPwd;
