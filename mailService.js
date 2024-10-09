@@ -12,11 +12,11 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-async function sendMail(type, mail) {
+function sendMail(type, mail) {
     switch (type) {
         case 'verification':
-            await transporter.sendMail(createVerificationOptions(mail.to, mail.otp), function(error) {
-                error ? console.log(`Failed to send verification email to ${mail.to}`) : console.log(`Sucessfully sent verification email to ${mail.to}`);
+            transporter.sendMail(createVerificationOptions(mail.to, mail.otp), function(error) {
+                error ? console.log(`Failed to send verification email to ${mail.to} ${error}`) : console.log(`Sucessfully sent verification email to ${mail.to}`);
             });
             break;
         default:
