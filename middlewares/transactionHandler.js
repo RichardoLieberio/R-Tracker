@@ -6,12 +6,13 @@ function transactionHandler(handler) {
         session.startTransaction();
 
         try {
-            req.transaction = session;
+            req.mongooseSession = session;
             await handler(req, res);
 
             await session.commitTransaction();
         } catch(error) {
             await session.abortTransaction();
+            res.json({status: 400, msg: 'Transaction failed'});
         } finally {
             session.endSession();
         }
