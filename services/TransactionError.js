@@ -1,6 +1,8 @@
 class TransactionError extends Error {
-    constructor(message) {
-        super(message);
+    constructor({status, msg}) {
+        super(msg);
+        this.status = status;
+        this.msg = msg;
     }
 }
 
