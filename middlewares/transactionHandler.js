@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 
+const TransactionError = require('../services/TransactionError');
+
 function transactionHandler(handler) {
     return async function(req, res) {
         const session = await mongoose.startSession();
@@ -8,11 +10,10 @@ function transactionHandler(handler) {
         try {
             req.mongooseSession = session;
             await handler(req, res);
-
             await session.commitTransaction();
         } catch(error) {
             await session.abortTransaction();
-            res.json({status: 400, msg: 'Transaction failed'});
+            error instanceof TransactionError ? res.json(error) : res.json({status: 400, msg: 'Transaction failed', error});
         } finally {
             session.endSession();
         }
