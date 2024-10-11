@@ -13,7 +13,7 @@ async function register(req, res) {
     sendMail('verification', {to: req.data.email, otp});
 
     const data = {email: req.data.email};
-    const token = generateToken(data, 15 * 60);
+    const token = generateToken(data, '15m');
 
     res.json({status: 202, msg: 'Registration is in process. Please check your email for the OTP', token});
 }
