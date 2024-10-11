@@ -11,7 +11,10 @@ const controller = require('../controllers/register');
 
 const routes = express.Router();
 
-routes.post('/', logoutRequired, csrfHandler(csrfProtection), errorHandler(validation.register, true), errorHandler(controller.register));
-routes.post('/validate', logoutRequired, csrfHandler(csrfProtection), errorHandler(validation.validate, true), transactionHandler(controller.validate));
+routes.use(logoutRequired);
+routes.use(csrfHandler(csrfProtection));
+
+routes.post('/', errorHandler(validation.register, true), errorHandler(controller.register));
+routes.post('/validate', errorHandler(validation.validate, true), transactionHandler(controller.validate));
 
 module.exports = routes;
