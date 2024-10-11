@@ -5,7 +5,7 @@ const cookieParser = require('cookie-parser');
 const connectDB = require('./services/dbConnection');
 const tokenRoutes = require('./routes/token');
 const registerRoutes = require('./routes/register');
-const userRoutes = require('./routes/user');
+const authRoutes = require('./routes/auth');
 
 connectDB();
 
@@ -16,7 +16,7 @@ app.use(express.json());
 
 app.use('/api/token', tokenRoutes);
 app.use('/api/register', registerRoutes);
-app.use('/api/user', userRoutes);
+app.use('/api/auth', authRoutes);
 
 app.listen(process.env.PORT, function() {
     console.log(`Listening on port ${process.env.PORT}`);
