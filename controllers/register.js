@@ -36,7 +36,7 @@ function generateOtp() {
 }
 
 function generateToken(info, expiryTime) {
-    return jwt.sign(info, process.env.JWT_SECRET, {expiresIn: expiryTime});
+    return jwt.sign(info, process.env.OTP_SECRET, {expiresIn: expiryTime});
 }
 
 module.exports = {register, validate};

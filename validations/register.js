@@ -102,7 +102,7 @@ function validateOtp(otp) {
 async function validateToken(token) {
     if (!token) return {error: 'Token is required'};
     try {
-        const data = await jwt.verify(token, process.env.JWT_SECRET);
+        const data = await jwt.verify(token, process.env.OTP_SECRET);
         if (!data || !data.email) return {error: 'Invalid token payload'};
 
         return {email: data.email};
