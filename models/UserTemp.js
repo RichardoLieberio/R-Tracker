@@ -35,14 +35,14 @@ const userTempSchema = mongoose.Schema({
     }
 });
 
-userTempSchema.methods.cleanUp = async function(email) {
-    await this.model('UserTemp').deleteMany({email});
+userTempSchema.statics.cleanUp = async function(email) {
+    await this.deleteMany({email});
 }
 
 userTempSchema.methods.register = async function(data, otp) {
     const {name, email, pwd} = data;
 
-    await this.cleanUp(email);
+    await this.constructor.cleanUp(email);
 
     const hashedPwd = await bcrypt.hash(pwd, +process.env.SALT_ROUNDS);
     this.name = name;
