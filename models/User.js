@@ -42,7 +42,7 @@ userSchema.statics.isEmailRegistered = function(email) {
     return this.findOne({email});
 }
 
-userSchema.methods.login = async function(data) {
+userSchema.methods.checkCredentials = async function(data) {
     const user = await this.constructor.isEmailRegistered(data.email);
     if (!user) return false;
 
