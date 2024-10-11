@@ -3,7 +3,8 @@ function login(req, res) {
 }
 
 function logout(req, res) {
-    res.send('User logout');
+    res.clearCookie(process.env.REFRESH_TOKEN_COOKIE);
+    res.json({status: 200, msg: 'You have successfully logged out'});
 }
 
 module.exports = {login, logout};
