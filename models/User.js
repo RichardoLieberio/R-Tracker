@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
 const userSchema = mongoose.Schema({
     name: {
@@ -39,6 +40,17 @@ const userSchema = mongoose.Schema({
 
 userSchema.statics.isEmailRegistered = function(email) {
     return this.findOne({email});
+}
+
+userSchema.methods.login = async function(data) {
+    const user = await this.constructor.isEmailRegistered(data.email);
+    if (!user) return false;
+
+    const {_id: id, name, email} = user;
+
+    return await bcrypt.compare(data.pwd, user.pwd)
+    ? {id, name, email}
+    : false;
 }
 
 const User = mongoose.model('User', userSchema);
