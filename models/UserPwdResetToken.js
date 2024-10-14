@@ -19,6 +19,7 @@ const userPwdResetTokenSchema = mongoose.Schema({
     },
     expires_at: {
         type: Date,
+        default: () => Date.now() + 15 * 60 * 1000,
         required: true
     }
 });
