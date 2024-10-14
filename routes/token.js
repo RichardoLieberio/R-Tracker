@@ -7,6 +7,5 @@ const controller = require('../controllers/token');
 const routes = express.Router();
 
 routes.get('/csrf', csrfProtection, controller.getCSRFToken);
-routes.get('/jwt', controller.getJWTToken);
 
 module.exports = routes;
