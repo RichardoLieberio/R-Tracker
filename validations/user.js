@@ -12,7 +12,7 @@ async function register(req, res, next) {
     ? errorMsg['name'] = nameValidation.error
     : req.data['name'] = nameValidation.name;
 
-    const emailValidation = await validateEmail(email);
+    const emailValidation = await validateEmail(email, true);
     emailValidation.error
     ? errorMsg['email'] = emailValidation.error
     : req.data['email'] = emailValidation.email;
@@ -45,6 +45,23 @@ async function validate(req, res, next) {
     next();
 }
 
+async function forgotPwd(req, res, next) {
+    const {email} = req.body;
+    const errorMsg = {};
+    const user = {};
+
+    const emailValidation = validateEmail(email);
+    emailValidation.error
+    ? errorMsg['email'] = emailValidation.error
+    : user['email'] = emailValidation.email;
+
+    if (Object.entries(errorMsg).length) return res.json({status: 422, msg: errorMsg});
+
+    req.user = await User.isEmailRegistered(user.email);
+    if (!req.user) return res.json({status: 401, msg: 'Please check your inbox or spam folder'});
+    next();
+}
+
 function validateName(name) {
     if (!name) return {error: 'Name is required'};
     if (typeof(name) !== 'string') return {error: 'Name must be string'};
@@ -57,14 +74,14 @@ function validateName(name) {
     return {name};
 }
 
-async function validateEmail(email) {
+async function validateEmail(email, checkIsRegistered = false) {
     if (!email) return {error: 'Email is required'};
     if (typeof(email) !== 'string') return {error: 'Email must be string'};
 
     email = email.trim().toLowerCase();
 
     if (!email) return {error: 'Email is required'};
-    if (await User.isEmailRegistered(email)) return {error: 'Email is registered'};
+    if (checkIsRegistered && await User.isEmailRegistered(email)) return {error: 'Email is registered'};
 
     const emailRegex = /^(?!.*\.\.)(?!^\.)(?!.*\.$)(?!.*-$)(?!.*\.-)([a-zA-Z0-9._%+-]+@[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*\.[a-zA-Z]{2,}(?:\.[a-zA-Z]{2,})?)$/;
     if (!emailRegex.test(email)) return {error: 'Email is invalid'};
@@ -111,4 +128,4 @@ async function validateToken(token) {
     }
 }
 
-module.exports = {register, validate};
+module.exports = {register, validate, forgotPwd};

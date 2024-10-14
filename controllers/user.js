@@ -2,8 +2,11 @@ const jwt = require('jsonwebtoken');
 
 const TransactionError = require('../services/TransactionError');
 const sendMail = require('../services/mailService');
+const generateRandomString = require('../services/generateRandomString');
+
 const User = require('../models/User');
 const UserTemp = require('../models/UserTemp');
+const UserPwdResetToken = require('../models/UserPwdResetToken');
 
 async function register(req, res) {
     const otp = generateOtp();
@@ -30,6 +33,16 @@ async function validate(req, res) {
     res.json({status: 201, msg: 'Registration succeeded. Email has been validated'});
 }
 
+async function forgotPwd(req, res) {
+    const token = generateRandomString(32);
+    await UserPwdResetToken.createPath(req.user._id, token);
+
+    const uri = `${process.env.PWD_RESET_URI}${token}`;
+    sendMail('pwd-reset', {to: req.user.email, uri});
+
+    res.json({status: 200, msg: 'Please check your inbox or spam folder'});
+}
+
 function generateOtp() {
     const otp = Math.floor(10 ** (+process.env.OTP_LENGTH - 1) + Math.random() * 9 * 10 ** (+process.env.OTP_LENGTH - 1));
     return otp.toString();
@@ -39,4 +52,4 @@ function generateToken(info, expiryTime) {
     return jwt.sign(info, process.env.OTP_SECRET, {expiresIn: expiryTime});
 }
 
-module.exports = {register, validate};
+module.exports = {register, validate, forgotPwd};

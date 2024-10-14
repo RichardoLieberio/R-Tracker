@@ -29,23 +29,6 @@ async function login(req, res, next) {
     next();
 }
 
-async function forgotPwd(req, res, next) {
-    const {email} = req.body;
-    const errorMsg = {};
-    const user = {};
-
-    const emailValidation = validateEmail(email);
-    emailValidation.error
-    ? errorMsg['email'] = emailValidation.error
-    : user['email'] = emailValidation.email;
-
-    if (Object.entries(errorMsg).length) return res.json({status: 422, msg: errorMsg});
-
-    req.user = await User.isEmailRegistered(user.email);
-    if (!req.user) return res.json({status: 401, msg: 'Please check your inbox or spam folder'});
-    next();
-}
-
 function validateEmail(email) {
     if (!email) return {error: 'Email is required'};
     if (typeof(email) !== 'string') return {error: 'Email must be string'};
