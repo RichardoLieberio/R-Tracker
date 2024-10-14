@@ -13,7 +13,7 @@ function login(req, res) {
 
 async function forgotPwd(req, res) {
     const token = generateRandomString(32);
-    await UserPwdResetToken.create({userId: req.user._id, token});
+    await UserPwdResetToken.createPath(req.user._id, token);
 
     const uri = `${process.env.PWD_RESET_URI}${token}`;
     sendMail('pwd-reset', {to: req.user.email, uri});
