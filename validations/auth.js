@@ -29,7 +29,7 @@ async function login(req, res, next) {
     next();
 }
 
-async function forgotPassword(req, res, next) {
+async function forgotPwd(req, res, next) {
     const {email} = req.body;
     const errorMsg = {};
     const user = {};
@@ -42,7 +42,7 @@ async function forgotPassword(req, res, next) {
     if (Object.entries(errorMsg).length) return res.json({status: 422, msg: errorMsg});
 
     req.user = await User.isEmailRegistered(user.email);
-    if (!req.user) return res.json({status: 401, msg: 'Please check your inbox or spam folder.'});
+    if (!req.user) return res.json({status: 401, msg: 'Please check your inbox or spam folder'});
     next();
 }
 
@@ -73,4 +73,4 @@ function validateRememberMe(rememberMe) {
     return {rememberMe};
 }
 
-module.exports = {login, forgotPassword};
+module.exports = {login, forgotPwd};
