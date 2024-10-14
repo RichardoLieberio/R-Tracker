@@ -35,22 +35,15 @@ const userTempSchema = mongoose.Schema({
     }
 });
 
-userTempSchema.statics.cleanUp = async function(email) {
-    await this.deleteMany({email});
-}
-
 userTempSchema.methods.register = async function(data, otp) {
-    const {name, email, pwd} = data;
+    const {name, email, pwd: rawPwd} = data;
+    const pwd = await bcrypt.hash(rawPwd, +process.env.SALT_ROUNDS);
 
-    await this.constructor.cleanUp(email);
-
-    const hashedPwd = await bcrypt.hash(pwd, +process.env.SALT_ROUNDS);
-    this.name = name;
-    this.email = email;
-    this.pwd = hashedPwd;
-    this.otp = otp;
-
-    return this.save();
+    return this.constructor.findOneAndUpdate(
+        {email},
+        {name, email, pwd, otp, expires_at: Date.now() + 15 * 60 * 1000},
+        {upsert: true, new: true}
+    );
 }
 
 const UserTemp = mongoose.model('UserTemp', userTempSchema);
