@@ -56,4 +56,4 @@ function validateRememberMe(rememberMe) {
     return {rememberMe};
 }
 
-module.exports = {login, forgotPwd};
+module.exports = {login};

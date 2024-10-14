@@ -12,4 +12,4 @@ function logout(req, res) {
     res.json({status: 200, msg: 'You have successfully logged out'});
 }
 
-module.exports = {login, forgotPwd, logout};
+module.exports = {login, logout};
