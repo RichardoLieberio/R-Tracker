@@ -7,9 +7,13 @@ function login(req, res) {
     res.json({status: 200, msg: 'You have logged in', token: accessToken});
 }
 
+function forgotPassword(req, res) {
+    res.json({msg: 'Forgot Password', user: req.user});
+}
+
 function logout(req, res) {
     res.clearCookie(process.env.REFRESH_TOKEN_COOKIE);
     res.json({status: 200, msg: 'You have successfully logged out'});
 }
 
-module.exports = {login, logout};
+module.exports = {login, forgotPassword, logout};
