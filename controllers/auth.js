@@ -1,15 +1,9 @@
-const jwt = require('jsonwebtoken');
+const generateRefreshToken = require('../services/generateRefreshToken');
+const generateAccessToken = require('../services/generateAccessToken');
 
 function login(req, res) {
-    const refreshToken = jwt.sign(req.user, process.env.REFRESH_TOKEN_SECRET, {expiresIn: '30d'});
-    res.cookie(process.env.REFRESH_TOKEN_COOKIE, refreshToken, {
-        httpOnly: true,
-        secure: true,
-        maxAge: 30 * 24 * 60 * 60 * 1000,
-        sameSite: 'strict'
-    });
-
-    const accessToken = jwt.sign(req.user, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '15m'});
+    generateRefreshToken(res, req.user);
+    const accessToken = generateAccessToken(req.user);
     res.json({status: 200, msg: 'You have logged in', token: accessToken});
 }
 
