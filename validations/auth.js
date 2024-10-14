@@ -1,7 +1,7 @@
 const User = require('../models/User');
 
 async function login(req, res, next) {
-    const {email, pwd} = req.body;
+    const {email, pwd, rememberMe} = req.body;
     const errorMsg = {};
     const user = {};
 
@@ -14,6 +14,11 @@ async function login(req, res, next) {
     pwdValidation.error
     ? errorMsg['pwd'] = pwdValidation.error
     : user['pwd'] = pwdValidation.pwd;
+
+    const rememberMeValidation = validateRememberMe(rememberMe);
+    rememberMeValidation.error
+    ? errorMsg['rememberMe'] = rememberMeValidation.error
+    : req.rememberMe = rememberMeValidation.rememberMe;
 
     if (Object.entries(errorMsg).length) return res.json({status: 422, msg: errorMsg});
 
@@ -60,6 +65,12 @@ function validatePwd(pwd) {
     if (typeof(pwd) !== 'string') return {error: 'Password must be string'};
 
     return {pwd};
+}
+
+function validateRememberMe(rememberMe) {
+    if (rememberMe === undefined) return {error: 'Remember Me is required'};
+    if (typeof(rememberMe) !== 'boolean') return {error: 'Remember Me must be boolean'};
+    return {rememberMe};
 }
 
 module.exports = {login, forgotPassword};
