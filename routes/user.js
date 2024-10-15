@@ -15,6 +15,11 @@ const routes = express.Router();
 routes.post('/register', logoutRequired, csrfHandler(csrfProtection), errorHandler(validation.register, true), errorHandler(controller.register));
 routes.post('/validate', logoutRequired, csrfHandler(csrfProtection), errorHandler(validation.validate, true), transactionHandler(controller.validate));
 routes.post('/forgot-password', logoutRequired, csrfHandler(csrfProtection), errorHandler(validation.forgotPwd, true), errorHandler(controller.forgotPwd));
-routes.post('/change-name', accessTokenRequired, csrfHandler(csrfProtection), errorHandler(validation.changeName, true), errorHandler(controller.changeName));
+
+routes.use(accessTokenRequired);
+routes.use(csrfHandler(csrfProtection));
+
+routes.post('/change-name', errorHandler(validation.changeName, true), errorHandler(controller.changeName));
+routes.post('/change-email', errorHandler(validation.changeEmail, true), errorHandler(controller.changeEmail));
 
 module.exports = routes;

@@ -76,6 +76,20 @@ function changeName(req, res, next) {
     next();
 }
 
+async function changeEmail(req, res, next) {
+    const {email} = req.body;
+    const errorMsg = {};
+    req.data = {};
+
+    const emailValidation = await validateEmail(email);
+    emailValidation.error
+    ? errorMsg['email'] = emailValidation.error
+    : req.data['email'] = emailValidation.email;
+
+    if (Object.entries(errorMsg).length) return res.json({status: 422, msg: errorMsg});
+    next();
+}
+
 function validateName(name) {
     if (!name) return {error: 'Name is required'};
     if (typeof(name) !== 'string') return {error: 'Name must be string'};
@@ -142,4 +156,4 @@ async function validateToken(token) {
     }
 }
 
-module.exports = {register, validate, forgotPwd, changeName};
+module.exports = {register, validate, forgotPwd, changeName, changeEmail};

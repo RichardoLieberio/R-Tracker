@@ -7,6 +7,7 @@ const generateRandomString = require('../services/generateRandomString');
 const User = require('../models/User');
 const UserTemp = require('../models/UserTemp');
 const UserPwdResetToken = require('../models/UserPwdResetToken');
+const UserChangeEmailToken = require('../models/UserChangeEmailToken');
 
 async function register(req, res) {
     const otp = generateOtp();
@@ -37,7 +38,7 @@ async function forgotPwd(req, res) {
     const token = generateRandomString(32);
     await UserPwdResetToken.createPath(req.user._id, token);
 
-    const uri = `${process.env.PWD_RESET_URI}${token}`;
+    const uri = `${process.env.PUBLIC_URI}password-reset/${token}`;
     sendMail('pwd-reset', {to: req.user.email, uri});
 
     res.json({status: 200, msg: 'Please check your inbox or spam folder'});
@@ -46,6 +47,19 @@ async function forgotPwd(req, res) {
 async function changeName(req, res) {
     await User.findOneAndUpdate({_id: req.user.id}, {name: req.data.name});
     res.json({status: 200, msg: 'Name updated successfully'});
+}
+
+async function changeEmail(req, res) {
+    const user = await User.findOne({_id: req.user.id, email: req.data.email});
+    if (user) return {status: 422, msg: {email: 'Email is registered'}};
+
+    const token = generateRandomString(32);
+    await UserChangeEmailToken.createPath(req.user._id, req.data.email, token);
+
+    const uri = `${process.env.PUBLIC_URI}change-email/${token}`;
+    sendMail('change-email', {to: req.data.email, uri});
+
+    res.json({status: 200, msg: 'Please check your inbox or spam folder'});
 }
 
 function generateOtp() {
@@ -57,4 +71,4 @@ function generateToken(info, expiryTime) {
     return jwt.sign(info, process.env.OTP_SECRET, {expiresIn: expiryTime});
 }
 
-module.exports = {register, validate, forgotPwd, changeName};
+module.exports = {register, validate, forgotPwd, changeName, changeEmail};
