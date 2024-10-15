@@ -13,7 +13,7 @@ const transporter = nodemailer.createTransport({
 function sendMail(type, mail) {
     switch (type) {
         case 'verification':
-            transporter.sendMail(createVerificationOptions(mail.to, mail.otp), function(error) {
+            transporter.sendMail(createAccountVerificationOptions(mail.to, mail.uri), function(error) {
                 error ? console.log(`Failed to send verification email to ${mail.to}`) : console.log(`Sucessfully sent verification email to ${mail.to}`);
             });
             break;
@@ -28,15 +28,15 @@ function sendMail(type, mail) {
     }
 }
 
-function createVerificationOptions(to, otp) {
+function createAccountVerificationOptions(to, uri) {
     return {
         from: `"${process.env.EMAIL_NAME}" <${process.env.EMAIL_ADDRESS}>`,
         to,
-        subject: 'R-Tracker Verification Code',
+        subject: 'R-Tracker Account Verification',
         html: `
-            <p>Please use this code below to verify your account.</p>
-            <h2><strong>${otp}</strong></h2>
-            <p>Code will be valid for <b>15 minutes</b></p>
+            <p>Please follow this link below to verify your account.</p>
+            <p><a href="${uri}">${uri}</a></p>
+            <p>Link will be valid for <b>15 minutes</b></p>
             <br>
             <p>If you didn't request this, please ignore this email</p>
             <br>
