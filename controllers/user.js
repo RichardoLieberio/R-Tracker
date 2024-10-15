@@ -5,25 +5,22 @@ const sendMail = require('../services/mailService');
 const generateRandomString = require('../services/generateRandomString');
 
 const User = require('../models/User');
-const UserTemp = require('../models/UserTemp');
-const UserPwdResetToken = require('../models/UserPwdResetToken');
-const UserChangeEmailToken = require('../models/UserChangeEmailToken');
+const InactiveUser = require('../models/InactiveUser');
+const PwdResetToken = require('../models/PwdResetToken');
+const ChangeEmailToken = require('../models/ChangeEmailToken');
 
 async function register(req, res) {
-    const otp = generateOtp();
-    const UserTempVar = new UserTemp();
-    await UserTempVar.register(req.data, otp);
+    const token = generateRandomString(32);
+    await InactiveUser.register(req.data, token);
 
-    sendMail('verification', {to: req.data.email, otp});
+    const uri = `${process.env.PUBLIC_URI}verify-account/${token}`
+    sendMail('verification', {to: req.data.email, uri});
 
-    const data = {email: req.data.email};
-    const token = generateToken(data, '15m');
-
-    res.json({status: 202, msg: 'Registration is in process. Please check your email for the OTP', token});
+    res.json({status: 202, msg: 'Registration is in process. To verify your account, please check your inbox or spam folder'});
 }
 
 async function validate(req, res) {
-    const user = await UserTemp.findOneAndDelete({email: req.data.email}, {session: req.mongooseSession});
+    const user = await InactiveUser.findOneAndDelete({email: req.data.email}, {session: req.mongooseSession});
     if (!user) throw new TransactionError({status: 404, msg: 'Validation failed. Email not found'});
 
     const {name, email, pwd, otp} = user;
@@ -36,7 +33,7 @@ async function validate(req, res) {
 
 async function forgotPwd(req, res) {
     const token = generateRandomString(32);
-    await UserPwdResetToken.createPath(req.user._id, token);
+    await PwdResetToken.createPath(req.user._id, token);
 
     const uri = `${process.env.PUBLIC_URI}password-reset/${token}`;
     sendMail('pwd-reset', {to: req.user.email, uri});
@@ -54,7 +51,7 @@ async function changeEmail(req, res) {
     if (user) return {status: 422, msg: {email: 'Email is registered'}};
 
     const token = generateRandomString(32);
-    await UserChangeEmailToken.createPath(req.user._id, req.data.email, token);
+    await ChangeEmailToken.createPath(req.user._id, req.data.email, token);
 
     const uri = `${process.env.PUBLIC_URI}change-email/${token}`;
     sendMail('change-email', {to: req.data.email, uri});
