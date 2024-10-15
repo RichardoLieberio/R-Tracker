@@ -15,11 +15,11 @@ function accessTokenRequired(req, res, next) {
 function generateNewAccessToken(req, res) {
     try {
         const refreshToken = req.cookies[process.env.REFRESH_TOKEN_COOKIE];
-        const {id, name, email} = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
-        const accessToken = generateAccessToken({id, name, email});
+        const {id, role} = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
+        const accessToken = generateAccessToken({id, role});
         return res.json({status: 200, msg: 'New access token generated successfully', accessToken});
     } catch(error) {
-        return res.json({status: 401, msg: 'Invalid or expired refresh token', error: error.message});
+        return res.json({status: 401, msg: 'Invalid or expired refresh token'});
     }
 }
 
