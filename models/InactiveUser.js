@@ -20,11 +20,16 @@ const inactiveUserSchema = mongoose.Schema({
         minLength: 6,
         required: true
     },
-    otp: {
+    token: {
         type: String,
         trim: true,
-        minLength: 4,
-        maxLength: 10,
+        minLength: 32,
+        maxLength: 32,
+        required: true
+    },
+    created_at: {
+        type: Date,
+        default: Date.now,
         required: true
     },
     expires_at: {

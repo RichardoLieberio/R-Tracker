@@ -1,22 +1,24 @@
 const mongoose = require('mongoose');
 
 const userChangeEmailTokenSchema = mongoose.Schema({
-    userId: {
+    user_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         trim: true,
         required: true
     },
-    newEmail: {
+    token: {
+        type: String,
+        trim: true,
+        minLength: 32,
+        maxLength: 32,
+        required: true
+    },
+    new_email: {
         type: String,
         trim: true,
         lowercase: true,
         unique: true,
-        required: true
-    },
-    token: {
-        type: String,
-        trim: true,
         required: true
     },
     created_at: {

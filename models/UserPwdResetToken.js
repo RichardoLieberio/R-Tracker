@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const userPwdResetTokenSchema = mongoose.Schema({
-    userId: {
+    user_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         trim: true,
@@ -10,6 +10,8 @@ const userPwdResetTokenSchema = mongoose.Schema({
     token: {
         type: String,
         trim: true,
+        minLength: 32,
+        maxLength: 32,
         required: true
     },
     created_at: {
