@@ -46,6 +46,10 @@ inactiveUserSchema.statics.register = async function(data, token) {
     await this.findOneAndUpdate({email}, {name, email, pwd, token}, {upsert: true});
 }
 
+inactiveUserSchema.statics.getAndRemove = async function(token, session) {
+    return await this.findOneAndRemove({token}, {select: 'name email pwd', session});
+}
+
 const InactiveUser = mongoose.model('InactiveUser', inactiveUserSchema);
 
 module.exports = InactiveUser;
