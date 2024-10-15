@@ -30,7 +30,7 @@ function sendMail(type, mail) {
 
 function createVerificationOptions(to, otp) {
     return {
-        from: process.env.EMAIL_ADDRESS,
+        from: `"${process.env.EMAIL_NAME}" <${process.env.EMAIL_ADDRESS}>`,
         to,
         subject: 'R-Tracker Verification Code',
         html: `
@@ -40,7 +40,7 @@ function createVerificationOptions(to, otp) {
             <br>
             <p>If you didn't request this, please ignore this email</p>
             <br>
-            <p>Regards,<br>
+            <p>Best regards,<br>
             R-Tracker</p>
         `
     };
@@ -48,7 +48,7 @@ function createVerificationOptions(to, otp) {
 
 function createPwdResetOptions(to, uri) {
     return {
-        from: process.env.EMAIL_ADDRESS,
+        from: `"${process.env.EMAIL_NAME}" <${process.env.EMAIL_ADDRESS}>`,
         to,
         subject: 'R-Tracker Reset Password',
         html: `
@@ -59,7 +59,7 @@ function createPwdResetOptions(to, uri) {
             <br>
             <p>If you didn't request this, please ignore this email</p>
             <br>
-            <p>Regards,<br>
+            <p>Best regards,<br>
             R-Tracker</p>
         `
     };
