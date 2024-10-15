@@ -46,10 +46,10 @@ userSchema.methods.checkCredentials = async function(data) {
     const user = await this.constructor.isEmailRegistered(data.email);
     if (!user) return false;
 
-    const {_id: id, name, email} = user;
+    const {_id: id, name, email, role} = user;
 
     return await bcrypt.compare(data.pwd, user.pwd)
-    ? {id, name, email}
+    ? {id, name, email, role}
     : false;
 }
 
