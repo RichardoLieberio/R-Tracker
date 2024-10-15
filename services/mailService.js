@@ -34,7 +34,6 @@ function createVerificationOptions(to, otp) {
         to,
         subject: 'R-Tracker Verification Code',
         html: `
-            <h1>R-Tracker</h1>
             <p>Please use this code below to verify your account.</p>
             <h2><strong>${otp}</strong></h2>
             <p>Code will be valid for <b>15 minutes</b></p>
@@ -53,7 +52,6 @@ function createPwdResetOptions(to, uri) {
         to,
         subject: 'R-Tracker Reset Password',
         html: `
-            <h1>R-Tracker</h1>
             <p>We received a request to reset the password for your account.</p>
             <br>
             <p>To reset your password, please follow the link below. Link will be valid for <b>15 minutes</b></p>
