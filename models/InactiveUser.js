@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
-const userTempSchema = mongoose.Schema({
+const inactiveUserSchema = mongoose.Schema({
     name: {
         type: String,
         maxlength: 50,
@@ -35,7 +35,7 @@ const userTempSchema = mongoose.Schema({
     }
 });
 
-userTempSchema.methods.register = async function(data, otp) {
+inactiveUserSchema.methods.register = async function(data, otp) {
     const {name, email, pwd: rawPwd} = data;
     const pwd = await bcrypt.hash(rawPwd, +process.env.SALT_ROUNDS);
 
@@ -46,6 +46,6 @@ userTempSchema.methods.register = async function(data, otp) {
     );
 }
 
-const UserTemp = mongoose.model('UserTemp', userTempSchema);
+const InactiveUser = mongoose.model('InactiveUser', inactiveUserSchema);
 
-module.exports = UserTemp;
+module.exports = InactiveUser;
