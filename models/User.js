@@ -38,8 +38,8 @@ const userSchema = mongoose.Schema({
     }
 });
 
-userSchema.statics.isEmailRegistered = function(email) {
-    return this.findOne({email});
+userSchema.statics.isEmailRegistered = async function(email) {
+    return !!await this.findOne({email});
 }
 
 userSchema.methods.checkCredentials = async function(data) {

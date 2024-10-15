@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const userChangeEmailTokenSchema = mongoose.Schema({
+const pwdResetTokenSchema = mongoose.Schema({
     user_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
@@ -12,13 +12,6 @@ const userChangeEmailTokenSchema = mongoose.Schema({
         trim: true,
         minLength: 32,
         maxLength: 32,
-        required: true
-    },
-    new_email: {
-        type: String,
-        trim: true,
-        lowercase: true,
-        unique: true,
         required: true
     },
     created_at: {
@@ -34,10 +27,10 @@ const userChangeEmailTokenSchema = mongoose.Schema({
     }
 });
 
-userChangeEmailTokenSchema.statics.createPath = function(userId, newEmail, token) {
-    return this.findOneAndUpdate({userId}, {userId, newEmail, token}, {upsert: true});
+pwdResetTokenSchema.statics.createPath = function(userId, token) {
+    return this.findOneAndUpdate({userId}, {userId, token}, {upsert: true});
 }
 
-const UserChangeEmailToken = mongoose.model('UserChangeEmailToken', userChangeEmailTokenSchema);
+const PwdResetToken = mongoose.model('PwdResetToken', pwdResetTokenSchema);
 
-module.exports = UserChangeEmailToken;
+module.exports = PwdResetToken;
