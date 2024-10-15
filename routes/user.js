@@ -5,6 +5,7 @@ const csrfHandler = require('../middlewares/csrfHandler');
 const errorHandler = require('../middlewares/errorHandler');
 const transactionHandler = require('../middlewares/transactionHandler');
 const logoutRequired = require('../middlewares/logoutRequired');
+const accessTokenRequired = require('../middlewares/accessTokenRequired');
 
 const validation = require('../validations/user');
 const controller = require('../controllers/user');
@@ -14,5 +15,6 @@ const routes = express.Router();
 routes.post('/register', logoutRequired, csrfHandler(csrfProtection), errorHandler(validation.register, true), errorHandler(controller.register));
 routes.post('/validate', logoutRequired, csrfHandler(csrfProtection), errorHandler(validation.validate, true), transactionHandler(controller.validate));
 routes.post('/forgot-password', logoutRequired, csrfHandler(csrfProtection), errorHandler(validation.forgotPwd, true), errorHandler(controller.forgotPwd));
+routes.post('/change-name', accessTokenRequired, csrfHandler(csrfProtection), errorHandler(validation.changeName, true), errorHandler(controller.changeName));
 
 module.exports = routes;

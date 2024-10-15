@@ -3,10 +3,13 @@ const jwt = require('jsonwebtoken');
 const TransactionError = require('../services/TransactionError');
 const sendMail = require('../services/mailService');
 const generateRandomString = require('../services/generateRandomString');
+const generateRefreshToken = require('../services/generateRefreshToken');
+const generateAccessToken = require('../services/generateAccessToken');
 
 const User = require('../models/User');
 const UserTemp = require('../models/UserTemp');
 const UserPwdResetToken = require('../models/UserPwdResetToken');
+const InvalidToken = require('../models/InvalidToken');
 
 async function register(req, res) {
     const otp = generateOtp();
@@ -43,6 +46,11 @@ async function forgotPwd(req, res) {
     res.json({status: 200, msg: 'Please check your inbox or spam folder'});
 }
 
+async function changeName(req, res) {
+    await User.findOneAndUpdate({_id: req.user.id}, {name: req.data.name});
+    res.json({status: 200, msg: 'Name updated successfully'});
+}
+
 function generateOtp() {
     const otp = Math.floor(10 ** (+process.env.OTP_LENGTH - 1) + Math.random() * 9 * 10 ** (+process.env.OTP_LENGTH - 1));
     return otp.toString();
@@ -52,4 +60,4 @@ function generateToken(info, expiryTime) {
     return jwt.sign(info, process.env.OTP_SECRET, {expiresIn: expiryTime});
 }
 
-module.exports = {register, validate, forgotPwd};
+module.exports = {register, validate, forgotPwd, changeName};

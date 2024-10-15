@@ -62,6 +62,20 @@ async function forgotPwd(req, res, next) {
     next();
 }
 
+function changeName(req, res, next) {
+    const {name} = req.body;
+    const errorMsg = {};
+    req.data = {};
+
+    const nameValidation = validateName(name);
+    nameValidation.error
+    ? errorMsg['name'] = nameValidation.error
+    : req.data['name'] = nameValidation.name;
+
+    if (Object.entries(errorMsg).length) return res.json({status: 422, msg: errorMsg});
+    next();
+}
+
 function validateName(name) {
     if (!name) return {error: 'Name is required'};
     if (typeof(name) !== 'string') return {error: 'Name must be string'};
@@ -128,4 +142,4 @@ async function validateToken(token) {
     }
 }
 
-module.exports = {register, validate, forgotPwd};
+module.exports = {register, validate, forgotPwd, changeName};
