@@ -40,15 +40,10 @@ const inactiveUserSchema = mongoose.Schema({
     }
 });
 
-inactiveUserSchema.methods.register = async function(data, otp) {
+inactiveUserSchema.statics.register = async function(data, token) {
     const {name, email, pwd: rawPwd} = data;
     const pwd = await bcrypt.hash(rawPwd, +process.env.SALT_ROUNDS);
-
-    return this.constructor.findOneAndUpdate(
-        {email},
-        {name, email, pwd, otp, expires_at: Date.now() + 15 * 60 * 1000},
-        {upsert: true, new: true}
-    );
+    await this.findOneAndUpdate({email}, {name, email, pwd, token}, {upsert: true});
 }
 
 const InactiveUser = mongoose.model('InactiveUser', inactiveUserSchema);
