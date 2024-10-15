@@ -26,7 +26,7 @@ const userPwdResetTokenSchema = mongoose.Schema({
 });
 
 userPwdResetTokenSchema.statics.createPath = function(userId, token) {
-    return this.findOneAndUpdate({userId}, {userId, token}, {upsert: true, new: true});
+    return this.findOneAndUpdate({userId}, {userId, token}, {upsert: true});
 }
 
 const UserPwdResetToken = mongoose.model('UserPwdResetToken', userPwdResetTokenSchema);
