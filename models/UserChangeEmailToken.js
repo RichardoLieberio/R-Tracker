@@ -32,6 +32,10 @@ const userChangeEmailTokenSchema = mongoose.Schema({
     }
 });
 
+userChangeEmailTokenSchema.statics.createPath = function(userId, newEmail, token) {
+    return this.findOneAndUpdate({userId}, {userId, newEmail, token}, {upsert: true});
+}
+
 const UserChangeEmailToken = mongoose.model('UserChangeEmailToken', userChangeEmailTokenSchema);
 
 module.exports = UserChangeEmailToken;
