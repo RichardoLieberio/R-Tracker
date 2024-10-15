@@ -4,7 +4,7 @@ const generateAccessToken = require('../services/generateAccessToken');
 function login(req, res) {
     generateRefreshToken(res, req.user, req.rememberMe);
     const accessToken = generateAccessToken(req.user);
-    res.json({status: 200, msg: 'You have logged in', token: accessToken});
+    res.json({status: 200, msg: 'You have logged in', accessToken});
 }
 
 function logout(req, res) {
