@@ -3,13 +3,10 @@ const jwt = require('jsonwebtoken');
 const TransactionError = require('../services/TransactionError');
 const sendMail = require('../services/mailService');
 const generateRandomString = require('../services/generateRandomString');
-const generateRefreshToken = require('../services/generateRefreshToken');
-const generateAccessToken = require('../services/generateAccessToken');
 
 const User = require('../models/User');
 const UserTemp = require('../models/UserTemp');
 const UserPwdResetToken = require('../models/UserPwdResetToken');
-const InvalidToken = require('../models/InvalidToken');
 
 async function register(req, res) {
     const otp = generateOtp();
