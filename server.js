@@ -3,6 +3,7 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 
 const connectDB = require('./services/dbConnection');
+
 const tokenRoutes = require('./routes/token');
 const userRoutes = require('./routes/user');
 const authRoutes = require('./routes/auth');
