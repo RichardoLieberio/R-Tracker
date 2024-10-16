@@ -1,4 +1,4 @@
-async function login(req, res, next) {
+function login(req, res, next) {
     const {email, pwd, rememberMe} = req.body;
     const errorMsg = {};
     req.data = {};

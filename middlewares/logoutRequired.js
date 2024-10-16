@@ -17,7 +17,7 @@ function verifyToken(token, secret) {
     return new Promise(function(resolve, reject) {
         jwt.verify(token, secret, function(error) {
             return error ? resolve() : reject();
-        })
+        });
     });
 }
 
