@@ -42,6 +42,10 @@ userSchema.statics.isEmailRegistered = async function(email) {
     return !!await this.findOne({email});
 }
 
+userSchema.statics.addNewAccount = async function(data, session) {
+    await this.create([data], {session});
+}
+
 userSchema.methods.checkCredentials = async function(data) {
     const user = await this.constructor.isEmailRegistered(data.email);
     if (!user) return false;
