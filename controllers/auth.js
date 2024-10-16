@@ -1,7 +1,7 @@
-const User = require('../models/User');
-
 const generateRefreshToken = require('../services/generateRefreshToken');
 const generateAccessToken = require('../services/generateAccessToken');
+
+const User = require('../models/User');
 
 async function login(req, res) {
     const user = await (new User()).checkCredentials(req.data);

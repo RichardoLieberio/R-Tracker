@@ -1,5 +1,3 @@
-const jwt = require('jsonwebtoken');
-
 const User = require('../models/User');
 
 async function register(req, res, next) {
@@ -123,7 +121,7 @@ function validateName(name) {
     return {name};
 }
 
-async function validateEmail(email, checkIsRegistered = false) {
+async function validateEmail(email, checkIsRegistered=false) {
     if (!email) return {error: 'Email is required'};
     if (typeof(email) !== 'string') return {error: 'Email must be string'};
 
@@ -163,18 +161,6 @@ function validateOtp(otp) {
     if (otp.length !== +process.env.OTP_LENGTH || /[^\d]/.test(otp)) return {error: 'OTP is invalid'};
 
     return {otp};
-}
-
-async function validateToken(token) {
-    if (!token) return {error: 'Token is required'};
-    try {
-        const data = await jwt.verify(token, process.env.OTP_SECRET);
-        if (!data || !data.email) return {error: 'Invalid token payload'};
-
-        return {email: data.email};
-    } catch(error) {
-        return {error: 'Token is invalid or expired'};
-    }
 }
 
 module.exports = {register, verify, forgotPwd, resetPwd, changeName, changeEmail};

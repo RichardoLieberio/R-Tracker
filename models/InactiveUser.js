@@ -50,10 +50,6 @@ inactiveUserSchema.statics.verify = async function(data, session) {
     return await this.model('InactiveUser').findOneAndDelete({email: data.email, otp: data.otp}, {session}).select('name email pwd');
 }
 
-inactiveUserSchema.statics.getAndRemove = async function(token, session) {
-    return await this.findOneAndRemove({token}, {select: 'name email pwd', session});
-}
-
 const InactiveUser = mongoose.model('InactiveUser', inactiveUserSchema);
 
 module.exports = InactiveUser;

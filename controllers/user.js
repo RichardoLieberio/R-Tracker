@@ -1,5 +1,3 @@
-const jwt = require('jsonwebtoken');
-
 const TransactionError = require('../services/TransactionError');
 const sendMail = require('../services/mailService');
 const generateOtp = require('../services/generateOtp');
@@ -13,7 +11,7 @@ async function register(req, res) {
     const otp = generateOtp(+process.env.OTP_LENGTH);
     await InactiveUser.register(req.data, otp);
 
-    sendMail('account-verification', {to: req.data.email, otp});
+    sendMail('account-verification', {to: req.data.email, name: req.data.name, otp});
 
     res.json({status: 202, msg: 'Registration successful. Please check your inbox or spam folder for an OTP to verify your account.'});
 }
@@ -24,6 +22,8 @@ async function verify(req, res) {
 
     const {_id, ...userData} = user.toObject();
     await User.addNewAccount(userData, req.mongooseSession);
+
+    sendMail('account-verified', {to: req.data.email, name: req.data.name, otp});
 
     res.json({status: 201, msg: 'Registration succeeded. Email has been verified'});
 }
@@ -66,10 +66,6 @@ async function changeEmail(req, res) {
     sendMail('change-email', {to: req.data.email, uri});
 
     res.json({status: 200, msg: 'Please check your inbox or spam folder'});
-}
-
-function generateToken(info, expiryTime) {
-    return jwt.sign(info, process.env.OTP_SECRET, {expiresIn: expiryTime});
 }
 
 module.exports = {register, verify, forgotPwd, resetPwd, changeName, changeEmail};
