@@ -23,7 +23,7 @@ async function verify(req, res) {
     const {_id, ...userData} = user.toObject();
     await User.addNewAccount(userData, req.mongooseSession);
 
-    sendMail('account-verified', {to: req.data.email, name: req.data.name, otp});
+    sendMail('account-verified', {to: req.data.email, name: userData.name});
 
     res.json({status: 201, msg: 'Registration succeeded. Email has been verified'});
 }

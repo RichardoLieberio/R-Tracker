@@ -44,7 +44,7 @@ function createAccountVerificationOptions(to, name, otp) {
                     <div style="border-bottom:1px solid #eee">
                         <a href="" style="font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600">${process.env.EMAIL_NAME}</a>
                     </div>
-                    <p style="font-size:1.1em">Hi, ${name}</p>
+                    <p style="font-size:1.1em">Hi ${name},</p>
                     <p>Thank you for choosing ${process.env.EMAIL_NAME}. Use the following OTP to complete your Sign Up procedures. OTP will be valid for <b>15 minutes</b></p>
                     <h2 style="background: #00466a;margin: 0 auto;width: max-content;padding: 0 10px;color: #fff;border-radius: 4px;">${otp}</h2>
                     <p>If you didn't request this, please ignore this email</p>
@@ -67,9 +67,9 @@ function createAccountVerifiedOptions(to, name) {
                     <div style="border-bottom:1px solid #eee">
                         <a href="" style="font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600">${process.env.EMAIL_NAME}</a>
                     </div>
-                    <p style="font-size:1.1em">Hi, ${name}</p>
+                    <p style="font-size:1.1em">Hi ${name},</p>
                     <p>We’re excited to let you know that your account has been successfully verified!</p>
-                    <p>You can now enjoy all the features and services ${process.env.EMAIL_NAME} has to offer</p>
+                    <p>You can now enjoy all the features and services we have to offer</p>
                     <p>Thank you for being part of ${process.env.EMAIL_NAME}!</p>
                     <hr style="border:none;border-top:1px solid #eee" />
                     <p style="font-size:0.9em;">Regards,<br />${process.env.EMAIL_NAME}</p>
