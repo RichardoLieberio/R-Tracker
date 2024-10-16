@@ -52,7 +52,7 @@ userSchema.statics.changePwd = async function(email, rawPwd, session) {
 }
 
 userSchema.methods.checkCredentials = async function(data) {
-    const user = await this.constructor.isEmailRegistered(data.email);
+    const user = await this.constructor.findOne({email: data.email});
     if (!user) return false;
 
     const {_id: id, role} = user;

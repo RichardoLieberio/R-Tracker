@@ -1,31 +1,24 @@
-const User = require('../models/User');
-
 async function login(req, res, next) {
     const {email, pwd, rememberMe} = req.body;
     const errorMsg = {};
-    const user = {};
+    req.data = {};
 
     const emailValidation = validateEmail(email);
     emailValidation.error
     ? errorMsg['email'] = emailValidation.error
-    : user['email'] = emailValidation.email;
+    : req.data['email'] = emailValidation.email;
 
     const pwdValidation = validatePwd(pwd);
     pwdValidation.error
     ? errorMsg['pwd'] = pwdValidation.error
-    : user['pwd'] = pwdValidation.pwd;
+    : req.data['pwd'] = pwdValidation.pwd;
 
     const rememberMeValidation = validateRememberMe(rememberMe);
     rememberMeValidation.error
     ? errorMsg['rememberMe'] = rememberMeValidation.error
-    : req.rememberMe = rememberMeValidation.rememberMe;
+    : req.data['rememberMe'] = rememberMeValidation.rememberMe;
 
     if (Object.entries(errorMsg).length) return res.json({status: 422, msg: errorMsg});
-
-    const UserVar = new User();
-    req.user = await UserVar.checkCredentials(user);
-
-    if (!req.user) return res.json({status: 401, msg: 'Incorrect login credentials'});
     next();
 }
 
