@@ -65,6 +65,9 @@ function createAccountVerificationOptions(to, name, otp) {
                     <a href="${process.env.INSTAGRAM_URI}" target="_blank">
                         <img src="${process.env.SERVER_URI}/public/email/instagram.png" alt="Instagram" width="24" height="24">
                     </a>
+                    <a href="${process.env.WHATSAPP_URI}" target="_blank">
+                        <img src="${process.env.SERVER_URI}/public/email/whatsapp.png" alt="Whatsapp" width="24" height="24">
+                    </a>
                 </div>
             </div>
         `
@@ -98,6 +101,9 @@ function createAccountVerifiedOptions(to, name) {
                     <a href="${process.env.INSTAGRAM_URI}" target="_blank">
                         <img src="${process.env.SERVER_URI}/public/email/instagram.png" alt="Instagram" width="24" height="24">
                     </a>
+                    <a href="${process.env.WHATSAPP_URI}" target="_blank">
+                        <img src="${process.env.SERVER_URI}/public/email/whatsapp.png" alt="Whatsapp" width="24" height="24">
+                    </a>
                 </div>
             </div>
         `
@@ -130,6 +136,9 @@ function createPwdResetOptions(to, otp) {
                     <a href="${process.env.INSTAGRAM_URI}" target="_blank">
                         <img src="${process.env.SERVER_URI}/public/email/instagram.png" alt="Instagram" width="24" height="24">
                     </a>
+                    <a href="${process.env.WHATSAPP_URI}" target="_blank">
+                        <img src="${process.env.SERVER_URI}/public/email/whatsapp.png" alt="Whatsapp" width="24" height="24">
+                    </a>
                 </div>
             </div>
         `
@@ -160,6 +169,9 @@ function createPwdSuccessfullyResetOptions(to) {
                     </a>
                     <a href="${process.env.INSTAGRAM_URI}" target="_blank">
                         <img src="${process.env.SERVER_URI}/public/email/instagram.png" alt="Instagram" width="24" height="24">
+                    </a>
+                    <a href="${process.env.WHATSAPP_URI}" target="_blank">
+                        <img src="${process.env.SERVER_URI}/public/email/whatsapp.png" alt="Whatsapp" width="24" height="24">
                     </a>
                 </div>
             </div>
