@@ -29,11 +29,12 @@ async function verify(req, res) {
 }
 
 async function forgotPwd(req, res) {
-    const token = generateRandomString(32);
-    await PwdResetToken.createPath(req.user._id, token);
+    if (!await User.isEmailRegistered(req.data.email)) return res.json({status: 200, msg: 'Please check your inbox or spam folder'});
 
-    const uri = `${process.env.PUBLIC_URI}password-reset/${token}`;
-    sendMail('pwd-reset', {to: req.user.email, uri});
+    const otp = generateOtp(+process.env.OTP_LENGTH);
+    await PwdResetToken.addRequest(req.data.email, otp);
+
+    sendMail('pwd-reset', {to: req.data.email, otp});
 
     res.json({status: 200, msg: 'Please check your inbox or spam folder'});
 }

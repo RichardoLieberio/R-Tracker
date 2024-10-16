@@ -1,17 +1,18 @@
 const mongoose = require('mongoose');
 
 const pwdResetTokenSchema = mongoose.Schema({
-    user_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        trim: true,
-        required: true
-    },
-    token: {
+    email: {
         type: String,
         trim: true,
-        minLength: 32,
-        maxLength: 32,
+        lowercase: true,
+        unique: true,
+        required: true
+    },
+    otp: {
+        type: String,
+        trim: true,
+        minLength: 4,
+        maxLength: 10,
         required: true
     },
     created_at: {
@@ -27,8 +28,8 @@ const pwdResetTokenSchema = mongoose.Schema({
     }
 });
 
-pwdResetTokenSchema.statics.createPath = function(userId, token) {
-    return this.findOneAndUpdate({userId}, {userId, token}, {upsert: true});
+pwdResetTokenSchema.statics.addRequest = async function(email, otp) {
+    await this.findOneAndUpdate({email}, {email, otp}, {upsert: true});
 }
 
 const PwdResetToken = mongoose.model('PwdResetToken', pwdResetTokenSchema);

@@ -48,17 +48,14 @@ async function verify(req, res, next) {
 async function forgotPwd(req, res, next) {
     const {email} = req.body;
     const errorMsg = {};
-    const user = {};
+    req.data = {};
 
     const emailValidation = await validateEmail(email);
     emailValidation.error
     ? errorMsg['email'] = emailValidation.error
-    : user['email'] = emailValidation.email;
+    : req.data['email'] = emailValidation.email;
 
     if (Object.entries(errorMsg).length) return res.json({status: 422, msg: errorMsg});
-
-    req.user = await User.isEmailRegistered(user.email);
-    if (!req.user) return res.json({status: 200, msg: 'Please check your inbox or spam folder'});
     next();
 }
 
