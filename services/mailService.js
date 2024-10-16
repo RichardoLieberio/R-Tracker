@@ -55,6 +55,16 @@ function createAccountVerificationOptions(to, name, otp) {
                     <p>If you didn't request this, please ignore this email</p>
                     <hr style="border:none;border-top:1px solid #eee" />
                     <p style="font-size:0.9em;">Regards,<br />${process.env.EMAIL_NAME}</p>
+                    <br>
+                    <a href="${process.env.GITHUB_URI}" target="_blank">
+                        <img src="${process.env.SERVER_URI}/public/email/github.png" alt="Github" width="24" height="24">
+                    </a>
+                    <a href="${process.env.LINKEDIN_URI}" target="_blank">
+                        <img src="${process.env.SERVER_URI}/public/email/linkedin.png" alt="LinkedIn" width="24" height="24">
+                    </a>
+                    <a href="${process.env.INSTAGRAM_URI}" target="_blank">
+                        <img src="${process.env.SERVER_URI}/public/email/instagram.png" alt="Instagram" width="24" height="24">
+                    </a>
                 </div>
             </div>
         `
@@ -78,6 +88,16 @@ function createAccountVerifiedOptions(to, name) {
                     <p>Thank you for being part of ${process.env.EMAIL_NAME}!</p>
                     <hr style="border:none;border-top:1px solid #eee" />
                     <p style="font-size:0.9em;">Regards,<br />${process.env.EMAIL_NAME}</p>
+                    <br>
+                    <a href="${process.env.GITHUB_URI}" target="_blank">
+                        <img src="${process.env.SERVER_URI}/public/email/github.png" alt="Github" width="24" height="24">
+                    </a>
+                    <a href="${process.env.LINKEDIN_URI}" target="_blank">
+                        <img src="${process.env.SERVER_URI}/public/email/linkedin.png" alt="LinkedIn" width="24" height="24">
+                    </a>
+                    <a href="${process.env.INSTAGRAM_URI}" target="_blank">
+                        <img src="${process.env.SERVER_URI}/public/email/instagram.png" alt="Instagram" width="24" height="24">
+                    </a>
                 </div>
             </div>
         `
@@ -100,6 +120,16 @@ function createPwdResetOptions(to, otp) {
                     <p>If you didn't request this, please ignore this email</p>
                     <hr style="border:none;border-top:1px solid #eee" />
                     <p style="font-size:0.9em;">Regards,<br />${process.env.EMAIL_NAME}</p>
+                    <br>
+                    <a href="${process.env.GITHUB_URI}" target="_blank">
+                        <img src="${process.env.SERVER_URI}/public/email/github.png" alt="Github" width="24" height="24">
+                    </a>
+                    <a href="${process.env.LINKEDIN_URI}" target="_blank">
+                        <img src="${process.env.SERVER_URI}/public/email/linkedin.png" alt="LinkedIn" width="24" height="24">
+                    </a>
+                    <a href="${process.env.INSTAGRAM_URI}" target="_blank">
+                        <img src="${process.env.SERVER_URI}/public/email/instagram.png" alt="Instagram" width="24" height="24">
+                    </a>
                 </div>
             </div>
         `
@@ -121,6 +151,16 @@ function createPwdSuccessfullyResetOptions(to) {
                     <p>Thank you for being part of ${process.env.EMAIL_NAME}!</p>
                     <hr style="border:none;border-top:1px solid #eee" />
                     <p style="font-size:0.9em;">Regards,<br />${process.env.EMAIL_NAME}</p>
+                    <br>
+                    <a href="${process.env.GITHUB_URI}" target="_blank">
+                        <img src="${process.env.SERVER_URI}/public/email/github.png" alt="Github" width="24" height="24">
+                    </a>
+                    <a href="${process.env.LINKEDIN_URI}" target="_blank">
+                        <img src="${process.env.SERVER_URI}/public/email/linkedin.png" alt="LinkedIn" width="24" height="24">
+                    </a>
+                    <a href="${process.env.INSTAGRAM_URI}" target="_blank">
+                        <img src="${process.env.SERVER_URI}/public/email/instagram.png" alt="Instagram" width="24" height="24">
+                    </a>
                 </div>
             </div>
         `
