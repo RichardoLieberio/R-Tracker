@@ -12,8 +12,8 @@ const transporter = nodemailer.createTransport({
 
 function sendMail(type, mail) {
     switch (type) {
-        case 'verification':
-            transporter.sendMail(createAccountVerificationOptions(mail.to, mail.uri), function(error) {
+        case 'account-verification':
+            transporter.sendMail(createAccountVerificationOptions(mail.to, mail.otp), function(error) {
                 error ? console.log(`Failed to send verification email to ${mail.to}`) : console.log(`Sucessfully sent verification email to ${mail.to}`);
             });
             break;
@@ -28,21 +28,32 @@ function sendMail(type, mail) {
     }
 }
 
-function createAccountVerificationOptions(to, uri) {
+function createAccountVerificationOptions(to, otp) {
     return {
         from: `"${process.env.EMAIL_NAME}" <${process.env.EMAIL_ADDRESS}>`,
         to,
-        subject: 'R-Tracker Account Verification',
+        subject: 'Account Verification Code',
         html: `
-            <p>Please follow this link below to verify your account.</p>
-            <p><a href="${uri}">${uri}</a></p>
-            <p>Link will be valid for <b>15 minutes</b></p>
-            <br>
-            <p>If you didn't request this, please ignore this email</p>
-            <br>
-            <p>Best regards,<br>
-            R-Tracker</p>
+            <div style="font-family: Helvetica,Arial,sans-serif;min-width:1000px;overflow:auto;line-height:2">
+                <div style="margin:50px auto;width:70%;padding:20px 0">
+                    <div style="border-bottom:1px solid #eee">
+                        <a href="" style="font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600">R-Tracker</a>
+                    </div>
+                    <p style="font-size:1.1em">Hi,</p>
+                    <p>Thank you for choosing R-Tracker. Use the following OTP to complete your Sign Up procedures. OTP is valid for <b>15 minutes</b></p>
+                    <h2 style="background: #00466a;margin: 0 auto;width: max-content;padding: 0 10px;color: #fff;border-radius: 4px;">${otp}</h2>
+                    <p style="font-size:0.9em;">Regards,<br />R-Tracker</p>
+                </div>
+            </div>
         `
+        // <p>Please follow this link below to verify your account.</p>
+        //     <p><a href="${uri}">${uri}</a></p>
+        //     <p>Link will be valid for <b>15 minutes</b></p>
+        //     <br>
+        //     <p>If you didn't request this, please ignore this email</p>
+        //     <br>
+        //     <p>Best regards,<br>
+        //     R-Tracker</p>
     };
 }
 
