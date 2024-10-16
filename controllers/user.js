@@ -39,6 +39,17 @@ async function forgotPwd(req, res) {
     res.json({status: 200, msg: 'Please check your inbox or spam folder'});
 }
 
+async function resetPwd(req, res) {
+    const {email, pwd, otp} = req.data;
+    const request = await PwdResetToken.checkRequest(email, otp, req.mongooseSession);
+    if (!request) throw new TransactionError({status: 400, msg: 'Invalid email or OTP'});
+
+    const pwdChanged = await User.changePwd(email, pwd, req.mongooseSession);
+    if (!pwdChanged) return res.json({status: 404, msg: 'Failed to reset password. User account not found'});
+
+    res.json({status: 200, msg: 'Password successfully reset'});
+}
+
 async function changeName(req, res) {
     await User.findOneAndUpdate({_id: req.user.id}, {name: req.data.name});
     res.json({status: 200, msg: 'Name updated successfully'});
@@ -61,4 +72,4 @@ function generateToken(info, expiryTime) {
     return jwt.sign(info, process.env.OTP_SECRET, {expiresIn: expiryTime});
 }
 
-module.exports = {register, verify, forgotPwd, changeName, changeEmail};
+module.exports = {register, verify, forgotPwd, resetPwd, changeName, changeEmail};

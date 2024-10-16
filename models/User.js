@@ -46,6 +46,11 @@ userSchema.statics.addNewAccount = async function(data, session) {
     await this.create([data], {session});
 }
 
+userSchema.statics.changePwd = async function(email, rawPwd, session) {
+    const pwd = await bcrypt.hash(rawPwd, +process.env.SALT_ROUNDS);
+    return !!await this.findOneAndUpdate({email}, {pwd}, {session});
+}
+
 userSchema.methods.checkCredentials = async function(data) {
     const user = await this.constructor.isEmailRegistered(data.email);
     if (!user) return false;

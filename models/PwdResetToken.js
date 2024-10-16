@@ -32,6 +32,10 @@ pwdResetTokenSchema.statics.addRequest = async function(email, otp) {
     await this.findOneAndUpdate({email}, {email, otp}, {upsert: true});
 }
 
+pwdResetTokenSchema.statics.checkRequest = async function(email, otp, session) {
+    return !!await this.findOneAndDelete({email, otp}, {session});
+}
+
 const PwdResetToken = mongoose.model('PwdResetToken', pwdResetTokenSchema);
 
 module.exports = PwdResetToken;
