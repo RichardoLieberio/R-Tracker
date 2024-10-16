@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 
 const TransactionError = require('../services/TransactionError');
 const sendMail = require('../services/mailService');
-const generateRandomString = require('../services/generateRandomString');
+const generateOtp = require('../services/generateOtp');
 
 const User = require('../models/User');
 const InactiveUser = require('../models/InactiveUser');
@@ -10,13 +10,12 @@ const PwdResetToken = require('../models/PwdResetToken');
 const ChangeEmailToken = require('../models/ChangeEmailToken');
 
 async function register(req, res) {
-    const token = generateRandomString(32);
-    await InactiveUser.register(req.data, token);
+    const otp = generateOtp(+process.env.OTP_LENGTH);
+    await InactiveUser.register(req.data, otp);
 
-    const uri = `${process.env.PUBLIC_URI}verify-account/${token}`
-    sendMail('verification', {to: req.data.email, uri});
+    sendMail('account-verification', {to: req.data.email, otp});
 
-    res.json({status: 202, msg: 'Registration is in process. To verify your account, please check your inbox or spam folder'});
+    res.json({status: 202, msg: 'Registration successful. Please check your inbox or spam folder for an OTP to verify your account.'});
 }
 
 async function validate(req, res) {
@@ -57,11 +56,6 @@ async function changeEmail(req, res) {
     sendMail('change-email', {to: req.data.email, uri});
 
     res.json({status: 200, msg: 'Please check your inbox or spam folder'});
-}
-
-function generateOtp() {
-    const otp = Math.floor(10 ** (+process.env.OTP_LENGTH - 1) + Math.random() * 9 * 10 ** (+process.env.OTP_LENGTH - 1));
-    return otp.toString();
 }
 
 function generateToken(info, expiryTime) {

@@ -20,11 +20,11 @@ const inactiveUserSchema = mongoose.Schema({
         minLength: 6,
         required: true
     },
-    token: {
+    otp: {
         type: String,
         trim: true,
-        minLength: 32,
-        maxLength: 32,
+        minLength: 4,
+        maxLength: 10,
         required: true
     },
     created_at: {
@@ -40,10 +40,10 @@ const inactiveUserSchema = mongoose.Schema({
     }
 });
 
-inactiveUserSchema.statics.register = async function(data, token) {
+inactiveUserSchema.statics.register = async function(data, otp) {
     const {name, email, pwd: rawPwd} = data;
     const pwd = await bcrypt.hash(rawPwd, +process.env.SALT_ROUNDS);
-    await this.findOneAndUpdate({email}, {name, email, pwd, token}, {upsert: true});
+    await this.findOneAndUpdate({email}, {name, email, pwd, otp}, {upsert: true});
 }
 
 inactiveUserSchema.statics.getAndRemove = async function(token, session) {
