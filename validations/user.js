@@ -26,20 +26,20 @@ async function register(req, res, next) {
     next();
 }
 
-async function validate(req, res, next) {
-    const {otp, token} = req.body;
+async function verify(req, res, next) {
+    const {email, otp} = req.body;
     const errorMsg = {};
     req.data = {};
+
+    const emailValidation = await validateEmail(email);
+    emailValidation.error
+    ? errorMsg['email'] = emailValidation.error
+    : req.data['email'] = emailValidation.email;
 
     const otpValidation = validateOtp(otp);
     otpValidation.error
     ? errorMsg['otp'] = otpValidation.error
     : req.data['otp'] = otpValidation.otp;
-
-    const tokenValidation = await validateToken(token);
-    tokenValidation.error
-    ? errorMsg['token'] = tokenValidation.error
-    : req.data['email'] = tokenValidation.email;
 
     if (Object.entries(errorMsg).length) return res.json({status: 422, msg: errorMsg});
     next();
@@ -156,4 +156,4 @@ async function validateToken(token) {
     }
 }
 
-module.exports = {register, validate, forgotPwd, changeName, changeEmail};
+module.exports = {register, verify, forgotPwd, changeName, changeEmail};

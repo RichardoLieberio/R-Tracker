@@ -3,6 +3,7 @@ const express = require('express');
 const csrfProtection = require('../services/csrfProtection');
 const csrfHandler = require('../middlewares/csrfHandler');
 const errorHandler = require('../middlewares/errorHandler');
+const transactionHandler = require('../middlewares/transactionHandler');
 const logoutRequired = require('../middlewares/logoutRequired');
 const accessTokenRequired = require('../middlewares/accessTokenRequired');
 
@@ -12,6 +13,7 @@ const controller = require('../controllers/user');
 const routes = express.Router();
 
 routes.post('/register', logoutRequired, csrfHandler(csrfProtection), errorHandler(validation.register, true), errorHandler(controller.register));
+routes.post('/verify', logoutRequired, csrfHandler(csrfProtection), errorHandler(validation.verify, true), transactionHandler(controller.verify));
 routes.post('/forgot-password', logoutRequired, csrfHandler(csrfProtection), errorHandler(validation.forgotPwd, true), errorHandler(controller.forgotPwd));
 
 routes.use(accessTokenRequired);
