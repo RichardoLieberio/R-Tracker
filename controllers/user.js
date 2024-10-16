@@ -47,6 +47,8 @@ async function resetPwd(req, res) {
     const pwdChanged = await User.changePwd(email, pwd, req.mongooseSession);
     if (!pwdChanged) return res.json({status: 404, msg: 'Failed to reset password. User account not found'});
 
+    sendMail('pwd-successfully-reset', {to: email});
+
     res.json({status: 200, msg: 'Password successfully reset'});
 }
 
