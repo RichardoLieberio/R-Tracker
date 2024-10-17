@@ -18,9 +18,13 @@ const tokenBlacklistSchema = mongoose.Schema({
     }
 });
 
+tokenBlacklistSchema.statics.cleanUp = async function() {
+    return await this.deleteMany({token_expires_at: {$lt: Date.now()}});
+}
+
 tokenBlacklistSchema.statics.isTokenBlacklisted = async function(token) {
     return !!await this.findOne({token});
-};
+}
 
 tokenBlacklistSchema.statics.blacklist = async function(rawAccessToken, rawRefreshToken) {
     const tokensToBlacklist = [];
