@@ -5,7 +5,7 @@ const csrfHandler = require('../middlewares/csrfHandler');
 const errorHandler = require('../middlewares/errorHandler');
 const transactionHandler = require('../middlewares/transactionHandler');
 const logoutRequired = require('../middlewares/logoutRequired');
-const accessTokenRequired = require('../middlewares/accessTokenRequired');
+const authRequired = require('../middlewares/authRequired');
 
 const validation = require('../validations/user');
 const controller = require('../controllers/user');
@@ -17,7 +17,7 @@ routes.post('/verify', logoutRequired, csrfHandler(csrfProtection), errorHandler
 routes.post('/forgot-password', logoutRequired, csrfHandler(csrfProtection), errorHandler(validation.forgotPwd, true), errorHandler(controller.forgotPwd));
 routes.post('/reset-password', logoutRequired, csrfHandler(csrfProtection), errorHandler(validation.resetPwd, true), transactionHandler(controller.resetPwd));
 
-routes.use(accessTokenRequired);
+routes.use(authRequired);
 routes.use(csrfHandler(csrfProtection));
 
 routes.post('/change-name', errorHandler(validation.changeName, true), errorHandler(controller.changeName));

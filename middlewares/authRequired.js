@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 
 const generateAccessToken = require('../services/generateAccessToken');
 
-function accessTokenRequired(req, res, next) {
+function authRequired(req, res, next) {
     try {
         const accessToken = req.headers['authorization']?.split(' ')[1];
         req.user = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
@@ -23,4 +23,4 @@ function generateNewAccessToken(req, res) {
     }
 }
 
-module.exports = accessTokenRequired;
+module.exports = authRequired;
