@@ -18,6 +18,10 @@ const tokenBlacklistSchema = mongoose.Schema({
     }
 });
 
+tokenBlacklistSchema.statics.isTokenBlacklisted = async function(token) {
+    return !!await this.findOne({token});
+};
+
 tokenBlacklistSchema.statics.blacklist = async function(rawAccessToken, rawRefreshToken) {
     const tokensToBlacklist = [];
 
