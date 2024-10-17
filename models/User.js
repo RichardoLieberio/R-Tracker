@@ -35,6 +35,22 @@ const userSchema = mongoose.Schema({
     },
     updated_at: {
         type: Date
+    },
+    blacklisted: {
+        type: Boolean
+    },
+    blacklist_reason: {
+        type: String,
+        maxlength: 255,
+        trim: true
+    },
+    blacklisted_by: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        trim: true
+    },
+    blacklisted_at: {
+        type: Date
     }
 });
 
