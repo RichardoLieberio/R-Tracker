@@ -11,6 +11,6 @@ const controller = require('../controllers/auth');
 const routes = express.Router();
 
 routes.post('/login', logoutRequired, csrfHandler(csrfProtection), validation.login, errorHandler(controller.login));
-routes.post('/logout', controller.logout);
+routes.post('/logout', errorHandler(controller.logout));
 
 module.exports = routes;
