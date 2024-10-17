@@ -71,11 +71,7 @@ userSchema.methods.checkCredentials = async function(data) {
     const user = await this.constructor.findOne({email: data.email});
     if (!user) return false;
 
-    const {_id: id, role} = user;
-
-    return await bcrypt.compare(data.pwd, user.pwd)
-    ? {id, role}
-    : false;
+    return await bcrypt.compare(data.pwd, user.pwd) ? user : false;
 }
 
 const User = mongoose.model('User', userSchema);
