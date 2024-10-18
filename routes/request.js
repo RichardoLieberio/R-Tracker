@@ -12,6 +12,6 @@ const controller = require('../controllers/request');
 const routes = express.Router();
 
 routes.post('/reset-password', errorHandler(logoutRequired, true), csrfHandler(csrfProtection), validation.resetPwd, errorHandler(controller.resetPwd));
-routes.post('/change-email', errorHandler(authRequired, true), csrfHandler(csrfProtection), validation.changeEmail, errorHandler(controller.changeEmail));
+routes.post('/change-email', errorHandler(authRequired, true), csrfHandler(csrfProtection), errorHandler(validation.changeEmail, true), errorHandler(controller.changeEmail));
 
 module.exports = routes;
