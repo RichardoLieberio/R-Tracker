@@ -43,20 +43,6 @@ async function verify(req, res, next) {
     next();
 }
 
-async function forgotPwd(req, res, next) {
-    const {email} = req.body;
-    const errorMsg = {};
-    req.data = {};
-
-    const emailValidation = await validateEmail(email);
-    emailValidation.error
-    ? errorMsg['email'] = emailValidation.error
-    : req.data['email'] = emailValidation.email;
-
-    if (Object.entries(errorMsg).length) return res.json({status: 422, msg: errorMsg});
-    next();
-}
-
 async function resetPwd(req, res, next) {
     const {email, pwd, otp} = req.body;
     const errorMsg = {};
@@ -96,7 +82,7 @@ function changeName(req, res, next) {
 }
 
 async function changeEmail(req, res, next) {
-    const {email} = req.body;
+    const {email, otp} = req.body;
     const errorMsg = {};
     req.data = {};
 
@@ -104,6 +90,11 @@ async function changeEmail(req, res, next) {
     emailValidation.error
     ? errorMsg['email'] = emailValidation.error
     : req.data['email'] = emailValidation.email;
+
+    const otpValidation = validateOtp(otp);
+    otpValidation.error
+    ? errorMsg['otp'] = otpValidation.error
+    : req.data['otp'] = otpValidation.otp;
 
     if (Object.entries(errorMsg).length) return res.json({status: 422, msg: errorMsg});
     next();
@@ -163,4 +154,4 @@ function validateOtp(otp) {
     return {otp};
 }
 
-module.exports = {register, verify, forgotPwd, resetPwd, changeName, changeEmail};
+module.exports = {register, verify, resetPwd, changeName, changeEmail};
