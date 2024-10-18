@@ -53,12 +53,12 @@ async function resetPwd(req, res) {
 }
 
 async function changeName(req, res) {
-    await User.findOneAndUpdate({_id: req.user.id}, {name: req.data.name});
+    await User.findOneAndUpdate({_id: req.userId}, {name: req.data.name});
     res.json({status: 200, msg: 'Name updated successfully'});
 }
 
 async function changeEmail(req, res) {
-    const user = await User.findOne({_id: req.user.id, email: req.data.email});
+    const user = await User.findOne({_id: req.userId, email: req.data.email});
     if (user) return {status: 422, msg: {email: 'Email is registered'}};
 
     const token = generateRandomString(32);
