@@ -44,7 +44,7 @@ async function resetPwd(req, res) {
     const request = await PwdResetToken.checkRequest(email, otp, req.mongooseSession);
     if (!request) throw new TransactionError({status: 400, msg: 'Invalid email or OTP'});
 
-    const pwdChanged = await User.changePwd(email, pwd, req.mongooseSession);
+    const pwdChanged = await User.resetPwd(email, pwd, req.mongooseSession);
     if (!pwdChanged) return res.json({status: 404, msg: 'Failed to reset password. User account not found'});
 
     sendMail('pwd-successfully-reset', {to: email});
@@ -53,7 +53,7 @@ async function resetPwd(req, res) {
 }
 
 async function changeName(req, res) {
-    await User.findOneAndUpdate({_id: req.userId}, {name: req.data.name});
+    await User.changeName(req.userId, req.data.name);
     res.json({status: 200, msg: 'Name updated successfully'});
 }
 
