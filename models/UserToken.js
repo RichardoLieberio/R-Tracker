@@ -7,22 +7,22 @@ const userTokenSchema = mongoose.Schema({
         trim: true,
         required: true
     },
-    refresh_token: {
-        type: String,
-        trim: true,
-        required: true
-    },
-    refresh_token_created_at: {
-        type: Date,
-        default: Date.now,
-        required: true
-    },
     access_token: {
         type: String,
         trim: true,
         required: true
     },
     access_token_created_at: {
+        type: Date,
+        default: Date.now,
+        required: true
+    },
+    refresh_token: {
+        type: String,
+        trim: true,
+        required: true
+    },
+    refresh_token_created_at: {
         type: Date,
         default: Date.now,
         required: true
@@ -34,15 +34,15 @@ userTokenSchema.statics.isAuthenticationMatches = async function(user_id, token)
 }
 
 userTokenSchema.statics.resetAccessToken = async function(user_id, access_token) {
-    await this.findOneAndUpdate({user_id}, {access_token}, {upsert: true});
+    await this.findOneAndUpdate({user_id}, {access_token, access_token_created_at: Date.now()}, {upsert: true});
 }
 
-userTokenSchema.statics.login = async function(user_id, refresh_token, access_token) {
-    await this.findOneAndUpdate({user_id}, {refresh_token, access_token}, {upsert: true});
+userTokenSchema.statics.login = async function(user_id, access_token, refresh_token) {
+    await this.findOneAndUpdate({user_id}, {access_token, access_token_created_at: Date.now(), refresh_token, refresh_token_created_at: Date.now()}, {upsert: true});
 }
 
-userTokenSchema.statics.logout = async function(user_id) {
-    await this.findOneAndUpdate({user_id}, {refresh_token: '', access_token: ''}, {upsert: true});
+userTokenSchema.statics.logout = async function(access_token, refresh_token) {
+    await this.findOneAndUpdate({$or: [{access_token}, {refresh_token}]}, {refresh_token: '', access_token: ''});
 }
 
 const UserToken = mongoose.model('UserToken', userTokenSchema);
