@@ -7,18 +7,18 @@ const changeEmailTokenSchema = mongoose.Schema({
         trim: true,
         required: true
     },
-    token: {
-        type: String,
-        trim: true,
-        minLength: 32,
-        maxLength: 32,
-        required: true
-    },
     new_email: {
         type: String,
         trim: true,
         lowercase: true,
         unique: true,
+        required: true
+    },
+    otp: {
+        type: String,
+        trim: true,
+        minLength: 4,
+        maxLength: 10,
         required: true
     },
     created_at: {
@@ -34,8 +34,8 @@ const changeEmailTokenSchema = mongoose.Schema({
     }
 });
 
-changeEmailTokenSchema.statics.createPath = function(userId, newEmail, token) {
-    return this.findOneAndUpdate({userId}, {userId, newEmail, token}, {upsert: true});
+changeEmailTokenSchema.statics.addRequest = async function(user_id, new_email, otp) {
+    await this.findOneAndUpdate({user_id}, {user_id, new_email, otp}, {upsert: true});
 }
 
 const ChangeEmailToken = mongoose.model('ChangeEmailToken', changeEmailTokenSchema);
