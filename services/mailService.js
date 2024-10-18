@@ -65,6 +65,14 @@ function createOptions(type, mail) {
                 <p>If you didn't request this, please ignore this email</p>
             `;
             break;
+        case 'new-email-verified':
+            subject = 'Your Email Has Been Changed';
+            html = `
+                <p>We wanted to let you know that the email address associated with your account has been successfully updated. From now on, all account-related communications will be sent to this email address.</p>
+                <p>If you made this change, no further action is needed.</p>
+                <p>Thank you for being part of ${process.env.EMAIL_NAME}!</p>
+            `;
+            break;
         default:
             console.log('Invalid email type');
             return;
