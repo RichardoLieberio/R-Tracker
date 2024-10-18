@@ -33,6 +33,10 @@ userTokenSchema.statics.isAuthenticationMatches = async function(user_id, token)
     return !!await this.findOne({user_id, $or: [{access_token: token}, {refresh_token: token}]});
 }
 
+userTokenSchema.statics.resetAccessToken = async function(user_id, access_token) {
+    await this.findOneAndUpdate({user_id}, {access_token}, {upsert: true});
+}
+
 userTokenSchema.statics.login = async function(user_id, refresh_token, access_token) {
     await this.findOneAndUpdate({user_id}, {refresh_token, access_token}, {upsert: true});
 }
