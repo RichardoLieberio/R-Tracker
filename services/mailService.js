@@ -57,6 +57,14 @@ function createOptions(type, mail) {
                 <p>Thank you for being part of ${process.env.EMAIL_NAME}!</p>
             `;
             break;
+        case 'new-email-verification':
+            subject = 'New Email Verification Code';
+            html = `
+                <p>We received a request to change the email associated with your account. Please use the OTP below to verify your new email address. OTP will be valid for <b>15 minutes</b></p>
+                <h2 style="background: #00466a;margin: 0 auto;width: max-content;padding: 0 10px;color: #fff;border-radius: 4px;">${mail.otp}</h2>
+                <p>If you didn't request this, please ignore this email</p>
+            `;
+            break;
         default:
             console.log('Invalid email type');
             return;
