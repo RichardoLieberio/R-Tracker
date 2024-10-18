@@ -38,6 +38,10 @@ changeEmailTokenSchema.statics.addRequest = async function(user_id, new_email, o
     await this.findOneAndUpdate({user_id}, {user_id, new_email, otp}, {upsert: true});
 }
 
+changeEmailTokenSchema.statics.checkRequest = async function(user_id, new_email, otp, session) {
+    return !!await this.findOneAndDelete({user_id, new_email, otp}, {session});
+}
+
 const ChangeEmailToken = mongoose.model('ChangeEmailToken', changeEmailTokenSchema);
 
 module.exports = ChangeEmailToken;
