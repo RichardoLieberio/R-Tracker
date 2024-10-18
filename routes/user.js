@@ -12,15 +12,12 @@ const controller = require('../controllers/user');
 
 const routes = express.Router();
 
-routes.post('/register', logoutRequired, csrfHandler(csrfProtection), errorHandler(validation.register, true), errorHandler(controller.register));
-routes.post('/verify', logoutRequired, csrfHandler(csrfProtection), errorHandler(validation.verify, true), transactionHandler(controller.verify));
-routes.post('/forgot-password', logoutRequired, csrfHandler(csrfProtection), errorHandler(validation.forgotPwd, true), errorHandler(controller.forgotPwd));
-routes.post('/reset-password', logoutRequired, csrfHandler(csrfProtection), errorHandler(validation.resetPwd, true), transactionHandler(controller.resetPwd));
+routes.post('/register', errorHandler(logoutRequired, true), csrfHandler(csrfProtection), errorHandler(validation.register, true), errorHandler(controller.register));
+routes.post('/verify', errorHandler(logoutRequired, true), csrfHandler(csrfProtection), errorHandler(validation.verify, true), transactionHandler(controller.verify));
+routes.post('/forgot-password', errorHandler(logoutRequired, true), csrfHandler(csrfProtection), errorHandler(validation.forgotPwd, true), errorHandler(controller.forgotPwd));
+routes.post('/reset-password', errorHandler(logoutRequired, true), csrfHandler(csrfProtection), errorHandler(validation.resetPwd, true), transactionHandler(controller.resetPwd));
 
-routes.use(authRequired);
-routes.use(csrfHandler(csrfProtection));
-
-routes.post('/change-name', errorHandler(validation.changeName, true), errorHandler(controller.changeName));
-routes.post('/change-email', errorHandler(validation.changeEmail, true), errorHandler(controller.changeEmail));
+routes.post('/change-name', errorHandler(authRequired, true), csrfHandler(csrfProtection), errorHandler(validation.changeName, true), errorHandler(controller.changeName));
+routes.post('/change-email', errorHandler(authRequired, true), csrfHandler(csrfProtection), errorHandler(validation.changeEmail, true), errorHandler(controller.changeEmail));
 
 module.exports = routes;
