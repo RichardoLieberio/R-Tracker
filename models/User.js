@@ -71,6 +71,10 @@ userSchema.statics.changeName = async function(_id, name) {
     await this.findOneAndUpdate({_id}, {name});
 }
 
+userSchema.statics.changeEmail = async function(_id, email) {
+    await this.findOneAndUpdate({_id}, {email});
+}
+
 userSchema.methods.checkCredentials = async function(data) {
     const user = await this.constructor.findOne({email: data.email});
     if (!user) return false;
