@@ -68,11 +68,11 @@ userSchema.statics.resetPwd = async function(email, rawPwd, session) {
 }
 
 userSchema.statics.changeName = async function(_id, name) {
-    await this.findOneAndUpdate({_id}, {name});
+    return !!await this.findOneAndUpdate({_id}, {name});
 }
 
-userSchema.statics.changeEmail = async function(_id, email) {
-    await this.findOneAndUpdate({_id}, {email});
+userSchema.statics.changeEmail = async function(_id, email, session) {
+    return !!await this.findOneAndUpdate({_id}, {email}, {session});
 }
 
 userSchema.methods.checkCredentials = async function(data) {

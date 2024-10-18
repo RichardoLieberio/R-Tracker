@@ -86,7 +86,7 @@ async function changeEmail(req, res, next) {
     const errorMsg = {};
     req.data = {};
 
-    const emailValidation = await validateEmail(email);
+    const emailValidation = await validateEmail(email, true);
     emailValidation.error
     ? errorMsg['email'] = emailValidation.error
     : req.data['email'] = emailValidation.email;
