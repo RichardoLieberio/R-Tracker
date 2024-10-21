@@ -46,6 +46,10 @@ expenseCategorySchema.statics.addCategory = async function(name, icon_path, crea
     await this.create([{name, icon_path, created_by}], {session});
 }
 
+expenseCategorySchema.statics.editCategory = async function(_id, data, updated_by) {
+    return await this.findOneAndUpdate({_id}, {...data, updated_by, updated_at: Date.now()});
+}
+
 const ExpenseCategory = mongoose.model('ExpenseCategory', expenseCategorySchema);
 
 module.exports = ExpenseCategory;
