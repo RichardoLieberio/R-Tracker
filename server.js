@@ -19,7 +19,8 @@ const app = express();
 app.use(cors({
     origin: '*',
     methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    allowedHeaders: ['Content-Type', 'Authorization', 'CSRF-Token'],
+    credentials: true
 }));
 app.use(cookieParser());
 app.use(sizeLimiter);
