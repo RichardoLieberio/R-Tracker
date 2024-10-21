@@ -18,8 +18,8 @@ async function addCategory(req, res) {
     const {file_name, base64Data} = getIconConfiguration(icon);
     await ExpenseCategory.addCategory(name, file_name, req.userId, req.mongooseSession);
 
-    const expensePath = path.join(__dirname, '..', 'public', 'expense', file_name);
-    await uploadFile(expensePath, base64Data);
+    const iconPath = path.join(__dirname, '..', 'public', 'expense', file_name);
+    await uploadFile(iconPath, base64Data);
 
     res.json({status: 201, msg: 'Expense category created successfully'});
 }
@@ -41,8 +41,11 @@ async function editCategory(req, res) {
     if (!data) return res.json({status: 404, msg: 'Expense category not found'});
 
     if (req.data.icon_path) {
-        const expensePath = path.join(__dirname, '..', 'public', 'expense', file_name);
-        await uploadFile(expensePath, base64Data);
+        const iconPath = path.join(__dirname, '..', 'public', 'expense', file_name);
+        const oldIconPath = path.join(__dirname, '..', 'public', 'expense', data.icon_path);
+
+        await uploadFile(iconPath, base64Data);
+        deleteFile(oldIconPath);
     }
 
     res.json({status: 200, msg: 'Expense category updated successfully', data})
@@ -62,6 +65,12 @@ async function uploadFile(path, base64Data) {
             if (error) return reject(new TransactionError({status: 500, msg: 'Failed to save image to the server'}));
             resolve();
         });
+    });
+}
+
+async function deleteFile(filePath) {
+    fs.unlink(filePath, function(error) {
+        console.log(`Failed to delete file: ${filePath}. Error: ${error.message}`);
     });
 }
 
