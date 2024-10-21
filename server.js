@@ -8,6 +8,7 @@ const tokenRoutes = require('./routes/token');
 const requestRoutes = require('./routes/request');
 const userRoutes = require('./routes/user');
 const authRoutes = require('./routes/auth');
+const expenseRoutes = require('./routes/expense');
 
 connectDB();
 
@@ -20,6 +21,7 @@ app.use('/api/token', tokenRoutes);
 app.use('/api/request', requestRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/expense', expenseRoutes);
 
 app.listen(process.env.PORT, function() {
     console.log(`Listening on port ${process.env.PORT}`);
