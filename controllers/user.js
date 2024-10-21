@@ -33,17 +33,14 @@ async function resetPwd(req, res) {
     const request = await PwdResetToken.checkRequest(email, otp, req.mongooseSession);
     if (!request) throw new TransactionError({status: 400, msg: 'Invalid email or OTP'});
 
-    const pwdChanged = await User.resetPwd(email, pwd, req.mongooseSession);
-    if (!pwdChanged) return res.json({status: 404, msg: 'Failed to reset password. User account not found'});
-
+    await User.resetPwd(email, pwd, req.mongooseSession);
     sendMail('pwd-successfully-reset', {to: email});
 
     res.json({status: 200, msg: 'Password successfully reset'});
 }
 
 async function changeName(req, res) {
-    const nameChanged = await User.changeName(req.userId, req.data.name);
-    if (!nameChanged) return res.json({status: 404, msg: 'Failed to change name. User account not found'});
+    await User.changeName(req.userId, req.data.name);
     res.json({status: 200, msg: 'Name updated successfully'});
 }
 
@@ -52,9 +49,7 @@ async function changeEmail(req, res) {
     const request = await ChangeEmailToken.checkRequest(req.userId, email, otp, req.mongooseSession);
     if (!request) throw new TransactionError({status: 400, msg: 'Invalid email or OTP'});
 
-    const emailChanged = await User.changeEmail(req.userId, email, req.mongooseSession);
-    if (!emailChanged) return res.json({status: 404, msg: 'Failed to change email. User account not found'});
-
+    await User.changeEmail(req.userId, email, req.mongooseSession);
     sendMail('new-email-verified', {to: email});
 
     res.json({status: 200, msg: 'Email updated successfully'});
@@ -65,8 +60,7 @@ async function changePwd(req, res) {
     const check = await (new User()).isPwdMatches(req.userId, oldPwd);
     if (!check) return res.json({status: 400, msg: 'Password is incorrect'});
 
-    const pwdChanged = await User.changePwd(req.userId, newPwd);
-    if (!pwdChanged) return res.json({status: 404, msg: 'Failed to change password. User account not found'});
+    await User.changePwd(req.userId, newPwd);
 
     res.json({status: 200, msg: 'Password updated successfully'});
 }

@@ -64,20 +64,20 @@ userSchema.statics.addNewAccount = async function(data, session) {
 
 userSchema.statics.resetPwd = async function(email, rawPwd, session) {
     const pwd = await bcrypt.hash(rawPwd, +process.env.SALT_ROUNDS);
-    return !!await this.findOneAndUpdate({email}, {pwd}, {session});
+    await this.findOneAndUpdate({email}, {pwd}, {session});
 }
 
 userSchema.statics.changeName = async function(_id, name) {
-    return !!await this.findOneAndUpdate({_id}, {name});
+    await this.findOneAndUpdate({_id}, {name});
 }
 
 userSchema.statics.changeEmail = async function(_id, email, session) {
-    return !!await this.findOneAndUpdate({_id}, {email}, {session});
+    await this.findOneAndUpdate({_id}, {email}, {session});
 }
 
 userSchema.statics.changePwd = async function(_id, rawPwd) {
     const pwd = await bcrypt.hash(rawPwd, +process.env.SALT_ROUNDS);
-    return !!await this.findOneAndUpdate({_id}, {pwd});
+    await this.findOneAndUpdate({_id}, {pwd});
 }
 
 userSchema.methods.checkCredentials = async function(data) {
