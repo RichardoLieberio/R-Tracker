@@ -38,6 +38,10 @@ const expenseCategorySchema = mongoose.Schema({
     }
 });
 
+expenseCategorySchema.statics.getCategories = async function() {
+    return await this.find();
+}
+
 expenseCategorySchema.statics.addCategory = async function(name, icon_path, created_by, session) {
     await this.create([{name, icon_path, created_by}], {session});
 }

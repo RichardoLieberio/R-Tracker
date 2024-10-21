@@ -6,6 +6,11 @@ const TransactionError = require('../services/TransactionError');
 
 const ExpenseCategory = require('../models/ExpenseCategory');
 
+async function getCategories(req, res) {
+    const categories = await ExpenseCategory.getCategories();
+    res.json({status: 200, msg: 'Categories retrieved successfully', categories});
+}
+
 async function addCategory(req, res) {
     const {name, icon} = req.data;
 
@@ -35,4 +40,4 @@ async function uploadFile(path, base64Data) {
     });
 }
 
-module.exports = {addCategory};
+module.exports = {getCategories, addCategory};

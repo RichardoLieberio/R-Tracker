@@ -12,6 +12,7 @@ const controller = require('../controllers/expenseCategory');
 
 const routes = express.Router();
 
+routes.get('/', errorHandler(authRequired, true), errorHandler(controller.getCategories))
 routes.post('/', errorHandler(authRequired, true), errorHandler(adminRequired, true), csrfHandler(csrfProtection), validation.addCategory, transactionHandler(controller.addCategory));
 
 module.exports = routes;
