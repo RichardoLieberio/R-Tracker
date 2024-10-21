@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const path = require('path');
 
 const connectDB = require('./services/dbConnection');
 const sizeLimiter = require('./middlewares/sizeLimiter');
@@ -25,6 +26,7 @@ app.use(cors({
 app.use(cookieParser());
 app.use(sizeLimiter);
 app.use(express.json({limit: `${process.env.ACCEPT_JSON_MAX_SIZE_IN_MB}mb`}));
+app.use('/public', express.static(path.join(__dirname, 'public')));
 
 app.use('/api/token', tokenRoutes);
 app.use('/api/request', requestRoutes);
