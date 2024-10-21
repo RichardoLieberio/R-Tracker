@@ -67,6 +67,10 @@ userSchema.statics.resetPwd = async function(email, rawPwd, session) {
     await this.findOneAndUpdate({email}, {pwd}, {session});
 }
 
+userSchema.statics.getInfo = async function(id) {
+    return await this.findById(id).select('name email role created_at updated_at');
+}
+
 userSchema.statics.changeName = async function(_id, name) {
     await this.findOneAndUpdate({_id}, {name});
 }

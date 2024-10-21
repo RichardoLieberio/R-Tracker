@@ -39,6 +39,12 @@ async function resetPwd(req, res) {
     res.json({status: 200, msg: 'Password successfully reset'});
 }
 
+async function getInfo(req, res) {
+    const user = (await User.getInfo(req.userId)).toObject();
+    delete user._id;
+    res.json({status: 200, msg: 'User information retrieved successfully', user});
+}
+
 async function changeName(req, res) {
     await User.changeName(req.userId, req.data.name);
     res.json({status: 200, msg: 'Name updated successfully'});
@@ -65,4 +71,4 @@ async function changePwd(req, res) {
     res.json({status: 200, msg: 'Password updated successfully'});
 }
 
-module.exports = {register, verify, resetPwd, changeName, changeEmail, changePwd};
+module.exports = {register, verify, resetPwd, getInfo, changeName, changeEmail, changePwd};

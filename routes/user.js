@@ -16,6 +16,7 @@ routes.post('/register', errorHandler(logoutRequired, true), csrfHandler(csrfPro
 routes.post('/verify', errorHandler(logoutRequired, true), csrfHandler(csrfProtection), errorHandler(validation.verify, true), transactionHandler(controller.verify));
 routes.patch('/reset-password', errorHandler(logoutRequired, true), csrfHandler(csrfProtection), errorHandler(validation.resetPwd, true), transactionHandler(controller.resetPwd));
 
+routes.get('/info', errorHandler(authRequired, true), errorHandler(controller.getInfo));
 routes.patch('/change-name', errorHandler(authRequired, true), csrfHandler(csrfProtection), errorHandler(validation.changeName, true), errorHandler(controller.changeName));
 routes.patch('/change-email', errorHandler(authRequired, true), csrfHandler(csrfProtection), errorHandler(validation.changeEmail, true), transactionHandler(controller.changeEmail));
 routes.patch('/change-password', errorHandler(authRequired, true), csrfHandler(csrfProtection), errorHandler(validation.changePwd, true), transactionHandler(controller.changePwd));
