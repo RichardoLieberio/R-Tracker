@@ -58,6 +58,10 @@ userSchema.statics.isEmailRegistered = async function(email) {
     return !!await this.findOne({email});
 }
 
+userSchema.statics.isAdmin = async function(_id) {
+    return !!await this.findOne({_id, role: 'admin'});
+}
+
 userSchema.statics.addNewAccount = async function(data, session) {
     await this.create([data], {session});
 }
