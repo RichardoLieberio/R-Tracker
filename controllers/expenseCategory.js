@@ -46,6 +46,8 @@ async function editCategory(req, res) {
 
         await uploadFile(iconPath, base64Data);
         deleteFile(oldIconPath);
+
+        data.icon_path = file_name;
     }
 
     res.json({status: 200, msg: 'Expense category updated successfully', data})
@@ -70,7 +72,7 @@ async function uploadFile(path, base64Data) {
 
 async function deleteFile(filePath) {
     fs.unlink(filePath, function(error) {
-        console.log(`Failed to delete file: ${filePath}. Error: ${error.message}`);
+        if (error) console.log(`Failed to delete file: ${filePath}. Error: ${error.message}`);
     });
 }
 
