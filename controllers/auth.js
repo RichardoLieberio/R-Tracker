@@ -7,7 +7,7 @@ const UserToken = require('../models/UserToken');
 async function login(req, res) {
     const user = await (new User()).checkCredentials(req.data);
     if (!user) return res.json({status: 401, msg: 'Incorrect login credentials'});
-    if (user.blacklisted) return res.json({status: 403, msg: 'Your account has been blacklisted'});
+    if (user.blacklisted) return res.json({status: 403, msg: 'Your account has been blacklisted', reason: user.blacklist_reason});
 
     const tokenData = {id: user._id};
     const accessToken = generateAccessToken(tokenData);
