@@ -14,5 +14,6 @@ const routes = express.Router();
 
 routes.get('/', errorHandler(authRequired, true), errorHandler(controller.getCategories))
 routes.post('/', errorHandler(authRequired, true), errorHandler(adminRequired, true), csrfHandler(csrfProtection), validation.addCategory, transactionHandler(controller.addCategory));
+routes.put('/:id', errorHandler(authRequired, true), errorHandler(adminRequired, true), csrfHandler(csrfProtection), validation.editCategory, errorHandler(controller.editCategory));
 
 module.exports = routes;

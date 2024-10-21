@@ -3,6 +3,7 @@ const fs = require('fs');
 const crypto = require('crypto');
 
 const TransactionError = require('../services/TransactionError');
+const mongooseIdValidation = require('../services/mongooseIdValidation');
 
 const ExpenseCategory = require('../models/ExpenseCategory');
 
@@ -24,7 +25,16 @@ async function addCategory(req, res) {
     const expensePath = path.join(__dirname, '..', 'public', 'expense', file_name);
     await uploadFile(expensePath, base64Data);
 
-    res.json({status: 201, msg: 'Category created successfully'});
+    res.json({status: 201, msg: 'Expense category created successfully'});
+}
+
+async function editCategory(req, res) {
+    if (!mongooseIdValidation(req.params.id)) return res.json({status: 404, msg: 'Expense category not found'});
+
+    const data = await ExpenseCategory.editCategory(req.params.id, req.data, req.userId);
+    if (!data) return res.json({status: 404, msg: 'Expense category not found'});
+
+    res.json({status: 200, msg: 'Expense category updated successfully', data})
 }
 
 function getRandomString(length) {
@@ -40,4 +50,4 @@ async function uploadFile(path, base64Data) {
     });
 }
 
-module.exports = {getCategories, addCategory};
+module.exports = {getCategories, addCategory, editCategory};

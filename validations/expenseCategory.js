@@ -17,6 +17,27 @@ function addCategory(req, res, next) {
     next();
 }
 
+function editCategory(req, res, next) {
+    const {name, icon} = req.body;
+    const errorMsg = {};
+    req.data = {};
+
+    const nameValidation = validateName(name);
+    nameValidation.error
+    ? errorMsg['name'] = nameValidation.error
+    : req.data['name'] = nameValidation.name;
+
+    if (icon !== undefined) {
+        const iconValidation = validateIcon(icon);
+        iconValidation.error
+        ? errorMsg['icon'] = iconValidation.error
+        : req.data['icon'] = iconValidation.icon;
+    }
+
+    if (Object.entries(errorMsg).length) return res.json({status: 422, msg: errorMsg});
+    next();
+}
+
 function validateName(name) {
     if (!name) return {error: 'Name is required'};
     if (typeof(name) !== 'string') return {error: 'Name must be string'};
@@ -36,4 +57,4 @@ function validateIcon(icon) {
     return {icon};
 }
 
-module.exports = {addCategory};
+module.exports = {addCategory, editCategory};
