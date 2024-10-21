@@ -73,6 +73,15 @@ function createOptions(type, mail) {
                 <p>Thank you for being part of ${process.env.EMAIL_NAME}!</p>
             `;
             break;
+        case 'account-deleted':
+            subject = 'Account Deletion';
+            html = `
+                <p style="font-size:1.1em">Dear ${mail.name},</p>
+                <p>We’re writing to confirm that your account with ${process.env.EMAIL_NAME} has been successfully deleted. We’re sorry to see you go, but we respect your decision.</p>
+                <p>If you have any feedback on your experience or if there’s anything we could have done better, we would love to hear from you. Your input is valuable to us and helps improve our services.</p>
+                <p>Thank you for being a part of ${process.env.EMAIL_NAME}. We wish you all the best in the future.</p>
+            `;
+            break;
         default:
             console.log('Invalid email type');
             return;
