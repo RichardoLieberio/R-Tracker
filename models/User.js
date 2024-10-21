@@ -75,11 +75,23 @@ userSchema.statics.changeEmail = async function(_id, email, session) {
     return !!await this.findOneAndUpdate({_id}, {email}, {session});
 }
 
+userSchema.statics.changePwd = async function(_id, rawPwd) {
+    const pwd = await bcrypt.hash(rawPwd, +process.env.SALT_ROUNDS);
+    return !!await this.findOneAndUpdate({_id}, {pwd});
+}
+
 userSchema.methods.checkCredentials = async function(data) {
     const user = await this.constructor.findOne({email: data.email});
     if (!user) return false;
 
     return await bcrypt.compare(data.pwd, user.pwd) ? user : false;
+}
+
+userSchema.methods.isPwdMatches = async function(_id, pwd) {
+    const user = await this.constructor.findOne({_id});
+    if (!user) return false;
+
+    return await bcrypt.compare(pwd, user.pwd) ? true : false;
 }
 
 const User = mongoose.model('User', userSchema);
