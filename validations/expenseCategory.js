@@ -18,7 +18,7 @@ function addCategory(req, res, next) {
 }
 
 function editCategory(req, res, next) {
-    const {name, icon} = req.body;
+    const {name, icon, hidden} = req.body;
     const errorMsg = {};
     req.data = {};
 
@@ -33,6 +33,11 @@ function editCategory(req, res, next) {
         ? errorMsg['icon'] = iconValidation.error
         : req.data['icon'] = iconValidation.icon;
     }
+
+    const hiddenValidation = validateHidden(hidden);
+    hiddenValidation.error
+    ? errorMsg['hidden'] = hiddenValidation.error
+    : req.data['hidden'] = hiddenValidation.name;
 
     if (Object.entries(errorMsg).length) return res.json({status: 422, msg: errorMsg});
     next();
@@ -55,6 +60,12 @@ function validateIcon(icon) {
     if (!/^data:image\/(png|jpg|jpeg);base64,/.test(icon)) return {error: 'Icon must be a valid image in PNG, JPG, or JPEG format'};
 
     return {icon};
+}
+
+function validateHidden(hidden) {
+    if (hidden === undefined) return {error: 'Hidden is required'};
+    if (typeof(hidden) !== 'boolean') return {error: 'Hidden must be boolean'};
+    return {hidden};
 }
 
 module.exports = {addCategory, editCategory};
