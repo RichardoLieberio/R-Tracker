@@ -100,6 +100,25 @@ async function changeEmail(req, res, next) {
     next();
 }
 
+function changePwd(req, res, next) {
+    const {oldPwd, newPwd} = req.body;
+    const errorMsg = {};
+    req.data = {};
+
+    const oldPwdValidation = validatePwd(oldPwd, true);
+    oldPwdValidation.error
+    ? errorMsg['oldPwd'] = oldPwdValidation.error
+    : req.data['oldPwd'] = oldPwdValidation.pwd;
+
+    const newPwdValidation = validatePwd(newPwd);
+    newPwdValidation.error
+    ? errorMsg['newPwd'] = newPwdValidation.error
+    : req.data['newPwd'] = newPwdValidation.pwd;
+
+    if (Object.entries(errorMsg).length) return res.json({status: 422, msg: errorMsg});
+    next();
+}
+
 function validateName(name) {
     if (!name) return {error: 'Name is required'};
     if (typeof(name) !== 'string') return {error: 'Name must be string'};
@@ -127,9 +146,12 @@ async function validateEmail(email, checkIsRegistered=false) {
     return {email};
 }
 
-function validatePwd(pwd) {
+function validatePwd(pwd, basicValidation = false) {
     if (!pwd) return {error: 'Password is required'};
     if (typeof(pwd) !== 'string') return {error: 'Password must be string'};
+
+    if (basicValidation) return {pwd};
+
     if (pwd.length < 6) return {error: 'Minimum password length is 6 characters'};
 
     const pwdRegexError = {};
@@ -154,4 +176,4 @@ function validateOtp(otp) {
     return {otp};
 }
 
-module.exports = {register, verify, resetPwd, changeName, changeEmail};
+module.exports = {register, verify, resetPwd, changeName, changeEmail, changePwd};

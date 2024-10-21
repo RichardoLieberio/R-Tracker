@@ -60,4 +60,15 @@ async function changeEmail(req, res) {
     res.json({status: 200, msg: 'Email updated successfully'});
 }
 
-module.exports = {register, verify, resetPwd, changeName, changeEmail};
+async function changePwd(req, res) {
+    const {oldPwd, newPwd} = req.data;
+    const check = await (new User()).isPwdMatches(req.userId, oldPwd);
+    if (!check) return res.json({status: 400, msg: 'Password is incorrect'});
+
+    const pwdChanged = await User.changePwd(req.userId, newPwd);
+    if (!pwdChanged) return res.json({status: 404, msg: 'Failed to change password. User account not found'});
+
+    res.json({status: 200, msg: 'Password updated successfully'});
+}
+
+module.exports = {register, verify, resetPwd, changeName, changeEmail, changePwd};

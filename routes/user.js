@@ -18,5 +18,6 @@ routes.post('/reset-password', errorHandler(logoutRequired, true), csrfHandler(c
 
 routes.post('/change-name', errorHandler(authRequired, true), csrfHandler(csrfProtection), errorHandler(validation.changeName, true), errorHandler(controller.changeName));
 routes.post('/change-email', errorHandler(authRequired, true), csrfHandler(csrfProtection), errorHandler(validation.changeEmail, true), transactionHandler(controller.changeEmail));
+routes.post('/change-password', errorHandler(authRequired, true), csrfHandler(csrfProtection), errorHandler(validation.changePwd, true), transactionHandler(controller.changePwd));
 
 module.exports = routes;
