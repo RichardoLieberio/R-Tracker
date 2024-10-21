@@ -84,6 +84,10 @@ userSchema.statics.changePwd = async function(_id, rawPwd) {
     await this.findOneAndUpdate({_id}, {pwd, updated_at: Date.now()});
 }
 
+userSchema.statics.deleteAccount = async function(id, session) {
+    return await this.findByIdAndDelete(id, {session});
+}
+
 userSchema.methods.checkCredentials = async function(data) {
     const user = await this.constructor.findOne({email: data.email});
     if (!user) return false;

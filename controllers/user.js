@@ -1,6 +1,7 @@
 const TransactionError = require('../services/TransactionError');
 const sendMail = require('../services/mailService');
 const generateOtp = require('../services/generateOtp');
+const mongooseIdValidation = require('../services/mongooseIdValidation');
 
 const User = require('../models/User');
 const InactiveUser = require('../models/InactiveUser');
@@ -71,4 +72,13 @@ async function changePwd(req, res) {
     res.json({status: 200, msg: 'Password updated successfully'});
 }
 
-module.exports = {register, verify, resetPwd, getInfo, changeName, changeEmail, changePwd};
+async function deleteAccount(req, res) {
+    if (!mongooseIdValidation(req.params.id) || req.userId !== req.params.id) return res.json({status: 404, msg: 'Account not found'});
+
+    const {email, name} = await User.deleteAccount(req.userId, req.mongooseSession);
+    sendMail('account-deleted', {to: email, name});
+
+    res.json({status: 200, msg: 'Your account has been deleted'});
+}
+
+module.exports = {register, verify, resetPwd, getInfo, changeName, changeEmail, changePwd, deleteAccount};
