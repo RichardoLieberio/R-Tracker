@@ -4,6 +4,7 @@ const generateOtp = require('../services/generateOtp');
 const mongooseIdValidation = require('../services/mongooseIdValidation');
 
 const User = require('../models/User');
+const UserToken = require('../models/UserToken');
 const InactiveUser = require('../models/InactiveUser');
 const PwdResetToken = require('../models/PwdResetToken');
 const ChangeEmailToken = require('../models/ChangeEmailToken');
@@ -76,6 +77,7 @@ async function deleteAccount(req, res) {
     if (!mongooseIdValidation(req.params.id) || req.userId !== req.params.id) return res.json({status: 404, msg: 'Account not found'});
 
     const {email, name} = await User.deleteAccount(req.userId, req.mongooseSession);
+    await UserToken.deleteAccount(req.userId, req.mongooseSession);
     sendMail('account-deleted', {to: email, name});
 
     res.json({status: 200, msg: 'Your account has been deleted'});
