@@ -50,6 +50,10 @@ expenseCategorySchema.statics.getCategories = async function() {
     return await this.find();
 }
 
+expenseCategorySchema.statics.getCategory = async function(id) {
+    return await this.findById(id);
+}
+
 expenseCategorySchema.statics.addCategory = async function(data, icon, created_by, session) {
     await this.create([{...data, icon, created_by}], {session});
 }
