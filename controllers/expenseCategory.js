@@ -8,7 +8,7 @@ const mongooseIdValidation = require('../services/mongooseIdValidation');
 const ExpenseCategory = require('../models/ExpenseCategory');
 
 async function getCategories(req, res) {
-    const categories = await ExpenseCategory.getCategories();
+    const categories = await ExpenseCategory.getCategoriesForAdmin();
     res.json({status: 200, msg: 'Categories retrieved successfully', categories});
 }
 
