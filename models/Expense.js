@@ -39,6 +39,10 @@ expenseSchema.statics.editExpense = async function(_id, user_id, data) {
     return await this.findOneAndUpdate({_id, user_id}, {expense, expense_date, category_id});
 }
 
+expenseSchema.statics.deleteExpense = async function(_id, user_id) {
+    return !!await this.findOneAndDelete({_id, user_id});
+}
+
 const Expense = mongoose.model('Expense', expenseSchema);
 
 module.exports = Expense;

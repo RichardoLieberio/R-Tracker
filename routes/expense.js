@@ -16,5 +16,6 @@ routes.get('/categories', errorHandler(controller.getCategories));
 routes.get('/', errorHandler(controller.getExpenses));
 routes.post('/', csrfHandler(csrfProtection), errorHandler(validation.addExpense, true), errorHandler(controller.addExpense));
 routes.put('/:id', csrfHandler(csrfProtection), errorHandler(validation.editExpense, true), errorHandler(controller.editExpense));
+routes.delete('/:id', errorHandler(controller.deleteExpense));
 
 module.exports = routes;
