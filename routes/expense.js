@@ -10,6 +10,7 @@ const routes = express.Router();
 
 routes.use(errorHandler(authRequired, true));
 
-routes.use('/categories', errorHandler(controller.getCategories));
+routes.get('/categories', errorHandler(controller.getCategories));
+routes.get('/', errorHandler(controller.getExpenses));
 
 module.exports = routes;
