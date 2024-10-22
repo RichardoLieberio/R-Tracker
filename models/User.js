@@ -96,6 +96,11 @@ userSchema.statics.getAllUsers = async function() {
     return await this.find({}, {pwd: 0});
 }
 
+userSchema.statics.changePwdByAdmin = async function(_id, rawPwd, session) {
+    const pwd = await bcrypt.hash(rawPwd, +process.env.SALT_ROUNDS);
+    return !!await this.findOneAndUpdate({_id}, {pwd, updated_at: Date.now()}, {session});
+}
+
 userSchema.methods.checkCredentials = async function(data) {
     const user = await this.constructor.findOne({email: data.email});
     if (!user) return false;
