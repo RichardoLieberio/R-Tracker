@@ -46,6 +46,10 @@ const expenseCategorySchema = mongoose.Schema({
     }
 });
 
+expenseCategorySchema.statics.isCategoryUseable = async function(_id) {
+    return !!await this.findOne({_id, hidden: false});
+}
+
 expenseCategorySchema.statics.getCategoriesForAdmin = async function() {
     return await this.find();
 }
