@@ -1,3 +1,4 @@
+const Expense = require('../models/Expense');
 const ExpenseCategory = require('../models/ExpenseCategory');
 
 async function getCategories(req, res) {
@@ -5,4 +6,9 @@ async function getCategories(req, res) {
     res.json({status: 200, msg: 'Categories retrieved successfully', categories});
 }
 
-module.exports = {getCategories};
+async function getExpenses(req, res) {
+    const expenses = await Expense.getExpenses(req.userId);
+    res.json({status: 200, msg: 'Expenses retrieved successfully', expenses});
+}
+
+module.exports = {getCategories, getExpenses};
