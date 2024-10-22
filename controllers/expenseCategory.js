@@ -25,7 +25,7 @@ async function addCategory(req, res) {
 async function getCategory(req, res) {
     if (!mongooseIdValidation(req.params.id)) return res.json({status: 404, msg: 'Expense category not found'});
     const category = await ExpenseCategory.getCategory(req.params.id);
-    category ? res.json({status: 200, msg: 'Category retrieved successfully', data: category}) : res.json({status: 404, msg: 'Expense category not found'});
+    category ? res.json({status: 200, msg: 'Category retrieved successfully', category}) : res.json({status: 404, msg: 'Expense category not found'});
 }
 
 async function editCategory(req, res) {
@@ -37,20 +37,20 @@ async function editCategory(req, res) {
         req.data.icon = file_name;
     }
 
-    const data = await ExpenseCategory.editCategory(req.params.id, req.data, req.userId, req.mongooseSession);
-    if (!data) return res.json({status: 404, msg: 'Failed to edit. Expense category not found'});
+    const category = await ExpenseCategory.editCategory(req.params.id, req.data, req.userId, req.mongooseSession);
+    if (!category) return res.json({status: 404, msg: 'Failed to edit. Expense category not found'});
 
     if (req.data.icon) {
         const newIconPath = path.join(__dirname, '..', 'public', 'expense', req.data.icon);
-        const oldIconPath = path.join(__dirname, '..', 'public', 'expense', data.icon);
+        const oldIconPath = path.join(__dirname, '..', 'public', 'expense', category.icon);
 
         await uploadFile(newIconPath, base64Data);
         deleteFile(oldIconPath);
 
-        data.icon = req.data.icon;
+        category.icon = req.data.icon;
     }
 
-    res.json({status: 200, msg: 'Expense category updated successfully', data})
+    res.json({status: 200, msg: 'Expense category updated successfully', category})
 }
 
 async function deleteCategory(req, res) {
