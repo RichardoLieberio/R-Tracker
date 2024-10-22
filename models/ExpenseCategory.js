@@ -46,8 +46,12 @@ const expenseCategorySchema = mongoose.Schema({
     }
 });
 
-expenseCategorySchema.statics.getCategories = async function() {
+expenseCategorySchema.statics.getCategoriesForAdmin = async function() {
     return await this.find();
+}
+
+expenseCategorySchema.statics.getCategoriesForUser = async function() {
+    return await this.find({hidden: false}).select('name icon color');
 }
 
 expenseCategorySchema.statics.getCategory = async function(id) {
