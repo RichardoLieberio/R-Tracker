@@ -1,5 +1,5 @@
 function addCategory(req, res, next) {
-    const {name, icon} = req.body;
+    const {name, icon, color} = req.body;
     const errorMsg = {};
     req.data = {};
 
@@ -13,12 +13,17 @@ function addCategory(req, res, next) {
     ? errorMsg['icon'] = iconValidation.error
     : req.data['icon'] = iconValidation.icon;
 
+    const colorValidation = validateColor(color);
+    colorValidation.error
+    ? errorMsg['color'] = colorValidation.error
+    : req.data['color'] = colorValidation.color;
+
     if (Object.entries(errorMsg).length) return res.json({status: 422, msg: errorMsg});
     next();
 }
 
 function editCategory(req, res, next) {
-    const {name, icon, hidden} = req.body;
+    const {name, icon, color, hidden} = req.body;
     const errorMsg = {};
     req.data = {};
 
@@ -33,6 +38,11 @@ function editCategory(req, res, next) {
         ? errorMsg['icon'] = iconValidation.error
         : req.data['icon'] = iconValidation.icon;
     }
+
+    const colorValidation = validateColor(color);
+    colorValidation.error
+    ? errorMsg['color'] = colorValidation.error
+    : req.data['color'] = colorValidation.color;
 
     const hiddenValidation = validateHidden(hidden);
     hiddenValidation.error
@@ -57,9 +67,23 @@ function validateName(name) {
 
 function validateIcon(icon) {
     if (!icon) return {error: 'Icon is required'};
-    if (!/^data:image\/(png|jpg|jpeg);base64,/.test(icon)) return {error: 'Icon must be a valid image in PNG, JPG, or JPEG format'};
+    if (!/^data:image\/(png|svg);base64,/.test(icon)) return {error: 'Icon must be a valid image in PNG or SVG format'};
 
     return {icon};
+}
+
+function validateColor(color) {
+    if (!color) return {error: 'Color is required'};
+    if (typeof(color) !== 'string') return {error: 'Color must be string'};
+
+    color = color.trim();
+
+    if (!color) return {error: 'Color is required'};
+
+    const hexColorPattern = /^([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/;
+    if (!hexColorPattern.test(color)) return {error: 'Invalid hex color'};
+
+    return {color};
 }
 
 function validateHidden(hidden) {
