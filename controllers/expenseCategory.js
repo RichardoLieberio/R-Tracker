@@ -22,6 +22,12 @@ async function addCategory(req, res) {
     res.json({status: 201, msg: 'Expense category created successfully'});
 }
 
+async function getCategory(req, res) {
+    if (!mongooseIdValidation(req.params.id)) return res.json({status: 404, msg: 'Expense category not found'});
+    const category = await ExpenseCategory.getCategory(req.params.id);
+    category ? res.json({status: 200, msg: 'Category retrieved successfully', data: category}) : res.json({status: 404, msg: 'Expense category not found'});
+}
+
 async function editCategory(req, res) {
     if (!mongooseIdValidation(req.params.id)) return res.json({status: 404, msg: 'Expense category not found'});
 
@@ -70,4 +76,4 @@ async function deleteFile(path) {
     });
 }
 
-module.exports = {getCategories, addCategory, editCategory};
+module.exports = {getCategories, addCategory, getCategory, editCategory};
