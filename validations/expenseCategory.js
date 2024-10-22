@@ -47,7 +47,7 @@ function editCategory(req, res, next) {
     const hiddenValidation = validateHidden(hidden);
     hiddenValidation.error
     ? errorMsg['hidden'] = hiddenValidation.error
-    : req.data['hidden'] = hiddenValidation.name;
+    : req.data['hidden'] = hiddenValidation.hidden;
 
     if (Object.entries(errorMsg).length) return res.json({status: 422, msg: errorMsg});
     next();
