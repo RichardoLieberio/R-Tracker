@@ -25,6 +25,10 @@ const expenseSchema = mongoose.Schema({
     }
 });
 
+expenseSchema.statics.getExpenses = async function(user_id) {
+    return await this.find({user_id});
+}
+
 const Expense = mongoose.model('Expense', expenseSchema);
 
 module.exports = Expense;
