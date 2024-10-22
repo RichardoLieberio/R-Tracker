@@ -1,5 +1,7 @@
 const express = require('express');
 
+const csrfProtection = require('../services/csrfProtection');
+const csrfHandler = require('../middlewares/csrfHandler');
 const errorHandler = require('../middlewares/errorHandler');
 const authRequired = require('../middlewares/authRequired');
 
@@ -12,5 +14,6 @@ routes.use(errorHandler(authRequired, true));
 
 routes.get('/categories', errorHandler(controller.getCategories));
 routes.get('/', errorHandler(controller.getExpenses));
+routes.post('/', csrfHandler(csrfProtection), errorHandler(validation.addExpense, true), errorHandler(controller.addExpense));
 
 module.exports = routes;
