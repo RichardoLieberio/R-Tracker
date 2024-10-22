@@ -29,7 +29,7 @@ async function getCategory(req, res) {
 }
 
 async function editCategory(req, res) {
-    if (!mongooseIdValidation(req.params.id)) return res.json({status: 404, msg: 'Expense category not found'});
+    if (!mongooseIdValidation(req.params.id)) return res.json({status: 404, msg: 'Failed to edit. Expense category not found'});
 
     let file_name, base64Data;
     if (req.data.icon) {
@@ -38,7 +38,7 @@ async function editCategory(req, res) {
     }
 
     const data = await ExpenseCategory.editCategory(req.params.id, req.data, req.userId, req.mongooseSession);
-    if (!data) return res.json({status: 404, msg: 'Expense category not found'});
+    if (!data) return res.json({status: 404, msg: 'Failed to edit. Expense category not found'});
 
     if (req.data.icon) {
         const newIconPath = path.join(__dirname, '..', 'public', 'expense', req.data.icon);
@@ -51,6 +51,12 @@ async function editCategory(req, res) {
     }
 
     res.json({status: 200, msg: 'Expense category updated successfully', data})
+}
+
+async function deleteCategory(req, res) {
+    if (!mongooseIdValidation(req.params.id)) return res.json({status: 404, msg: 'Failed to delete. Expense category not found'});
+    const deleted = await ExpenseCategory.deleteCategory(req.params.id);
+    deleted ? res.json({status: 200, msg: 'Expense category deleted successfully'}) : res.json({status: 404, msg: 'Failed to delete. Expense category not found'});
 }
 
 function getIconConfiguration(icon) {
@@ -76,4 +82,4 @@ async function deleteFile(path) {
     });
 }
 
-module.exports = {getCategories, addCategory, getCategory, editCategory};
+module.exports = {getCategories, addCategory, getCategory, editCategory, deleteCategory};
