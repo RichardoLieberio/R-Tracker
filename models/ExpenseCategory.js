@@ -7,9 +7,16 @@ const expenseCategorySchema = mongoose.Schema({
         trim: true,
         required: true
     },
-    icon_path: {
+    icon: {
         type: String,
         trim: true,
+        required: true
+    },
+    color: {
+        type: String,
+        trim: true,
+        minLength: 3,
+        maxLength: 6,
         required: true
     },
     hidden: {
@@ -42,12 +49,12 @@ expenseCategorySchema.statics.getCategories = async function() {
     return await this.find();
 }
 
-expenseCategorySchema.statics.addCategory = async function(name, icon_path, created_by, session) {
-    await this.create([{name, icon_path, created_by}], {session});
+expenseCategorySchema.statics.addCategory = async function(data, icon, created_by, session) {
+    await this.create([{...data, icon, created_by}], {session});
 }
 
-expenseCategorySchema.statics.editCategory = async function(_id, data, updated_by) {
-    return await this.findOneAndUpdate({_id}, {...data, updated_by, updated_at: Date.now()});
+expenseCategorySchema.statics.editCategory = async function(_id, data, updated_by, session) {
+    return await this.findOneAndUpdate({_id}, {...data, updated_by, updated_at: Date.now()}, {session});
 }
 
 const ExpenseCategory = mongoose.model('ExpenseCategory', expenseCategorySchema);
