@@ -12,10 +12,13 @@ const controller = require('../controllers/expenseCategory');
 
 const routes = express.Router();
 
-routes.get('/', errorHandler(authRequired, true), errorHandler(controller.getCategories));
-routes.post('/', errorHandler(authRequired, true), errorHandler(adminRequired, true), csrfHandler(csrfProtection), validation.addCategory, transactionHandler(controller.addCategory));
-routes.get('/:id', errorHandler(authRequired, true), errorHandler(adminRequired, true), errorHandler(controller.getCategory));
-routes.put('/:id', errorHandler(authRequired, true), errorHandler(adminRequired, true), csrfHandler(csrfProtection), validation.editCategory, transactionHandler(controller.editCategory));
-routes.delete('/:id', errorHandler(authRequired, true), errorHandler(adminRequired, true), errorHandler(controller.deleteCategory));
+routes.use(errorHandler(authRequired, true));
+routes.use(errorHandler(adminRequired, true));
+
+routes.get('/', errorHandler(controller.getCategories));
+routes.post('/', csrfHandler(csrfProtection), validation.addCategory, transactionHandler(controller.addCategory));
+routes.get('/:id', errorHandler(controller.getCategory));
+routes.put('/:id', csrfHandler(csrfProtection), validation.editCategory, transactionHandler(controller.editCategory));
+routes.delete('/:id', errorHandler(controller.deleteCategory));
 
 module.exports = routes;
