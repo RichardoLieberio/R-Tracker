@@ -26,6 +26,30 @@ async function addExpense(req, res, next) {
     next();
 }
 
+async function editExpense(req, res, next) {
+    const {expense, expenseDate, category} = req.body;
+    const errorMsg = {};
+    req.data = {};
+
+    const expenseValidation = validateExpense(expense);
+    expenseValidation.error
+    ? errorMsg['expense'] = expenseValidation.error
+    : req.data['expense'] = expenseValidation.expense;
+
+    const expenseDateValidation = validateExpenseDate(expenseDate);
+    expenseDateValidation.error
+    ? errorMsg['expenseDate'] = expenseDateValidation.error
+    : req.data['expenseDate'] = expenseDateValidation.expenseDate;
+
+    const categoryValidation = await validateCategory(category);
+    categoryValidation.error
+    ? errorMsg['category'] = categoryValidation.error
+    : req.data['category'] = categoryValidation.category;
+
+    if (Object.entries(errorMsg).length) return res.json({status: 422, msg: errorMsg});
+    next();
+}
+
 function validateExpense(expense) {
     if (!expense) return {error: 'Expense is required'};
     if (typeof(expense) !== 'string') return {error: 'Expense must be string'};
@@ -62,4 +86,4 @@ async function validateCategory(category) {
     return {category};
 }
 
-module.exports = {addExpense};
+module.exports = {addExpense, editExpense};

@@ -34,6 +34,11 @@ expenseSchema.statics.addExpense = async function(data, user_id) {
     return await this.create({expense, expense_date, user_id, category_id});
 }
 
+expenseSchema.statics.editExpense = async function(_id, user_id, data) {
+    const {expense, expenseDate: expense_date, category: category_id} = data;
+    return await this.findOneAndUpdate({_id, user_id}, {expense, expense_date, category_id});
+}
+
 const Expense = mongoose.model('Expense', expenseSchema);
 
 module.exports = Expense;
