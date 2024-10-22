@@ -15,6 +15,7 @@ const expenseCategorySchema = mongoose.Schema({
     color: {
         type: String,
         trim: true,
+        lowercase: true,
         minLength: 3,
         maxLength: 6,
         required: true
