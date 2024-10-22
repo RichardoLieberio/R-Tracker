@@ -11,4 +11,9 @@ async function getExpenses(req, res) {
     res.json({status: 200, msg: 'Expenses retrieved successfully', expenses});
 }
 
-module.exports = {getCategories, getExpenses};
+async function addExpense(req, res) {
+    const expense = await Expense.addExpense(req.data, req.userId);
+    res.json({status: 201, msg: 'New expense added', expense});
+}
+
+module.exports = {getCategories, getExpenses, addExpense};
