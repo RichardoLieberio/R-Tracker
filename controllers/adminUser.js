@@ -9,6 +9,11 @@ async function getAllUsers(req, res) {
     res.json({status: 200, msg: 'Users retrieved successfully', users});
 }
 
+async function blockToken(req, res) {
+    await UserToken.clearToken(req.params.id);
+    res.json({status: 200, msg: 'User token blocked successfully'});
+}
+
 async function changePwd(req, res) {
     if (!mongooseIdValidation(req.params.id)) throw new TransactionError({status: 404, msg: 'Failed to change user password. User not found'});
 
@@ -20,4 +25,4 @@ async function changePwd(req, res) {
     res.json({status: 200, msg: 'User password changed successfully'});
 }
 
-module.exports = {getAllUsers, changePwd};
+module.exports = {getAllUsers, blockToken, changePwd};

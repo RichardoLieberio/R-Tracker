@@ -45,8 +45,9 @@ userTokenSchema.statics.logout = async function(access_token, refresh_token) {
     await this.findOneAndUpdate({$or: [{access_token}, {refresh_token}]}, {refresh_token: '', access_token: ''});
 }
 
-userTokenSchema.statics.clearToken = async function(user_id, session) {
-    await this.findOneAndUpdate({user_id}, {access_token: '', refresh_token: ''}, {session});
+userTokenSchema.statics.clearToken = async function(user_id, session = null) {
+    const options = session ? {session} : {};
+    await this.findOneAndUpdate({user_id}, {access_token: '', refresh_token: ''}, options);
 }
 
 userTokenSchema.statics.deleteAccount = async function(user_id, session) {
