@@ -62,6 +62,10 @@ expenseCategorySchema.statics.editCategory = async function(_id, data, updated_b
     return await this.findOneAndUpdate({_id}, {...data, updated_by, updated_at: Date.now()}, {session});
 }
 
+expenseCategorySchema.statics.deleteCategory = async function(id) {
+    return !!await this.findByIdAndDelete(id);
+}
+
 const ExpenseCategory = mongoose.model('ExpenseCategory', expenseCategorySchema);
 
 module.exports = ExpenseCategory;
