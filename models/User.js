@@ -92,6 +92,10 @@ userSchema.statics.deleteAccount = async function(id, session) {
     return await this.findByIdAndDelete(id, {session});
 }
 
+userSchema.statics.getAllUsers = async function() {
+    return await this.find({}, {pwd: 0});
+}
+
 userSchema.methods.checkCredentials = async function(data) {
     const user = await this.constructor.findOne({email: data.email});
     if (!user) return false;
