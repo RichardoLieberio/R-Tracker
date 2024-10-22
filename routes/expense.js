@@ -1,12 +1,15 @@
 const express = require('express');
 
+const errorHandler = require('../middlewares/errorHandler');
+const authRequired = require('../middlewares/authRequired');
+
 const validation = require('../validations/expense');
 const controller = require('../controllers/expense');
 
-const expenseCategoryRoutes = require('./expenseCategory');
-
 const routes = express.Router();
 
-routes.use('/category', expenseCategoryRoutes);
+routes.use(errorHandler(authRequired, true));
+
+routes.use('/categories', errorHandler(controller.getCategories));
 
 module.exports = routes;
