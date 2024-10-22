@@ -40,6 +40,8 @@ async function editCategory(req, res) {
 
         await uploadFile(newIconPath, base64Data);
         deleteFile(oldIconPath);
+
+        data.icon = req.data.icon;
     }
 
     res.json({status: 200, msg: 'Expense category updated successfully', data})
