@@ -13,10 +13,8 @@ async function getCategories(req, res) {
 }
 
 async function addCategory(req, res) {
-    const {name, icon} = req.data;
-
-    const {file_name, base64Data} = getIconConfiguration(icon);
-    await ExpenseCategory.addCategory(name, file_name, req.userId, req.mongooseSession);
+    const {file_name, base64Data} = getIconConfiguration(req.data.icon);
+    await ExpenseCategory.addCategory(req.data, file_name, req.userId, req.mongooseSession);
 
     const iconPath = path.join(__dirname, '..', 'public', 'expense', file_name);
     await uploadFile(iconPath, base64Data);
@@ -26,28 +24,22 @@ async function addCategory(req, res) {
 
 async function editCategory(req, res) {
     if (!mongooseIdValidation(req.params.id)) return res.json({status: 404, msg: 'Expense category not found'});
+
     let file_name, base64Data;
-
     if (req.data.icon) {
-        const iconConfiguration = getIconConfiguration(req.data.icon);
-        file_name = iconConfiguration.file_name;
-        base64Data = iconConfiguration.base64Data;
-
-        req.data.icon_path = iconConfiguration.file_name;
-        delete req.data.icon;
+        ({file_name, base64Data} = getIconConfiguration(req.data.icon));
+        req.data.icon = file_name;
     }
 
-    const data = await ExpenseCategory.editCategory(req.params.id, req.data, req.userId);
+    const data = await ExpenseCategory.editCategory(req.params.id, req.data, req.userId, req.mongooseSession);
     if (!data) return res.json({status: 404, msg: 'Expense category not found'});
 
-    if (req.data.icon_path) {
-        const iconPath = path.join(__dirname, '..', 'public', 'expense', file_name);
-        const oldIconPath = path.join(__dirname, '..', 'public', 'expense', data.icon_path);
+    if (req.data.icon) {
+        const newIconPath = path.join(__dirname, '..', 'public', 'expense', req.data.icon);
+        const oldIconPath = path.join(__dirname, '..', 'public', 'expense', data.icon);
 
-        await uploadFile(iconPath, base64Data);
+        await uploadFile(newIconPath, base64Data);
         deleteFile(oldIconPath);
-
-        data.icon_path = file_name;
     }
 
     res.json({status: 200, msg: 'Expense category updated successfully', data})
@@ -70,9 +62,9 @@ async function uploadFile(path, base64Data) {
     });
 }
 
-async function deleteFile(filePath) {
-    fs.unlink(filePath, function(error) {
-        if (error) console.log(`Failed to delete file: ${filePath}. Error: ${error.message}`);
+async function deleteFile(path) {
+    fs.unlink(path, function(error) {
+        if (error) console.log(`Failed to delete file: ${path}. Error: ${error.message}`);
     });
 }
 
