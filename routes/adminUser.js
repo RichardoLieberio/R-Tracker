@@ -16,5 +16,6 @@ routes.patch('/:id/change-passsword', csrfHandler(csrfProtection), errorHandler(
 routes.post('/:id/block-token', errorHandler(controller.blockToken));
 routes.post('/:id/whitelist', errorHandler(controller.whitelist));
 routes.post('/:id/blacklist', csrfHandler(csrfProtection), errorHandler(validation.blacklist, true), transactionHandler(controller.blacklist));
+routes.get('/:id/expenses', errorHandler(controller.getUserExpenses));
 
 module.exports = routes;

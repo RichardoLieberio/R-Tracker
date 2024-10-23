@@ -3,6 +3,7 @@ const mongooseIdValidation = require('../services/mongooseIdValidation');
 
 const User = require('../models/User');
 const UserToken = require('../models/UserToken');
+const Expense = require('../models/Expense');
 
 async function getAllUsers(req, res) {
     const users = await User.getAllUsers();
@@ -62,4 +63,11 @@ async function blacklist(req, res) {
     res.json({status: 200, msg: 'User blacklisted successfully'});
 }
 
-module.exports = {getAllUsers, updateUser, changePwd, blockToken, whitelist, blacklist};
+async function getUserExpenses(req, res) {
+    if (!mongooseIdValidation(req.params.id)) throw new TransactionError({status: 404, msg: 'Failed to get expenses. User not found'});
+
+    const expenses = await Expense.getExpenses(req.paramns.id);
+    res.json({status: 200, msg: 'Expenses retrieved successfully', expenses});
+}
+
+module.exports = {getAllUsers, updateUser, changePwd, blockToken, whitelist, blacklist, getUserExpenses};
