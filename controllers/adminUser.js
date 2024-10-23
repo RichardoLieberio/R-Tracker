@@ -14,6 +14,17 @@ async function blockToken(req, res) {
     res.json({status: 200, msg: 'User token blocked successfully'});
 }
 
+async function blacklist(req, res) {
+    if (req.userId === req.params.id) return res.json({status: 400, msg: 'Cannnot blacklist yourself'});
+
+    const blacklisted = await User.blacklist(req.params.id, req.data.reason, req.userId, req.mongooseSession);
+    if (!blacklisted) throw new TransactionError({status: 404, msg: 'Failed to blacklist user. User not found'});
+
+    await UserToken.clearToken(req.params.id, req.mongooseSession);
+
+    res.json({status: 200, msg: 'User blacklisted successfully'});
+}
+
 async function changePwd(req, res) {
     if (!mongooseIdValidation(req.params.id)) throw new TransactionError({status: 404, msg: 'Failed to change user password. User not found'});
 
@@ -25,4 +36,4 @@ async function changePwd(req, res) {
     res.json({status: 200, msg: 'User password changed successfully'});
 }
 
-module.exports = {getAllUsers, blockToken, changePwd};
+module.exports = {getAllUsers, blockToken, blacklist, changePwd};
