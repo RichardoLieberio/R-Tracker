@@ -14,6 +14,16 @@ async function blockToken(req, res) {
     res.json({status: 200, msg: 'User token blocked successfully'});
 }
 
+async function whitelist(req, res) {
+    if (!mongooseIdValidation(req.params.id)) return res.json({status: 404, msg: 'Failed to whitelist user. User not found'});
+    if (req.userId === req.params.id) return res.json({status: 400, msg: 'Cannnot whitelist yourself'});
+
+    const whitelisted = await User.whitelist(req.params.id);
+    if (!whitelisted) return res.json({status: 404, msg: 'Failed to whitelist user. User not found'});
+
+    res.json({status: 200, msg: 'User whitelisted successfully'});
+}
+
 async function blacklist(req, res) {
     if (!mongooseIdValidation(req.params.id)) throw new TransactionError({status: 404, msg: 'Failed to blacklist user. User not found'});
     if (req.userId === req.params.id) return res.json({status: 400, msg: 'Cannnot blacklist yourself'});
@@ -37,4 +47,4 @@ async function changePwd(req, res) {
     res.json({status: 200, msg: 'User password changed successfully'});
 }
 
-module.exports = {getAllUsers, blockToken, blacklist, changePwd};
+module.exports = {getAllUsers, blockToken, whitelist, blacklist, changePwd};
