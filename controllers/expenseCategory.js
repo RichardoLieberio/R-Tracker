@@ -38,7 +38,7 @@ async function editCategory(req, res) {
     }
 
     const category = await ExpenseCategory.editCategory(req.params.id, req.data, req.userId, req.mongooseSession);
-    if (!category) return res.json({status: 404, msg: 'Failed to edit. Expense category not found'});
+    if (!category) throw new TransactionError({status: 404, msg: 'Failed to edit. Expense category not found'});
 
     if (req.data.icon) {
         const newIconPath = path.join(__dirname, '..', 'public', 'expense', req.data.icon);
