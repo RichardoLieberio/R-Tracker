@@ -24,20 +24,6 @@ async function updateUser(req, res, next) {
     next();
 }
 
-function blacklist(req, res, next) {
-    const {reason} = req.body;
-    const errorMsg = {};
-    req.data = {};
-
-    const reasonValidation = validateReason(reason);
-    reasonValidation.error
-    ? errorMsg['reason'] = reasonValidation.error
-    : req.data['reason'] = reasonValidation.reason;
-
-    if (Object.entries(errorMsg).length) return res.json({status: 422, msg: errorMsg});
-    next();
-}
-
 function changePwd(req, res, next) {
     const {pwd} = req.body;
     const errorMsg = {};
@@ -47,6 +33,20 @@ function changePwd(req, res, next) {
     pwdValidation.error
     ? errorMsg['pwd'] = pwdValidation.error
     : req.data['pwd'] = pwdValidation.pwd;
+
+    if (Object.entries(errorMsg).length) return res.json({status: 422, msg: errorMsg});
+    next();
+}
+
+function blacklist(req, res, next) {
+    const {reason} = req.body;
+    const errorMsg = {};
+    req.data = {};
+
+    const reasonValidation = validateReason(reason);
+    reasonValidation.error
+    ? errorMsg['reason'] = reasonValidation.error
+    : req.data['reason'] = reasonValidation.reason;
 
     if (Object.entries(errorMsg).length) return res.json({status: 422, msg: errorMsg});
     next();
@@ -91,17 +91,6 @@ function validateRole(role) {
     return {role};
 }
 
-function validateReason(reason) {
-    if (reason === undefined) return {reason};
-    if (typeof(reason) !== 'string') return {error: 'Reason must be string'};
-
-    reason = reason.trim().replace(/\s+/g, ' ');
-
-    if (reason.length > 50) return {error: 'Reason length exceeds 255 characters'};
-
-    return {reason};
-}
-
 function validatePwd(pwd) {
     if (!pwd) return {error: 'Password is required'};
     if (typeof(pwd) !== 'string') return {error: 'Password must be string'};
@@ -118,4 +107,15 @@ function validatePwd(pwd) {
     return {pwd};
 }
 
-module.exports = {updateUser, blacklist, changePwd};
+function validateReason(reason) {
+    if (reason === undefined) return {reason};
+    if (typeof(reason) !== 'string') return {error: 'Reason must be string'};
+
+    reason = reason.trim().replace(/\s+/g, ' ');
+
+    if (reason.length > 50) return {error: 'Reason length exceeds 255 characters'};
+
+    return {reason};
+}
+
+module.exports = {updateUser, changePwd, blacklist};

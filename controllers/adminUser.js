@@ -21,6 +21,17 @@ async function updateUser(req, res) {
     res.json({status: 200, msg: 'User updated successfully'});
 }
 
+async function changePwd(req, res) {
+    if (!mongooseIdValidation(req.params.id)) throw new TransactionError({status: 404, msg: 'Failed to change user password. User not found'});
+
+    const changed = await User.changePwdByAdmin(req.params.id, req.data.pwd, req.mongooseSession);
+    if (!changed) throw new TransactionError({status: 404, msg: 'Failed to change user password. User not found'});
+
+    await UserToken.clearToken(req.params.id, req.mongooseSession);
+
+    res.json({status: 200, msg: 'User password changed successfully'});
+}
+
 async function blockToken(req, res) {
     if (!mongooseIdValidation(req.params.id)) return res.json({status: 404, msg: 'Failed to block token. User not found'});
     if (req.userId === req.params.id) return res.json({status: 400, msg: 'Cannnot block your own token'});
@@ -51,15 +62,4 @@ async function blacklist(req, res) {
     res.json({status: 200, msg: 'User blacklisted successfully'});
 }
 
-async function changePwd(req, res) {
-    if (!mongooseIdValidation(req.params.id)) throw new TransactionError({status: 404, msg: 'Failed to change user password. User not found'});
-
-    const changed = await User.changePwdByAdmin(req.params.id, req.data.pwd, req.mongooseSession);
-    if (!changed) throw new TransactionError({status: 404, msg: 'Failed to change user password. User not found'});
-
-    await UserToken.clearToken(req.params.id, req.mongooseSession);
-
-    res.json({status: 200, msg: 'User password changed successfully'});
-}
-
-module.exports = {getAllUsers, updateUser, blockToken, whitelist, blacklist, changePwd};
+module.exports = {getAllUsers, updateUser, changePwd, blockToken, whitelist, blacklist};
