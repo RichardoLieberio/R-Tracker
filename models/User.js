@@ -58,6 +58,10 @@ userSchema.statics.isEmailRegistered = async function(email) {
     return !!await this.findOne({email});
 }
 
+userSchema.statics.isEmailRegisteredWithId = async function(email, _id) {
+    return !!await this.findOne({_id: {$ne: _id}, email});
+}
+
 userSchema.statics.isAdmin = async function(_id) {
     return !!await this.findOne({_id, role: 'admin'});
 }
@@ -94,6 +98,10 @@ userSchema.statics.deleteAccount = async function(id, session) {
 
 userSchema.statics.getAllUsers = async function() {
     return await this.find({}, {pwd: 0});
+}
+
+userSchema.statics.updateUser = async function(_id, data, session) {
+    return await this.findOneAndUpdate({_id}, data, {session});
 }
 
 userSchema.statics.changePwdByAdmin = async function(_id, rawPwd, session) {
