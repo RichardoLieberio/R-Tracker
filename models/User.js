@@ -101,6 +101,10 @@ userSchema.statics.changePwdByAdmin = async function(_id, rawPwd, session) {
     return !!await this.findOneAndUpdate({_id}, {pwd, updated_at: Date.now()}, {session});
 }
 
+userSchema.statics.whitelist = async function(_id) {
+    return !!await this.findOneAndUpdate({_id}, {$unset: {blacklisted: '', blacklist_reason: '', blacklisted_by: '', blacklisted_at: ''}});
+}
+
 userSchema.statics.blacklist = async function(_id, blacklist_reason, blacklisted_by, session) {
     return !!await this.findOneAndUpdate({_id}, {blacklisted: true, blacklist_reason, blacklisted_by, blacklisted_at: Date.now()}, {session});
 }
