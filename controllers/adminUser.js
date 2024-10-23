@@ -10,6 +10,9 @@ async function getAllUsers(req, res) {
 }
 
 async function blockToken(req, res) {
+    if (!mongooseIdValidation(req.params.id)) return res.json({status: 404, msg: 'Failed to block token. User not found'});
+    if (req.userId === req.params.id) return res.json({status: 400, msg: 'Cannnot block your own token'});
+
     await UserToken.clearToken(req.params.id);
     res.json({status: 200, msg: 'User token blocked successfully'});
 }
