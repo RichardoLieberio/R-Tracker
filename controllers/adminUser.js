@@ -15,6 +15,7 @@ async function blockToken(req, res) {
 }
 
 async function blacklist(req, res) {
+    if (!mongooseIdValidation(req.params.id)) throw new TransactionError({status: 404, msg: 'Failed to blacklist user. User not found'});
     if (req.userId === req.params.id) return res.json({status: 400, msg: 'Cannnot blacklist yourself'});
 
     const blacklisted = await User.blacklist(req.params.id, req.data.reason, req.userId, req.mongooseSession);
