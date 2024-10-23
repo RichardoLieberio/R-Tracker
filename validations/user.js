@@ -146,7 +146,7 @@ async function validateEmail(email, checkIsRegistered=false) {
     return {email};
 }
 
-function validatePwd(pwd, basicValidation = false) {
+function validatePwd(pwd, basicValidation=false) {
     if (!pwd) return {error: 'Password is required'};
     if (typeof(pwd) !== 'string') return {error: 'Password must be string'};
 

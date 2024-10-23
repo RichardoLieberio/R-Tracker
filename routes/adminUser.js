@@ -11,6 +11,7 @@ const controller = require('../controllers/adminUser');
 const routes = express.Router();
 
 routes.get('/', errorHandler(controller.getAllUsers));
+routes.patch('/:id', csrfHandler(csrfProtection), errorHandler(validation.updateUser, true), transactionHandler(controller.updateUser));
 routes.post('/:id/block-token', errorHandler(controller.blockToken));
 routes.post('/:id/whitelist', errorHandler(controller.whitelist));
 routes.post('/:id/blacklist', csrfHandler(csrfProtection), errorHandler(validation.blacklist, true), transactionHandler(controller.blacklist));
