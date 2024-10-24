@@ -43,7 +43,7 @@ const inactiveUserSchema = mongoose.Schema({
 inactiveUserSchema.statics.register = async function(data, otp) {
     const {name, email, pwd: rawPwd} = data;
     const pwd = await bcrypt.hash(rawPwd, +process.env.SALT_ROUNDS);
-    await this.findOneAndUpdate({email}, {name, email, pwd, otp}, {upsert: true});
+    await this.findOneAndUpdate({email}, {name, email, pwd, otp, created_at: Date.now(), expires_at: Date.now() + 15 * 60 * 1000}, {upsert: true});
 }
 
 inactiveUserSchema.statics.verify = async function(data, session) {
