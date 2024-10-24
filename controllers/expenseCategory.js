@@ -9,7 +9,7 @@ const ExpenseCategory = require('../models/ExpenseCategory');
 
 async function getCategories(req, res) {
     const categories = await ExpenseCategory.getCategoriesForAdmin();
-    res.json({status: 200, msg: 'Categories retrieved successfully', categories});
+    res.json({status: 200, msg: 'Categories retrieved successfully.', categories});
 }
 
 async function addCategory(req, res) {
@@ -19,17 +19,17 @@ async function addCategory(req, res) {
     const iconPath = path.join(__dirname, '..', 'public', 'expense', file_name);
     await uploadFile(iconPath, base64Data);
 
-    res.json({status: 201, msg: 'Expense category created successfully'});
+    res.json({status: 201, msg: 'Expense category created successfully.'});
 }
 
 async function getCategory(req, res) {
-    if (!mongooseIdValidation(req.params.id)) return res.json({status: 404, msg: 'Expense category not found'});
+    if (!mongooseIdValidation(req.params.id)) return res.json({status: 404, msg: 'Expense category not found.'});
     const category = await ExpenseCategory.getCategory(req.params.id);
-    category ? res.json({status: 200, msg: 'Category retrieved successfully', category}) : res.json({status: 404, msg: 'Expense category not found'});
+    category ? res.json({status: 200, msg: 'Category retrieved successfully.', category}) : res.json({status: 404, msg: 'Expense category not found.'});
 }
 
 async function editCategory(req, res) {
-    if (!mongooseIdValidation(req.params.id)) return res.json({status: 404, msg: 'Failed to edit. Expense category not found'});
+    if (!mongooseIdValidation(req.params.id)) return res.json({status: 404, msg: 'Failed to edit. Expense category not found.'});
 
     let file_name, base64Data;
     if (req.data.icon) {
@@ -38,7 +38,7 @@ async function editCategory(req, res) {
     }
 
     const category = await ExpenseCategory.editCategory(req.params.id, req.data, req.userId, req.mongooseSession);
-    if (!category) throw new TransactionError({status: 404, msg: 'Failed to edit. Expense category not found'});
+    if (!category) throw new TransactionError({status: 404, msg: 'Failed to edit. Expense category not found.'});
 
     if (req.data.icon) {
         const newIconPath = path.join(__dirname, '..', 'public', 'expense', req.data.icon);
@@ -50,19 +50,19 @@ async function editCategory(req, res) {
         category.icon = req.data.icon;
     }
 
-    res.json({status: 200, msg: 'Expense category updated successfully', category})
+    res.json({status: 200, msg: 'Expense category updated successfully.', category})
 }
 
 async function deleteCategory(req, res) {
-    if (!mongooseIdValidation(req.params.id)) return res.json({status: 404, msg: 'Failed to delete. Expense category not found'});
+    if (!mongooseIdValidation(req.params.id)) return res.json({status: 404, msg: 'Failed to delete. Expense category not found.'});
 
     const deleted = await ExpenseCategory.deleteCategory(req.params.id);
-    if (!deleted) return res.json({status: 404, msg: 'Failed to delete. Expense category not found'});
+    if (!deleted) return res.json({status: 404, msg: 'Failed to delete. Expense category not found.'});
 
     const iconPath = path.join(__dirname, '..', 'public', 'expense', deleted.icon);
     deleteFile(iconPath);
 
-    res.json({status: 200, msg: 'Expense category deleted successfully'});
+    res.json({status: 200, msg: 'Expense category deleted successfully.'});
 }
 
 function getIconConfiguration(icon) {
@@ -76,7 +76,7 @@ function getIconConfiguration(icon) {
 async function uploadFile(path, base64Data) {
     await new Promise(function(resolve, reject) {
         fs.writeFile(path, base64Data, 'base64', function(error) {
-            if (error) return reject(new TransactionError({status: 500, msg: 'Failed to save image to the server'}));
+            if (error) return reject(new TransactionError({status: 500, msg: 'Failed to save image to the server.'}));
             resolve();
         });
     });

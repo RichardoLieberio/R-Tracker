@@ -14,7 +14,7 @@ function transactionHandler(handler) {
         } catch(error) {
             await session.abortTransaction();
             console.error(error);
-            error instanceof TransactionError ? res.json(error) : res.json({status: 400, msg: 'Transaction failed'});
+            error instanceof TransactionError ? res.json(error) : res.json({status: 400, msg: 'Transaction failed.'});
         } finally {
             session.endSession();
         }

@@ -4,7 +4,7 @@ function errorHandler(handler, useNext=false) {
             useNext ? await handler(req, res, next) : await handler(req, res);
         } catch(error) {
             console.error(error);
-            res.json({status: 400, msg: 'Unknown dependency error'});
+            res.json({status: 400, msg: 'Unknown dependency error.'});
         }
     }
 }

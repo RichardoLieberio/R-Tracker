@@ -29,16 +29,16 @@ async function changeEmail(req, res, next) {
 }
 
 async function validateEmail(email, checkIsRegistered=false) {
-    if (!email) return {error: 'Email is required'};
-    if (typeof(email) !== 'string') return {error: 'Email must be string'};
+    if (!email) return {error: 'Email is required.'};
+    if (typeof(email) !== 'string') return {error: 'Email must be string.'};
 
     email = email.trim().toLowerCase();
 
-    if (!email) return {error: 'Email is required'};
-    if (checkIsRegistered && await User.isEmailRegistered(email)) return {error: 'Email is registered'};
+    if (!email) return {error: 'Email is required.'};
+    if (checkIsRegistered && await User.isEmailRegistered(email)) return {error: 'Email is registered.'};
 
     const emailRegex = /^(?!.*\.\.)(?!^\.)(?!.*\.$)(?!.*-$)(?!.*\.-)([a-zA-Z0-9._%+-]+@[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*\.[a-zA-Z]{2,}(?:\.[a-zA-Z]{2,})?)$/;
-    if (!emailRegex.test(email)) return {error: 'Email is invalid'};
+    if (!emailRegex.test(email)) return {error: 'Email is invalid.'};
 
     return {email};
 }

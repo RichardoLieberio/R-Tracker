@@ -38,5 +38,5 @@ app.use('/api/expense', expenseRoutes);
 app.use('/api/admin', adminRoutes);
 
 app.listen(process.env.PORT, function() {
-    console.log(`Listening on port ${process.env.PORT}`);
+    console.log(`Listening on port ${process.env.PORT}.`);
 });

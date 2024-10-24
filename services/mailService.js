@@ -13,7 +13,7 @@ const transporter = nodemailer.createTransport({
 function sendMail(type, mail) {
     const options = createOptions(type, mail);
     options && transporter.sendMail(options, function(error) {
-        console.log(`${error ? 'Failed to send' : 'Successfully sent'} ${type} email to ${mail.to}`);
+        console.log(`${error ? 'Failed to send' : 'Successfully sent'} ${type} email to ${mail.to}.`);
     });
 }
 
@@ -83,7 +83,7 @@ function createOptions(type, mail) {
             `;
             break;
         default:
-            console.log('Invalid mail type');
+            console.log('Invalid mail type.');
             return null;
     }
 

@@ -120,58 +120,58 @@ function changePwd(req, res, next) {
 }
 
 function validateName(name) {
-    if (!name) return {error: 'Name is required'};
-    if (typeof(name) !== 'string') return {error: 'Name must be string'};
+    if (!name) return {error: 'Name is required.'};
+    if (typeof(name) !== 'string') return {error: 'Name must be string.'};
 
     name = name.trim().replace(/\s+/g, ' ');
 
-    if (!name) return {error: 'Name is required'};
-    if (name.length > 50) return {error: 'Name length exceeds 50 characters'};
+    if (!name) return {error: 'Name is required.'};
+    if (name.length > 50) return {error: 'Name length exceeds 50 characters.'};
 
     return {name};
 }
 
 async function validateEmail(email, checkIsRegistered=false) {
-    if (!email) return {error: 'Email is required'};
-    if (typeof(email) !== 'string') return {error: 'Email must be string'};
+    if (!email) return {error: 'Email is required.'};
+    if (typeof(email) !== 'string') return {error: 'Email must be string.'};
 
     email = email.trim().toLowerCase();
 
-    if (!email) return {error: 'Email is required'};
-    if (checkIsRegistered && await User.isEmailRegistered(email)) return {error: 'Email is registered'};
+    if (!email) return {error: 'Email is required.'};
+    if (checkIsRegistered && await User.isEmailRegistered(email)) return {error: 'Email is registered.'};
 
     const emailRegex = /^(?!.*\.\.)(?!^\.)(?!.*\.$)(?!.*-$)(?!.*\.-)([a-zA-Z0-9._%+-]+@[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*\.[a-zA-Z]{2,}(?:\.[a-zA-Z]{2,})?)$/;
-    if (!emailRegex.test(email)) return {error: 'Email is invalid'};
+    if (!emailRegex.test(email)) return {error: 'Email is invalid.'};
 
     return {email};
 }
 
 function validatePwd(pwd, basicValidation=false) {
-    if (!pwd) return {error: 'Password is required'};
-    if (typeof(pwd) !== 'string') return {error: 'Password must be string'};
+    if (!pwd) return {error: 'Password is required.'};
+    if (typeof(pwd) !== 'string') return {error: 'Password must be string.'};
 
     if (basicValidation) return {pwd};
 
-    if (pwd.length < 6) return {error: 'Minimum password length is 6 characters'};
+    if (pwd.length < 6) return {error: 'Minimum password length is 6 characters.'};
 
     const pwdRegexError = {};
-    if (!/[A-Z]/.test(pwd)) pwdRegexError['upperCase'] = 'Password must contain at least one uppercase letter';
-    if (!/[a-z]/.test(pwd)) pwdRegexError['lowerCase'] = 'Password must contain at least one lowercase letter';
-    if (!/[0-9]/.test(pwd)) pwdRegexError['number'] = 'Password must contain at least one number';
-    if (!/[!@#$%^&*(),.?":{}|<>]/.test(pwd)) pwdRegexError['symbol'] = 'Password must contain at least one special character';
+    if (!/[A-Z]/.test(pwd)) pwdRegexError['upperCase'] = 'Password must contain at least one uppercase letter.';
+    if (!/[a-z]/.test(pwd)) pwdRegexError['lowerCase'] = 'Password must contain at least one lowercase letter.';
+    if (!/[0-9]/.test(pwd)) pwdRegexError['number'] = 'Password must contain at least one number.';
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(pwd)) pwdRegexError['symbol'] = 'Password must contain at least one special character.';
     if (Object.entries(pwdRegexError).length) return {error: pwdRegexError};
 
     return {pwd};
 }
 
 function validateOtp(otp) {
-    if (!otp) return {error: 'OTP is required'};
-    if (typeof(otp) !== 'string') return {error: 'OTP must be string'};
+    if (!otp) return {error: 'OTP is required.'};
+    if (typeof(otp) !== 'string') return {error: 'OTP must be string.'};
 
     otp = otp.trim();
 
-    if (!otp) return {error: 'OTP is required'};
-    if (otp.length !== +process.env.OTP_LENGTH || /[^\d]/.test(otp)) return {error: 'OTP is invalid'};
+    if (!otp) return {error: 'OTP is required.'};
+    if (otp.length !== +process.env.OTP_LENGTH || /[^\d]/.test(otp)) return {error: 'OTP is invalid.'};
 
     return {otp};
 }
