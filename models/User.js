@@ -72,7 +72,7 @@ userSchema.statics.addNewAccount = async function(data, session) {
 
 userSchema.statics.resetPwd = async function(email, rawPwd, session) {
     const pwd = await bcrypt.hash(rawPwd, +process.env.SALT_ROUNDS);
-    await this.findOneAndUpdate({email}, {pwd, updated_at: Date.now()}, {session});
+    return await this.findOneAndUpdate({email}, {pwd, updated_at: Date.now()}, {session});
 }
 
 userSchema.statics.getInfo = async function(id) {
