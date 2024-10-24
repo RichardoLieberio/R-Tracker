@@ -29,7 +29,7 @@ const pwdResetTokenSchema = mongoose.Schema({
 });
 
 pwdResetTokenSchema.statics.addRequest = async function(email, otp) {
-    await this.findOneAndUpdate({email}, {otp, created_at: Date.now(), expires_at: Date.now() + 15 * 60 * 1000}, {upsert: true});
+    await this.findOneAndUpdate({email}, {email, otp, created_at: Date.now(), expires_at: Date.now() + 15 * 60 * 1000}, {upsert: true});
 }
 
 pwdResetTokenSchema.statics.checkRequest = async function(email, otp, session) {

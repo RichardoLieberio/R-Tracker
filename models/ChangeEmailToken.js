@@ -35,7 +35,7 @@ const changeEmailTokenSchema = mongoose.Schema({
 });
 
 changeEmailTokenSchema.statics.addRequest = async function(user_id, new_email, otp) {
-    await this.findOneAndUpdate({user_id}, {new_email, otp, created_at: Date.now(), expires_at: Date.now() + 15 * 60 * 1000}, {upsert: true});
+    await this.findOneAndUpdate({user_id}, {user_id, new_email, otp, created_at: Date.now(), expires_at: Date.now() + 15 * 60 * 1000}, {upsert: true});
 }
 
 changeEmailTokenSchema.statics.checkRequest = async function(user_id, new_email, otp, session) {
