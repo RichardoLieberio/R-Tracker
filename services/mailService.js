@@ -83,7 +83,7 @@ function createOptions(type, mail) {
             `;
             break;
         default:
-            console.log('Invalid email type');
+            console.log('Invalid mail type');
             return null;
     }
 
