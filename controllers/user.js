@@ -66,11 +66,8 @@ async function changeEmail(req, res) {
 }
 
 async function changePwd(req, res) {
-    const {oldPwd, newPwd} = req.data;
-    const check = await (new User()).isPwdMatches(req.userId, oldPwd);
-    if (!check) return res.json({status: 400, msg: 'Password is incorrect.'});
-
-    await User.changePwd(req.userId, newPwd);
+    const changed = await (new User()).changePwd(req.userId, req.data);
+    if (!changed) return res.json({status: 400, msg: 'Password is incorrect.'});
 
     res.json({status: 200, msg: 'Password updated successfully.'});
 }
