@@ -1,5 +1,5 @@
-const sendMail = require('../services/mailService');
 const generateOtp = require('../services/generateOtp');
+const sendMail = require('../services/mailService');
 
 const User = require('../models/User');
 const PwdResetToken = require('../models/PwdResetToken');
