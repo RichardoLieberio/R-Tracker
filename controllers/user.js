@@ -31,12 +31,14 @@ async function verify(req, res) {
 }
 
 async function resetPwd(req, res) {
-    const {email, pwd, otp} = req.data;
+    const {email, otp, pwd} = req.data;
     const request = await PwdResetToken.checkRequest(email, otp, req.mongooseSession);
     if (!request) throw new TransactionError({status: 400, msg: 'Invalid email or OTP.'});
 
-    await User.resetPwd(email, pwd, req.mongooseSession);
+    const user = await User.resetPwd(email, pwd, req.mongooseSession);
     sendMail('pwd-successfully-reset', {to: email});
+
+    await UserToken.clearToken(user?._id, req.mongooseSession);
 
     res.json({status: 200, msg: 'Password successfully reset.'});
 }
