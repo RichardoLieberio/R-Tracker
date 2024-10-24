@@ -119,12 +119,15 @@ userSchema.methods.checkCredentials = async function(data) {
     return await bcrypt.compare(data.pwd, user.pwd) ? user : false;
 }
 
-userSchema.methods.changePwd = async function(_id, pwds, session) {
+userSchema.methods.changePwd = async function(_id, pwds) {
     const {oldPwd, newPwd} = pwds;
-    const pwd = await bcrypt.hash(newPwd, +process.env.SALT_ROUNDS);
+    const user = await this.constructor.findOne({_id});
+    if (!await bcrypt.compare(oldPwd, user.pwd)) return false;
 
-    const user = await this.constructor.findOneAndUpdate({_id}, {pwd, updated_at: Date.now()}, {session});
-    return await bcrypt.compare(oldPwd, user.pwd) ? true : false;
+    const pwd = await bcrypt.hash(newPwd, +process.env.SALT_ROUNDS);
+    await this.findOneAndUpdate({_id}, {pwd, updated_at: Date.now()});
+
+    return true;
 }
 
 const User = mongoose.model('User', userSchema);
