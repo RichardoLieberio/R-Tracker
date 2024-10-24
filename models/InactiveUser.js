@@ -47,7 +47,7 @@ inactiveUserSchema.statics.register = async function(data, otp) {
 }
 
 inactiveUserSchema.statics.verify = async function(data, session) {
-    return await this.model('InactiveUser').findOneAndDelete({email: data.email, otp: data.otp}, {session}).select('name email pwd');
+    return await this.findOneAndDelete(data, {session}).select('name email pwd');
 }
 
 const InactiveUser = mongoose.model('InactiveUser', inactiveUserSchema);
