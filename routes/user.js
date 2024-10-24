@@ -13,13 +13,13 @@ const controller = require('../controllers/user');
 const routes = express.Router();
 
 routes.post('/register', errorHandler(logoutRequired, true), csrfHandler(csrfProtection), errorHandler(validation.register, true), errorHandler(controller.register));
-routes.post('/verify', errorHandler(logoutRequired, true), csrfHandler(csrfProtection), errorHandler(validation.verify, true), transactionHandler(controller.verify));
-routes.patch('/reset-password', errorHandler(logoutRequired, true), csrfHandler(csrfProtection), errorHandler(validation.resetPwd, true), transactionHandler(controller.resetPwd));
+routes.post('/verify', errorHandler(logoutRequired, true), csrfHandler(csrfProtection), validation.verify, transactionHandler(controller.verify));
+routes.patch('/reset-password', errorHandler(logoutRequired, true), csrfHandler(csrfProtection), validation.resetPwd, transactionHandler(controller.resetPwd));
 
 routes.get('/info', errorHandler(authRequired, true), errorHandler(controller.getInfo));
-routes.patch('/change-name', errorHandler(authRequired, true), csrfHandler(csrfProtection), errorHandler(validation.changeName, true), errorHandler(controller.changeName));
+routes.patch('/change-name', errorHandler(authRequired, true), csrfHandler(csrfProtection), validation.changeName, errorHandler(controller.changeName));
 routes.patch('/change-email', errorHandler(authRequired, true), csrfHandler(csrfProtection), errorHandler(validation.changeEmail, true), transactionHandler(controller.changeEmail));
-routes.patch('/change-password', errorHandler(authRequired, true), csrfHandler(csrfProtection), errorHandler(validation.changePwd, true), transactionHandler(controller.changePwd));
+routes.patch('/change-password', errorHandler(authRequired, true), csrfHandler(csrfProtection), validation.changePwd, errorHandler(controller.changePwd));
 routes.delete('/:id', errorHandler(authRequired, true), transactionHandler(controller.deleteAccount));
 
 module.exports = routes;
