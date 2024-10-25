@@ -36,6 +36,8 @@ async function resetPwd(req, res) {
     if (!request) throw new TransactionError({status: 400, msg: 'Invalid email or OTP.'});
 
     const user = await User.resetPwd(email, pwd, req.mongooseSession);
+    if (!user) return res.json({status: 404, msg: 'Failed to reset password. Account not found.'});
+
     sendMail('pwd-successfully-reset', {to: email});
 
     await UserToken.clearToken(user?._id, req.mongooseSession);
@@ -59,7 +61,9 @@ async function changeEmail(req, res) {
     const request = await ChangeEmailToken.checkRequest(req.userId, email, otp, req.mongooseSession);
     if (!request) throw new TransactionError({status: 400, msg: 'Invalid email or OTP.'});
 
-    await User.changeEmail(req.userId, email, req.mongooseSession);
+    const changed = await User.changeEmail(req.userId, email, req.mongooseSession);
+    if (!changed) return res.json({status: 404, msg: 'Failed to change email. Account not found.'});
+
     sendMail('new-email-verified', {to: email});
 
     res.json({status: 200, msg: 'Email updated successfully.'});
