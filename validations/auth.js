@@ -46,6 +46,7 @@ function validatePwd(pwd) {
 function validateRememberMe(rememberMe) {
     if (rememberMe === undefined) return {error: 'Remember Me is required.'};
     if (typeof(rememberMe) !== 'boolean') return {error: 'Remember Me must be boolean.'};
+
     return {rememberMe};
 }
 
