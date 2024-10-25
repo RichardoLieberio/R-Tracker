@@ -84,7 +84,7 @@ userSchema.statics.changeName = async function(_id, name) {
 }
 
 userSchema.statics.changeEmail = async function(_id, email, session) {
-    await this.findOneAndUpdate({_id}, {email, updated_at: Date.now()}, {session});
+    return !!await this.findOneAndUpdate({_id}, {email, updated_at: Date.now()}, {session});
 }
 
 userSchema.statics.deleteAccount = async function(id, session) {
