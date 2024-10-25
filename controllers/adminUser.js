@@ -67,7 +67,7 @@ async function blacklist(req, res) {
 async function getUserExpenses(req, res) {
     if (!mongooseIdValidation(req.params.id)) throw new TransactionError({status: 404, msg: 'Failed to get expenses. User not found.'});
 
-    const expenses = await Expense.getExpenses(req.paramns.id);
+    const expenses = await Expense.getExpenses(req.params.id);
     res.json({status: 200, msg: 'Expenses retrieved successfully.', expenses});
 }
 
