@@ -24,6 +24,7 @@ async function updateUser(req, res) {
 
 async function changePwd(req, res) {
     if (!mongooseIdValidation(req.params.id)) throw new TransactionError({status: 404, msg: 'Failed to change user password. User not found.'});
+    if (req.userId === req.params.id) throw new TransactionError({status: 400, msg: 'Cannnot change your own password.'});
 
     const changed = await User.changePwdByAdmin(req.params.id, req.data.pwd, req.mongooseSession);
     if (!changed) throw new TransactionError({status: 404, msg: 'Failed to change user password. User not found.'});
