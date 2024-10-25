@@ -89,6 +89,7 @@ function validateColor(color) {
 function validateHidden(hidden) {
     if (hidden === undefined) return {error: 'Hidden is required.'};
     if (typeof(hidden) !== 'boolean') return {error: 'Hidden must be boolean.'};
+
     return {hidden};
 }
 
