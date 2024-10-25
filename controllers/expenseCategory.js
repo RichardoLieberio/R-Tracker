@@ -50,7 +50,7 @@ async function editCategory(req, res) {
         category.icon = req.data.icon;
     }
 
-    res.json({status: 200, msg: 'Expense category updated successfully.', category})
+    res.json({status: 200, msg: 'Expense category updated successfully.', category});
 }
 
 async function deleteCategory(req, res) {
