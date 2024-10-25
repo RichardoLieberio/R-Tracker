@@ -113,7 +113,7 @@ function validateReason(reason) {
 
     reason = reason.trim().replace(/\s+/g, ' ');
 
-    if (reason.length > 50) return {error: 'Reason length exceeds 255 characters.'};
+    if (reason.length > 255) return {error: 'Reason length exceeds 255 characters.'};
 
     return {reason};
 }

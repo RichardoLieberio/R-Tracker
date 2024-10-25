@@ -60,7 +60,7 @@ function validateName(name) {
     name = name.trim().replace(/\s+/g, ' ');
 
     if (!name) return {error: 'Name is required.'};
-    if (name.length > 30) return {error: 'Name length exceeds 50 characters.'};
+    if (name.length > 30) return {error: 'Name length exceeds 30 characters.'};
 
     return {name};
 }
