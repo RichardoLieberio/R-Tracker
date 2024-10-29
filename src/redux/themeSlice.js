@@ -5,11 +5,11 @@ import theme from '../theme';
 export const themeSlice = createSlice({
     name: 'theme',
     initialState: {
-        color: 'purple'
+        color: theme['purple']
     },
     reducers: {
         changeColor: function(state, action) {
-            state.color = action.payload.color in theme ? action.payload.color : 'purple';
+            state.color = action.payload.color in theme ? theme[action.payload.color] : theme['purple'];
         }
     }
 });
