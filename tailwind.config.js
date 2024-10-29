@@ -1,4 +1,4 @@
-import breakpoints from './config';
+import breakpoints from './config/breakpoints';
 
 /** @type {import('tailwindcss').Config} */
 export default {
