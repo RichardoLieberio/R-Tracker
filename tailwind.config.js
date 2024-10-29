@@ -7,8 +7,9 @@ export default {
   theme: {
     extend: {
       screens: {
-        'tablet': '426px',
-        'desktop': '769px',
+        'phone': '320px',
+        'tablet': '768px',
+        'desktop': '1024px',
       },
     },
   },
