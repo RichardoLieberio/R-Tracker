@@ -1,3 +1,5 @@
+import breakpoints from './config';
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
@@ -6,11 +8,7 @@ export default {
   ],
   theme: {
     extend: {
-      screens: {
-        'phone': '320px',
-        'tablet': '768px',
-        'desktop': '1024px',
-      },
+      screens: breakpoints,
     },
   },
   plugins: [],
