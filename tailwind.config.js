@@ -1,5 +1,4 @@
 import breakpoints from './config/breakpoints';
-import theme from './config/theme';
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -11,7 +10,6 @@ export default {
   theme: {
     extend: {
       screens: breakpoints,
-      colors: theme,
     },
   },
   plugins: [],
