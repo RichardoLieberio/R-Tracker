@@ -34,6 +34,7 @@ export default [
         { allowConstantExport: true },
       ],
       'no-undef': 'off',
+      'no-case-declarations': 'off',
     },
   },
 ]
