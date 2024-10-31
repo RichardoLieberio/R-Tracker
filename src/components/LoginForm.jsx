@@ -90,7 +90,7 @@ export default function LoginForm() {
                             <input type="checkbox" id="rememberMe" checked={rememberMe} onChange={rememberMeHandler} className="w-4 h-4 accent-purple-primary cursor-pointer" />
                             <label htmlFor="rememberMe" className="text-base text-purple-text cursor-pointer">Remember me</label>
                         </div>
-                        <button className="py-2 text-base text-purple-oppositeText bg-purple-primary rounded-md hover:bg-purple-highlight disabled:bg-purple-disabled disabled:cursor-not-allowed">Login</button>
+                        <button className="py-2 text-base text-purple-oppositeText bg-purple-primary rounded-md hover:bg-purple-highlight disabled:bg-purple-highlight disabled:cursor-not-allowed">Login</button>
                     </section>
                     <small className="mx-auto text-sm text-purple-text">
                         Don&apos;t have an account? <Link to="/register" className="text-purple-link hover:underline">Register</Link>
