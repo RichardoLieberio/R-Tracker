@@ -1,4 +1,5 @@
 import {useState, useRef} from 'react';
+import {Link} from 'react-router-dom';
 import {useMediaQuery} from '@mui/material';
 
 import breakpoints from '../../config/breakpoints';
@@ -63,6 +64,9 @@ export default function LoginForm() {
                         </div>
                         <button className="py-2 text-base text-purple-oppositeText bg-purple-primary rounded-md hover:bg-purple-highlight">Login</button>
                     </section>
+                    <small className="mx-auto text-sm text-purple-text">
+                        Don&apos;t have an account? <Link to="/register" className="text-purple-link hover:underline">Register</Link>
+                    </small>
                 </form>
                 <footer className="flex flex-col items-center gap-2">
                     <small className="text-sm text-purple-text">Contact us</small>
