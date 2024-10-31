@@ -10,7 +10,7 @@ export default function LoginForm() {
     const [email, setEmail] = useState('');
     const [pwd, setPwd] = useState('');
     const [showPwd, setShowPwd] = useState(false);
-    const [rememberMe, setRememberMe] = useState(true);
+    const [rememberMe, setRememberMe] = useState(false);
 
     const emailLabelRef = useRef(null);
     const pwdLabelRef = useRef(null);
@@ -77,7 +77,7 @@ export default function LoginForm() {
                         </div>
                         <div className="relative">
                             <label htmlFor="pwd" ref={pwdLabelRef} className={css.labelMiddle}>Password</label>
-                            <input type={showPwd ? "text" : "password"} id="pwd" value={pwd} ref={pwdInputRef} onChange={pwdHandler} onFocus={pwdInputFocus} onBlur={pwdInputBlur} className="w-full px-3 py-2 text-base text-purple-text border border-purple-neutral rounded-md outline-none focus:border-purple-primary disabled:bg-purple-disabled disabled:cursor-not-allowed" />
+                            <input type={showPwd ? "text" : "password"} id="pwd" value={pwd} ref={pwdInputRef} onChange={pwdHandler} onFocus={pwdInputFocus} onBlur={pwdInputBlur} className="w-full px-3 py-2 pr-9 text-base text-purple-text border border-purple-neutral rounded-md outline-none focus:border-purple-primary disabled:bg-purple-disabled disabled:cursor-not-allowed" />
                             <div onClick={togglePwd} className="px-3 py-3 absolute right-0 top-0 rounded-tr-md rounded-br-md cursor-pointer">
                                 {
                                     showPwd
