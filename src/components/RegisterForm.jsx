@@ -106,15 +106,15 @@ export default function RegisterForm() {
                     <section className="flex flex-col gap-4">
                         <div className="relative">
                             <label htmlFor="name" ref={nameLabelRef} className={css.labelMiddle}>Full Name</label>
-                            <input type="text" id="name" value={name} onChange={nameHandler} onFocus={nameInputFocus} onBlur={nameInputBlur} className="w-full px-3 py-2 text-base text-purple-text border border-purple-neutral rounded-md outline-none focus:border-purple-primary" />
+                            <input type="text" id="name" value={name} onChange={nameHandler} onFocus={nameInputFocus} onBlur={nameInputBlur} className="w-full px-3 py-2 text-base text-purple-text border border-purple-neutral rounded-md outline-none focus:border-purple-primary disabled:bg-purple-disabled disabled:cursor-not-allowed" />
                         </div>
                         <div className="relative">
                             <label htmlFor="email" ref={emailLabelRef} className={css.labelMiddle}>Email</label>
-                            <input type="email" id="email" value={email} onChange={emailHandler} onFocus={emailInputFocus} onBlur={emailInputBlur} className="w-full px-3 py-2 text-base text-purple-text border border-purple-neutral rounded-md outline-none focus:border-purple-primary" />
+                            <input type="email" id="email" value={email} onChange={emailHandler} onFocus={emailInputFocus} onBlur={emailInputBlur} className="w-full px-3 py-2 text-base text-purple-text border border-purple-neutral rounded-md outline-none focus:border-purple-primary disabled:bg-purple-disabled disabled:cursor-not-allowed" />
                         </div>
                         <div className="relative">
                             <label htmlFor="pwd" ref={pwdLabelRef} className={css.labelMiddle}>Password</label>
-                            <input type={showPwd ? "text" : "password"} id="pwd" value={pwd} ref={pwdInputRef} onChange={pwdHandler} onFocus={pwdInputFocus} onBlur={pwdInputBlur} className="w-full px-3 py-2 text-base text-purple-text border border-purple-neutral rounded-md outline-none focus:border-purple-primary" />
+                            <input type={showPwd ? "text" : "password"} id="pwd" value={pwd} ref={pwdInputRef} onChange={pwdHandler} onFocus={pwdInputFocus} onBlur={pwdInputBlur} className="w-full px-3 py-2 text-base text-purple-text border border-purple-neutral rounded-md outline-none focus:border-purple-primary disabled:bg-purple-disabled disabled:cursor-not-allowed" />
                             <div onClick={togglePwd} className="px-3 py-3 absolute right-0 top-0 rounded-tr-md rounded-br-md cursor-pointer">
                                 {
                                     showPwd
@@ -125,7 +125,7 @@ export default function RegisterForm() {
                         </div>
                         <div className="relative">
                             <label htmlFor="confPwd" ref={confPwdLabelRef} className={css.labelMiddle}>Confirm Password</label>
-                            <input type={showConfPwd ? "text" : "password"} id="confPwd" value={confPwd} ref={confPwdInputRef} onChange={confPwdHandler} onFocus={confPwdInputFocus} onBlur={confPwdInputBlur} className="w-full px-3 py-2 text-base text-purple-text border border-purple-neutral rounded-md outline-none focus:border-purple-primary" />
+                            <input type={showConfPwd ? "text" : "password"} id="confPwd" value={confPwd} ref={confPwdInputRef} onChange={confPwdHandler} onFocus={confPwdInputFocus} onBlur={confPwdInputBlur} className="w-full px-3 py-2 text-base text-purple-text border border-purple-neutral rounded-md outline-none focus:border-purple-primary disabled:bg-purple-disabled disabled:cursor-not-allowed" />
                             <div onClick={toggleConfPwd} className="px-3 py-3 absolute right-0 top-0 rounded-tr-md rounded-br-md cursor-pointer">
                                 {
                                     showConfPwd
@@ -134,7 +134,7 @@ export default function RegisterForm() {
                                 }
                             </div>
                         </div>
-                        <button className="py-2 text-base text-purple-oppositeText bg-purple-primary rounded-md hover:bg-purple-highlight">Register</button>
+                        <button className="py-2 text-base text-purple-oppositeText bg-purple-primary rounded-md hover:bg-purple-highlight disabled:bg-purple-highlight disabled:cursor-not-allowed">Register</button>
                     </section>
                     <small className="mx-auto text-sm text-purple-text">
                         Already have an account? <Link to="/login" className="text-purple-link hover:underline">Login</Link>
