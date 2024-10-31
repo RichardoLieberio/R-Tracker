@@ -46,9 +46,9 @@ export default function LoginForm() {
         <div className="flex absolute right-1/2 bottom-1/2 translate-x-1/2 translate-y-1/2 overflow-hidden shadow-sm shadow-purple-shadow rounded-2xl tablet:rounded-3xl">
             {
                 tabletBreakpoint &&
-                <section className="w-56 h-auto phone:w-60 tablet:w-80 desktop:w-96 bg-cover bg-center bg-no-repeat" style={{backgroundImage: 'url("/Login Image.jpeg")'}} />
+                <section className="w-56 h-auto phone:w-72 tablet:w-80 desktop:w-96 bg-cover bg-center bg-no-repeat" style={{backgroundImage: 'url("/Login Image.jpeg")'}} />
             }
-            <section className="w-56 phone:w-64 tablet:w-80 desktop:w-96 p-8 flex flex-col gap-12">
+            <section className="w-56 phone:w-72 tablet:w-80 desktop:w-96 p-8 flex flex-col gap-12">
                 <img src="/Logo.png" alt="R-Tracker Logo" width="32px" height="32px" />
                 <form className="flex flex-col gap-6">
                     <h1 className="text-2xl text-purple-text">Login</h1>
