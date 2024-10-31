@@ -10,6 +10,7 @@ export default function LoginForm() {
     const [email, setEmail] = useState('');
     const [pwd, setPwd] = useState('');
     const [showPwd, setShowPwd] = useState(false);
+    const [rememberMe, setRememberMe] = useState(true);
 
     const emailLabelRef = useRef(null);
     const pwdLabelRef = useRef(null);
@@ -41,6 +42,10 @@ export default function LoginForm() {
         pwdLabelRef.current.className = pwd ? css.labelTopBlur : css.labelMiddle;
     }
 
+    function rememberMeHandler(e) {
+        setRememberMe(e.target.checked);
+    }
+
     function togglePwd() {
         setShowPwd(value => !value);
         setTimeout(function() {
@@ -68,11 +73,11 @@ export default function LoginForm() {
                     <section className="flex flex-col gap-4">
                         <div className="relative">
                             <label htmlFor="email" ref={emailLabelRef} className={css.labelMiddle}>Email</label>
-                            <input type="email" id="email" value={email} onChange={emailHandler} onFocus={emailInputFocus} onBlur={emailInputBlur} className="w-full px-3 py-2 text-base text-purple-text border border-purple-neutral rounded-md outline-none focus:border-purple-primary" />
+                            <input type="email" id="email" value={email} onChange={emailHandler} onFocus={emailInputFocus} onBlur={emailInputBlur} className="w-full px-3 py-2 text-base text-purple-text border border-purple-neutral rounded-md outline-none focus:border-purple-primary disabled:bg-purple-disabled disabled:cursor-not-allowed" />
                         </div>
                         <div className="relative">
                             <label htmlFor="pwd" ref={pwdLabelRef} className={css.labelMiddle}>Password</label>
-                            <input type={showPwd ? "text" : "password"} id="pwd" value={pwd} ref={pwdInputRef} onChange={pwdHandler} onFocus={pwdInputFocus} onBlur={pwdInputBlur} className="w-full px-3 py-2 text-base text-purple-text border border-purple-neutral rounded-md outline-none focus:border-purple-primary" />
+                            <input type={showPwd ? "text" : "password"} id="pwd" value={pwd} ref={pwdInputRef} onChange={pwdHandler} onFocus={pwdInputFocus} onBlur={pwdInputBlur} className="w-full px-3 py-2 text-base text-purple-text border border-purple-neutral rounded-md outline-none focus:border-purple-primary disabled:bg-purple-disabled disabled:cursor-not-allowed" />
                             <div onClick={togglePwd} className="px-3 py-3 absolute right-0 top-0 rounded-tr-md rounded-br-md cursor-pointer">
                                 {
                                     showPwd
@@ -81,7 +86,11 @@ export default function LoginForm() {
                                 }
                             </div>
                         </div>
-                        <button className="py-2 text-base text-purple-oppositeText bg-purple-primary rounded-md hover:bg-purple-highlight">Login</button>
+                        <div className="flex items-center gap-2">
+                            <input type="checkbox" id="rememberMe" checked={rememberMe} onChange={rememberMeHandler} className="w-4 h-4 accent-purple-primary cursor-pointer" />
+                            <label htmlFor="rememberMe" className="text-base text-purple-text cursor-pointer">Remember me</label>
+                        </div>
+                        <button className="py-2 text-base text-purple-oppositeText bg-purple-primary rounded-md hover:bg-purple-highlight disabled:bg-purple-disabled disabled:cursor-not-allowed">Login</button>
                     </section>
                     <small className="mx-auto text-sm text-purple-text">
                         Don&apos;t have an account? <Link to="/register" className="text-purple-link hover:underline">Register</Link>
