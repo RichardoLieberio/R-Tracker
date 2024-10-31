@@ -51,7 +51,7 @@ export default function LoginForm() {
             }
             <section className="w-56 phone:w-72 tablet:w-80 desktop:w-96 p-8 flex flex-col gap-12">
                 <img src="/Logo.png" alt="R-Tracker Logo" width="32px" height="32px" />
-                <form className="flex flex-col gap-6">
+                <form className="flex flex-col gap-6" autoCapitalize="off" autoComplete="off" autoCorrect="off">
                     <h1 className="text-2xl text-purple-text">Login</h1>
                     <section className="flex flex-col gap-4">
                         <div className="relative">
