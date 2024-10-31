@@ -2,6 +2,7 @@ import {BrowserRouter, Routes, Route} from 'react-router-dom';
 
 import Login from './pages/Login';
 import Register from './pages/Register';
+import VerifyEmail from './pages/VerifyEmail';
 import ChangeEmail from './pages/ChangeEmail';
 import ResetPwd from './pages/ResetPwd';
 import Dashboard from './pages/Dashboard';
@@ -19,6 +20,7 @@ export default function App() {
                     <Route path="/" element={<Dashboard />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
+                    <Route path="/verify-email" element={<VerifyEmail />} />
                     <Route path="/change-email" element={<ChangeEmail />} />
                     <Route path="/reset-password" element={<ResetPwd />} />
                     <Route path="/expense" element={<Expense />} />
