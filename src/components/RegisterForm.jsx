@@ -4,16 +4,22 @@ import {useMediaQuery} from '@mui/material';
 
 import breakpoints from '../../config/breakpoints';
 
+import {FaEye, FaEyeSlash} from 'react-icons/fa';
+
 export default function RegisterForm() {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [pwd, setPwd] = useState('');
     const [confPwd, setConfPwd] = useState('');
+    const [showPwd, setShowPwd] = useState(false);
+    const [showConfPwd, setShowConfPwd] = useState(false);
 
     const nameLabelRef = useRef(null);
     const emailLabelRef = useRef(null);
     const pwdLabelRef = useRef(null);
+    const pwdInputRef = useRef(null);
     const confPwdLabelRef = useRef(null);
+    const confPwdInputRef = useRef(null);
 
     const tabletBreakpoint = useMediaQuery(`(min-width: ${breakpoints.tablet})`);
 
@@ -65,6 +71,22 @@ export default function RegisterForm() {
         confPwdLabelRef.current.className = confPwd ? css.labelTopBlur : css.labelMiddle;
     }
 
+    function togglePwd() {
+        setShowPwd(value => !value);
+        setTimeout(function() {
+            pwdInputRef.current.focus();
+            pwdInputRef.current.setSelectionRange(pwd.length, pwd.length);
+        }, 0);
+    }
+
+    function toggleConfPwd() {
+        setShowConfPwd(value => !value);
+        setTimeout(function() {
+            confPwdInputRef.current.focus();
+            confPwdInputRef.current.setSelectionRange(confPwd.length, confPwd.length);
+        }, 0);
+    }
+
     const css = {
         labelMiddle: 'absolute left-3 bottom-1/2 translate-y-1/2 text-base text-purple-text transition-transform cursor-text',
         labelTopBlur: 'px-2 absolute left-1 -top-3 text-sm text-purple-text bg-purple-background transition-transform cursor-text',
@@ -92,11 +114,25 @@ export default function RegisterForm() {
                         </div>
                         <div className="relative">
                             <label htmlFor="pwd" ref={pwdLabelRef} className={css.labelMiddle}>Password</label>
-                            <input type="password" id="pwd" value={pwd} onChange={pwdHandler} onFocus={pwdInputFocus} onBlur={pwdInputBlur} className="w-full px-3 py-2 text-base text-purple-text border border-purple-neutral rounded-md outline-none focus:border-purple-primary" />
+                            <input type={showPwd ? "text" : "password"} id="pwd" value={pwd} ref={pwdInputRef} onChange={pwdHandler} onFocus={pwdInputFocus} onBlur={pwdInputBlur} className="w-full px-3 py-2 text-base text-purple-text border border-purple-neutral rounded-md outline-none focus:border-purple-primary" />
+                            <div onClick={togglePwd} className="px-3 py-3 absolute right-0 top-0 rounded-tr-md rounded-br-md cursor-pointer">
+                                {
+                                    showPwd
+                                    ? <FaEyeSlash className="text-base text-purple-text" />
+                                    : <FaEye className="text-base text-purple-text" />
+                                }
+                            </div>
                         </div>
                         <div className="relative">
                             <label htmlFor="confPwd" ref={confPwdLabelRef} className={css.labelMiddle}>Confirm Password</label>
-                            <input type="password" id="confPwd" value={confPwd} onChange={confPwdHandler} onFocus={confPwdInputFocus} onBlur={confPwdInputBlur} className="w-full px-3 py-2 text-base text-purple-text border border-purple-neutral rounded-md outline-none focus:border-purple-primary" />
+                            <input type={showConfPwd ? "text" : "password"} id="confPwd" value={confPwd} ref={confPwdInputRef} onChange={confPwdHandler} onFocus={confPwdInputFocus} onBlur={confPwdInputBlur} className="w-full px-3 py-2 text-base text-purple-text border border-purple-neutral rounded-md outline-none focus:border-purple-primary" />
+                            <div onClick={toggleConfPwd} className="px-3 py-3 absolute right-0 top-0 rounded-tr-md rounded-br-md cursor-pointer">
+                                {
+                                    showConfPwd
+                                    ? <FaEyeSlash className="text-base text-purple-text" />
+                                    : <FaEye className="text-base text-purple-text" />
+                                }
+                            </div>
                         </div>
                         <button className="py-2 text-base text-purple-oppositeText bg-purple-primary rounded-md hover:bg-purple-highlight">Register</button>
                     </section>
