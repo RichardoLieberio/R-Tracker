@@ -1,4 +1,5 @@
-import {useState, useRef} from 'react';
+import PropTypes from 'prop-types';
+import {useEffect, useRef} from 'react';
 import {Link} from 'react-router-dom';
 import {useMediaQuery} from '@mui/material';
 
@@ -6,13 +7,16 @@ import breakpoints from '../../config/breakpoints';
 
 import {FaEye, FaEyeSlash} from 'react-icons/fa';
 
-export default function RegisterForm() {
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [pwd, setPwd] = useState('');
-    const [confPwd, setConfPwd] = useState('');
-    const [showPwd, setShowPwd] = useState(false);
-    const [showConfPwd, setShowConfPwd] = useState(false);
+export default function RegisterForm(props) {
+    const {
+        name, setName,
+        email, setEmail,
+        pwd, setPwd,
+        confPwd, setConfPwd,
+        showPwd, setShowPwd,
+        showConfPwd, setShowConfPwd,
+        stepHandler
+    } = props;
 
     const nameLabelRef = useRef(null);
     const emailLabelRef = useRef(null);
@@ -22,6 +26,13 @@ export default function RegisterForm() {
     const confPwdInputRef = useRef(null);
 
     const tabletBreakpoint = useMediaQuery(`(min-width: ${breakpoints.tablet})`);
+
+    useEffect(function() {
+        nameInputBlur();
+        emailInputBlur();
+        pwdInputBlur();
+        confPwdInputBlur();
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     function nameHandler(e) {
         setName(e.target.value);
@@ -87,6 +98,10 @@ export default function RegisterForm() {
         }, 0);
     }
 
+    function register() {
+        stepHandler('verification');
+    }
+
     const css = {
         labelMiddle: 'absolute left-3 bottom-1/2 translate-y-1/2 text-base text-purple-text transition-transform cursor-text',
         labelTopBlur: 'px-2 absolute left-1 -top-3 text-sm text-purple-text bg-purple-background transition-transform cursor-text',
@@ -134,7 +149,7 @@ export default function RegisterForm() {
                                 }
                             </div>
                         </div>
-                        <button className="py-2 text-base text-purple-oppositeText bg-purple-primary rounded-md hover:bg-purple-highlight disabled:bg-purple-highlight disabled:cursor-not-allowed">Register</button>
+                        <button onClick={register} className="py-2 text-base text-purple-oppositeText bg-purple-primary rounded-md hover:bg-purple-highlight disabled:bg-purple-highlight disabled:cursor-not-allowed">Register</button>
                     </section>
                     <small className="mx-auto text-sm text-purple-text">
                         Already have an account? <Link to="/login" className="text-purple-link hover:underline">Login</Link>
@@ -161,3 +176,19 @@ export default function RegisterForm() {
         </div>
     );
 }
+
+RegisterForm.propTypes = {
+    name: PropTypes.string,
+    setName: PropTypes.func,
+    email: PropTypes.string,
+    setEmail: PropTypes.func,
+    pwd: PropTypes.string,
+    setPwd: PropTypes.func,
+    confPwd: PropTypes.string,
+    setConfPwd: PropTypes.func,
+    showPwd: PropTypes.string,
+    setShowPwd: PropTypes.func,
+    showConfPwd: PropTypes.string,
+    setShowConfPwd: PropTypes.func,
+    stepHandler: PropTypes.func
+};
