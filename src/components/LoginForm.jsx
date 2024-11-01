@@ -58,7 +58,7 @@ export default function LoginForm() {
         labelMiddle: 'absolute left-3 bottom-1/2 translate-y-1/2 text-base text-purple-text transition-transform cursor-text',
         labelTopBlur: 'px-2 absolute left-1 -top-3 text-sm text-purple-text bg-purple-background transition-transform cursor-text',
         labelTopFocus: 'px-2 absolute left-1 -top-3 text-sm text-purple-primary bg-purple-background transition-transform cursor-text'
-    }
+    };
 
     return (
         <div className="flex absolute right-1/2 bottom-1/2 translate-x-1/2 translate-y-1/2 overflow-hidden shadow-sm shadow-purple-shadow rounded-2xl tablet:rounded-3xl">
