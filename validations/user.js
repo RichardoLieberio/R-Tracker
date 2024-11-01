@@ -1,7 +1,7 @@
 const User = require('../models/User');
 
 async function register(req, res, next) {
-    const {name, email, pwd} = req.body;
+    const {name, email, pwd, confPwd} = req.body;
     const errorMsg = {};
     req.data = {};
 
@@ -19,6 +19,9 @@ async function register(req, res, next) {
     pwdValidation.error
     ? errorMsg['pwd'] = pwdValidation.error
     : req.data['pwd'] = pwdValidation.pwd;
+
+    const confPwdValidation = validateConfPwd(pwd, confPwd);
+    if (confPwdValidation.error) errorMsg['confPwd'] = confPwdValidation.error;
 
     if (Object.entries(errorMsg).length) return res.json({status: 422, msg: errorMsg});
     next();
@@ -162,6 +165,11 @@ function validatePwd(pwd, basicValidation=false) {
     if (Object.entries(pwdRegexError).length) return {error: pwdRegexError};
 
     return {pwd};
+}
+
+function validateConfPwd(pwd, confPwd) {
+    if (pwd !== confPwd) return {error: 'Confirmed password does not match the original password.'};
+    return {confPwd};
 }
 
 function validateOtp(otp) {
