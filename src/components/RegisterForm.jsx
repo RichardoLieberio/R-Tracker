@@ -186,9 +186,9 @@ RegisterForm.propTypes = {
     setPwd: PropTypes.func,
     confPwd: PropTypes.string,
     setConfPwd: PropTypes.func,
-    showPwd: PropTypes.string,
+    showPwd: PropTypes.bool,
     setShowPwd: PropTypes.func,
-    showConfPwd: PropTypes.string,
+    showConfPwd: PropTypes.bool,
     setShowConfPwd: PropTypes.func,
     stepHandler: PropTypes.func
 };
