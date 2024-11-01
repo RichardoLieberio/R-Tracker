@@ -1,11 +1,13 @@
 import PropTypes from 'prop-types';
-import {useEffect, useRef} from 'react';
+import {useState, useEffect, useRef} from 'react';
 import {Link} from 'react-router-dom';
 import {useMediaQuery} from '@mui/material';
 
 import breakpoints from '../../config/breakpoints';
 
+import Tooltip from './Tooltip';
 import {FaEye, FaEyeSlash} from 'react-icons/fa';
+import {MdErrorOutline} from 'react-icons/md';
 
 export default function RegisterForm(props) {
     const {
@@ -17,6 +19,8 @@ export default function RegisterForm(props) {
         showConfPwd, setShowConfPwd,
         stepHandler
     } = props;
+
+    const [formError, setFormError] = useState({});
 
     const nameLabelRef = useRef(null);
     const emailLabelRef = useRef(null);
@@ -104,9 +108,15 @@ export default function RegisterForm(props) {
 
     const css = {
         labelMiddle: 'absolute left-3 bottom-1/2 translate-y-1/2 text-base text-purple-text transition-transform cursor-text',
+        labelMiddleError: 'absolute left-10 bottom-1/2 translate-y-1/2 text-base text-purple-error transition-transform cursor-text',
         labelTopBlur: 'px-2 absolute left-1 -top-3 text-sm text-purple-text bg-purple-background transition-transform cursor-text',
-        labelTopFocus: 'px-2 absolute left-1 -top-3 text-sm text-purple-primary bg-purple-background transition-transform cursor-text'
-    }
+        labelTopFocus: 'px-2 absolute left-1 -top-3 text-sm text-purple-primary bg-purple-background transition-transform cursor-text',
+        labelTopError: 'px-2 absolute left-1 -top-3 text-sm text-purple-error bg-purple-background transition-transform cursor-text',
+        defaultInput: 'w-full px-3 py-2 text-base text-purple-text border border-purple-neutral rounded-md outline-none focus:border-purple-primary disabled:bg-purple-disabled disabled:cursor-not-allowed',
+        defaultInputError: 'w-full px-3 py-2 pl-10 text-base text-purple-text border border-purple-error rounded-md outline-none',
+        pwdInput: 'w-full px-3 py-2 pr-10 text-base text-purple-text border border-purple-neutral rounded-md outline-none focus:border-purple-primary disabled:bg-purple-disabled disabled:cursor-not-allowed',
+        pwdInputError: 'w-full px-10 py-2 text-base text-purple-text border border-purple-error rounded-md outline-none'
+    };
 
     return (
         <div className="flex absolute right-1/2 bottom-1/2 translate-x-1/2 translate-y-1/2 overflow-hidden shadow-sm shadow-purple-shadow rounded-2xl tablet:rounded-3xl">
@@ -120,16 +130,40 @@ export default function RegisterForm(props) {
                     <h1 className="text-2xl text-purple-text">Register</h1>
                     <section className="flex flex-col gap-4">
                         <div className="relative">
-                            <label htmlFor="name" ref={nameLabelRef} className={css.labelMiddle}>Full Name</label>
-                            <input type="text" id="name" value={name} onChange={nameHandler} onFocus={nameInputFocus} onBlur={nameInputBlur} className="w-full px-3 py-2 text-base text-purple-text border border-purple-neutral rounded-md outline-none focus:border-purple-primary disabled:bg-purple-disabled disabled:cursor-not-allowed" />
+                            {
+                                formError.name
+                                &&  <div className="px-3 py-3 absolute left-0 top-0 rounded-tr-md rounded-br-md">
+                                        <Tooltip title={formError.name} placement="top-start" posY={-8} className="w-fit max-w-32 phone:max-w-40 tablet:max-w-48 desktop:max-w-56 px-4 py-1 text-sm text-purple-oppositeText bg-purple-error rounded-md">
+                                            <MdErrorOutline className="text-lg text-purple-error" />
+                                        </Tooltip>
+                                    </div>
+                            }
+                            <label htmlFor="name" ref={nameLabelRef}>Full Name</label>
+                            <input type="text" id="name" value={name} onChange={nameHandler} onFocus={nameInputFocus} onBlur={nameInputBlur} className={css.defaultInput} />
                         </div>
                         <div className="relative">
-                            <label htmlFor="email" ref={emailLabelRef} className={css.labelMiddle}>Email</label>
-                            <input type="email" id="email" value={email} onChange={emailHandler} onFocus={emailInputFocus} onBlur={emailInputBlur} className="w-full px-3 py-2 text-base text-purple-text border border-purple-neutral rounded-md outline-none focus:border-purple-primary disabled:bg-purple-disabled disabled:cursor-not-allowed" />
+                            {
+                                formError.email
+                                &&  <div className="px-3 py-3 absolute left-0 top-0 rounded-tr-md rounded-br-md">
+                                        <Tooltip title={formError.email} placement="top-start" posY={-8} className="w-fit max-w-32 phone:max-w-40 tablet:max-w-48 desktop:max-w-56 px-4 py-1 text-sm text-purple-oppositeText bg-purple-error rounded-md">
+                                            <MdErrorOutline className="text-lg text-purple-error" />
+                                        </Tooltip>
+                                    </div>
+                            }
+                            <label htmlFor="email" ref={emailLabelRef}>Email</label>
+                            <input type="email" id="email" value={email} onChange={emailHandler} onFocus={emailInputFocus} onBlur={emailInputBlur} className={css.defaultInput} />
                         </div>
                         <div className="relative">
-                            <label htmlFor="pwd" ref={pwdLabelRef} className={css.labelMiddle}>Password</label>
-                            <input type={showPwd ? "text" : "password"} id="pwd" value={pwd} ref={pwdInputRef} onChange={pwdHandler} onFocus={pwdInputFocus} onBlur={pwdInputBlur} className="w-full px-3 py-2 pr-9 text-base text-purple-text border border-purple-neutral rounded-md outline-none focus:border-purple-primary disabled:bg-purple-disabled disabled:cursor-not-allowed" />
+                            {
+                                formError.pwd
+                                &&  <div className="px-3 py-3 absolute left-0 top-0 rounded-tr-md rounded-br-md">
+                                        <Tooltip title={formError.pwd} placement="top-start" posY={-8} className="w-fit max-w-32 phone:max-w-40 tablet:max-w-48 desktop:max-w-56 px-4 py-1 text-sm text-purple-oppositeText bg-purple-error rounded-md">
+                                            <MdErrorOutline className="text-lg text-purple-error" />
+                                        </Tooltip>
+                                    </div>
+                            }
+                            <label htmlFor="pwd" ref={pwdLabelRef}>Password</label>
+                            <input type={showPwd ? "text" : "password"} id="pwd" value={pwd} ref={pwdInputRef} onChange={pwdHandler} onFocus={pwdInputFocus} onBlur={pwdInputBlur} className={css.pwdInput} />
                             <div onClick={togglePwd} className="px-3 py-3 absolute right-0 top-0 rounded-tr-md rounded-br-md cursor-pointer">
                                 {
                                     showPwd
@@ -139,8 +173,16 @@ export default function RegisterForm(props) {
                             </div>
                         </div>
                         <div className="relative">
-                            <label htmlFor="confPwd" ref={confPwdLabelRef} className={css.labelMiddle}>Confirm Password</label>
-                            <input type={showConfPwd ? "text" : "password"} id="confPwd" value={confPwd} ref={confPwdInputRef} onChange={confPwdHandler} onFocus={confPwdInputFocus} onBlur={confPwdInputBlur} className="w-full px-3 py-2 pr-9 text-base text-purple-text border border-purple-neutral rounded-md outline-none focus:border-purple-primary disabled:bg-purple-disabled disabled:cursor-not-allowed" />
+                            {
+                                formError.confPwd
+                                &&  <div className="px-3 py-3 absolute left-0 top-0 rounded-tr-md rounded-br-md">
+                                        <Tooltip title={formError.confPwd} placement="top-start" posY={-8} className="w-fit max-w-32 phone:max-w-40 tablet:max-w-48 desktop:max-w-56 px-4 py-1 text-sm text-purple-oppositeText bg-purple-error rounded-md">
+                                            <MdErrorOutline className="text-lg text-purple-error" />
+                                        </Tooltip>
+                                    </div>
+                            }
+                            <label htmlFor="confPwd" ref={confPwdLabelRef}>Confirm Password</label>
+                            <input type={showConfPwd ? "text" : "password"} id="confPwd" value={confPwd} ref={confPwdInputRef} onChange={confPwdHandler} onFocus={confPwdInputFocus} onBlur={confPwdInputBlur} className={css.pwdInput} />
                             <div onClick={toggleConfPwd} className="px-3 py-3 absolute right-0 top-0 rounded-tr-md rounded-br-md cursor-pointer">
                                 {
                                     showConfPwd
