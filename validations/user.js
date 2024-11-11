@@ -168,6 +168,8 @@ function validatePwd(pwd, basicValidation=false) {
 }
 
 function validateConfPwd(pwd, confPwd) {
+    if (!confPwd) return {error: 'Confirm password is required.'};
+    if (typeof(confPwd) !== 'string') return {error: 'Confirm password must be string.'};
     if (pwd !== confPwd) return {error: 'Confirmed password does not match the original password.'};
     return {confPwd};
 }
