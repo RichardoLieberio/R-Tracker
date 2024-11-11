@@ -1,7 +1,7 @@
 function getToastClassName(theme) {
     let toastClassName;
 
-    switch(theme) {
+    switch (theme) {
         case 'red':
             toastClassName = {
                 success: 'bg-red-success',
@@ -59,7 +59,7 @@ function getToastClassName(theme) {
 function getBodyClassName(theme) {
     let bodyClassName;
 
-    switch(theme) {
+    switch (theme) {
         case 'red':
             bodyClassName = 'text-red-oppositeText';
             break;
