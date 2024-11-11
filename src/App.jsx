@@ -1,4 +1,5 @@
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
+import {useSelector} from 'react-redux';
 
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -9,12 +10,43 @@ import Expense from './pages/Expense';
 import User from './pages/User';
 import ExpenseCategory from './pages/ExpenseCategory';
 
+import 'react-toastify/dist/ReactToastify.css';
+
 import MainLayout from './components/MainLayout';
+import {ToastContainer} from 'react-toastify';
+
+import {getToastClassName, getBodyClassName} from './css/toast';
 
 export default function App() {
+    const theme = useSelector((state) => state.theme.color);
+
+    function toastClassName(context) {
+        const className = getToastClassName(theme);
+        return `${context.defaultClassName} ${className[context?.type]}`;
+    }
+
+    function bodyClassName() {
+        const className = getBodyClassName(theme);
+        return `${className} ml-2 flex items-center`;
+    }
+
+    const toastConfig = {
+        position: 'top-center',
+        theme: 'colored',
+        autoClose: 3000,
+        closeOnClick: true,
+        newestOnTop: true,
+        pauseOnHover: false,
+        draggable: true,
+        pauseOnFocusLoss: false,
+        toastClassName,
+        bodyClassName
+    };
+
     return (
         <BrowserRouter>
             <MainLayout>
+                <ToastContainer {...toastConfig} />
                 <Routes>
                     <Route path="/" element={<Dashboard />} />
                     <Route path="/login" element={<Login />} />
