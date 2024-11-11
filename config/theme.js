@@ -53,7 +53,7 @@ export default {
         accent: '#FFF59D',
         background: '#FFFFFF',
         text: '#212121',
-        oppositeText: '#212121',
+        oppositeText: '#FFFFFF',
         neutral: '#B0B0B0',
         highlight: '#FFEB3B',
         shadow: '#F57F17',
