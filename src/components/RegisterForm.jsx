@@ -127,17 +127,19 @@ export default function RegisterForm(props) {
     }
 
     async function register() {
-        setIsSubmitting(true);
-        setFormError({});
-        contr.revertForm(name, nameLabelRef, nameInputRef, email, emailLabelRef, emailInputRef, pwd, pwdLabelRef, pwdInputRef, confPwd, confPwdLabelRef, confPwdInputRef);
+        if (!isSubmitting) {
+            setIsSubmitting(true);
+            setFormError({});
+            contr.revertForm(name, nameLabelRef, nameInputRef, email, emailLabelRef, emailInputRef, pwd, pwdLabelRef, pwdInputRef, confPwd, confPwdLabelRef, confPwdInputRef);
 
-        const error = await contr.register(name, email, pwd, confPwd, csrfToken, accessToken, stepHandler);
-        if (error) {
-            setFormError(error);
-            contr.showError(error, name, nameLabelRef, nameInputRef, email, emailLabelRef, emailInputRef, pwd, pwdLabelRef, pwdInputRef, confPwd, confPwdLabelRef, confPwdInputRef);
+            const error = await contr.register(name, email, pwd, confPwd, csrfToken, accessToken, stepHandler);
+            if (error) {
+                setFormError(error);
+                contr.showError(error, name, nameLabelRef, nameInputRef, email, emailLabelRef, emailInputRef, pwd, pwdLabelRef, pwdInputRef, confPwd, confPwdLabelRef, confPwdInputRef);
+            }
+
+            setIsSubmitting(false);
         }
-
-        setIsSubmitting(false);
     }
 
     return (
