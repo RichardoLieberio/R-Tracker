@@ -1,4 +1,5 @@
 import {useState} from 'react';
+import {useSelector} from 'react-redux';
 
 import RegisterForm from '../components/RegisterForm';
 import EmailVerification from '../components/EmailVerification';
@@ -11,6 +12,8 @@ export default function Register() {
     const [showPwd, setShowPwd] = useState(false);
     const [showConfPwd, setShowConfPwd] = useState(false);
     const [step, setStep] = useState('register');
+
+    const accessToken = useSelector((state) => state.auth.accessToken);
 
     function stepHandler(nextStep) {
         setStep(nextStep);
@@ -25,12 +28,14 @@ export default function Register() {
                 confPwd, setConfPwd,
                 showPwd, setShowPwd,
                 showConfPwd, setShowConfPwd,
+                accessToken,
                 stepHandler
             };
             return <RegisterForm {...registerFormState} />;
         case 'verification':
             const emailVerificationState = {
                 email,
+                accessToken,
                 stepHandler
             };
             return <EmailVerification {...emailVerificationState} />;

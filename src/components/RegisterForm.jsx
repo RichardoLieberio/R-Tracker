@@ -25,6 +25,7 @@ export default function RegisterForm(props) {
         confPwd, setConfPwd,
         showPwd, setShowPwd,
         showConfPwd, setShowConfPwd,
+        accessToken,
         stepHandler
     } = props;
 
@@ -130,7 +131,7 @@ export default function RegisterForm(props) {
         setFormError({});
         contr.revertForm(name, nameLabelRef, nameInputRef, email, emailLabelRef, emailInputRef, pwd, pwdLabelRef, pwdInputRef, confPwd, confPwdLabelRef, confPwdInputRef);
 
-        const error = await contr.register(name, email, pwd, confPwd, csrfToken, stepHandler);
+        const error = await contr.register(name, email, pwd, confPwd, csrfToken, accessToken, stepHandler);
         if (error) {
             setFormError(error);
             contr.showError(error, name, nameLabelRef, nameInputRef, email, emailLabelRef, emailInputRef, pwd, pwdLabelRef, pwdInputRef, confPwd, confPwdLabelRef, confPwdInputRef);
@@ -253,5 +254,9 @@ RegisterForm.propTypes = {
     setShowPwd: PropTypes.func,
     showConfPwd: PropTypes.bool,
     setShowConfPwd: PropTypes.func,
+    accessToken: PropTypes.oneOfType([
+        PropTypes.null,
+        PropTypes.string
+    ]),
     stepHandler: PropTypes.func
 };

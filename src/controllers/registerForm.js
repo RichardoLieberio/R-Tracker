@@ -41,12 +41,12 @@ function revertForm(name, nameLabelRef, nameInputRef, email, emailLabelRef, emai
     confPwdInputRef.current.className = css.pwdInput;
 }
 
-async function register(name, email, pwd, confPwd, csrfToken, stepHandler) {
+async function register(name, email, pwd, confPwd, csrfToken, accessToken, stepHandler) {
     const data = {name, email, pwd, confPwd};
     const config = {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer 123912310923',
+            'Authorization': `Bearer ${accessToken}`,
             'CSRF-Token': csrfToken
         }
     };
