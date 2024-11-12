@@ -2,7 +2,7 @@ import {forwardRef} from 'react';
 
 const Input = forwardRef(function(props, ref) {
     return (
-        <input {...props} ref={ref} autoCapitalize="off" autoCorrect="off" autoComplete="off" />
+        <input {...props} ref={ref} autoCapitalize="off" autoComplete="off" spellCheck="false" />
     );
 });
 
