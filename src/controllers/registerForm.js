@@ -70,9 +70,6 @@ async function register(name, email, pwd, confPwd, csrfToken, accessToken, stepH
             break;
         case 422:
             return response.data.msg;
-        case 429:
-            toast.error(response.data.msg);
-            break;
     }
 }
 
