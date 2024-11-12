@@ -30,7 +30,8 @@ function requestError(error) {
 }
 
 function responseSuccess(response) {
-    return response;
+    if (response?.data?.status === 429) toast.error(response.data.msg)
+    else return response;
 }
 
 function responseError(error) {
