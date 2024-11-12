@@ -18,16 +18,6 @@ async function register(req, res) {
     res.json({status: 202, msg: 'Registration successful. Please check your inbox or spam folder for an OTP to verify your account.'});
 }
 
-async function registerResend(req, res) {
-    const otp = generateOtp(+process.env.OTP_LENGTH);
-    const user = await InactiveUser.renewOtp(req.data.email, otp);
-    if (!user) return res.json({status: 404, msg: 'Email is not found. Please register again.'});
-
-    sendMail('account-verification', {to: user.email, name: user.name, otp});
-
-    res.json({status: 202, msg: 'Verification email resent. Please check your inbox.'});
-}
-
 async function verify(req, res) {
     const user = await InactiveUser.verify(req.data, req.mongooseSession);
     if (!user) throw new TransactionError({status: 400, msg: 'The OTP is invalid or has expired.'});
@@ -96,4 +86,4 @@ async function deleteAccount(req, res) {
     res.json({status: 200, msg: 'Your account has been deleted.'});
 }
 
-module.exports = {register, registerResend, verify, resetPwd, getInfo, changeName, changeEmail, changePwd, deleteAccount};
+module.exports = {register, verify, resetPwd, getInfo, changeName, changeEmail, changePwd, deleteAccount};
