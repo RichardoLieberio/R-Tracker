@@ -255,7 +255,7 @@ RegisterForm.propTypes = {
     showConfPwd: PropTypes.bool,
     setShowConfPwd: PropTypes.func,
     accessToken: PropTypes.oneOfType([
-        PropTypes.null,
+        () => null,
         PropTypes.string
     ]),
     stepHandler: PropTypes.func
