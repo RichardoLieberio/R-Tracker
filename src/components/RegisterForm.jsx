@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import {useState, useEffect, useRef} from 'react';
 import {Link} from 'react-router-dom';
+import {useSelector} from 'react-redux';
 import {useMediaQuery} from '@mui/material';
 
 import breakpoints from '../../config/breakpoints';
@@ -23,14 +24,13 @@ export default function RegisterForm(props) {
         email, setEmail,
         pwd, setPwd,
         confPwd, setConfPwd,
-        showPwd, setShowPwd,
-        showConfPwd, setShowConfPwd,
-        accessToken,
-        stepHandler
+        formError, setFormError,
+        setStep
     } = props;
 
     const [csrfToken, setCSRFToken] = useState('');
-    const [formError, setFormError] = useState({});
+    const [showPwd, setShowPwd] = useState(false);
+    const [showConfPwd, setShowConfPwd] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const nameLabelRef = useRef(null);
@@ -41,6 +41,9 @@ export default function RegisterForm(props) {
     const pwdInputRef = useRef(null);
     const confPwdLabelRef = useRef(null);
     const confPwdInputRef = useRef(null);
+    const hasToggled = useRef(false);
+
+    const accessToken = useSelector((state) => state.auth.accessToken);
 
     const tabletBreakpoint = useMediaQuery(`(min-width: ${breakpoints.tablet})`);
 
@@ -53,6 +56,27 @@ export default function RegisterForm(props) {
         pwdInputBlur();
         confPwdInputBlur();
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+    useEffect(function() {
+        if (hasToggled.current && pwdInputRef.current) {
+            pwdInputRef.current.focus();
+            pwdInputRef.current.setSelectionRange(pwd.length, pwd.length);
+        }
+    }, [hasToggled, showPwd, pwd]);
+
+    useEffect(function() {
+        if (hasToggled.current && confPwdInputRef.current) {
+            confPwdInputRef.current.focus();
+            confPwdInputRef.current.setSelectionRange(confPwd.length, confPwd.length);
+        }
+    }, [hasToggled, showConfPwd, confPwd]);
+
+    useEffect(function() {
+        contr.inputErrorHandler(formError.name, name, nameLabelRef, nameInputRef);
+        contr.inputErrorHandler(formError.email, email, emailLabelRef, emailInputRef);
+        contr.inputErrorHandler(formError.pwd, pwd, pwdLabelRef, pwdInputRef, true);
+        contr.inputErrorHandler(formError.confPwd, confPwd, confPwdLabelRef, confPwdInputRef, true);
+    }, [formError]); // eslint-disable-line react-hooks/exhaustive-deps
 
     function nameHandler(e) {
         setName(e.target.value);
@@ -112,32 +136,19 @@ export default function RegisterForm(props) {
 
     function togglePwd() {
         setShowPwd(value => !value);
-        setTimeout(function() {
-            pwdInputRef.current.focus();
-            pwdInputRef.current.setSelectionRange(pwd.length, pwd.length);
-        }, 0);
+        hasToggled.current = true;
     }
 
     function toggleConfPwd() {
         setShowConfPwd(value => !value);
-        setTimeout(function() {
-            confPwdInputRef.current.focus();
-            confPwdInputRef.current.setSelectionRange(confPwd.length, confPwd.length);
-        }, 0);
+        hasToggled.current = true;
     }
 
     async function register() {
         if (!isSubmitting) {
             setIsSubmitting(true);
             setFormError({});
-            contr.revertForm(name, nameLabelRef, nameInputRef, email, emailLabelRef, emailInputRef, pwd, pwdLabelRef, pwdInputRef, confPwd, confPwdLabelRef, confPwdInputRef);
-
-            const error = await contr.register(name, email, pwd, confPwd, csrfToken, accessToken, stepHandler);
-            if (error) {
-                setFormError(error);
-                contr.showError(error, name, nameLabelRef, nameInputRef, email, emailLabelRef, emailInputRef, pwd, pwdLabelRef, pwdInputRef, confPwd, confPwdLabelRef, confPwdInputRef);
-            }
-
+            await contr.register(name, email, pwd, confPwd, csrfToken, accessToken, setFormError, setStep);
             setIsSubmitting(false);
         }
     }
@@ -252,13 +263,7 @@ RegisterForm.propTypes = {
     setPwd: PropTypes.func,
     confPwd: PropTypes.string,
     setConfPwd: PropTypes.func,
-    showPwd: PropTypes.bool,
-    setShowPwd: PropTypes.func,
-    showConfPwd: PropTypes.bool,
-    setShowConfPwd: PropTypes.func,
-    accessToken: PropTypes.oneOfType([
-        () => null,
-        PropTypes.string
-    ]),
-    stepHandler: PropTypes.func
+    formError: PropTypes.object,
+    setFormError: PropTypes.func,
+    setStep: PropTypes.func
 };

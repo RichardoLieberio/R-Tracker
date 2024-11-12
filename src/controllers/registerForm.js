@@ -5,43 +5,17 @@ import {setToast} from '../services/toastService';
 
 import css from '../css/registerForm';
 
-function showError(error, name, nameLabelRef, nameInputRef, email, emailLabelRef, emailInputRef, pwd, pwdLabelRef, pwdInputRef, confPwd, confPwdLabelRef, confPwdInputRef) {
-    if (error.name) {
-        nameLabelRef.current.className = name ? css.labelTopError : css.labelMiddleError;
-        nameInputRef.current.className = css.defaultInputError;
-    }
-
-    if (error.email) {
-        emailLabelRef.current.className = email ? css.labelTopError : css.labelMiddleError;
-        emailInputRef.current.className = css.defaultInputError;
-    }
-
-    if (error.pwd) {
-        pwdLabelRef.current.className = pwd ? css.labelTopError : css.labelMiddleError;
-        pwdInputRef.current.className = css.pwdInputError;
-    }
-
-    if (error.confPwd) {
-        confPwdLabelRef.current.className = confPwd ? css.labelTopError : css.labelMiddleError;
-        confPwdInputRef.current.className = css.pwdInputError;
+function inputErrorHandler(error, value, label, input, pwd=false) {
+    if (error) {
+        label.current.className = value ? css.labelTopError : css.labelMiddleError;
+        input.current.className = pwd ? css.pwdInputError : css.defaultInputError;
+    } else {
+        label.current.className = value ? css.labelTopBlur : css.labelMiddle;
+        input.current.className = pwd ? css.pwdInput : css.defaultInput;
     }
 }
 
-function revertForm(name, nameLabelRef, nameInputRef, email, emailLabelRef, emailInputRef, pwd, pwdLabelRef, pwdInputRef, confPwd, confPwdLabelRef, confPwdInputRef) {
-    nameLabelRef.current.className = name ? css.labelTopBlur : css.labelMiddle;
-    nameInputRef.current.className = css.defaultInput;
-
-    emailLabelRef.current.className = email ? css.labelTopBlur : css.labelMiddle;
-    emailInputRef.current.className = css.defaultInput;
-
-    pwdLabelRef.current.className = pwd ? css.labelTopBlur : css.labelMiddle;
-    pwdInputRef.current.className = css.pwdInput;
-
-    confPwdLabelRef.current.className = confPwd ? css.labelTopBlur : css.labelMiddle;
-    confPwdInputRef.current.className = css.pwdInput;
-}
-
-async function register(name, email, pwd, confPwd, csrfToken, accessToken, stepHandler) {
+async function register(name, email, pwd, confPwd, csrfToken, accessToken, setFormError, setStep) {
     const data = {name, email, pwd, confPwd};
     const config = {
         headers: {
@@ -57,7 +31,7 @@ async function register(name, email, pwd, confPwd, csrfToken, accessToken, stepH
 
     switch (status) {
         case 202:
-            stepHandler('verification');
+            setStep('verification');
             break;
         case 400:
             toast.error(response.data.msg);
@@ -70,8 +44,8 @@ async function register(name, email, pwd, confPwd, csrfToken, accessToken, stepH
             location.reload();
             break;
         case 422:
-            return response.data.msg;
+            setFormError(response.data.msg);
     }
 }
 
-export default {showError, revertForm, register};
+export default {inputErrorHandler, register};
