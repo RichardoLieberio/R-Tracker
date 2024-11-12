@@ -27,6 +27,20 @@ async function register(req, res, next) {
     next();
 }
 
+async function registerResend(req, res, next) {
+    const {email} = req.body;
+    const errorMsg = {};
+    req.data = {};
+
+    const emailValidation = await validateEmail(email);
+    emailValidation.error
+    ? errorMsg['email'] = emailValidation.error
+    : req.data['email'] = emailValidation.email;
+
+    if (Object.entries(errorMsg).length) return res.json({status: 422, msg: errorMsg});
+    next();
+}
+
 async function verify(req, res, next) {
     const {email, otp} = req.body;
     const errorMsg = {};
@@ -186,4 +200,4 @@ function validateOtp(otp) {
     return {otp};
 }
 
-module.exports = {register, verify, resetPwd, changeName, changeEmail, changePwd};
+module.exports = {register, registerResend, verify, resetPwd, changeName, changeEmail, changePwd};
