@@ -28,8 +28,18 @@ export default function Tooltip({title, children, className, posX, posY, ...prop
         }
     };
 
+    if (typeof (title) === 'object') {
+        let newTitle = '';
+        const keys = Object.keys(title);
+
+        keys.forEach(function(key, index) {
+            newTitle += (index + 1 === keys.length) ? title[key] : `${title[key]}<br><br>`;
+        });
+        title = newTitle;
+    }
+
     return (
-        <OriginalTooltip enterTouchDelay={0} {...props} title={<span className={className}>{title}</span>} slotProps={slotProps}>
+        <OriginalTooltip enterTouchDelay={0} {...props} title={<span className={className} dangerouslySetInnerHTML={{__html: title}}></span>} slotProps={slotProps}>
             <span>{children}</span>
         </OriginalTooltip>
     );
@@ -37,7 +47,10 @@ export default function Tooltip({title, children, className, posX, posY, ...prop
 
 
 Tooltip.propTypes = {
-    title: PropTypes.string,
+    title: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.object
+    ]),
     children: PropTypes.node,
     className: PropTypes.string,
     posX: PropTypes.number,
