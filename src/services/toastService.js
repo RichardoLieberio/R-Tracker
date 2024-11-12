@@ -1,6 +1,6 @@
 import {toast} from 'react-toastify';
 
-function setToast(type, msg, show = false) {
+function setToast(type, msg, show=false) {
     localStorage.setItem('toast', JSON.stringify({type, msg, show, time: Date.now()}));
 }
 
