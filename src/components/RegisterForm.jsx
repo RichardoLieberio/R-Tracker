@@ -16,7 +16,6 @@ import css from '../css/registerForm';
 import Tooltip from './Tooltip';
 import {FaEye, FaEyeSlash} from 'react-icons/fa';
 import {MdErrorOutline} from 'react-icons/md';
-import Input from './Input';
 
 export default function RegisterForm(props) {
     const {
@@ -161,7 +160,7 @@ export default function RegisterForm(props) {
             }
             <section className="w-56 phone:w-72 tablet:w-80 desktop:w-96 p-8 flex flex-col gap-12">
                 <img src="/Logo.png" alt="R-Tracker Logo" width="32px" height="32px" />
-                <form className="flex flex-col gap-6" autoCapitalize="off" autoComplete="off" autoCorrect="off">
+                <form className="flex flex-col gap-6" autoCapitalize="off" autoComplete="off" spellCheck="false">
                     <h1 className="text-2xl text-purple-text">Register</h1>
                     <section className="flex flex-col gap-4">
                         <div className="relative">
@@ -174,7 +173,7 @@ export default function RegisterForm(props) {
                                     </div>
                             }
                             <label htmlFor="name" disabled={isSubmitting} ref={nameLabelRef}>Full Name</label>
-                            <Input type="text" id="name" value={name} ref={nameInputRef} disabled={isSubmitting} onChange={nameHandler} onFocus={nameInputFocus} onBlur={nameInputBlur} className={css.defaultInput} />
+                            <input type="text" id="name" value={name} ref={nameInputRef} disabled={isSubmitting} onChange={nameHandler} onFocus={nameInputFocus} onBlur={nameInputBlur} className={css.defaultInput} />
                         </div>
                         <div className="relative">
                             {
@@ -186,7 +185,7 @@ export default function RegisterForm(props) {
                                     </div>
                             }
                             <label htmlFor="email" ref={emailLabelRef}>Email</label>
-                            <Input type="email" id="email" value={email} ref={emailInputRef} disabled={isSubmitting} onChange={emailHandler} onFocus={emailInputFocus} onBlur={emailInputBlur} className={css.defaultInput} />
+                            <input type="email" id="email" value={email} ref={emailInputRef} disabled={isSubmitting} onChange={emailHandler} onFocus={emailInputFocus} onBlur={emailInputBlur} className={css.defaultInput} />
                         </div>
                         <div className="relative">
                             {
@@ -198,7 +197,7 @@ export default function RegisterForm(props) {
                                     </div>
                             }
                             <label htmlFor="pwd" ref={pwdLabelRef}>Password</label>
-                            <Input type={showPwd ? "text" : "password"} id="pwd" value={pwd} ref={pwdInputRef} disabled={isSubmitting} onChange={pwdHandler} onFocus={pwdInputFocus} onBlur={pwdInputBlur} className={css.pwdInput} />
+                            <input type={showPwd ? "text" : "password"} id="pwd" value={pwd} ref={pwdInputRef} disabled={isSubmitting} onChange={pwdHandler} onFocus={pwdInputFocus} onBlur={pwdInputBlur} className={css.pwdInput} />
                             <div onClick={togglePwd} className="px-3 py-3 absolute right-0 top-0 rounded-tr-md rounded-br-md cursor-pointer">
                                 {
                                     showPwd
@@ -217,7 +216,7 @@ export default function RegisterForm(props) {
                                     </div>
                             }
                             <label htmlFor="confPwd" ref={confPwdLabelRef}>Confirm Password</label>
-                            <Input type={showConfPwd ? "text" : "password"} id="confPwd" value={confPwd} ref={confPwdInputRef} disabled={isSubmitting} onChange={confPwdHandler} onFocus={confPwdInputFocus} onBlur={confPwdInputBlur} className={css.pwdInput} />
+                            <input type={showConfPwd ? "text" : "password"} id="confPwd" value={confPwd} ref={confPwdInputRef} disabled={isSubmitting} onChange={confPwdHandler} onFocus={confPwdInputFocus} onBlur={confPwdInputBlur} className={css.pwdInput} />
                             <div onClick={toggleConfPwd} className="px-3 py-3 absolute right-0 top-0 rounded-tr-md rounded-br-md cursor-pointer">
                                 {
                                     showConfPwd
