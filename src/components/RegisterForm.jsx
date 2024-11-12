@@ -5,9 +5,17 @@ import {useMediaQuery} from '@mui/material';
 
 import breakpoints from '../../config/breakpoints';
 
+import getCSRFToken from '../services/getCSRFToken';
+import {getToast} from '../services/toastService';
+
+import contr from '../controllers/registerForm';
+
+import css from '../css/registerForm';
+
 import Tooltip from './Tooltip';
 import {FaEye, FaEyeSlash} from 'react-icons/fa';
 import {MdErrorOutline} from 'react-icons/md';
+import Input from './Input';
 
 export default function RegisterForm(props) {
     const {
@@ -20,10 +28,14 @@ export default function RegisterForm(props) {
         stepHandler
     } = props;
 
+    const [csrfToken, setCSRFToken] = useState('');
     const [formError, setFormError] = useState({});
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const nameLabelRef = useRef(null);
+    const nameInputRef = useRef(null);
     const emailLabelRef = useRef(null);
+    const emailInputRef = useRef(null);
     const pwdLabelRef = useRef(null);
     const pwdInputRef = useRef(null);
     const confPwdLabelRef = useRef(null);
@@ -32,6 +44,9 @@ export default function RegisterForm(props) {
     const tabletBreakpoint = useMediaQuery(`(min-width: ${breakpoints.tablet})`);
 
     useEffect(function() {
+        getToast();
+        getCSRFToken(setCSRFToken);
+
         nameInputBlur();
         emailInputBlur();
         pwdInputBlur();
@@ -43,11 +58,13 @@ export default function RegisterForm(props) {
     }
 
     function nameInputFocus() {
-        nameLabelRef.current.className = css.labelTopFocus;
+        if (formError.name) nameLabelRef.current.className = css.labelTopError
+        else nameLabelRef.current.className = css.labelTopFocus;
     }
 
     function nameInputBlur() {
-        nameLabelRef.current.className = name ? css.labelTopBlur : css.labelMiddle;
+        if (formError.name) nameLabelRef.current.className = name ? css.labelTopError : css.labelMiddleError
+        else nameLabelRef.current.className = name ? css.labelTopBlur : css.labelMiddle;
     }
 
     function emailHandler(e) {
@@ -55,11 +72,13 @@ export default function RegisterForm(props) {
     }
 
     function emailInputFocus() {
-        emailLabelRef.current.className = css.labelTopFocus;
+        if (formError.email) emailLabelRef.current.className = css.labelTopError
+        else emailLabelRef.current.className = css.labelTopFocus;
     }
 
     function emailInputBlur() {
-        emailLabelRef.current.className = email ? css.labelTopBlur : css.labelMiddle;
+        if (formError.email) emailLabelRef.current.className = email ? css.labelTopError : css.labelMiddleError
+        else emailLabelRef.current.className = email ? css.labelTopBlur : css.labelMiddle;
     }
 
     function pwdHandler(e) {
@@ -67,11 +86,13 @@ export default function RegisterForm(props) {
     }
 
     function pwdInputFocus() {
-        pwdLabelRef.current.className = css.labelTopFocus;
+        if (formError.pwd) pwdLabelRef.current.className = css.labelTopError
+        else pwdLabelRef.current.className = css.labelTopFocus;
     }
 
     function pwdInputBlur() {
-        pwdLabelRef.current.className = pwd ? css.labelTopBlur : css.labelMiddle;
+        if (formError.pwd) pwdLabelRef.current.className = pwd ? css.labelTopError : css.labelMiddleError
+        else pwdLabelRef.current.className = pwd ? css.labelTopBlur : css.labelMiddle;
     }
 
     function confPwdHandler(e) {
@@ -79,11 +100,13 @@ export default function RegisterForm(props) {
     }
 
     function confPwdInputFocus() {
-        confPwdLabelRef.current.className = css.labelTopFocus;
+        if (formError.confPwd) confPwdLabelRef.current.className = css.labelTopError
+        else confPwdLabelRef.current.className = css.labelTopFocus;
     }
 
     function confPwdInputBlur() {
-        confPwdLabelRef.current.className = confPwd ? css.labelTopBlur : css.labelMiddle;
+        if (formError.confPwd) confPwdLabelRef.current.className = confPwd ? css.labelTopError : css.labelMiddleError
+        else confPwdLabelRef.current.className = confPwd ? css.labelTopBlur : css.labelMiddle;
     }
 
     function togglePwd() {
@@ -102,21 +125,19 @@ export default function RegisterForm(props) {
         }, 0);
     }
 
-    function register() {
-        stepHandler('verification');
-    }
+    async function register() {
+        setIsSubmitting(true);
+        setFormError({});
+        contr.revertForm(name, nameLabelRef, nameInputRef, email, emailLabelRef, emailInputRef, pwd, pwdLabelRef, pwdInputRef, confPwd, confPwdLabelRef, confPwdInputRef);
 
-    const css = {
-        labelMiddle: 'absolute left-3 bottom-1/2 translate-y-1/2 text-base text-purple-text transition-transform cursor-text',
-        labelMiddleError: 'absolute left-10 bottom-1/2 translate-y-1/2 text-base text-purple-error transition-transform cursor-text',
-        labelTopBlur: 'px-2 absolute left-1 -top-3 text-sm text-purple-text bg-purple-background transition-transform cursor-text',
-        labelTopFocus: 'px-2 absolute left-1 -top-3 text-sm text-purple-primary bg-purple-background transition-transform cursor-text',
-        labelTopError: 'px-2 absolute left-1 -top-3 text-sm text-purple-error bg-purple-background transition-transform cursor-text',
-        defaultInput: 'w-full px-3 py-2 text-base text-purple-text border border-purple-neutral rounded-md outline-none focus:border-purple-primary disabled:bg-purple-disabled disabled:cursor-not-allowed',
-        defaultInputError: 'w-full px-3 py-2 pl-10 text-base text-purple-text border border-purple-error rounded-md outline-none',
-        pwdInput: 'w-full px-3 py-2 pr-10 text-base text-purple-text border border-purple-neutral rounded-md outline-none focus:border-purple-primary disabled:bg-purple-disabled disabled:cursor-not-allowed',
-        pwdInputError: 'w-full px-10 py-2 text-base text-purple-text border border-purple-error rounded-md outline-none'
-    };
+        const error = await contr.register(name, email, pwd, confPwd, csrfToken, stepHandler);
+        if (error) {
+            setFormError(error);
+            contr.showError(error, name, nameLabelRef, nameInputRef, email, emailLabelRef, emailInputRef, pwd, pwdLabelRef, pwdInputRef, confPwd, confPwdLabelRef, confPwdInputRef);
+        }
+
+        setIsSubmitting(false);
+    }
 
     return (
         <div className="flex absolute right-1/2 bottom-1/2 translate-x-1/2 translate-y-1/2 overflow-hidden shadow-sm shadow-purple-shadow rounded-2xl tablet:rounded-3xl">
@@ -138,8 +159,8 @@ export default function RegisterForm(props) {
                                         </Tooltip>
                                     </div>
                             }
-                            <label htmlFor="name" ref={nameLabelRef}>Full Name</label>
-                            <input type="text" id="name" value={name} onChange={nameHandler} onFocus={nameInputFocus} onBlur={nameInputBlur} className={css.defaultInput} />
+                            <label htmlFor="name" disabled={isSubmitting} ref={nameLabelRef}>Full Name</label>
+                            <Input type="text" id="name" value={name} ref={nameInputRef} disabled={isSubmitting} onChange={nameHandler} onFocus={nameInputFocus} onBlur={nameInputBlur} className={css.defaultInput} />
                         </div>
                         <div className="relative">
                             {
@@ -151,7 +172,7 @@ export default function RegisterForm(props) {
                                     </div>
                             }
                             <label htmlFor="email" ref={emailLabelRef}>Email</label>
-                            <input type="email" id="email" value={email} onChange={emailHandler} onFocus={emailInputFocus} onBlur={emailInputBlur} className={css.defaultInput} />
+                            <Input type="email" id="email" value={email} ref={emailInputRef} disabled={isSubmitting} onChange={emailHandler} onFocus={emailInputFocus} onBlur={emailInputBlur} className={css.defaultInput} />
                         </div>
                         <div className="relative">
                             {
@@ -163,7 +184,7 @@ export default function RegisterForm(props) {
                                     </div>
                             }
                             <label htmlFor="pwd" ref={pwdLabelRef}>Password</label>
-                            <input type={showPwd ? "text" : "password"} id="pwd" value={pwd} ref={pwdInputRef} onChange={pwdHandler} onFocus={pwdInputFocus} onBlur={pwdInputBlur} className={css.pwdInput} />
+                            <Input type={showPwd ? "text" : "password"} id="pwd" value={pwd} ref={pwdInputRef} disabled={isSubmitting} onChange={pwdHandler} onFocus={pwdInputFocus} onBlur={pwdInputBlur} className={css.pwdInput} />
                             <div onClick={togglePwd} className="px-3 py-3 absolute right-0 top-0 rounded-tr-md rounded-br-md cursor-pointer">
                                 {
                                     showPwd
@@ -182,7 +203,7 @@ export default function RegisterForm(props) {
                                     </div>
                             }
                             <label htmlFor="confPwd" ref={confPwdLabelRef}>Confirm Password</label>
-                            <input type={showConfPwd ? "text" : "password"} id="confPwd" value={confPwd} ref={confPwdInputRef} onChange={confPwdHandler} onFocus={confPwdInputFocus} onBlur={confPwdInputBlur} className={css.pwdInput} />
+                            <Input type={showConfPwd ? "text" : "password"} id="confPwd" value={confPwd} ref={confPwdInputRef} disabled={isSubmitting} onChange={confPwdHandler} onFocus={confPwdInputFocus} onBlur={confPwdInputBlur} className={css.pwdInput} />
                             <div onClick={toggleConfPwd} className="px-3 py-3 absolute right-0 top-0 rounded-tr-md rounded-br-md cursor-pointer">
                                 {
                                     showConfPwd
@@ -191,7 +212,7 @@ export default function RegisterForm(props) {
                                 }
                             </div>
                         </div>
-                        <button onClick={register} className="py-2 text-base text-purple-oppositeText bg-purple-primary rounded-md hover:bg-purple-highlight disabled:bg-purple-highlight disabled:cursor-not-allowed">Register</button>
+                        <button onClick={register} disabled={isSubmitting} className="py-2 text-base text-purple-oppositeText bg-purple-primary rounded-md hover:bg-purple-highlight disabled:bg-purple-highlight disabled:cursor-not-allowed">Register</button>
                     </section>
                     <small className="mx-auto text-sm text-purple-text">
                         Already have an account? <Link to="/login" className="text-purple-link hover:underline">Login</Link>
