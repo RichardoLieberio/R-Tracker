@@ -28,7 +28,7 @@ export default function Tooltip({title, children, className, posX, posY, ...prop
         }
     };
 
-    if (typeof (title) === 'object') {
+    if (typeof(title) === 'object') {
         let newTitle = '';
         const keys = Object.keys(title);
 
