@@ -15,7 +15,7 @@ const routes = express.Router();
 
 routes.post('/register', errorHandler(logoutRequired, true), csrfHandler(csrfProtection), errorHandler(validation.register, true), limiter(3), errorHandler(controller.register));
 routes.post('/register/resend', errorHandler(logoutRequired, true), limiter(15), validation.registerResend, errorHandler(controller.registerResend));
-routes.post('/verify', errorHandler(logoutRequired, true), csrfHandler(csrfProtection), validation.verify, limiter(15), transactionHandler(controller.verify));
+routes.post('/verify', errorHandler(logoutRequired, true), csrfHandler(csrfProtection), validation.verify, limiter(10), transactionHandler(controller.verify));
 routes.patch('/reset-password', errorHandler(logoutRequired, true), csrfHandler(csrfProtection), validation.resetPwd, limiter(15), transactionHandler(controller.resetPwd));
 
 routes.get('/info', errorHandler(authRequired, true), errorHandler(controller.getInfo));
