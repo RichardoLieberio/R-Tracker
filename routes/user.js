@@ -14,8 +14,8 @@ const controller = require('../controllers/user');
 const routes = express.Router();
 
 routes.post('/register', errorHandler(logoutRequired, true), csrfHandler(csrfProtection), errorHandler(validation.register, true), limiter(3), errorHandler(controller.register));
-routes.post('/verify', errorHandler(logoutRequired, true), csrfHandler(csrfProtection), validation.verify, transactionHandler(controller.verify));
-routes.patch('/reset-password', errorHandler(logoutRequired, true), csrfHandler(csrfProtection), validation.resetPwd, transactionHandler(controller.resetPwd));
+routes.post('/verify', errorHandler(logoutRequired, true), csrfHandler(csrfProtection), validation.verify, limiter(15), transactionHandler(controller.verify));
+routes.patch('/reset-password', errorHandler(logoutRequired, true), csrfHandler(csrfProtection), validation.resetPwd, limiter(15), transactionHandler(controller.resetPwd));
 
 routes.get('/info', errorHandler(authRequired, true), errorHandler(controller.getInfo));
 routes.patch('/change-name', errorHandler(authRequired, true), csrfHandler(csrfProtection), validation.changeName, limiter(5), errorHandler(controller.changeName));
