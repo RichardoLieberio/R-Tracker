@@ -6,7 +6,7 @@ let controller;
 
 const axiosInstance = axios.create({
     baseURL: process.env.API_URI,
-    timeout: 1000,
+    timeout: +process.env.REQUEST_TIMEOUT,
     withCredentials: true,
     headers: {
         'Content-Type': 'application/json'
