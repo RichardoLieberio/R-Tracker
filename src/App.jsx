@@ -27,7 +27,7 @@ export default function App() {
 
     function bodyClassName() {
         const className = getBodyClassName(theme);
-        return `${className} ml-2 flex items-center`;
+        return `${className} ml-2 flex items-center text-base`;
     }
 
     const toastConfig = {
