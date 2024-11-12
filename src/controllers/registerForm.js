@@ -48,7 +48,8 @@ async function register(name, email, pwd, confPwd, csrfToken, accessToken, stepH
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${accessToken}`,
             'CSRF-Token': csrfToken
-        }
+        },
+        useAbortController: true
     };
 
     const response = await axios.post('/api/user/register', data, config);
