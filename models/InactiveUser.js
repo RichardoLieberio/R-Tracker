@@ -40,6 +40,10 @@ const inactiveUserSchema = mongoose.Schema({
     }
 });
 
+inactiveUserSchema.statics.renewOtp = async function(email, otp) {
+    return await this.findOneAndUpdate({email}, {otp, created_at: Date.now(), expires_at: Date.now() + 15 * 60 * 1000});
+}
+
 inactiveUserSchema.statics.register = async function(data, otp) {
     const {name, email, pwd: rawPwd} = data;
     const pwd = await bcrypt.hash(rawPwd, +process.env.SALT_ROUNDS);
