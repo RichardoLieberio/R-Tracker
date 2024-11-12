@@ -1,7 +1,7 @@
 const express = require('express');
 
-const limiter = require('../services/limiter');
 const csrfProtection = require('../services/csrfProtection');
+const limiter = require('../middlewares/limiter');
 const csrfHandler = require('../middlewares/csrfHandler');
 const errorHandler = require('../middlewares/errorHandler');
 const transactionHandler = require('../middlewares/transactionHandler');
