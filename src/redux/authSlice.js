@@ -8,7 +8,7 @@ export const authSlice = createSlice({
     },
     reducers: {
         setAccessToken: function(state, action) {
-            state.accessToken = action.payload.accessToken;
+            state.accessToken = action.payload;
         },
         clearAccessToken: function(state) {
             state.accessToken = null;
