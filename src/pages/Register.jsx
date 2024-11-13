@@ -2,6 +2,7 @@ import {useState} from 'react';
 
 import RegisterForm from '../components/RegisterForm';
 import EmailVerification from '../components/EmailVerification';
+import EmailVerified from '../components/EmailVerified';
 
 export default function Register() {
     const [name, setName] = useState('');
@@ -9,7 +10,7 @@ export default function Register() {
     const [pwd, setPwd] = useState('');
     const [confPwd, setConfPwd] = useState('');
     const [formError, setFormError] = useState({});
-    const [step, setStep] = useState('register');
+    const [step, setStep] = useState('verified');
 
     switch (step) {
         case 'register':
@@ -29,5 +30,7 @@ export default function Register() {
                 setStep
             };
             return <EmailVerification {...emailVerificationState} />;
+        case 'verified':
+            return <EmailVerified />
     }
 }
