@@ -35,7 +35,8 @@ async function verify(req, res) {
 
     await UserToken.login(createdUser._id, accessToken, refreshToken);
 
-    res.json({status: 201, msg: 'Registration succeeded. Email has been verified.', accessToken});
+    const userInfo = {name: createdUser.name, email: createdUser.email, role: createdUser.role, created_at: createdUser.created_at, updated_at: createdUser.updated_at};
+    res.json({status: 201, msg: 'Registration succeeded. Email has been verified.', accessToken, user: userInfo});
 }
 
 async function resetPwd(req, res) {
