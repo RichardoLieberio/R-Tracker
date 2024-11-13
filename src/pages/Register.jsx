@@ -10,7 +10,7 @@ export default function Register() {
     const [pwd, setPwd] = useState('');
     const [confPwd, setConfPwd] = useState('');
     const [formError, setFormError] = useState({});
-    const [step, setStep] = useState('verified');
+    const [step, setStep] = useState('register');
 
     switch (step) {
         case 'register':
