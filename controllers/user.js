@@ -2,6 +2,8 @@ const TransactionError = require('../services/TransactionError');
 const sendMail = require('../services/mailService');
 const generateOtp = require('../services/generateOtp');
 const mongooseIdValidation = require('../services/mongooseIdValidation');
+const generateRefreshToken = require('../services/generateRefreshToken');
+const generateAccessToken = require('../services/generateAccessToken');
 
 const User = require('../models/User');
 const UserToken = require('../models/UserToken');
@@ -23,11 +25,17 @@ async function verify(req, res) {
     if (!user) throw new TransactionError({status: 400, msg: 'The OTP is invalid or has expired.'});
 
     const {_id, ...userData} = user.toObject();
-    await User.addNewAccount(userData, req.mongooseSession);
+    const createdUser = await User.addNewAccount(userData, req.mongooseSession);
 
     sendMail('account-verified', {to: req.data.email, name: userData.name});
 
-    res.json({status: 201, msg: 'Registration succeeded. Email has been verified.'});
+    const tokenData = {id: createdUser._id};
+    const accessToken = generateAccessToken(tokenData);
+    const refreshToken = generateRefreshToken(res, tokenData, false);
+
+    await UserToken.login(createdUser._id, accessToken, refreshToken);
+
+    res.json({status: 201, msg: 'Registration succeeded. Email has been verified.', accessToken});
 }
 
 async function resetPwd(req, res) {
