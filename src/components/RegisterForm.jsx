@@ -44,6 +44,7 @@ export default function RegisterForm(props) {
 
     const accessToken = useSelector((state) => state.auth.accessToken);
 
+    const phoneBreakpoint = useMediaQuery(`(min-width: ${breakpoints.phone})`);
     const tabletBreakpoint = useMediaQuery(`(min-width: ${breakpoints.tablet})`);
 
     useEffect(function() {
@@ -215,7 +216,7 @@ export default function RegisterForm(props) {
                                         </Tooltip>
                                     </div>
                             }
-                            <label htmlFor="confPwd" ref={confPwdLabelRef}>Confirm Password</label>
+                            <label htmlFor="confPwd" ref={confPwdLabelRef}>{phoneBreakpoint ? 'Confirm Password' : 'Confirm'}</label>
                             <input type={showConfPwd ? "text" : "password"} id="confPwd" value={confPwd} ref={confPwdInputRef} disabled={isSubmitting} onChange={confPwdHandler} onFocus={confPwdInputFocus} onBlur={confPwdInputBlur} className={css.pwdInput} />
                             <div onClick={toggleConfPwd} className="px-3 py-3 absolute right-0 top-0 rounded-tr-md rounded-br-md cursor-pointer">
                                 {
