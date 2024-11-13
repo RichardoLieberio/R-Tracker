@@ -12,7 +12,7 @@ import ExpenseCategory from './pages/ExpenseCategory';
 
 import 'react-toastify/dist/ReactToastify.css';
 import getToastClassName from './css/toast';
-import {getTextColor} from './css/color';
+import {getOppositeTextColor} from './css/color';
 
 import {ToastContainer} from 'react-toastify';
 import MainLayout from './components/MainLayout';
@@ -26,7 +26,7 @@ export default function App() {
     }
 
     function bodyClassName() {
-        const className = getTextColor(theme);
+        const className = getOppositeTextColor(theme);
         return `${className} ml-2 flex items-center text-base`;
     }
 
