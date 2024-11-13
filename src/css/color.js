@@ -1,6 +1,23 @@
+function getBackgroundColor(theme) {
+    switch (theme) {
+        case 'red':
+            return 'bg-red-background';
+        case 'green':
+            return 'bg-green-background';
+        case 'blue':
+            return 'bg-blue-background';
+        case 'yellow':
+            return 'bg-yellow-background';
+        case 'teal':
+            return 'bg-teal-background';
+        case 'dark':
+            return 'bg-dark-background';
+        default:
+            return 'bg-purple-background';
+    }
+}
 
-
-function getTextColor(theme) {
+function getOppositeTextColor(theme) {
     switch (theme) {
         case 'red':
             return 'text-red-oppositeText';
@@ -19,4 +36,4 @@ function getTextColor(theme) {
     }
 }
 
-export {getTextColor};
+export {getBackgroundColor, getOppositeTextColor};
