@@ -33,9 +33,6 @@ async function register(name, email, pwd, confPwd, csrfToken, accessToken, setFo
         case 202:
             setStep('verification');
             break;
-        case 400:
-            toast.error(response.data.msg);
-            break;
         case 401:
             toast.error(response.data.msg);
             break;
@@ -45,6 +42,7 @@ async function register(name, email, pwd, confPwd, csrfToken, accessToken, setFo
             break;
         case 422:
             setFormError(response.data.msg);
+            break;
     }
 }
 
