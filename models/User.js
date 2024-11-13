@@ -67,7 +67,8 @@ userSchema.statics.isAdmin = async function(_id) {
 }
 
 userSchema.statics.addNewAccount = async function(data, session) {
-    return await this.create([data], {session});
+    const newUser = await this.create([data], {session});
+    return newUser[0];
 }
 
 userSchema.statics.resetPwd = async function(email, rawPwd, session) {
