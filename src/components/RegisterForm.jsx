@@ -173,7 +173,7 @@ export default function RegisterForm(props) {
                                         </Tooltip>
                                     </div>
                             }
-                            <label htmlFor="name" disabled={isSubmitting} ref={nameLabelRef}>Full Name</label>
+                            <label htmlFor="name" ref={nameLabelRef}>Full Name</label>
                             <input type="text" id="name" value={name} ref={nameInputRef} disabled={isSubmitting} onChange={nameHandler} onFocus={nameInputFocus} onBlur={nameInputBlur} className={css.defaultInput} />
                         </div>
                         <div className="relative">
