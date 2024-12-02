@@ -55,9 +55,9 @@ async function resetPwd(req, res) {
 }
 
 async function getInfo(req, res) {
-    const user = (await User.getInfo(req.userId)).toObject();
-    delete user._id;
-    res.json({status: 200, msg: 'User information retrieved successfully.', user});
+    const userInfo = (await User.getInfo(req.userId)).toObject();
+    delete userInfo._id;
+    res.json({status: 200, msg: 'User information retrieved successfully.', userInfo});
 }
 
 async function changeName(req, res) {

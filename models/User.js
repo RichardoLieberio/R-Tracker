@@ -114,7 +114,7 @@ userSchema.statics.blacklist = async function(_id, blacklist_reason, blacklisted
 }
 
 userSchema.methods.checkCredentials = async function(data) {
-    const user = await this.constructor.findOne({email: data.email}).select('name email pwd role created_at updated_at blacklisted blacklist_reason');
+    const user = await this.constructor.findOne({email: data.email});
     if (!user) return false;
 
     return await bcrypt.compare(data.pwd, user.pwd) ? user : false;
