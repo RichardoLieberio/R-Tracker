@@ -1,5 +1,8 @@
 import axios from 'axios';
 
+import store from '../redux/store';
+import {setAccessToken} from '../redux/authSlice';
+
 import {toast} from 'react-toastify';
 
 let axiosController;
@@ -30,8 +33,20 @@ function requestError(error) {
 }
 
 function responseSuccess(response) {
-    if (response?.data?.status === 429 || response?.data?.status === 500 || response?.data?.status === 503) toast.error(response.data.msg)
-    else return response;
+    const status = response?.data?.status;
+    const accessToken = response?.data?.accessToken;
+
+    if (status === 429 || status === 500 || status === 503) {
+        toast.error(response.data.msg);
+    } else if (status === 200 && accessToken) {
+        store.dispatch(setAccessToken(accessToken));
+
+        const request = response.config;
+        request.headers['Authorization'] = `Bearer ${accessToken}`;
+        return axiosInstance(request);
+    } else {
+        return response;
+    }
 }
 
 function responseError(error) {
