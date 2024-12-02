@@ -15,7 +15,9 @@ async function login(req, res) {
 
     await UserToken.login(user._id, accessToken, refreshToken);
 
-    res.json({status: 200, msg: 'You have logged in.', accessToken});
+    delete user.blacklisted;
+    delete user.blacklist_reason;
+    res.json({status: 200, msg: 'You have logged in.', accessToken, userInfo: user});
 }
 
 async function logout(req, res) {
