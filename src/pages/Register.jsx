@@ -39,6 +39,6 @@ export default function Register() {
             };
             return <EmailVerification {...emailVerificationState} />;
         case 'verified':
-            return <EmailVerified />
+            return <EmailVerified />;
     }
 }
