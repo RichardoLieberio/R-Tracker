@@ -9,14 +9,16 @@ async function login(req, res) {
     if (!user) return res.json({status: 401, msg: 'Incorrect login credentials.'});
     if (user.blacklisted) return res.json({status: 403, msg: 'Your account has been blacklisted.', reason: user.blacklist_reason});
 
+    delete user.pwd;
+    delete user.blacklisted;
+    delete user.blacklist_reason;
+
     const tokenData = {id: user._id};
     const accessToken = generateAccessToken(tokenData);
     const refreshToken = generateRefreshToken(res, tokenData, req.data.rememberMe);
 
     await UserToken.login(user._id, accessToken, refreshToken);
 
-    delete user.blacklisted;
-    delete user.blacklist_reason;
     res.json({status: 200, msg: 'You have logged in.', accessToken, userInfo: user});
 }
 
