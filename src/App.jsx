@@ -9,6 +9,7 @@ import Dashboard from './pages/Dashboard';
 import Expense from './pages/Expense';
 import User from './pages/User';
 import ExpenseCategory from './pages/ExpenseCategory';
+import NotFound from './pages/NotFound';
 
 import 'react-toastify/dist/ReactToastify.css';
 import getToastClassName from './css/toast';
@@ -58,6 +59,7 @@ export default function App() {
                         <Route path="user" element={<User />} />
                         <Route path="expense-category" element={<ExpenseCategory />} />
                     </Route>
+                    <Route path="*" element={<NotFound />} />
                 </Routes>
             </MainLayout>
         </BrowserRouter>
