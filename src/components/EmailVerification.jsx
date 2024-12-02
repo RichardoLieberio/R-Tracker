@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import {useState, useEffect, useRef} from 'react';
-import {useSelector, useDispatch} from 'react-redux';
+import {useSelector} from 'react-redux';
 
 import getCSRFToken from '../services/getCSRFToken';
 
@@ -28,7 +28,6 @@ export default function VerifyEmail(props) {
     const resendRef = useRef(null);
 
     const accessToken = useSelector((state) => state.auth.accessToken);
-    const dispatch = useDispatch();
 
     useEffect(function() {
         getCSRFToken(setCSRFToken);
@@ -69,7 +68,7 @@ export default function VerifyEmail(props) {
         if (!isSubmitting) {
             setIsSubmitting(true);
             setOtpError('');
-            await contr.verify(email, otp, csrfToken, accessToken, setFormError, setOtpError, setStep, dispatch);
+            await contr.verify(email, otp, csrfToken, accessToken, setFormError, setOtpError, setStep);
             setIsSubmitting(false);
         }
     }

@@ -3,6 +3,7 @@ import {toast} from 'react-toastify';
 import axios from '../services/axios';
 import {setToast} from '../services/toastService';
 
+import store from '../redux/store';
 import {setAccessToken, setUserInfo} from '../redux/authSlice';
 
 import css from '../css/registerForm';
@@ -17,7 +18,7 @@ function inputErrorHandler(error, value, label, input, pwd=false) {
     }
 }
 
-async function login(email, pwd, rememberMe, csrfToken, accessToken, setFormError, dispatch, navigate) {
+async function login(email, pwd, rememberMe, csrfToken, accessToken, setFormError, navigate) {
     const data = {email, pwd, rememberMe};
     const config = {
         headers: {
@@ -33,8 +34,8 @@ async function login(email, pwd, rememberMe, csrfToken, accessToken, setFormErro
 
     switch (status) {
         case 200:
-            dispatch(setAccessToken(response.data.accessToken));
-            dispatch(setUserInfo(response.data.userInfo));
+            store.dispatch(setAccessToken(response.data.accessToken));
+            store.dispatch(setUserInfo(response.data.userInfo));
             navigate('/', {replace: true});
             break;
         case 401:

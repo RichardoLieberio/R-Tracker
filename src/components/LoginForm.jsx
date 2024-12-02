@@ -1,6 +1,6 @@
 import {useState, useEffect, useRef} from 'react';
 import {useNavigate, Link} from 'react-router-dom';
-import {useSelector, useDispatch} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {useMediaQuery} from '@mui/material';
 
 import breakpoints from '../../config/breakpoints';
@@ -34,7 +34,6 @@ export default function LoginForm() {
     const navigate = useNavigate();
 
     const accessToken = useSelector((state) => state.auth.accessToken);
-    const dispatch = useDispatch();
 
     const tabletBreakpoint = useMediaQuery(`(min-width: ${breakpoints.tablet})`);
 
@@ -99,7 +98,7 @@ export default function LoginForm() {
         if (!isSubmitting) {
             setIsSubmitting(true);
             setFormError({});
-            await contr.login(email, pwd, rememberMe, csrfToken, accessToken, setFormError, dispatch, navigate);
+            await contr.login(email, pwd, rememberMe, csrfToken, accessToken, setFormError, navigate);
             setIsSubmitting(false);
         }
     }

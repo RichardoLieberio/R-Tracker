@@ -3,6 +3,7 @@ import {toast} from 'react-toastify';
 import axios from '../services/axios';
 import {setToast} from '../services/toastService';
 
+import store from '../redux/store';
 import {setAccessToken, setUserInfo} from '../redux/authSlice';
 
 async function resendOtp(name, email, pwd, confPwd, csrfToken, accessToken, setFormError, setStep) {
@@ -37,7 +38,7 @@ async function resendOtp(name, email, pwd, confPwd, csrfToken, accessToken, setF
     }
 }
 
-async function verify(email, otp, csrfToken, accessToken, setFormError, setOtpError, setStep, dispatch) {
+async function verify(email, otp, csrfToken, accessToken, setFormError, setOtpError, setStep) {
     const data = {email, otp};
     const config = {
         headers: {
@@ -53,8 +54,8 @@ async function verify(email, otp, csrfToken, accessToken, setFormError, setOtpEr
 
     switch (status) {
         case 201:
-            dispatch(setAccessToken(response.data.accessToken));
-            dispatch(setUserInfo(response.data.user));
+            store.dispatch(setAccessToken(response.data.accessToken));
+            store.dispatch(setUserInfo(response.data.user));
             setStep('verified');
             break;
         case 400:
