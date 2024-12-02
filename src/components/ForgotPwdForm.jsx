@@ -20,22 +20,24 @@ import {MdErrorOutline} from 'react-icons/md';
 
 export default function ForgotPwdForm(props) {
     const {email, setStep} = props;
-    const [otp, setOtp] = useState('');
     const [pwd, setPwd] = useState('');
     const [confPwd, setConfPwd] = useState('');
+    const [otp, setOtp] = useState('');
     const [csrfToken, setCSRFToken] = useState('');
+    const [second, setSecond] = useState(+process.env.RESEND_EMAIL_TIMEOUT);
     const [showPwd, setShowPwd] = useState(false);
     const [showConfPwd, setShowConfPwd] = useState(false);
     const [formError, setFormError] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const otpLabelRef = useRef(null);
-    const otpInputRef = useRef(null);
     const pwdLabelRef = useRef(null);
     const pwdInputRef = useRef(null);
     const confPwdLabelRef = useRef(null);
     const confPwdInputRef = useRef(null);
+    const otpLabelRef = useRef(null);
+    const otpInputRef = useRef(null);
     const hasToggled = useRef(false);
+    const resendRef = useRef(null);
 
     const navigate = useNavigate();
 
@@ -47,9 +49,9 @@ export default function ForgotPwdForm(props) {
         getToast();
         getCSRFToken(setCSRFToken);
 
-        otpInputBlur();
         pwdInputBlur();
         confPwdInputBlur();
+        otpInputBlur();
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(function() {
@@ -67,24 +69,27 @@ export default function ForgotPwdForm(props) {
     }, [hasToggled, showConfPwd, confPwd]);
 
     useEffect(function() {
-        contr.inputErrorHandler(formError.otp, otp, otpLabelRef, otpInputRef);
         contr.inputErrorHandler(formError.pwd, pwd, pwdLabelRef, pwdInputRef, true);
         contr.inputErrorHandler(formError.confPwd, confPwd, confPwdLabelRef, confPwdInputRef, true);
+        contr.inputErrorHandler(formError.otp, otp, otpLabelRef, otpInputRef);
     }, [formError]); // eslint-disable-line react-hooks/exhaustive-deps
 
-    function otpHandler(e) {
-        setOtp(e.target.value);
-    }
+    useEffect(function() {
+        if (second > 0) {
+            const interval = setInterval(function() {
+                resendRef.current.className = 'text-purple-link';
+                resendRef.current.textContent = `Resend (${second - 1})`;
+                setSecond((second) => second - 1);
+            }, 1000);
 
-    function otpInputFocus() {
-        if (formError.otp) otpLabelRef.current.className = css.labelTopError
-        else otpLabelRef.current.className = css.labelTopFocus;
-    }
-
-    function otpInputBlur() {
-        if (formError.otp) otpLabelRef.current.className = otp ? css.labelTopError : css.labelMiddleError
-        else otpLabelRef.current.className = otp ? css.labelTopBlur : css.labelMiddle;
-    }
+            return function() {
+                clearInterval(interval);
+            };
+        } else {
+            resendRef.current.className = 'text-purple-primary cursor-pointer hover:underline';
+            resendRef.current.textContent = 'Resend';
+        }
+    }, [second]);
 
     function pwdHandler(e) {
         setPwd(e.target.value);
@@ -114,6 +119,20 @@ export default function ForgotPwdForm(props) {
         else confPwdLabelRef.current.className = confPwd ? css.labelTopBlur : css.labelMiddle;
     }
 
+    function otpHandler(e) {
+        setOtp(e.target.value);
+    }
+
+    function otpInputFocus() {
+        if (formError.otp) otpLabelRef.current.className = css.labelTopError
+        else otpLabelRef.current.className = css.labelTopFocus;
+    }
+
+    function otpInputBlur() {
+        if (formError.otp) otpLabelRef.current.className = otp ? css.labelTopError : css.labelMiddleError
+        else otpLabelRef.current.className = otp ? css.labelTopBlur : css.labelMiddle;
+    }
+
     function togglePwd() {
         setShowPwd(value => !value);
         hasToggled.current = true;
@@ -126,6 +145,16 @@ export default function ForgotPwdForm(props) {
 
     function back() {
         setStep('email');
+    }
+
+    function resendOtp() {
+        if (second === 0) {
+            resendRef.current.className = 'text-purple-link';
+            resendRef.current.textContent = `Resend (${process.env.RESEND_EMAIL_TIMEOUT})`;
+            setSecond(+process.env.RESEND_EMAIL_TIMEOUT);
+
+            contr.resendOtp(email, csrfToken, accessToken, setFormError);
+        }
     }
 
     async function resetPwd(e) {
@@ -151,18 +180,6 @@ export default function ForgotPwdForm(props) {
                     <p className="text-base text-purple-text">Enter the OTP sent to your email and your new password to reset your account.</p>
                 </div>
                 <form className="w-fit phone:w-56 tablet:w-64 desktop:w-72 mx-auto flex flex-col gap-4" autoCapitalize="off" autoComplete="off" spellCheck="false">
-                    <div className="w-full relative">
-                        {
-                            formError.otp
-                            &&  <div className="px-3 py-3 absolute left-0 top-0 rounded-tr-md rounded-br-md">
-                                    <Tooltip title={formError.otp} placement="top-start" posY={-8} className="w-fit max-w-32 phone:max-w-40 tablet:max-w-48 desktop:max-w-56 px-4 py-1 text-sm text-purple-oppositeText bg-purple-error rounded-md">
-                                        <MdErrorOutline className="text-lg text-purple-error" />
-                                    </Tooltip>
-                                </div>
-                        }
-                        <label htmlFor="otp" ref={otpLabelRef}>One Time Password (OTP)</label>
-                        <input type="otp" id="otp" value={otp} ref={otpInputRef} disabled={isSubmitting} onChange={otpHandler} onFocus={otpInputFocus} onBlur={otpInputBlur} className={css.defaultInput} />
-                    </div>
                     <div className="w-full relative">
                         {
                             formError.pwd
@@ -201,6 +218,21 @@ export default function ForgotPwdForm(props) {
                             }
                         </div>
                     </div>
+                    <div className="w-full relative">
+                        {
+                            formError.otp
+                            &&  <div className="px-3 py-3 absolute left-0 top-0 rounded-tr-md rounded-br-md">
+                                    <Tooltip title={formError.otp} placement="top-start" posY={-8} className="w-fit max-w-32 phone:max-w-40 tablet:max-w-48 desktop:max-w-56 px-4 py-1 text-sm text-purple-oppositeText bg-purple-error rounded-md">
+                                        <MdErrorOutline className="text-lg text-purple-error" />
+                                    </Tooltip>
+                                </div>
+                        }
+                        <label htmlFor="otp" ref={otpLabelRef}>One Time Password (OTP)</label>
+                        <input type="otp" id="otp" value={otp} ref={otpInputRef} disabled={isSubmitting} onChange={otpHandler} onFocus={otpInputFocus} onBlur={otpInputBlur} className={css.defaultInput} />
+                    </div>
+                    <span className="text-sm text-purple-text">
+                        Didn&apos;t receive your OTP? <span onClick={resendOtp} ref={resendRef} className="text-purple-link">Resend ({process.env.RESEND_EMAIL_TIMEOUT})</span>
+                    </span>
                     <button onClick={resetPwd} disabled={isSubmitting} className="w-full mt-4 py-2 text-base text-purple-oppositeText bg-purple-primary rounded-md hover:bg-purple-highlight disabled:bg-purple-highlight disabled:cursor-not-allowed">Submit</button>
                 </form>
             </section>
