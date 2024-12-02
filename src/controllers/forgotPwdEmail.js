@@ -3,15 +3,15 @@ import {toast} from 'react-toastify';
 import axios from '../services/axios';
 import {setToast} from '../services/toastService';
 
-import css from '../css/registerForm';
+import css from '../css/forgotPwdEmail';
 
-function inputErrorHandler(error, value, label, input, pwd=false) {
+function inputErrorHandler(error, value, label, input) {
     if (error) {
         label.current.className = value ? css.labelTopError : css.labelMiddleError;
-        input.current.className = pwd ? css.pwdInputError : css.defaultInputError;
+        input.current.className = css.defaultInputError;
     } else {
         label.current.className = value ? css.labelTopBlur : css.labelMiddle;
-        input.current.className = pwd ? css.pwdInput : css.defaultInput;
+        input.current.className = css.defaultInput;
     }
 }
 
