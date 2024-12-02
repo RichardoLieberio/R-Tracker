@@ -23,7 +23,10 @@ export default function ForgotPwd() {
             };
             return <ForgotPwdEmail {...forgotPwdEmailState} />;
         case 'form':
-            const forgotPwdFormState = {email};
+            const forgotPwdFormState = {
+                email,
+                setStep
+            };
             return <ForgotPwdForm {...forgotPwdFormState} />;
     }
 }
