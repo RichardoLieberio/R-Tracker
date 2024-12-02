@@ -4,7 +4,7 @@ import {useSelector} from 'react-redux';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ChangeEmail from './pages/ChangeEmail';
-import ResetPwd from './pages/ResetPwd';
+import ForgotPwd from './pages/ForgotPwd';
 import Dashboard from './pages/Dashboard';
 import Expense from './pages/Expense';
 import User from './pages/User';
@@ -52,7 +52,7 @@ export default function App() {
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="/change-email" element={<ChangeEmail />} />
-                    <Route path="/reset-password" element={<ResetPwd />} />
+                    <Route path="/forgot-password" element={<ForgotPwd />} />
                     <Route path="/expense" element={<Expense />} />
                     <Route path="/admin">
                         <Route path="user" element={<User />} />
