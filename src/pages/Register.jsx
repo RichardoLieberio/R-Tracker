@@ -1,4 +1,6 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
+
+import {axiosController} from '../services/axios';
 
 import RegisterForm from '../components/RegisterForm';
 import EmailVerification from '../components/EmailVerification';
@@ -11,6 +13,12 @@ export default function Register() {
     const [confPwd, setConfPwd] = useState('');
     const [formError, setFormError] = useState({});
     const [step, setStep] = useState('register');
+
+    useEffect(function() {
+        return function() {
+            axiosController && axiosController.abort();
+        }
+    }, []);
 
     switch (step) {
         case 'register':
