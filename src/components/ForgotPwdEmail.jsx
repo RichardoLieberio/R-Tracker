@@ -8,7 +8,7 @@ import {getToast} from '../services/toastService';
 
 import contr from '../controllers/forgotPwdEmail';
 
-import css from '../css/registerForm';
+import css from '../css/forgotPwdEmail';
 
 import {IoArrowBack} from 'react-icons/io5';
 import Tooltip from './Tooltip';
