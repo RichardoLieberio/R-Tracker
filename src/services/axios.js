@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import {toast} from 'react-toastify';
 
-let controller;
+let axiosController;
 
 const axiosInstance = axios.create({
     baseURL: process.env.API_URI,
@@ -18,9 +18,9 @@ axiosInstance.interceptors.response.use(responseSuccess, responseError);
 
 function requestSuccess(config) {
     if (config.useAbortController) {
-        controller && controller.abort();
-        controller = new AbortController();
-        config.signal = controller.signal;
+        axiosController && axiosController.abort();
+        axiosController = new AbortController();
+        config.signal = axiosController.signal;
     }
     return config;
 }
@@ -39,4 +39,5 @@ function responseError(error) {
     else if (!axios.isCancel(error)) console.error(error);
 }
 
+export {axiosController};
 export default axiosInstance;
