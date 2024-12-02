@@ -7,7 +7,7 @@ import ForgotPwdForm from '../components/ForgotPwdForm';
 
 export default function ForgotPwd() {
     const [email, setEmail] = useState('');
-    const [step, setStep] = useState('form');
+    const [step, setStep] = useState('email');
 
     useEffect(function() {
         return function() {
