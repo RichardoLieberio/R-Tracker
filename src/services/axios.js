@@ -35,13 +35,12 @@ function requestError(error) {
 function responseSuccess(response) {
     const status = response?.data?.status;
     const accessToken = response?.data?.accessToken;
+    const request = response.config;
 
     if (status === 429 || status === 500 || status === 503) {
         toast.error(response.data.msg);
-    } else if (status === 200 && accessToken) {
+    } else if (status === 200 && accessToken && request.rerequest) {
         store.dispatch(setAccessToken(accessToken));
-
-        const request = response.config;
         request.headers['Authorization'] = `Bearer ${accessToken}`;
         return axiosInstance(request);
     } else {
