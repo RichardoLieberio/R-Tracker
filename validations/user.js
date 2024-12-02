@@ -47,7 +47,7 @@ async function verify(req, res, next) {
 }
 
 async function resetPwd(req, res, next) {
-    const {email, otp, pwd} = req.body;
+    const {email, otp, pwd, confPwd} = req.body;
     const errorMsg = {};
     req.data = {};
 
@@ -65,6 +65,9 @@ async function resetPwd(req, res, next) {
     pwdValidation.error
     ? errorMsg['pwd'] = pwdValidation.error
     : req.data['pwd'] = pwdValidation.pwd;
+
+    const confPwdValidation = validateConfPwd(pwd, confPwd);
+    if (confPwdValidation.error) errorMsg['confPwd'] = confPwdValidation.error;
 
     if (Object.entries(errorMsg).length) return res.json({status: 422, msg: errorMsg});
     next();
