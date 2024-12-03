@@ -15,7 +15,7 @@ export default function Login() {
     return (
         <HelmetProvider>
             <Helmet>
-                <title>R Tracker - Login Page</title>
+                <title>R Tracker - Login</title>
                 <meta name="description" content="Login page for R Tracker. Secure login to track your expenses." />
                 <meta name="robots" content="noindex, nofollow" />
             </Helmet>

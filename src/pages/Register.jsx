@@ -24,7 +24,7 @@ export default function Register() {
     return (
         <HelmetProvider>
             <Helmet>
-                <title>R Tracker - Register Page</title>
+                <title>R Tracker - Register</title>
                 <meta name="description" content="Create an account on R Tracker to easily track your expenses and manage your financial goals." />
                 <meta name="robots" content="noindex, nofollow" />
             </Helmet>
