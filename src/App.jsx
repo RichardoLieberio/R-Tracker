@@ -25,6 +25,7 @@ import {getOppositeTextColor} from './css/color';
 import {ToastContainer} from 'react-toastify';
 import Loading from './components/Loading';
 import MainLayout from './components/MainLayout';
+import PageLayout from './components/PageLayout';
 
 export default function App() {
     const [loading, setLoading] = useState(true);
@@ -73,14 +74,16 @@ export default function App() {
             <MainLayout>
                 <ToastContainer {...toastConfig} />
                 <Routes>
-                    <Route path="/" element={<DashboardWrapper />} />
+                    <Route element={<PageLayout />}>
+                        <Route path="/" element={<DashboardWrapper />} />
+                        <Route path="/change-email" element={<ChangeEmailWrapper />} />
+                        <Route path="/expense" element={<ExpenseWrapper />} />
+                        <Route path="/admin/user" element={<UserWrapper />} />
+                        <Route path="/admin/expense-category" element={<ExpenseCategoryWrapper />} />
+                    </Route>
                     <Route path="/login" element={<LoginWrapper />} />
                     <Route path="/register" element={<RegisterWrapper />} />
-                    <Route path="/change-email" element={<ChangeEmailWrapper />} />
                     <Route path="/forgot-password" element={<ForgotPwdWrapper />} />
-                    <Route path="/expense" element={<ExpenseWrapper />} />
-                    <Route path="/admin/user" element={<UserWrapper />} />
-                    <Route path="/admin/expense-category" element={<ExpenseCategoryWrapper />} />
                     <Route path="*" element={<NotFound />} />
                 </Routes>
             </MainLayout>
