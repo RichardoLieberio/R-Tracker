@@ -59,31 +59,28 @@ export default function App() {
         bodyClassName
     };
 
-    const DashboardWrapper = Authenticated(Dashboard);
-    const LoginWrapper = NotAuthenticated(Login);
-    const RegisterWrapper = NotAuthenticated(Register);
-    const ChangeEmailWrapper = Authenticated(ChangeEmail);
-    const ForgotPwdWrapper = NotAuthenticated(ForgotPwd);
-    const ExpenseWrapper = Authenticated(Expense);
-    const UserWrapper = Admin(User);
-    const ExpenseCategoryWrapper = Admin(ExpenseCategory);
-
     return loading
     ?   <Loading defaultSize theme={theme} />
     :   <BrowserRouter>
             <MainLayout>
                 <ToastContainer {...toastConfig} />
                 <Routes>
-                    <Route element={<PageLayout />}>
-                        <Route path="/" element={<DashboardWrapper />} />
-                        <Route path="/change-email" element={<ChangeEmailWrapper />} />
-                        <Route path="/expense" element={<ExpenseWrapper />} />
-                        <Route path="/admin/user" element={<UserWrapper />} />
-                        <Route path="/admin/expense-category" element={<ExpenseCategoryWrapper />} />
+                    <Route element={<Authenticated />}>
+                        <Route element={<PageLayout />}>
+                            <Route path="/" element={<Dashboard />} />
+                            <Route path="/change-email" element={<ChangeEmail />} />
+                            <Route path="/expense" element={<Expense />} />
+                            <Route element={<Admin />}>
+                                <Route path="/admin/user" element={<User />} />
+                                <Route path="/admin/expense-category" element={<ExpenseCategory />} />
+                            </Route>
+                        </Route>
                     </Route>
-                    <Route path="/login" element={<LoginWrapper />} />
-                    <Route path="/register" element={<RegisterWrapper />} />
-                    <Route path="/forgot-password" element={<ForgotPwdWrapper />} />
+                    <Route element={<NotAuthenticated />}>
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/register" element={<Register />} />
+                        <Route path="/forgot-password" element={<ForgotPwd />} />
+                    </Route>
                     <Route path="*" element={<NotFound />} />
                 </Routes>
             </MainLayout>
