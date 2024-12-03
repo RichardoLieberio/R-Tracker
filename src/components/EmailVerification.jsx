@@ -79,7 +79,7 @@ export default function VerifyEmail(props) {
                 <IoArrowBack className="text-2xl text-purple-text" />
             </section>
             <section className="flex flex-col gap-8">
-                <img src="/Email Verification.png" alt="Email Verification" className="w-40 phone:w-48 tablet:w-56 desktop:w-64 mx-auto" />
+                <img src="/Email Verification.png" alt="Email Verification" loading="lazy" className="w-40 phone:w-48 tablet:w-56 desktop:w-64 mx-auto" />
                 <div className="flex flex-col gap-4">
                     <h1 className="text-2xl text-purple-text font-semibold">Verify your email</h1>
                     <p className="text-base text-purple-text">Check your email {email} for the OTP and enter it below to continue.</p>

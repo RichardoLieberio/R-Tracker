@@ -2,7 +2,8 @@ import {useState, useEffect} from 'react';
 
 import {axiosController} from '../services/axios';
 
-import {HelmetProvider, Helmet} from 'react-helmet-async';
+import {HelmetProvider} from 'react-helmet-async';
+import RegisterHeead from '../head/RegisterHead';
 import RegisterForm from '../components/RegisterForm';
 import EmailVerification from '../components/EmailVerification';
 import EmailVerified from '../components/EmailVerified';
@@ -23,11 +24,7 @@ export default function Register() {
 
     return (
         <HelmetProvider>
-            <Helmet>
-                <title>R Tracker - Register</title>
-                <meta name="description" content="Create an account on R Tracker to easily track your expenses and manage your financial goals." />
-                <meta name="robots" content="noindex, nofollow" />
-            </Helmet>
+            <RegisterHeead />
             {(function() {
                 switch (step) {
                     case 'register':

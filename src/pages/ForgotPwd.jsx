@@ -2,7 +2,8 @@ import {useState, useEffect} from 'react';
 
 import {axiosController} from '../services/axios';
 
-import {HelmetProvider, Helmet} from 'react-helmet-async';
+import {HelmetProvider} from 'react-helmet-async';
+import ForgotPwdHead from '../head/ForgotPwdHead';
 import ForgotPwdEmail from '../components/ForgotPwdEmail';
 import ForgotPwdForm from '../components/ForgotPwdForm';
 
@@ -18,11 +19,7 @@ export default function ForgotPwd() {
 
     return (
         <HelmetProvider>
-            <Helmet>
-                <title>R Tracker - Forgot Password</title>
-                <meta name="description" content="Forgot your password? Reset it quickly and regain access to your R Tracker account to manage your expenses." />
-                <meta name="robots" content="noindex, nofollow" />
-            </Helmet>
+            <ForgotPwdHead />
             {(function() {
                 switch (step) {
                     case 'email':

@@ -110,7 +110,7 @@ export default function LoginForm() {
                 <section className="w-56 h-auto phone:w-72 tablet:w-80 desktop:w-96 bg-cover bg-center bg-no-repeat" style={{backgroundImage: 'url("/Login Image.jpeg")'}} />
             }
             <section className="w-56 phone:w-72 tablet:w-80 desktop:w-96 p-8 flex flex-col gap-12">
-                <img src="/Logo.png" alt="R-Tracker Logo" width="32px" height="32px" />
+                <img src="/Logo.png" alt="R-Tracker Logo" loading="lazy" width="32px" height="32px" />
                 <form className="flex flex-col gap-6" autoCapitalize="off" autoComplete="off" spellCheck="false">
                     <h1 className="text-2xl text-purple-text">Login</h1>
                     <section className="flex flex-col gap-4">
@@ -171,16 +171,16 @@ export default function LoginForm() {
                     <small className="text-sm text-purple-text">Contact us</small>
                     <span className="flex gap-4 tablet:gap-6">
                         <a href={process.env.GITHUB_URI} target="_blank" rel="noopener noreferrer nofollow" >
-                            <img src="/Github.png" alt="Github Icon" width="32px" height="32px" />
+                            <img src="/Github.png" alt="Github Icon" loading="lazy" width="32px" height="32px" />
                         </a>
                         <a href={process.env.LINKEDIN_URI} target="_blank" rel="noopener noreferrer nofollow" >
-                            <img src="/Linkedin.png" alt="Linkedin Icon" width="32px" height="32px" />
+                            <img src="/Linkedin.png" alt="Linkedin Icon" loading="lazy" width="32px" height="32px" />
                         </a>
                         <a href={process.env.INSTAGRAM_URI} target="_blank" rel="noopener noreferrer nofollow" >
-                            <img src="/Instagram.png" alt="Instagram Icon" width="32px" height="32px" />
+                            <img src="/Instagram.png" alt="Instagram Icon" loading="lazy" width="32px" height="32px" />
                         </a>
                         <a href={process.env.WHATSAPP_URI} target="_blank" rel="noopener noreferrer nofollow" >
-                            <img src="/Whatsapp.png" alt="Whatsapp Icon" width="32px" height="32px" />
+                            <img src="/Whatsapp.png" alt="Whatsapp Icon" loading="lazy" width="32px" height="32px" />
                         </a>
                     </span>
                 </footer>

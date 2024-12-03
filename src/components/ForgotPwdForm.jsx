@@ -174,7 +174,7 @@ export default function ForgotPwdForm(props) {
                 <IoArrowBack className="text-2xl text-purple-text" />
             </section>
             <section className="flex flex-col gap-8">
-                <img src="/Password.png" alt="Password" className="w-20 phone:w-28 tablet:w-36 desktop:w-44 mx-auto" />
+                <img src="/Password.png" alt="Password" loading="lazy" className="w-20 phone:w-28 tablet:w-36 desktop:w-44 mx-auto" />
                 <div className="flex flex-col gap-4">
                     <h1 className="text-2xl text-purple-text font-semibold">Reset your password</h1>
                     <p className="text-base text-purple-text">Enter the OTP sent to your email and your new password to reset your account.</p>

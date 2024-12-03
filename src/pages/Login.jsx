@@ -2,7 +2,8 @@ import {useEffect} from 'react';
 
 import {axiosController} from '../services/axios';
 
-import {HelmetProvider, Helmet} from 'react-helmet-async';
+import {HelmetProvider} from 'react-helmet-async';
+import LoginHead from '../head/LoginHead';
 import LoginForm from '../components/LoginForm';
 
 export default function Login() {
@@ -14,11 +15,7 @@ export default function Login() {
 
     return (
         <HelmetProvider>
-            <Helmet>
-                <title>R Tracker - Login</title>
-                <meta name="description" content="Login page for R Tracker. Secure login to track your expenses." />
-                <meta name="robots" content="noindex, nofollow" />
-            </Helmet>
+            <LoginHead />
             <LoginForm />
         </HelmetProvider>
     );

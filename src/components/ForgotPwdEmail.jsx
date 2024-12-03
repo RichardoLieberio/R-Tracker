@@ -61,7 +61,7 @@ export default function ForgotPwdEmail(props) {
 
     return (
         <section className="w-1/3 min-w-56 phone:min-w-72 tablet:min-w-80 desktop:min-w-96 h-full mx-auto py-8 pt-32 flex flex-col gap-8">
-            <img src="/Email Verification.png" alt="Email Verification" className="w-40 phone:w-48 tablet:w-56 desktop:w-64 mx-auto" />
+            <img src="/Email Verification.png" alt="Email Verification" loading="lazy" className="w-40 phone:w-48 tablet:w-56 desktop:w-64 mx-auto" />
             <div className="flex flex-col gap-4">
                 <h1 className="text-2xl text-purple-text font-semibold">Reset your password</h1>
                 <p className="text-base text-purple-text">Enter your email address below, and we&apos;ll send you a one-time password (OTP) to verify your identity.</p>
