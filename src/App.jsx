@@ -1,3 +1,4 @@
+import {useState, useEffect} from 'react';
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import {useSelector} from 'react-redux';
 
@@ -15,15 +16,24 @@ import User from './pages/User';
 import ExpenseCategory from './pages/ExpenseCategory';
 import NotFound from './pages/NotFound';
 
+import contr from './controllers/hocs';
+
 import 'react-toastify/dist/ReactToastify.css';
 import getToastClassName from './css/toast';
 import {getOppositeTextColor} from './css/color';
 
 import {ToastContainer} from 'react-toastify';
+import Loading from './components/Loading';
 import MainLayout from './components/MainLayout';
 
 export default function App() {
+    const [loading, setLoading] = useState(true);
+
     const theme = useSelector((state) => state.theme.color);
+
+    useEffect(function() {
+        contr.getInfo(setLoading);
+    }, []);
 
     function toastClassName(context) {
         const className = getToastClassName(theme);
@@ -57,8 +67,9 @@ export default function App() {
     const UserWrapper = Admin(User);
     const ExpenseCategoryWrapper = Admin(ExpenseCategory);
 
-    return (
-        <BrowserRouter>
+    return loading
+    ?   <Loading defaultSize theme={theme} />
+    :   <BrowserRouter>
             <MainLayout>
                 <ToastContainer {...toastConfig} />
                 <Routes>
@@ -73,6 +84,5 @@ export default function App() {
                     <Route path="*" element={<NotFound />} />
                 </Routes>
             </MainLayout>
-        </BrowserRouter>
-    );
+        </BrowserRouter>;
 }
