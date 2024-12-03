@@ -1,8 +1,8 @@
 import {useEffect} from 'react';
-import {Helmet, HelmetProvider} from 'react-helmet-async';
 
 import {axiosController} from '../services/axios';
 
+import {HelmetProvider, Helmet} from 'react-helmet-async';
 import LoginForm from '../components/LoginForm';
 
 export default function Login() {

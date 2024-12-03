@@ -229,22 +229,22 @@ export default function RegisterForm(props) {
                         <button onClick={register} disabled={isSubmitting} className="py-2 text-base text-purple-oppositeText bg-purple-primary rounded-md hover:bg-purple-highlight disabled:bg-purple-highlight disabled:cursor-not-allowed">Register</button>
                     </section>
                     <small className="mx-auto text-sm text-purple-text">
-                        Already have an account? <Link to="/login" className="text-purple-link hover:underline">Login</Link>
+                        Already have an account? <Link to="/login" rel="nofollow" className="text-purple-link hover:underline">Login</Link>
                     </small>
                 </form>
                 <footer className="flex flex-col items-center gap-2">
                     <small className="text-sm text-purple-text">Contact us</small>
                     <span className="flex gap-4 tablet:gap-6">
-                        <a href={process.env.GITHUB_URI} target="_blank" rel="noopener noreferrer" >
+                        <a href={process.env.GITHUB_URI} target="_blank" rel="noopener noreferrer nofollow" >
                             <img src="/Github.png" alt="Github Icon" width="32px" height="32px" />
                         </a>
-                        <a href={process.env.LINKEDIN_URI} target="_blank" rel="noopener noreferrer" >
+                        <a href={process.env.LINKEDIN_URI} target="_blank" rel="noopener noreferrer nofollow" >
                             <img src="/Linkedin.png" alt="Linkedin Icon" width="32px" height="32px" />
                         </a>
-                        <a href={process.env.INSTAGRAM_URI} target="_blank" rel="noopener noreferrer" >
+                        <a href={process.env.INSTAGRAM_URI} target="_blank" rel="noopener noreferrer nofollow" >
                             <img src="/Instagram.png" alt="Instagram Icon" width="32px" height="32px" />
                         </a>
-                        <a href={process.env.WHATSAPP_URI} target="_blank" rel="noopener noreferrer" >
+                        <a href={process.env.WHATSAPP_URI} target="_blank" rel="noopener noreferrer nofollow" >
                             <img src="/Whatsapp.png" alt="Whatsapp Icon" width="32px" height="32px" />
                         </a>
                     </span>
