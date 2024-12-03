@@ -5,7 +5,8 @@ export const authSlice = createSlice({
     initialState: {
         userInfo: null,
         accessToken: null,
-        isAuthenticated: false
+        isAuthenticated: false,
+        isAdmin: false
     },
     reducers: {
         setAccessToken: function(state, action) {
@@ -16,19 +17,18 @@ export const authSlice = createSlice({
         },
         setUserInfo: function(state, action) {
             state.userInfo = action.payload;
+            state.isAdmin = state.userInfo.role === 'admin';
         },
         clearUserInfo: function(state) {
             state.userInfo = null;
+            state.isAdmin = false;
         },
         setAuthentication: function(state, action) {
             state.isAuthenticated = action.payload;
-        },
-        isAdmin: function(state) {
-            return !!state.userInfo.role === 'admin';
         }
     }
 });
 
-export const {setAccessToken, clearAccessToken, setUserInfo, clearUserInfo, setAuthentication, isAdmin} = authSlice.actions;
+export const {setAccessToken, clearAccessToken, setUserInfo, clearUserInfo, setAuthentication} = authSlice.actions;
 
 export default authSlice.reducer;
