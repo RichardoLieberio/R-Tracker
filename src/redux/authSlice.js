@@ -22,10 +22,13 @@ export const authSlice = createSlice({
         },
         setAuthentication: function(state, action) {
             state.isAuthenticated = action.payload;
+        },
+        isAdmin: function(state) {
+            return !!state.userInfo.role === 'admin';
         }
     }
 });
 
-export const {setAccessToken, clearAccessToken, setUserInfo, clearUserInfo, setAuthentication} = authSlice.actions;
+export const {setAccessToken, clearAccessToken, setUserInfo, clearUserInfo, setAuthentication, isAdmin} = authSlice.actions;
 
 export default authSlice.reducer;
