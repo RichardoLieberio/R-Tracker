@@ -20,6 +20,7 @@ axiosInstance.interceptors.request.use(requestSuccess, requestError);
 axiosInstance.interceptors.response.use(responseSuccess, responseError);
 
 function requestSuccess(config) {
+    config.rerequest ??= true;
     if (config.useAbortController) {
         axiosController && axiosController.abort();
         axiosController = new AbortController();
