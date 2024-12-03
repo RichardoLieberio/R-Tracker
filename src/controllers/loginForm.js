@@ -26,7 +26,8 @@ async function login(email, pwd, rememberMe, csrfToken, accessToken, setFormErro
             'Authorization': `Bearer ${accessToken}`,
             'CSRF-Token': csrfToken
         },
-        useAbortController: true
+        useAbortController: true,
+        rerequest: false
     };
 
     const response = await axios.post('/api/auth/login', data, config);
