@@ -1,6 +1,10 @@
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import {useSelector} from 'react-redux';
 
+import Admin from './hocs/Admin';
+import Authenticated from './hocs/Authenticated';
+import NotAuthenticated from './hocs/NotAuthenticated';
+
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ChangeEmail from './pages/ChangeEmail';
@@ -44,21 +48,28 @@ export default function App() {
         bodyClassName
     };
 
+    const DashboardWrapper = Authenticated(Dashboard);
+    const LoginWrapper = NotAuthenticated(Login);
+    const RegisterWrapper = NotAuthenticated(Register);
+    const ChangeEmailWrapper = Authenticated(ChangeEmail);
+    const ForgotPwdWrapper = NotAuthenticated(ForgotPwd);
+    const ExpenseWrapper = Authenticated(Expense);
+    const UserWrapper = Admin(User);
+    const ExpenseCategoryWrapper = Admin(ExpenseCategory);
+
     return (
         <BrowserRouter>
             <MainLayout>
                 <ToastContainer {...toastConfig} />
                 <Routes>
-                    <Route path="/" element={<Dashboard />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<Register />} />
-                    <Route path="/change-email" element={<ChangeEmail />} />
-                    <Route path="/forgot-password" element={<ForgotPwd />} />
-                    <Route path="/expense" element={<Expense />} />
-                    <Route path="/admin">
-                        <Route path="user" element={<User />} />
-                        <Route path="expense-category" element={<ExpenseCategory />} />
-                    </Route>
+                    <Route path="/" element={<DashboardWrapper />} />
+                    <Route path="/login" element={<LoginWrapper />} />
+                    <Route path="/register" element={<RegisterWrapper />} />
+                    <Route path="/change-email" element={<ChangeEmailWrapper />} />
+                    <Route path="/forgot-password" element={<ForgotPwdWrapper />} />
+                    <Route path="/expense" element={<ExpenseWrapper />} />
+                    <Route path="/admin/user" element={<UserWrapper />} />
+                    <Route path="/admin/expense-category" element={<ExpenseCategoryWrapper />} />
                     <Route path="*" element={<NotFound />} />
                 </Routes>
             </MainLayout>
