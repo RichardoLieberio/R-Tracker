@@ -1,9 +1,9 @@
 import axios from '../services/axios';
 
 import store from '../redux/store';
-import {setUserInfo, setAuthentication} from '../redux/authSlice';
+import {clearAccessToken, setUserInfo, clearUserInfo, setAuthentication} from '../redux/authSlice';
 
-async function getInfo(accessToken, setLoading) {
+async function getInfo(setLoading, accessToken='') {
     const config = {
         headers: {
             'Content-Type': 'application/json',
@@ -21,6 +21,9 @@ async function getInfo(accessToken, setLoading) {
             setLoading(false);
             break;
         case 401:
+            store.dispatch(clearAccessToken());
+            store.dispatch(clearUserInfo());
+            store.dispatch(setAuthentication(false));
             setLoading(false);
             break;
     }
