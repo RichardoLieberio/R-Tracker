@@ -4,7 +4,7 @@ import axios from '../services/axios';
 import {setToast} from '../services/toastService';
 
 import store from '../redux/store';
-import {setAccessToken, setUserInfo} from '../redux/authSlice';
+import {setAccessToken, setUserInfo, setAuthentication} from '../redux/authSlice';
 
 import css from '../css/registerForm';
 
@@ -37,6 +37,7 @@ async function login(email, pwd, rememberMe, csrfToken, accessToken, setFormErro
         case 200:
             store.dispatch(setAccessToken(response.data.accessToken));
             store.dispatch(setUserInfo(response.data.userInfo));
+            store.dispatch(setAuthentication(true));
             navigate('/', {replace: true});
             break;
         case 401:

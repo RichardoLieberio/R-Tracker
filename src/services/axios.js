@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import store from '../redux/store';
-import {setAccessToken} from '../redux/authSlice';
+import {setAccessToken, setAuthentication} from '../redux/authSlice';
 
 import {toast} from 'react-toastify';
 
@@ -42,6 +42,8 @@ function responseSuccess(response) {
         toast.error(response.data.msg);
     } else if (status === 200 && accessToken && request.rerequest) {
         store.dispatch(setAccessToken(accessToken));
+        store.dispatch(setAuthentication(true));
+
         request.headers['Authorization'] = `Bearer ${accessToken}`;
         return axiosInstance(request);
     } else {
