@@ -35,7 +35,6 @@ export default [
       ],
       'no-undef': 'off',
       'no-case-declarations': 'off',
-      'react/display-name': 'off',
     },
   },
 ]
