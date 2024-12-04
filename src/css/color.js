@@ -36,6 +36,25 @@ function getBackgroundColor(theme) {
     }
 }
 
+function getHoverBgSecondaryColor(theme) {
+    switch (theme) {
+        case 'red':
+            return 'hover:!bg-red-secondary';
+        case 'green':
+            return 'hover:!bg-green-secondary';
+        case 'blue':
+            return 'hover:!bg-blue-secondary';
+        case 'yellow':
+            return 'hover:!bg-yellow-secondary';
+        case 'teal':
+            return 'hover:!bg-teal-secondary';
+        case 'dark':
+            return 'hover:!bg-dark-secondary';
+        default:
+            return 'hover:!bg-purple-secondary';
+    }
+}
+
 function getHoverBgHighlightColor(theme) {
     switch (theme) {
         case 'red':
@@ -171,7 +190,7 @@ function getToPrimaryColor(theme) {
 
 export {
     getBgPrimaryColor, getBackgroundColor,
-    getHoverBgHighlightColor,
+    getHoverBgSecondaryColor, getHoverBgHighlightColor,
     getTextColor, getOppositeTextColor, getTextHighlightColor,
     getHoverTextHighlightColor,
     getFromSecondaryColor, getToPrimaryColor
