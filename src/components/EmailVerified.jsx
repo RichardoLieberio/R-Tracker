@@ -1,14 +1,20 @@
 import {useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
+import {useDispatch} from 'react-redux';
+
+import {setAuthentication} from '../redux/authSlice';
 
 export default function EmailVerified() {
     const navigate = useNavigate();
 
+    const dispatch = useDispatch();
+
     useEffect(function() {
         setTimeout(function() {
             navigate('/', {replace: true});
+            dispatch(setAuthentication(true));
         }, 3000);
-    }, [navigate]);
+    }, [navigate, dispatch]);
 
     return (
         <section className="w-1/3 min-w-56 phone:min-w-72 tablet:min-w-80 desktop:min-w-96 h-full mx-auto py-24 flex flex-col gap-8">
