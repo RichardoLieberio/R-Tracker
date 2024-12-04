@@ -33,6 +33,7 @@ export default function App() {
     const theme = useSelector((state) => state.theme.color);
 
     useEffect(function() {
+        contr.themeSetup();
         contr.getInfo(setLoading);
     }, []);
 

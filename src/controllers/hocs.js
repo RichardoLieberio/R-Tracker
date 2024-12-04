@@ -1,7 +1,16 @@
+import Cookies from 'js-cookie';
+
 import axios from '../services/axios';
 
 import store from '../redux/store';
+import {changeColor} from '../redux/themeSlice';
 import {clearAccessToken, setUserInfo, clearUserInfo, setAuthentication} from '../redux/authSlice';
+
+function themeSetup() {
+    const theme = Cookies.get('theme');
+    store.dispatch(changeColor(theme));
+    Cookies.set('theme', theme ?? 'purple');
+}
 
 async function getInfo(setLoading, accessToken='') {
     const config = {
@@ -29,4 +38,4 @@ async function getInfo(setLoading, accessToken='') {
     }
 }
 
-export default {getInfo};
+export default {themeSetup, getInfo};
