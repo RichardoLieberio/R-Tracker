@@ -1,6 +1,6 @@
 import {useEffect} from 'react';
 import {useLocation} from 'react-router-dom';
-import {useSelector, useDispatch} from 'react-redux';
+import {useDispatch} from 'react-redux';
 
 import {axiosController} from '../services/axios';
 
@@ -11,8 +11,6 @@ import ExpenseHead from '../head/ExpenseHead';
 
 export default function Expense() {
     const location = useLocation();
-
-    const accessToken = useSelector((state) => state.auth.accessToken);
 
     const dispatch = useDispatch();
 
@@ -28,7 +26,6 @@ export default function Expense() {
         <HelmetProvider>
             <ExpenseHead />
             <h1>Expense Page</h1>
-            <p>{accessToken}</p>
         </HelmetProvider>
     );
 }
