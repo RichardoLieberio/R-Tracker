@@ -10,7 +10,7 @@ export const themeSlice = createSlice({
     reducers: {
         changeColor: function(state, action) {
             const themes = Object.keys(theme);
-            state.color = action.payload.color in themes ? action.payload.color : 'purple';
+            state.color = themes.includes(action.payload) ? action.payload : 'purple';
         }
     }
 });
