@@ -55,6 +55,25 @@ function getHoverBgSecondaryColor(theme) {
     }
 }
 
+function getHoverBgNeutral50Color(theme) {
+    switch (theme) {
+        case 'red':
+            return 'hover:!bg-red-neutral/50';
+        case 'green':
+            return 'hover:!bg-green-neutral/50';
+        case 'blue':
+            return 'hover:!bg-blue-neutral/50';
+        case 'yellow':
+            return 'hover:!bg-yellow-neutral/50';
+        case 'teal':
+            return 'hover:!bg-teal-neutral/50';
+        case 'dark':
+            return 'hover:!bg-dark-neutral/50';
+        default:
+            return 'hover:!bg-purple-neutral/50';
+    }
+}
+
 function getHoverBgHighlightColor(theme) {
     switch (theme) {
         case 'red':
@@ -190,7 +209,7 @@ function getToPrimaryColor(theme) {
 
 export {
     getBgPrimaryColor, getBackgroundColor,
-    getHoverBgSecondaryColor, getHoverBgHighlightColor,
+    getHoverBgSecondaryColor, getHoverBgNeutral50Color, getHoverBgHighlightColor,
     getTextColor, getOppositeTextColor, getTextHighlightColor,
     getHoverTextHighlightColor,
     getFromSecondaryColor, getToPrimaryColor
