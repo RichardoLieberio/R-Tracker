@@ -30,7 +30,7 @@ import PageLayout from './components/PageLayout';
 export default function App() {
     const [loading, setLoading] = useState(true);
 
-    const theme = useSelector((state) => state.theme.color);
+    const theme = useSelector((state) => state.web.theme);
 
     useEffect(function() {
         contr.themeSetup();

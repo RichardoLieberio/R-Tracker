@@ -3,12 +3,12 @@ import Cookies from 'js-cookie';
 import axios from '../services/axios';
 
 import store from '../redux/store';
-import {changeColor} from '../redux/themeSlice';
+import {changeTheme} from '../redux/webSlice';
 import {clearAccessToken, setUserInfo, clearUserInfo, setAuthentication} from '../redux/authSlice';
 
 function themeSetup() {
     const theme = Cookies.get('theme');
-    store.dispatch(changeColor(theme));
+    store.dispatch(changeTheme(theme));
     Cookies.set('theme', theme ?? 'purple');
 }
 

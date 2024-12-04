@@ -6,7 +6,7 @@ import {useScrollTrigger, Fade, Box, Fab} from '@mui/material';
 import {IoIosArrowUp} from 'react-icons/io';
 
 export default function ScrollTop() {
-    const theme = useSelector((state) => state.theme.color);
+    const theme = useSelector((state) => state.web.theme);
 
     function handleClick(e) {
         const anchor = (e.target.ownerDocument || document).querySelector('#top');

@@ -4,7 +4,7 @@ import {useSelector} from 'react-redux';
 import {getBackgroundColor} from '../css/color';
 
 export default function MainLayout({children}) {
-    const theme = useSelector((state) => state.theme.color);
+    const theme = useSelector((state) => state.web.theme);
 
     return (
         <main className={`w-full min-w-60 min-h-screen relative ${getBackgroundColor(theme)}`}>

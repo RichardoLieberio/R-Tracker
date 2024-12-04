@@ -9,7 +9,7 @@ import Loading from '../components/Loading';
 export default function NotAuthenticated() {
     const [loading, setLoading] = useState(true);
 
-    const theme = useSelector((state) => state.theme.color);
+    const theme = useSelector((state) => state.web.theme);
     const accessToken = useSelector((state) => state.auth.accessToken);
     const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
