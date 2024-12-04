@@ -19,7 +19,7 @@ connectDB();
 const app = express();
 
 app.use(cors({
-    origin: process.env.CLIENT_URI,
+    origin: process.env.MODE === 'production' ? process.env.CLIENT_URI_PROD : process.env.CLIENT_URI_DEV,
     methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization', 'CSRF-Token'],
     credentials: true

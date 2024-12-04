@@ -98,16 +98,16 @@ function createOptions(type, mail) {
                 <p style="font-size:0.9em;">Regards,<br />${process.env.EMAIL_NAME}</p>
                 <br>
                 <a href="${process.env.GITHUB_URI}" target="_blank">
-                    <img src="${process.env.SERVER_URI}/public/email/github.png" alt="Github" width="24" height="24">
+                    <img src="${process.env.MODE === 'production' ? process.env.SERVER_URI_PROD : process.env.SERVER_URI_DEV}/public/email/github.png" alt="Github" width="24" height="24">
                 </a>
                 <a href="${process.env.LINKEDIN_URI}" target="_blank">
-                    <img src="${process.env.SERVER_URI}/public/email/linkedin.png" alt="LinkedIn" width="24" height="24">
+                    <img src="${process.env.MODE === 'production' ? process.env.SERVER_URI_PROD : process.env.SERVER_URI_DEV}/public/email/linkedin.png" alt="LinkedIn" width="24" height="24">
                 </a>
                 <a href="${process.env.INSTAGRAM_URI}" target="_blank">
-                    <img src="${process.env.SERVER_URI}/public/email/instagram.png" alt="Instagram" width="24" height="24">
+                    <img src="${process.env.MODE === 'production' ? process.env.SERVER_URI_PROD : process.env.SERVER_URI_DEV}/public/email/instagram.png" alt="Instagram" width="24" height="24">
                 </a>
                 <a href="${process.env.WHATSAPP_URI}" target="_blank">
-                    <img src="${process.env.SERVER_URI}/public/email/whatsapp.png" alt="Whatsapp" width="24" height="24">
+                    <img src="${process.env.MODE === 'production' ? process.env.SERVER_URI_PROD : process.env.SERVER_URI_DEV}/public/email/whatsapp.png" alt="Whatsapp" width="24" height="24">
                 </a>
             </div>
         </div>
