@@ -10,8 +10,8 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import ChangeEmail from './pages/ChangeEmail';
 import ForgotPwd from './pages/ForgotPwd';
-import Dashboard from './pages/Dashboard';
 import Expense from './pages/Expense';
+import Chart from './pages/Chart';
 import User from './pages/User';
 import ExpenseCategory from './pages/ExpenseCategory';
 import NotFound from './pages/NotFound';
@@ -68,9 +68,9 @@ export default function App() {
                 <Routes>
                     <Route element={<Authenticated />}>
                         <Route element={<PageLayout />}>
-                            <Route path="/" element={<Dashboard />} />
+                            <Route path="/" element={<Expense />} />
                             <Route path="/change-email" element={<ChangeEmail />} />
-                            <Route path="/expense" element={<Expense />} />
+                            <Route path="/charts" element={<Chart />} />
                             <Route element={<Admin />}>
                                 <Route path="/admin/user" element={<User />} />
                                 <Route path="/admin/expense-category" element={<ExpenseCategory />} />

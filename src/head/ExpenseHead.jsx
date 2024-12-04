@@ -1,6 +1,6 @@
 import {Helmet} from 'react-helmet-async';
 
-export default function DashboardHead() {
+export default function ExpenseHead() {
     return (
         <Helmet>
             <meta property="og:title" content="R Tracker - Track and Manage Your Expenses & Achieve Financial Goals" />

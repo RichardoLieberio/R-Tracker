@@ -1,13 +1,17 @@
-// import {useMediaQuery} from '@mui/material';
+import {useSelector} from 'react-redux';
 
-// import breakpoints from '../../config/breakpoints';
+import {getBgPrimaryColor} from '../css/color';
 
 export default function Header() {
-    // const tabletBreakpoint = useMediaQuery(`(min-width: ${breakpoints.tablet})`);
+    const theme = useSelector((state) => state.theme.color);
 
     return (
-        <header className="h-10 bg-red-500">
-
+        <header className={`h-10 mx-auto ${getBgPrimaryColor(theme)}`}>
+            <ul className="flex gap-4">
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
         </header>
     );
 }
