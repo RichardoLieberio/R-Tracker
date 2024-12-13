@@ -6,6 +6,7 @@ import breakpoints from '../../config/breakpoints';
 
 import {
     getHoverBgNeutral50Color,
+    getDisabledBgNeutralColor,
     getTextColor, getOppositeTextColor, getTextErrorColor,
     getHoverTextHighlightColor,
     getFromSecondaryColor, getToPrimaryColor,
@@ -58,7 +59,7 @@ export default function Header(props) {
                         </button>
                     </MenuItem>
                     <MenuItem>
-                        <button disabled={isSigningOut} onClick={signout} className={`px-4 py-2 flex items-center gap-2 text-start ${getTextErrorColor(theme)} ${getHoverBgNeutral50Color(theme)}`}>
+                        <button disabled={isSigningOut} onClick={signout} className={`px-4 py-2 flex items-center gap-2 text-start ${getTextErrorColor(theme)} ${getHoverBgNeutral50Color(theme)} ${getDisabledBgNeutralColor(theme)} disabled:cursor-not-allowed`}>
                             <FaSignOutAlt className="flex-shrink-0 text-lg" />
                             Sign out
                         </button>
