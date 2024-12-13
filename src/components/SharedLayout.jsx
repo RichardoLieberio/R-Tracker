@@ -1,6 +1,6 @@
 import {useState, useEffect} from 'react';
+import {useNavigate} from 'react-router-dom';
 import {useSelector} from 'react-redux';
-import {Outlet} from 'react-router-dom';
 import {useMediaQuery} from '@mui/material';
 
 import breakpoints from '../../config/breakpoints';
@@ -13,7 +13,7 @@ import Header from './Header';
 import Drawer from './Drawer';
 import ScrollTop from './ScrollTop';
 import ThemeModal from './ThemeModal';
-import {Link} from 'react-router-dom';
+import {Outlet, Link} from 'react-router-dom';
 import {FaMoneyBill, FaChartPie, FaUsers, FaList} from 'react-icons/fa';
 import {IoMenu} from 'react-icons/io5';
 
@@ -21,6 +21,8 @@ export default function SharedLayout() {
     const [openDrawer, setOpenDrawer] = useState(false);
     const [themeModal, setThemeModal] = useState(false);
     const [isSigningOut, setIsSigningOut] = useState(false);
+
+    const navigate = useNavigate();
 
     const theme = useSelector(state => state.web.theme);
 
@@ -52,7 +54,8 @@ export default function SharedLayout() {
     async function signout() {
         if (!isSigningOut) {
             setIsSigningOut(true);
-            await contr.signout();
+            await contr.signout(navigate);
+            setIsSigningOut(false);
         }
     }
 
