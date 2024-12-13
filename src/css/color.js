@@ -112,6 +112,25 @@ function getHoverBgNeutral50Color(theme) {
     }
 }
 
+function getDisabledBgNeutralColor(theme) {
+    switch (theme) {
+        case 'red':
+            return 'disabled:!bg-red-neutral';
+        case 'green':
+            return 'disabled:!bg-green-neutral';
+        case 'blue':
+            return 'disabled:!bg-blue-neutral';
+        case 'yellow':
+            return 'disabled:!bg-yellow-neutral';
+        case 'teal':
+            return 'disabled:!bg-teal-neutral';
+        case 'dark':
+            return 'disabled:!bg-dark-neutral';
+        default:
+            return 'disabled:!bg-purple-neutral';
+    }
+}
+
 function getDisabledBgError60Color(theme) {
     switch (theme) {
         case 'red':
@@ -343,7 +362,7 @@ function getShadowColor(theme) {
 export {
     getBgPrimaryColor, getBgHighlightColor, getBackgroundColor,
     getHoverBgHighlightColor, getHoverBgErrorColor, getHoverBgNeutral50Color,
-    getDisabledBgError60Color,
+    getDisabledBgNeutralColor, getDisabledBgError60Color,
     getTextColor, getOppositeTextColor, getTextErrorColor,
     getHoverOppositeTextColor, getHoverTextHighlightColor,
     getDisabledOppositeTextColor,
