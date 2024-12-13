@@ -112,6 +112,25 @@ function getHoverBgNeutral50Color(theme) {
     }
 }
 
+function getDisabledBgError60Color(theme) {
+    switch (theme) {
+        case 'red':
+            return 'disabled:!bg-red-error/60';
+        case 'green':
+            return 'disabled:!bg-green-error/60';
+        case 'blue':
+            return 'disabled:!bg-blue-error/60';
+        case 'yellow':
+            return 'disabled:!bg-yellow-error/60';
+        case 'teal':
+            return 'disabled:!bg-teal-error/60';
+        case 'dark':
+            return 'disabled:!bg-dark-error/60';
+        default:
+            return 'disabled:!bg-purple-error/60';
+    }
+}
+
 function getTextColor(theme) {
     switch (theme) {
         case 'red':
@@ -204,6 +223,25 @@ function getHoverTextHighlightColor(theme) {
             return 'hover:!text-dark-highlight';
         default:
             return 'hover:!text-purple-highlight';
+    }
+}
+
+function getDisabledOppositeTextColor(theme) {
+    switch (theme) {
+        case 'red':
+            return 'disabled:!text-red-oppositeText';
+        case 'green':
+            return 'disabled:!text-green-oppositeText';
+        case 'blue':
+            return 'disabled:!text-blue-oppositeText';
+        case 'yellow':
+            return 'disabled:!text-yellow-oppositeText';
+        case 'teal':
+            return 'disabled:!text-teal-oppositeText';
+        case 'dark':
+            return 'disabled:!text-dark-oppositeText';
+        default:
+            return 'disabled:!text-purple-oppositeText';
     }
 }
 
@@ -305,8 +343,10 @@ function getShadowColor(theme) {
 export {
     getBgPrimaryColor, getBgHighlightColor, getBackgroundColor,
     getHoverBgHighlightColor, getHoverBgErrorColor, getHoverBgNeutral50Color,
+    getDisabledBgError60Color,
     getTextColor, getOppositeTextColor, getTextErrorColor,
     getHoverOppositeTextColor, getHoverTextHighlightColor,
+    getDisabledOppositeTextColor,
     getFromSecondaryColor, getToPrimaryColor,
     getBorderErrorColor, getBorderText20Color,
     getShadowColor
