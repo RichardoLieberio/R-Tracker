@@ -17,6 +17,25 @@ function getBgPrimaryColor(theme) {
     }
 }
 
+function getBgHighlightColor(theme) {
+    switch (theme) {
+        case 'red':
+            return '!bg-red-highlight';
+        case 'green':
+            return '!bg-green-highlight';
+        case 'blue':
+            return '!bg-blue-highlight';
+        case 'yellow':
+            return '!bg-yellow-highlight';
+        case 'teal':
+            return '!bg-teal-highlight';
+        case 'dark':
+            return '!bg-dark-highlight';
+        default:
+            return '!bg-purple-highlight';
+    }
+}
+
 function getBackgroundColor(theme) {
     switch (theme) {
         case 'red':
@@ -36,25 +55,6 @@ function getBackgroundColor(theme) {
     }
 }
 
-function getHoverBgSecondaryColor(theme) {
-    switch (theme) {
-        case 'red':
-            return 'hover:!bg-red-secondary';
-        case 'green':
-            return 'hover:!bg-green-secondary';
-        case 'blue':
-            return 'hover:!bg-blue-secondary';
-        case 'yellow':
-            return 'hover:!bg-yellow-secondary';
-        case 'teal':
-            return 'hover:!bg-teal-secondary';
-        case 'dark':
-            return 'hover:!bg-dark-secondary';
-        default:
-            return 'hover:!bg-purple-secondary';
-    }
-}
-
 function getHoverBgNeutral50Color(theme) {
     switch (theme) {
         case 'red':
@@ -71,25 +71,6 @@ function getHoverBgNeutral50Color(theme) {
             return 'hover:!bg-dark-neutral/50';
         default:
             return 'hover:!bg-purple-neutral/50';
-    }
-}
-
-function getHoverBgHighlightColor(theme) {
-    switch (theme) {
-        case 'red':
-            return 'hover:!bg-red-highlight';
-        case 'green':
-            return 'hover:!bg-green-highlight';
-        case 'blue':
-            return 'hover:!bg-blue-highlight';
-        case 'yellow':
-            return 'hover:!bg-yellow-highlight';
-        case 'teal':
-            return 'hover:!bg-teal-highlight';
-        case 'dark':
-            return 'hover:!bg-dark-highlight';
-        default:
-            return 'hover:!bg-purple-highlight';
     }
 }
 
@@ -131,22 +112,22 @@ function getOppositeTextColor(theme) {
     }
 }
 
-function getTextHighlightColor(theme) {
+function getTextErrorColor(theme) {
     switch (theme) {
         case 'red':
-            return '!text-red-highlight';
+            return '!text-red-error';
         case 'green':
-            return '!text-green-highlight';
+            return '!text-green-error';
         case 'blue':
-            return '!text-blue-highlight';
+            return '!text-blue-error';
         case 'yellow':
-            return '!text-yellow-highlight';
+            return '!text-yellow-error';
         case 'teal':
-            return '!text-teal-highlight';
+            return '!text-teal-error';
         case 'dark':
-            return '!text-dark-highlight';
+            return '!text-dark-error';
         default:
-            return '!text-purple-highlight';
+            return '!text-purple-error';
     }
 }
 
@@ -207,30 +188,30 @@ function getToPrimaryColor(theme) {
     }
 }
 
-function getBorderText5Color(theme) {
+function getShadowColor(theme) {
     switch (theme) {
         case 'red':
-            return '!border-red-text/5';
+            return '!shadow-red-shadow/20';
         case 'green':
-            return '!border-green-text/5';
+            return '!shadow-green-shadow/20';
         case 'blue':
-            return '!border-blue-text/5';
+            return '!shadow-blue-shadow/20';
         case 'yellow':
-            return '!border-yellow-text/5';
+            return '!shadow-yellow-shadow/20';
         case 'teal':
-            return '!border-teal-text/5';
+            return '!shadow-teal-shadow/20';
         case 'dark':
-            return '!border-dark-text/5';
+            return '!shadow-dark-shadow/20';
         default:
-            return '!border-purple-text/5';
+            return '!shadow-purple-shadow/20';
     }
 }
 
 export {
-    getBgPrimaryColor, getBackgroundColor,
-    getHoverBgSecondaryColor, getHoverBgNeutral50Color, getHoverBgHighlightColor,
-    getTextColor, getOppositeTextColor, getTextHighlightColor,
+    getBgPrimaryColor, getBgHighlightColor, getBackgroundColor,
+    getHoverBgNeutral50Color,
+    getTextColor, getOppositeTextColor, getTextErrorColor,
     getHoverTextHighlightColor,
     getFromSecondaryColor, getToPrimaryColor,
-    getBorderText5Color
+    getShadowColor
 };
