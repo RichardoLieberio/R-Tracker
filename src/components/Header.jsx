@@ -17,7 +17,7 @@ import {Menu, MenuButton, MenuItems, MenuItem} from '@headlessui/react';
 import {FaUserCog, FaUser, FaPalette, FaSignOutAlt} from 'react-icons/fa';
 
 export default function Header(props) {
-    const {setThemeModal, isSigningOut, pages, signout} = props;
+    const {setThemeModal, isSigningOut, signout, pages} = props;
 
     const theme = useSelector((state) => state.web.theme);
     const page = useSelector((state) => state.web.page);
