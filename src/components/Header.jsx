@@ -6,20 +6,18 @@ import {useMediaQuery} from '@mui/material';
 import breakpoints from '../../config/breakpoints';
 
 import {
-    getBgPrimaryColor, getBgHighlightColor,
-    getHoverBgNeutral50Color,
+    getBgPrimaryColor, getBgHighlightColor, getBackgroundColor,
+    getHoverBgErrorColor, getHoverBgNeutral50Color,
     getTextColor, getOppositeTextColor, getTextErrorColor,
-    getHoverTextHighlightColor,
+    getHoverOppositeTextColor, getHoverTextHighlightColor,
     getFromSecondaryColor, getToPrimaryColor,
-    getShadowColor,
-    getBackgroundColor
+    getBorderErrorColor, getBorderText20Color,
+    getShadowColor
 } from '../css/color';
 
 import Drawer from '@mui/material/Drawer';
 import {Menu, MenuButton, MenuItems, MenuItem} from '@headlessui/react';
-import {FaUser, FaUserCircle, FaRegUser} from 'react-icons/fa';
-import {GrMoney, GrPieChart, GrList} from 'react-icons/gr';
-import {IoIosSettings, IoIosColorPalette, IoMdExit} from 'react-icons/io';
+import {FaUserCog, FaUser, FaUserCircle, FaPalette, FaSignOutAlt, FaMoneyBill, FaChartPie, FaUsers, FaList} from 'react-icons/fa';
 import {IoMenu} from 'react-icons/io5';
 
 export default function Header() {
@@ -40,19 +38,19 @@ export default function Header() {
     const pages = {
         '/': {
             text: 'Expenses',
-            icon: <GrMoney />
+            icon: <FaMoneyBill className="text-lg" />
         },
         '/charts': {
             text: 'Charts',
-            icon: <GrPieChart />
+            icon: <FaChartPie className="text-lg" />
         },
         '/admin/user': {
             text: 'Users',
-            icon: <FaRegUser />
+            icon: <FaUsers className="text-lg" />
         },
         '/admin/expense-category': {
             text: 'Categories',
-            icon: <GrList />
+            icon: <FaList className="text-lg" />
         }
     };
 
@@ -93,19 +91,19 @@ export default function Header() {
                         <MenuItems transition anchor="bottom end" className={`w-52 mt-2 py-1 flex flex-col text-base ${getTextColor(theme)} shadow-lg ${getShadowColor(theme)} rounded-md origin-top-right transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0`}>
                             <MenuItem>
                                 <button className={`px-4 py-2 flex items-center gap-2 text-start ${getHoverBgNeutral50Color(theme)}`}>
-                                    <IoIosSettings className="flex-shrink-0 text-xl" />
+                                    <FaUserCog className="flex-shrink-0 text-lg" />
                                     Edit profile
                                 </button>
                             </MenuItem>
                             <MenuItem>
                                 <button className={`px-4 py-2 flex items-center gap-2 text-start ${getHoverBgNeutral50Color(theme)}`}>
-                                    <IoIosColorPalette className="flex-shrink-0 text-xl" />
+                                    <FaPalette className="flex-shrink-0 text-lg" />
                                     Theme
                                 </button>
                             </MenuItem>
                             <MenuItem>
                                 <button className={`px-4 py-2 flex items-center gap-2 text-start ${getTextErrorColor(theme)} ${getHoverBgNeutral50Color(theme)}`}>
-                                    <IoMdExit className="flex-shrink-0 text-xl" />
+                                    <FaSignOutAlt className="flex-shrink-0 text-lg" />
                                     Sign out
                                 </button>
                             </MenuItem>
@@ -137,6 +135,22 @@ export default function Header() {
                                     }
                                 </ul>
                             </section>
+                            <section className="px-4">
+                                <hr className={`${getBorderText20Color(theme)}`} />
+                            </section>
+                            <section className="py-6">
+                                <ul className={`list-none text-base ${getTextColor(theme)}`}>
+                                    <li className={`px-4 py-2 flex items-center gap-2 text-start ${getTextColor(theme)} ${getHoverTextHighlightColor(theme)} cursor-pointer`}>
+                                        <FaUserCog className="flex-shrink-0 text-lg" />
+                                        Edit profile
+                                    </li>
+                                    <li className={`px-4 py-2 flex items-center gap-2 text-start ${getTextColor(theme)} ${getHoverTextHighlightColor(theme)} cursor-pointer`}>
+                                        <FaPalette className="flex-shrink-0 text-lg" />
+                                        Theme
+                                    </li>
+                                </ul>
+                            </section>
+                            <button className={`mt-auto mb-6 mx-4 py-1 text-base ${getTextErrorColor(theme)} border ${getBorderErrorColor(theme)} ${getHoverOppositeTextColor(theme)} ${getHoverBgErrorColor(theme)} rounded-md`}>Sign out</button>
                         </section>
                     </Drawer>
                 </>
