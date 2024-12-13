@@ -48,20 +48,20 @@ export default {
         error: '#D32F2F'
     },
     yellow: {
-        primary: '#FBC02D',
-        secondary: '#F9A825',
-        accent: '#FFF59D',
+        primary: '#F9A825',
+        secondary: '#F57F17',
+        accent: '#FBC02D',
         background: '#FFFFFF',
         text: '#212121',
         oppositeText: '#FFFFFF',
         neutral: '#B0B0B0',
-        highlight: '#FFEB3B',
-        shadow: '#F57F17',
-        link: '#FFD54F',
-        disabled: '#FFF9C4',
-        success: '#28A745',
-        warning: '#FFC107',
-        error: '#D32F2F'
+        highlight: '#FFCA28',
+        shadow: '#D57E17',
+        link: '#FFB300',
+        disabled: '#FFE082',
+        success: '#388E3C',
+        warning: '#FF9800',
+        error: '#C62828'
     },
     teal: {
         primary: '#00796B',
