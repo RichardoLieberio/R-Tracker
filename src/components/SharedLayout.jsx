@@ -49,10 +49,6 @@ export default function SharedLayout() {
         }
     };
 
-    function toggleDrawer() {
-        setOpenDrawer(value => !value);
-    }
-
     async function signout() {
         if (!isSigningOut) {
             setIsSigningOut(true);
@@ -70,8 +66,8 @@ export default function SharedLayout() {
                     tabletBreakpoint
                     ? <Header setThemeModal={setThemeModal} isSigningOut={isSigningOut} signout={signout} pages={pages} />
                     : <>
-                        <button onClick={toggleDrawer} className={`text-2xl ${getOppositeTextColor(theme)}`}><IoMenu /></button>
-                        <Drawer openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} setThemeModal={setThemeModal} isSigningOut={isSigningOut} toggleDrawer={toggleDrawer} signout={signout} pages={pages} />
+                        <button onClick={() => setOpenDrawer(true)} className={`text-2xl ${getOppositeTextColor(theme)}`}><IoMenu /></button>
+                        <Drawer openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} setThemeModal={setThemeModal} isSigningOut={isSigningOut} signout={signout} pages={pages} />
                     </>
                 }
             </header>

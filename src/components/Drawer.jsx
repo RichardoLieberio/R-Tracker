@@ -16,7 +16,7 @@ import {Drawer as MuiDrawer} from '@mui/material';
 import {FaUserCog, FaUserCircle, FaPalette} from 'react-icons/fa';
 
 export default function Drawer(props) {
-    const {openDrawer, setOpenDrawer, setThemeModal, isSigningOut, toggleDrawer, signout, pages} = props;
+    const {openDrawer, setOpenDrawer, setThemeModal, isSigningOut, signout, pages} = props;
 
     const theme = useSelector((state) => state.web.theme);
     const page = useSelector((state) => state.web.page);
@@ -29,7 +29,7 @@ export default function Drawer(props) {
     }
 
     return (
-        <MuiDrawer anchor="right" open={openDrawer} onClose={toggleDrawer}>
+        <MuiDrawer anchor="right" open={openDrawer} onClose={() => setOpenDrawer(false)}>
             <section className={`w-56 phone:w-64 h-full flex flex-col ${getBackgroundColor(theme)} ${getOppositeTextColor(theme)}`}>
                 <section className={`px-4 py-6 flex items-center gap-2 ${getBgPrimaryColor(theme)}`}>
                     <FaUserCircle className="flex-shrink-0 text-4xl" />
@@ -78,7 +78,6 @@ Drawer.propTypes = {
     setOpenDrawer: PropTypes.func,
     setThemeModal: PropTypes.func,
     isSigningOut: PropTypes.bool,
-    toggleDrawer: PropTypes.func,
     signout: PropTypes.func,
     pages: PropTypes.object
 };
