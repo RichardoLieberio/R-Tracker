@@ -56,6 +56,8 @@ export default function SharedLayout() {
         }
     }
 
+    const headerAndDrawerOptions = {setThemeModal, isSigningOut, signout, pages};
+
     return (
         <div className="w-full h-full flex flex-col">
             <header className={`w-full h-12 px-4 fixed flex items-center justify-between ${getBgPrimaryColor(theme)} z-[1]`}>
@@ -64,10 +66,10 @@ export default function SharedLayout() {
                 </Link>
                 {
                     tabletBreakpoint
-                    ? <Header setThemeModal={setThemeModal} isSigningOut={isSigningOut} signout={signout} pages={pages} />
+                    ? <Header {...headerAndDrawerOptions} />
                     : <>
                         <button onClick={() => setOpenDrawer(true)} className={`text-2xl ${getOppositeTextColor(theme)}`}><IoMenu /></button>
-                        <Drawer openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} setThemeModal={setThemeModal} isSigningOut={isSigningOut} signout={signout} pages={pages} />
+                        <Drawer openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} {...headerAndDrawerOptions} />
                     </>
                 }
             </header>
