@@ -207,10 +207,30 @@ function getToPrimaryColor(theme) {
     }
 }
 
+function getBorderText5Color(theme) {
+    switch (theme) {
+        case 'red':
+            return '!border-red-text/5';
+        case 'green':
+            return '!border-green-text/5';
+        case 'blue':
+            return '!border-blue-text/5';
+        case 'yellow':
+            return '!border-yellow-text/5';
+        case 'teal':
+            return '!border-teal-text/5';
+        case 'dark':
+            return '!border-dark-text/5';
+        default:
+            return '!border-purple-text/5';
+    }
+}
+
 export {
     getBgPrimaryColor, getBackgroundColor,
     getHoverBgSecondaryColor, getHoverBgNeutral50Color, getHoverBgHighlightColor,
     getTextColor, getOppositeTextColor, getTextHighlightColor,
     getHoverTextHighlightColor,
-    getFromSecondaryColor, getToPrimaryColor
+    getFromSecondaryColor, getToPrimaryColor,
+    getBorderText5Color
 };
