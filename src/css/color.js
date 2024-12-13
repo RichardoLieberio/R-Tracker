@@ -55,6 +55,25 @@ function getBackgroundColor(theme) {
     }
 }
 
+function getHoverBgErrorColor(theme) {
+    switch (theme) {
+        case 'red':
+            return 'hover:!bg-red-error';
+        case 'green':
+            return 'hover:!bg-green-error';
+        case 'blue':
+            return 'hover:!bg-blue-error';
+        case 'yellow':
+            return 'hover:!bg-yellow-error';
+        case 'teal':
+            return 'hover:!bg-teal-error';
+        case 'dark':
+            return 'hover:!bg-dark-error';
+        default:
+            return 'hover:!bg-purple-error';
+    }
+}
+
 function getHoverBgNeutral50Color(theme) {
     switch (theme) {
         case 'red':
@@ -131,6 +150,25 @@ function getTextErrorColor(theme) {
     }
 }
 
+function getHoverOppositeTextColor(theme) {
+    switch (theme) {
+        case 'red':
+            return 'hover:!text-red-oppositeText';
+        case 'green':
+            return 'hover:!text-green-oppositeText';
+        case 'blue':
+            return 'hover:!text-blue-oppositeText';
+        case 'yellow':
+            return 'hover:!text-yellow-oppositeText';
+        case 'teal':
+            return 'hover:!text-teal-oppositeText';
+        case 'dark':
+            return 'hover:!text-dark-oppositeText';
+        default:
+            return 'hover:!text-purple-oppositeText';
+    }
+}
+
 function getHoverTextHighlightColor(theme) {
     switch (theme) {
         case 'red':
@@ -188,6 +226,25 @@ function getToPrimaryColor(theme) {
     }
 }
 
+function getBorderErrorColor(theme) {
+    switch (theme) {
+        case 'red':
+            return '!border-red-error';
+        case 'green':
+            return '!border-green-error';
+        case 'blue':
+            return '!border-blue-error';
+        case 'yellow':
+            return '!border-yellow-error';
+        case 'teal':
+            return '!border-teal-error';
+        case 'dark':
+            return '!border-dark-error';
+        default:
+            return '!border-purple-error';
+    }
+}
+
 function getBorderText20Color(theme) {
     switch (theme) {
         case 'red':
@@ -228,10 +285,10 @@ function getShadowColor(theme) {
 
 export {
     getBgPrimaryColor, getBgHighlightColor, getBackgroundColor,
-    getHoverBgNeutral50Color,
+    getHoverBgErrorColor, getHoverBgNeutral50Color,
     getTextColor, getOppositeTextColor, getTextErrorColor,
-    getHoverTextHighlightColor,
+    getHoverOppositeTextColor, getHoverTextHighlightColor,
     getFromSecondaryColor, getToPrimaryColor,
-    getBorderText20Color,
+    getBorderErrorColor, getBorderText20Color,
     getShadowColor
 };
