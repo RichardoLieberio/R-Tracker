@@ -25,7 +25,7 @@ import {getOppositeTextColor} from './css/color';
 import {ToastContainer} from 'react-toastify';
 import Loading from './components/Loading';
 import MainLayout from './components/MainLayout';
-import PageLayout from './components/PageLayout';
+import SharedLayout from './components/SharedLayout';
 
 export default function App() {
     const [loading, setLoading] = useState(true);
@@ -67,7 +67,7 @@ export default function App() {
                 <ToastContainer {...toastConfig} />
                 <Routes>
                     <Route element={<Authenticated />}>
-                        <Route element={<PageLayout />}>
+                        <Route element={<SharedLayout />}>
                             <Route path="/" element={<Expense />} />
                             <Route path="/change-email" element={<ChangeEmail />} />
                             <Route path="/charts" element={<Chart />} />
