@@ -188,6 +188,25 @@ function getToPrimaryColor(theme) {
     }
 }
 
+function getBorderText20Color(theme) {
+    switch (theme) {
+        case 'red':
+            return '!border-red-text/20';
+        case 'green':
+            return '!border-green-text/20';
+        case 'blue':
+            return '!border-blue-text/20';
+        case 'yellow':
+            return '!border-yellow-text/20';
+        case 'teal':
+            return '!border-teal-text/20';
+        case 'dark':
+            return '!border-dark-text/20';
+        default:
+            return '!border-purple-text/20';
+    }
+}
+
 function getShadowColor(theme) {
     switch (theme) {
         case 'red':
@@ -213,5 +232,6 @@ export {
     getTextColor, getOppositeTextColor, getTextErrorColor,
     getHoverTextHighlightColor,
     getFromSecondaryColor, getToPrimaryColor,
+    getBorderText20Color,
     getShadowColor
 };
