@@ -112,12 +112,12 @@ export default function EditProfile() {
                     <main className="flex flex-col gap-4">
                         <div className="relative flex flex-col">
                             <span className={`px-2 absolute left-1 -top-3 text-sm ${getBackgroundColor(theme)} transition-transform cursor-text`}>Name</span>
-                            <span className={`w-full px-3 py-2 pr-10 truncate ${getBackgroundColor(theme)} border ${getBorderNeutralColor(theme)} rounded-md`}>{userInfo.name}</span>
+                            <span className={`w-full px-3 py-2 pr-10 truncate border ${getBorderNeutralColor(theme)} rounded-md`}>{userInfo.name}</span>
                             <div className="px-3 py-3 absolute right-0 top-0 rounded-tr-md rounded-br-md cursor-pointer"><FaPencilAlt /></div>
                         </div>
                         <div className="relative flex flex-col">
                             <span className={`px-2 absolute left-1 -top-3 text-sm ${getBackgroundColor(theme)} transition-transform cursor-text`}>Email</span>
-                            <span className={`w-full px-3 py-2 pr-10 truncate ${getBackgroundColor(theme)} border ${getBorderNeutralColor(theme)} rounded-md`}>{userInfo.email}</span>
+                            <span className={`w-full px-3 py-2 pr-10 truncate border ${getBorderNeutralColor(theme)} rounded-md`}>{userInfo.email}</span>
                             <div className="px-3 py-3 absolute right-0 top-0 rounded-tr-md rounded-br-md cursor-pointer"><FaPencilAlt /></div>
                         </div>
                     </main>

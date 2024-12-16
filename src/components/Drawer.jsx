@@ -5,7 +5,7 @@ import {
     getBgPrimaryColor, getBgHighlightColor, getBackgroundColor,
     getHoverBgErrorColor,
     getDisabledBgError60Color,
-    getTextColor, getOppositeTextColor, getTextErrorColor,
+    getOppositeTextColor, getTextErrorColor,
     getHoverOppositeTextColor, getHoverTextHighlightColor,
     getDisabledOppositeTextColor,
     getBorderErrorColor, getBorderText20Color
@@ -43,7 +43,7 @@ export default function Drawer(props) {
                         {
                             Object.keys(pages).filter(path => isAdmin || !path.startsWith('/admin/')).map(path =>
                                 <li key={path}>
-                                    <Link to={path} onClick={() => path !== page && setOpenDrawer(false)} className={`h-full px-4 py-2 flex items-center gap-2 cursor-pointer ${getTextColor(theme)} ${page === path ? `${getBgHighlightColor(theme)}` : `${getHoverTextHighlightColor(theme)}`}`}>
+                                    <Link to={path} onClick={() => path !== page && setOpenDrawer(false)} className={`h-full px-4 py-2 flex items-center gap-2 cursor-pointer ${page === path ? `${getBgHighlightColor(theme)}` : `${getHoverTextHighlightColor(theme)}`}`}>
                                         {pages[path].icon}
                                         {pages[path].text}
                                     </Link>
@@ -56,15 +56,15 @@ export default function Drawer(props) {
                     <hr className={`${getBorderText20Color(theme)}`} />
                 </section>
                 <section className="py-6">
-                    <ul className={`list-none ${getTextColor(theme)}`}>
+                    <ul className="list-none">
                         <li>
-                            <Link to="/edit-profile" onClick={() => page !== '/edit-profile' && setOpenDrawer(false)} className={`px-4 py-2 flex items-center gap-2 text-start ${getTextColor(theme)} ${page === '/edit-profile' ? `${getBgHighlightColor(theme)}` : `${getHoverTextHighlightColor(theme)}`} cursor-pointer`}>
+                            <Link to="/edit-profile" onClick={() => page !== '/edit-profile' && setOpenDrawer(false)} className={`px-4 py-2 flex items-center gap-2 text-start ${page === '/edit-profile' ? `${getBgHighlightColor(theme)}` : `${getHoverTextHighlightColor(theme)}`} cursor-pointer`}>
                                 <FaUserCog className="flex-shrink-0 text-lg" />
                                 Edit profile
                             </Link>
                         </li>
                         <li>
-                            <span onClick={() => toggleModal(setThemeModal)} className={`px-4 py-2 flex items-center gap-2 text-start ${getTextColor(theme)} ${getHoverTextHighlightColor(theme)} cursor-pointer`}>
+                            <span onClick={() => toggleModal(setThemeModal)} className={`px-4 py-2 flex items-center gap-2 text-start ${getHoverTextHighlightColor(theme)} cursor-pointer`}>
                                 <FaPalette className="flex-shrink-0 text-lg" />
                                 Theme
                             </span>
