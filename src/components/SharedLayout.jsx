@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react';
-import {useNavigate} from 'react-router-dom';
+import {useNavigate, useLocation} from 'react-router-dom';
 import {useSelector} from 'react-redux';
 import {useMediaQuery} from '@mui/material';
 
@@ -23,6 +23,7 @@ export default function SharedLayout() {
     const [isSigningOut, setIsSigningOut] = useState(false);
 
     const navigate = useNavigate();
+    const location = useLocation();
 
     const theme = useSelector(state => state.web.theme);
 
@@ -63,17 +64,18 @@ export default function SharedLayout() {
 
     return (
         <div className="w-full h-full flex flex-col">
-            <header className={`w-full h-12 px-4 fixed flex items-center justify-between ${getBgPrimaryColor(theme)} z-[1]`}>
+            <header className={`w-full h-12 px-4 fixed flex items-center justify-between gap-4 ${getBgPrimaryColor(theme)} z-[1]`}>
                 <Link to="/">
                     <img src="/White Web Icon.png" alt="R Tracker Icon" loading="lazy" className="w-8" />
                 </Link>
                 {
                     tabletBreakpoint
                     ? <Header {...headerAndDrawerOptions} />
-                    : <>
-                        <button onClick={() => setOpenDrawer(true)} className={`text-2xl ${getOppositeTextColor(theme)}`}><IoMenu /></button>
+                    : <div className={`flex-1 flex items-center justify-between ${getOppositeTextColor(theme)}`}>
+                        <span className="text-lg">{pages[location.pathname]?.text ?? 'Edit Profile'}</span>
+                        <button onClick={() => setOpenDrawer(true)} className="text-2xl"><IoMenu /></button>
                         <Drawer openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} {...headerAndDrawerOptions} />
-                    </>
+                    </div>
                 }
             </header>
             <section className="flex-1 relative pt-12">
