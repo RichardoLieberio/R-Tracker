@@ -5,7 +5,7 @@ import {
     getBgPrimaryColor, getBgHighlightColor, getBackgroundColor,
     getHoverBgErrorColor,
     getDisabledBgError60Color,
-    getOppositeTextColor, getTextErrorColor,
+    getTextColor, getOppositeTextColor, getTextErrorColor,
     getHoverOppositeTextColor, getHoverTextHighlightColor,
     getDisabledOppositeTextColor,
     getBorderErrorColor, getBorderText20Color
@@ -30,8 +30,8 @@ export default function Drawer(props) {
 
     return (
         <MuiDrawer anchor="right" open={openDrawer} onClose={() => setOpenDrawer(false)}>
-            <section className={`w-56 phone:w-64 h-full flex flex-col ${getBackgroundColor(theme)} ${getOppositeTextColor(theme)}`}>
-                <section className={`px-4 py-6 flex items-center gap-2 ${getBgPrimaryColor(theme)}`}>
+            <section className={`w-56 phone:w-64 h-full flex flex-col ${getTextColor(theme)} ${getBackgroundColor(theme)}`}>
+                <section className={`px-4 py-6 flex items-center gap-2 ${getOppositeTextColor(theme)} ${getBgPrimaryColor(theme)}`}>
                     <FaUserCircle className="flex-shrink-0 text-4xl" />
                     <div className="flex-1 flex flex-col overflow-hidden">
                         <span className="truncate">{userInfo.name}</span>
