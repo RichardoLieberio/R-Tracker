@@ -112,6 +112,25 @@ function getHoverBgNeutral50Color(theme) {
     }
 }
 
+function getDisabledBgColor(theme) {
+    switch (theme) {
+        case 'red':
+            return 'disabled:!bg-red-disabled';
+        case 'green':
+            return 'disabled:!bg-green-disabled';
+        case 'blue':
+            return 'disabled:!bg-blue-disabled';
+        case 'yellow':
+            return 'disabled:!bg-yellow-disabled';
+        case 'teal':
+            return 'disabled:!bg-teal-disabled';
+        case 'dark':
+            return 'disabled:!bg-dark-disabled';
+        default:
+            return 'disabled:!bg-purple-disabled';
+    }
+}
+
 function getDisabledBgNeutralColor(theme) {
     switch (theme) {
         case 'red':
@@ -169,6 +188,25 @@ function getTextColor(theme) {
     }
 }
 
+function getTextPrimaryColor(theme) {
+    switch (theme) {
+        case 'red':
+            return '!text-red-primary';
+        case 'green':
+            return '!text-green-primary';
+        case 'blue':
+            return '!text-blue-primary';
+        case 'yellow':
+            return '!text-yellow-primary';
+        case 'teal':
+            return '!text-teal-primary';
+        case 'dark':
+            return '!text-dark-primary';
+        default:
+            return '!text-purple-primary';
+    }
+}
+
 function getOppositeTextColor(theme) {
     switch (theme) {
         case 'red':
@@ -185,6 +223,25 @@ function getOppositeTextColor(theme) {
             return '!text-dark-oppositeText';
         default:
             return '!text-purple-oppositeText';
+    }
+}
+
+function getTextHighlightColor(theme) {
+    switch (theme) {
+        case 'red':
+            return '!text-red-highlight';
+        case 'green':
+            return '!text-green-highlight';
+        case 'blue':
+            return '!text-blue-highlight';
+        case 'yellow':
+            return '!text-yellow-highlight';
+        case 'teal':
+            return '!text-teal-highlight';
+        case 'dark':
+            return '!text-dark-highlight';
+        default:
+            return '!text-purple-highlight';
     }
 }
 
@@ -359,6 +416,25 @@ function getBorderText20Color(theme) {
     }
 }
 
+function getFocusBorderHighlightColor(theme) {
+    switch (theme) {
+        case 'red':
+            return 'focus:!border-red-highlight';
+        case 'green':
+            return 'focus:!border-green-highlight';
+        case 'blue':
+            return 'focus:!border-blue-highlight';
+        case 'yellow':
+            return 'focus:!border-yellow-highlight';
+        case 'teal':
+            return 'focus:!border-teal-highlight';
+        case 'dark':
+            return 'focus:!border-dark-highlight';
+        default:
+            return 'focus:!border-purple-highlight';
+    }
+}
+
 function getShadowColor(theme) {
     switch (theme) {
         case 'red':
@@ -381,11 +457,12 @@ function getShadowColor(theme) {
 export {
     getBgPrimaryColor, getBgHighlightColor, getBackgroundColor,
     getHoverBgHighlightColor, getHoverBgErrorColor, getHoverBgNeutral50Color,
-    getDisabledBgNeutralColor, getDisabledBgError60Color,
-    getTextColor, getOppositeTextColor, getTextErrorColor,
+    getDisabledBgColor, getDisabledBgNeutralColor, getDisabledBgError60Color,
+    getTextColor, getTextPrimaryColor, getOppositeTextColor, getTextHighlightColor, getTextErrorColor,
     getHoverOppositeTextColor, getHoverTextHighlightColor,
     getDisabledOppositeTextColor,
     getFromSecondaryColor, getToPrimaryColor,
     getBorderNeutralColor, getBorderErrorColor, getBorderText20Color,
+    getFocusBorderHighlightColor,
     getShadowColor
 };
