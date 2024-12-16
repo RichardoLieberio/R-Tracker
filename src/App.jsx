@@ -9,7 +9,6 @@ import NotAuthenticated from './hocs/NotAuthenticated';
 import Expense from './pages/Expense';
 import Chart from './pages/Chart';
 import EditProfile from './pages/EditProfile';
-import ChangeEmail from './pages/ChangeEmail';
 import User from './pages/User';
 import ExpenseCategory from './pages/ExpenseCategory';
 import Login from './pages/Login';
@@ -72,7 +71,6 @@ export default function App() {
                             <Route path="/" element={<Expense />} />
                             <Route path="/charts" element={<Chart />} />
                             <Route path="/edit-profile" element={<EditProfile />} />
-                            <Route path="/change-email" element={<ChangeEmail />} />
                             <Route element={<Admin />}>
                                 <Route path="/admin/user" element={<User />} />
                                 <Route path="/admin/expense-category" element={<ExpenseCategory />} />
