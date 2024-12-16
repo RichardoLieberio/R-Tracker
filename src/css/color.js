@@ -302,6 +302,25 @@ function getToPrimaryColor(theme) {
     }
 }
 
+function getBorderNeutralColor(theme) {
+    switch (theme) {
+        case 'red':
+            return '!border-red-neutral';
+        case 'green':
+            return '!border-green-neutral';
+        case 'blue':
+            return '!border-blue-neutral';
+        case 'yellow':
+            return '!border-yellow-neutral';
+        case 'teal':
+            return '!border-teal-neutral';
+        case 'dark':
+            return '!border-dark-neutral';
+        default:
+            return '!border-purple-neutral';
+    }
+}
+
 function getBorderErrorColor(theme) {
     switch (theme) {
         case 'red':
@@ -367,6 +386,6 @@ export {
     getHoverOppositeTextColor, getHoverTextHighlightColor,
     getDisabledOppositeTextColor,
     getFromSecondaryColor, getToPrimaryColor,
-    getBorderErrorColor, getBorderText20Color,
+    getBorderNeutralColor, getBorderErrorColor, getBorderText20Color,
     getShadowColor
 };
