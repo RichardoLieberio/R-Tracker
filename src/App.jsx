@@ -6,14 +6,15 @@ import Admin from './hocs/Admin';
 import Authenticated from './hocs/Authenticated';
 import NotAuthenticated from './hocs/NotAuthenticated';
 
-import Login from './pages/Login';
-import Register from './pages/Register';
-import ChangeEmail from './pages/ChangeEmail';
-import ForgotPwd from './pages/ForgotPwd';
 import Expense from './pages/Expense';
 import Chart from './pages/Chart';
+import EditProfile from './pages/EditProfile';
+import ChangeEmail from './pages/ChangeEmail';
 import User from './pages/User';
 import ExpenseCategory from './pages/ExpenseCategory';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import ForgotPwd from './pages/ForgotPwd';
 import NotFound from './pages/NotFound';
 
 import contr from './controllers/hocs';
@@ -69,8 +70,9 @@ export default function App() {
                     <Route element={<Authenticated />}>
                         <Route element={<SharedLayout />}>
                             <Route path="/" element={<Expense />} />
-                            <Route path="/change-email" element={<ChangeEmail />} />
                             <Route path="/charts" element={<Chart />} />
+                            <Route path="/edit-profile" element={<EditProfile />} />
+                            <Route path="/change-email" element={<ChangeEmail />} />
                             <Route element={<Admin />}>
                                 <Route path="/admin/user" element={<User />} />
                                 <Route path="/admin/expense-category" element={<ExpenseCategory />} />

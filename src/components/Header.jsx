@@ -18,7 +18,7 @@ import {Menu, MenuButton, MenuItems, MenuItem} from '@headlessui/react';
 import {FaUserCog, FaUser, FaPalette, FaSignOutAlt} from 'react-icons/fa';
 
 export default function Header(props) {
-    const {setProfileModal, setThemeModal, isSigningOut, signout, pages} = props;
+    const {setThemeModal, isSigningOut, signout, pages} = props;
 
     const theme = useSelector((state) => state.web.theme);
     const page = useSelector((state) => state.web.page);
@@ -47,10 +47,10 @@ export default function Header(props) {
                 </MenuButton>
                 <MenuItems transition anchor="bottom end" className={`w-52 mt-2 py-1 flex flex-col text-base ${getTextColor(theme)} shadow-lg ${getShadowColor(theme)} rounded-lg origin-top-right transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0`}>
                     <MenuItem>
-                        <button onClick={() => setProfileModal(true)} className={`px-4 py-2 flex items-center gap-2 text-start ${getHoverBgNeutral50Color(theme)}`}>
+                        <Link to="/edit-profile" className={`px-4 py-2 flex items-center gap-2 text-start ${getHoverBgNeutral50Color(theme)}`}>
                             <FaUserCog className="flex-shrink-0 text-lg" />
                             Edit profile
-                        </button>
+                        </Link>
                     </MenuItem>
                     <MenuItem>
                         <button onClick={() => setThemeModal(true)} className={`px-4 py-2 flex items-center gap-2 text-start ${getHoverBgNeutral50Color(theme)}`}>
@@ -71,7 +71,6 @@ export default function Header(props) {
 }
 
 Header.propTypes = {
-    setProfileModal: PropTypes.func,
     setThemeModal: PropTypes.func,
     isSigningOut: PropTypes.bool,
     signout: PropTypes.func,

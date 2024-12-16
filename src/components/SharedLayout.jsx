@@ -12,7 +12,6 @@ import contr from '../controllers/sharedLayout';
 import Header from './Header';
 import Drawer from './Drawer';
 import ScrollTop from './ScrollTop';
-import ProfileModal from './ProfileModal';
 import ThemeModal from './ThemeModal';
 import {Outlet, Link} from 'react-router-dom';
 import {FaMoneyBill, FaChartPie, FaUsers, FaList} from 'react-icons/fa';
@@ -20,7 +19,6 @@ import {IoMenu} from 'react-icons/io5';
 
 export default function SharedLayout() {
     const [openDrawer, setOpenDrawer] = useState(false);
-    const [profileModal, setProfileModal] = useState(false);
     const [themeModal, setThemeModal] = useState(false);
     const [isSigningOut, setIsSigningOut] = useState(false);
 
@@ -61,7 +59,7 @@ export default function SharedLayout() {
         }
     }
 
-    const headerAndDrawerOptions = {setProfileModal, setThemeModal, isSigningOut, signout, pages};
+    const headerAndDrawerOptions = {setThemeModal, isSigningOut, signout, pages};
 
     return (
         <div className="w-full h-full flex flex-col">
@@ -83,7 +81,6 @@ export default function SharedLayout() {
             </section>
             <ScrollTop />
             <ThemeModal themeModal={themeModal} setThemeModal={setThemeModal} />
-            <ProfileModal profileModal={profileModal} setProfileModal={setProfileModal} />
         </div>
     );
 }
