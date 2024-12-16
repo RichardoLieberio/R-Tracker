@@ -177,7 +177,7 @@ export default function ForgotPwdForm(props) {
                 <img src="/Password.png" alt="Password" loading="lazy" className="w-20 phone:w-28 tablet:w-36 desktop:w-44 mx-auto" />
                 <div className="flex flex-col gap-4">
                     <h1 className="text-2xl text-purple-text font-semibold">Reset your password</h1>
-                    <p className="text-base text-purple-text">Enter the OTP sent to your email and your new password to reset your account.</p>
+                    <p className="text-purple-text">Enter the OTP sent to your email and your new password to reset your account.</p>
                 </div>
                 <form className="w-fit phone:w-56 tablet:w-64 desktop:w-72 mx-auto flex flex-col gap-4" autoCapitalize="off" autoComplete="off" spellCheck="false">
                     <div className="w-full relative">
@@ -194,8 +194,8 @@ export default function ForgotPwdForm(props) {
                         <div onClick={togglePwd} className="px-3 py-3 absolute right-0 top-0 rounded-tr-md rounded-br-md cursor-pointer">
                             {
                                 showPwd
-                                ? <FaEyeSlash className="text-base text-purple-text" />
-                                : <FaEye className="text-base text-purple-text" />
+                                ? <FaEyeSlash className="text-purple-text" />
+                                : <FaEye className="text-purple-text" />
                             }
                         </div>
                     </div>
@@ -213,8 +213,8 @@ export default function ForgotPwdForm(props) {
                         <div onClick={toggleConfPwd} className="px-3 py-3 absolute right-0 top-0 rounded-tr-md rounded-br-md cursor-pointer">
                             {
                                 showConfPwd
-                                ? <FaEyeSlash className="text-base text-purple-text" />
-                                : <FaEye className="text-base text-purple-text" />
+                                ? <FaEyeSlash className="text-purple-text" />
+                                : <FaEye className="text-purple-text" />
                             }
                         </div>
                     </div>
@@ -233,7 +233,7 @@ export default function ForgotPwdForm(props) {
                     <span className="text-sm text-purple-text">
                         Didn&apos;t receive your OTP? <span onClick={resendOtp} ref={resendRef} className="text-purple-link">Resend ({process.env.RESEND_EMAIL_TIMEOUT})</span>
                     </span>
-                    <button onClick={resetPwd} disabled={isSubmitting} className="w-full mt-4 py-2 text-base text-purple-oppositeText bg-purple-primary rounded-md hover:bg-purple-highlight disabled:bg-purple-highlight disabled:cursor-not-allowed">Submit</button>
+                    <button onClick={resetPwd} disabled={isSubmitting} className="w-full mt-4 py-2 text-purple-oppositeText bg-purple-primary rounded-md hover:bg-purple-highlight disabled:bg-purple-highlight disabled:cursor-not-allowed">Submit</button>
                 </form>
             </section>
         </section>

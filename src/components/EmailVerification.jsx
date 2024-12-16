@@ -82,7 +82,7 @@ export default function VerifyEmail(props) {
                 <img src="/Email Verification.png" alt="Email Verification" loading="lazy" className="w-40 phone:w-48 tablet:w-56 desktop:w-64 mx-auto" />
                 <div className="flex flex-col gap-4">
                     <h1 className="text-2xl text-purple-text font-semibold">Verify your email</h1>
-                    <p className="text-base text-purple-text">Check your email {email} for the OTP and enter it below to continue.</p>
+                    <p className="text-purple-text">Check your email {email} for the OTP and enter it below to continue.</p>
                 </div>
                 <form className="w-fit mx-auto flex flex-col gap-4" autoCapitalize="off" autoComplete="off" spellCheck="false">
                     <div className="flex flex-col gap-2">
@@ -107,7 +107,7 @@ export default function VerifyEmail(props) {
                     <span className="text-sm text-purple-text">
                         Didn&apos;t receive your OTP? <span onClick={resendOtp} ref={resendRef} className="text-purple-link">Resend ({process.env.RESEND_EMAIL_TIMEOUT})</span>
                     </span>
-                    <button onClick={verify} disabled={isSubmitting} className="w-full mt-4 py-2 text-base text-purple-oppositeText bg-purple-primary rounded-md hover:bg-purple-highlight disabled:bg-purple-highlight disabled:cursor-not-allowed">Submit</button>
+                    <button onClick={verify} disabled={isSubmitting} className="w-full mt-4 py-2 text-purple-oppositeText bg-purple-primary rounded-md hover:bg-purple-highlight disabled:bg-purple-highlight disabled:cursor-not-allowed">Submit</button>
                 </form>
             </section>
         </section>

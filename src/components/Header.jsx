@@ -29,7 +29,7 @@ export default function Header(props) {
 
     return (
         <>
-            <ul className={`w-fit h-full absolute left-1/2 -translate-x-1/2 flex list-none text-base ${getOppositeTextColor(theme)}`}>
+            <ul className={`w-fit h-full absolute left-1/2 -translate-x-1/2 flex list-none ${getOppositeTextColor(theme)}`}>
                 {
                     Object.keys(pages).filter(path => isAdmin || !path.startsWith('/admin/')).map(path =>
                         <li key={path}>
@@ -41,11 +41,11 @@ export default function Header(props) {
                 }
             </ul>
             <Menu>
-                <MenuButton className={`${desktopBreakpoint ? 'max-w-40' : 'max-w-32'} h-full px-4 flex items-center gap-2 text-base cursor-pointer ${getOppositeTextColor(theme)} ${getHoverTextHighlightColor(theme)}`}>
+                <MenuButton className={`${desktopBreakpoint ? 'max-w-40' : 'max-w-32'} h-full px-4 flex items-center gap-2 cursor-pointer ${getOppositeTextColor(theme)} ${getHoverTextHighlightColor(theme)}`}>
                     <FaUser className="flex-shrink-0" />
                     <span className="truncate">{userInfo.name.split(' ')[0]}</span>
                 </MenuButton>
-                <MenuItems transition anchor="bottom end" className={`w-52 mt-2 py-1 flex flex-col text-base ${getTextColor(theme)} shadow-lg ${getShadowColor(theme)} rounded-lg origin-top-right transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0`}>
+                <MenuItems transition anchor="bottom end" className={`w-52 mt-2 py-1 flex flex-col ${getTextColor(theme)} shadow-lg ${getShadowColor(theme)} rounded-lg origin-top-right transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0`}>
                     <MenuItem>
                         <Link to="/edit-profile" className={`px-4 py-2 flex items-center gap-2 text-start ${getHoverBgNeutral50Color(theme)}`}>
                             <FaUserCog className="flex-shrink-0 text-lg" />

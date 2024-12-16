@@ -25,14 +25,14 @@ export default function ThemeModal(props) {
                             <div key={eachTheme} onClick={() => contr.changeTheme(eachTheme)} className={`w-8 h-8 flex items-center justify-center ${getOppositeTextColor(eachTheme)} ${getBgPrimaryColor(eachTheme)} rounded-full cursor-pointer`}>
                                 {
                                     eachTheme === theme &&
-                                    <FaCheck className="text-base" />
+                                    <FaCheck />
                                 }
                             </div>
                         )
                     }
                 </main>
                 <footer className="text-end">
-                    <button onClick={() => setThemeModal(false)} className={`py-1 px-8 text-base ${getOppositeTextColor(theme)} ${getBgPrimaryColor(theme)} rounded-md ${getHoverBgHighlightColor(theme)}`}>Close</button>
+                    <button onClick={() => setThemeModal(false)} className={`py-1 px-8 ${getOppositeTextColor(theme)} ${getBgPrimaryColor(theme)} rounded-md ${getHoverBgHighlightColor(theme)}`}>Close</button>
                 </footer>
             </Box>
         </Modal>

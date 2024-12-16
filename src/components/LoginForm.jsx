@@ -140,22 +140,22 @@ export default function LoginForm() {
                             <div onClick={togglePwd} className="px-3 py-3 absolute right-0 top-0 rounded-tr-md rounded-br-md cursor-pointer">
                                 {
                                     showPwd
-                                    ? <FaEyeSlash className="text-base text-purple-text" />
-                                    : <FaEye className="text-base text-purple-text" />
+                                    ? <FaEyeSlash className="text-purple-text" />
+                                    : <FaEye className="text-purple-text" />
                                 }
                             </div>
                         </div>
                         <div className="flex items-center justify-between">
                             <div className="flex items-center gap-2">
                                 <input type="checkbox" id="rememberMe" checked={rememberMe} disabled={isSubmitting} onChange={rememberMeHandler} className="w-4 h-4 accent-purple-primary cursor-pointer disabled:accent-purple-disabled disabled:cursor-not-allowed" />
-                                <label htmlFor="rememberMe" className="text-base text-purple-text cursor-pointer">Remember me</label>
+                                <label htmlFor="rememberMe" className="text-purple-text cursor-pointer">Remember me</label>
                             </div>
                             {
                                 tabletBreakpoint
                                 && <Link to="/forgot-password" rel="nofollow" className="text-sm text-purple-link cursor-pointer hover:underline">Forgot password?</Link>
                             }
                         </div>
-                        <button onClick={login} disabled={isSubmitting} className="py-2 text-base text-purple-oppositeText bg-purple-primary rounded-md hover:bg-purple-highlight disabled:bg-purple-highlight disabled:cursor-not-allowed">Login</button>
+                        <button onClick={login} disabled={isSubmitting} className="py-2 text-purple-oppositeText bg-purple-primary rounded-md hover:bg-purple-highlight disabled:bg-purple-highlight disabled:cursor-not-allowed">Login</button>
                         {
                             !tabletBreakpoint
                             &&  <span className="w-full text-center">

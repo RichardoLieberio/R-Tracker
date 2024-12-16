@@ -21,7 +21,7 @@ export default function EmailVerified() {
             <img src="/Email Verified.png" alt="Email Verified" loading="lazy" className="w-20 phone:w-28 tablet:w-36 desktop:w-44 mx-auto" />
             <div className="flex flex-col gap-4">
                 <h2 className="mx-auto text-2xl text-purple-text font-semibold">Your Account is Verified</h2>
-                <p className="text-base text-purple-text">Your account is now verified, and you&apos;re all set to start exploring. Enjoy full access to all our features!</p>
+                <p className="text-purple-text">Your account is now verified, and you&apos;re all set to start exploring. Enjoy full access to all our features!</p>
             </div>
         </section>
     );

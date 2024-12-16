@@ -64,7 +64,7 @@ export default function ForgotPwdEmail(props) {
             <img src="/Email Verification.png" alt="Email Verification" loading="lazy" className="w-40 phone:w-48 tablet:w-56 desktop:w-64 mx-auto" />
             <div className="flex flex-col gap-4">
                 <h1 className="text-2xl text-purple-text font-semibold">Reset your password</h1>
-                <p className="text-base text-purple-text">Enter your email address below, and we&apos;ll send you a one-time password (OTP) to verify your identity.</p>
+                <p className="text-purple-text">Enter your email address below, and we&apos;ll send you a one-time password (OTP) to verify your identity.</p>
             </div>
             <form className="w-fit phone:w-56 tablet:w-64 desktop:w-72 mx-auto flex flex-col gap-4" autoCapitalize="off" autoComplete="off" spellCheck="false">
                 <div className="w-full relative">
@@ -79,7 +79,7 @@ export default function ForgotPwdEmail(props) {
                     <label htmlFor="email" ref={emailLabelRef}>Email</label>
                     <input type="email" id="email" value={email} ref={emailInputRef} disabled={isSubmitting} onChange={emailHandler} onFocus={emailInputFocus} onBlur={emailInputBlur} className={css.defaultInput} />
                 </div>
-                <button onClick={sendRequest} disabled={isSubmitting} className="w-full mt-4 py-2 text-base text-purple-oppositeText bg-purple-primary rounded-md hover:bg-purple-highlight disabled:bg-purple-highlight disabled:cursor-not-allowed">Submit</button>
+                <button onClick={sendRequest} disabled={isSubmitting} className="w-full mt-4 py-2 text-purple-oppositeText bg-purple-primary rounded-md hover:bg-purple-highlight disabled:bg-purple-highlight disabled:cursor-not-allowed">Submit</button>
                 <Link to="/login" rel="nofollow" className="mx-auto text-sm text-purple-link hover:underline">Back to login</Link>
             </form>
         </section>

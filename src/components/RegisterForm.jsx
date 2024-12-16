@@ -202,8 +202,8 @@ export default function RegisterForm(props) {
                             <div onClick={togglePwd} className="px-3 py-3 absolute right-0 top-0 rounded-tr-md rounded-br-md cursor-pointer">
                                 {
                                     showPwd
-                                    ? <FaEyeSlash className="text-base text-purple-text" />
-                                    : <FaEye className="text-base text-purple-text" />
+                                    ? <FaEyeSlash className="text-purple-text" />
+                                    : <FaEye className="text-purple-text" />
                                 }
                             </div>
                         </div>
@@ -221,12 +221,12 @@ export default function RegisterForm(props) {
                             <div onClick={toggleConfPwd} className="px-3 py-3 absolute right-0 top-0 rounded-tr-md rounded-br-md cursor-pointer">
                                 {
                                     showConfPwd
-                                    ? <FaEyeSlash className="text-base text-purple-text" />
-                                    : <FaEye className="text-base text-purple-text" />
+                                    ? <FaEyeSlash className="text-purple-text" />
+                                    : <FaEye className="text-purple-text" />
                                 }
                             </div>
                         </div>
-                        <button onClick={register} disabled={isSubmitting} className="py-2 text-base text-purple-oppositeText bg-purple-primary rounded-md hover:bg-purple-highlight disabled:bg-purple-highlight disabled:cursor-not-allowed">Register</button>
+                        <button onClick={register} disabled={isSubmitting} className="py-2 text-purple-oppositeText bg-purple-primary rounded-md hover:bg-purple-highlight disabled:bg-purple-highlight disabled:cursor-not-allowed">Register</button>
                     </section>
                     <small className="mx-auto text-sm text-purple-text">
                         Already have an account? <Link to="/login" rel="nofollow" className="text-purple-link hover:underline">Login</Link>

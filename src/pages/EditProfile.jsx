@@ -9,7 +9,7 @@ import {changePage} from '../redux/webSlice';
 import {
     getBgPrimaryColor, getBackgroundColor,
     getHoverBgHighlightColor, getHoverBgErrorColor,
-    getTextColor, getOppositeTextColor, getTextErrorColor,
+    getOppositeTextColor, getTextErrorColor,
     getHoverOppositeTextColor,
     getBorderNeutralColor, getBorderErrorColor
 } from '../css/color';
@@ -103,7 +103,7 @@ export default function EditProfile() {
     return (
         <HelmetProvider>
             <EditProfileHead />
-            <section className={`w-56 phone:w-72 tablet:w-96 desktop:w-1/3 desktop:min-w-96 mx-auto py-12 flex flex-col gap-12 text-base ${getTextColor(theme)}`}>
+            <section className="w-56 phone:w-72 tablet:w-96 desktop:w-1/3 desktop:min-w-96 mx-auto py-12 flex flex-col gap-12">
                 <section className="flex flex-col gap-8">
                     <header className="flex flex-col gap-1">
                         <h2 className="text-xl font-semibold">My Account</h2>

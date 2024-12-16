@@ -34,12 +34,12 @@ export default function Drawer(props) {
                 <section className={`px-4 py-6 flex items-center gap-2 ${getBgPrimaryColor(theme)}`}>
                     <FaUserCircle className="flex-shrink-0 text-4xl" />
                     <div className="flex-1 flex flex-col overflow-hidden">
-                        <span className="text-base truncate">{userInfo.name}</span>
+                        <span className="truncate">{userInfo.name}</span>
                         <span className="text-sm truncate">{userInfo.email}</span>
                     </div>
                 </section>
                 <section className="py-6">
-                    <ul className="list-none text-base">
+                    <ul className="list-none">
                         {
                             Object.keys(pages).filter(path => isAdmin || !path.startsWith('/admin/')).map(path =>
                                 <li key={path}>
@@ -56,7 +56,7 @@ export default function Drawer(props) {
                     <hr className={`${getBorderText20Color(theme)}`} />
                 </section>
                 <section className="py-6">
-                    <ul className={`list-none text-base ${getTextColor(theme)}`}>
+                    <ul className={`list-none ${getTextColor(theme)}`}>
                         <li>
                             <Link to="/edit-profile" onClick={() => page !== '/edit-profile' && setOpenDrawer(false)} className={`px-4 py-2 flex items-center gap-2 text-start ${getTextColor(theme)} ${page === '/edit-profile' ? `${getBgHighlightColor(theme)}` : `${getHoverTextHighlightColor(theme)}`} cursor-pointer`}>
                                 <FaUserCog className="flex-shrink-0 text-lg" />
@@ -71,7 +71,7 @@ export default function Drawer(props) {
                         </li>
                     </ul>
                 </section>
-                <button disabled={isSigningOut} onClick={signout} className={`mt-auto mb-6 mx-4 py-1 text-base ${getTextErrorColor(theme)} ${isSigningOut ? '' : `border ${getBorderErrorColor(theme)}`} rounded-md ${getHoverOppositeTextColor(theme)} ${getHoverBgErrorColor(theme)} ${getDisabledOppositeTextColor(theme)} ${getDisabledBgError60Color(theme)} disabled:cursor-not-allowed`}>Sign out</button>
+                <button disabled={isSigningOut} onClick={signout} className={`mt-auto mb-6 mx-4 py-1 ${getTextErrorColor(theme)} ${isSigningOut ? '' : `border ${getBorderErrorColor(theme)}`} rounded-md ${getHoverOppositeTextColor(theme)} ${getHoverBgErrorColor(theme)} ${getDisabledOppositeTextColor(theme)} ${getDisabledBgError60Color(theme)} disabled:cursor-not-allowed`}>Sign out</button>
             </section>
         </MuiDrawer>
     );
