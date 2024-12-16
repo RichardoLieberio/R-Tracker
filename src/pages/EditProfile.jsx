@@ -67,13 +67,13 @@ export default function EditProfile() {
     }
 
     function pwdInputFocus() {
-        if (formError.pwd) pwdLabelRef.current.className = css.labelTopError
-        else pwdLabelRef.current.className = css.labelTopFocus;
+        if (formError.pwd) pwdLabelRef.current.className = css(theme).labelTopError
+        else pwdLabelRef.current.className = css(theme).labelTopFocus;
     }
 
     function pwdInputBlur() {
-        if (formError.pwd) pwdLabelRef.current.className = pwd ? css.labelTopError : css.labelMiddleError
-        else pwdLabelRef.current.className = pwd ? css.labelTopBlur : css.labelMiddle;
+        if (formError.pwd) pwdLabelRef.current.className = pwd ? css(theme).labelTopError : css(theme).labelMiddleError
+        else pwdLabelRef.current.className = pwd ? css(theme).labelTopBlur : css(theme).labelMiddle;
     }
 
     function confPwdHandler(e) {
@@ -81,13 +81,13 @@ export default function EditProfile() {
     }
 
     function confPwdInputFocus() {
-        if (formError.confPwd) confPwdLabelRef.current.className = css.labelTopError
-        else confPwdLabelRef.current.className = css.labelTopFocus;
+        if (formError.confPwd) confPwdLabelRef.current.className = css(theme).labelTopError
+        else confPwdLabelRef.current.className = css(theme).labelTopFocus;
     }
 
     function confPwdInputBlur() {
-        if (formError.confPwd) confPwdLabelRef.current.className = confPwd ? css.labelTopError : css.labelMiddleError
-        else confPwdLabelRef.current.className = confPwd ? css.labelTopBlur : css.labelMiddle;
+        if (formError.confPwd) confPwdLabelRef.current.className = confPwd ? css(theme).labelTopError : css(theme).labelMiddleError
+        else confPwdLabelRef.current.className = confPwd ? css(theme).labelTopBlur : css(theme).labelMiddle;
     }
 
     function togglePwd() {
@@ -130,24 +130,24 @@ export default function EditProfile() {
                     <main>
                         <form action="" className="flex flex-col gap-4" autoCapitalize="off" autoComplete="off" spellCheck="false">
                             <div className="relative flex flex-col">
-                                <label htmlFor="pwd" ref={pwdLabelRef} className={css.labelMiddle}>New Password</label>
-                                <input type={showPwd ? "text" : "password"} id="pwd" value={pwd} ref={pwdInputRef} disabled={isSubmitting} onChange={pwdHandler} onFocus={pwdInputFocus} onBlur={pwdInputBlur} className={css.pwdInput} />
+                                <label htmlFor="pwd" ref={pwdLabelRef} className={css(theme).labelMiddle}>New Password</label>
+                                <input type={showPwd ? "text" : "password"} id="pwd" value={pwd} ref={pwdInputRef} disabled={isSubmitting} onChange={pwdHandler} onFocus={pwdInputFocus} onBlur={pwdInputBlur} className={css(theme).pwdInput} />
                                 <div onClick={togglePwd} className="px-3 py-3 absolute right-0 top-0 rounded-tr-md rounded-br-md cursor-pointer">
                                     {
                                         showPwd
-                                        ? <FaEyeSlash className="text-base text-purple-text" />
-                                        : <FaEye className="text-base text-purple-text" />
+                                        ? <FaEyeSlash />
+                                        : <FaEye />
                                     }
                                 </div>
                             </div>
                             <div className="relative flex flex-col">
-                                <label htmlFor="confPwd" ref={confPwdLabelRef} className={css.labelMiddle}>Confirm New Password</label>
-                                <input type={showConfPwd ? "text" : "password"} id="confPwd" value={confPwd} ref={confPwdInputRef} disabled={isSubmitting} onChange={confPwdHandler} onFocus={confPwdInputFocus} onBlur={confPwdInputBlur} className={css.pwdInput} />
+                                <label htmlFor="confPwd" ref={confPwdLabelRef} className={css(theme).labelMiddle}>Confirm New Password</label>
+                                <input type={showConfPwd ? "text" : "password"} id="confPwd" value={confPwd} ref={confPwdInputRef} disabled={isSubmitting} onChange={confPwdHandler} onFocus={confPwdInputFocus} onBlur={confPwdInputBlur} className={css(theme).pwdInput} />
                                 <div onClick={toggleConfPwd} className="px-3 py-3 absolute right-0 top-0 rounded-tr-md rounded-br-md cursor-pointer">
                                     {
                                         showConfPwd
-                                        ? <FaEyeSlash className="text-base text-purple-text" />
-                                        : <FaEye className="text-base text-purple-text" />
+                                        ? <FaEyeSlash />
+                                        : <FaEye />
                                     }
                                 </div>
                             </div>
