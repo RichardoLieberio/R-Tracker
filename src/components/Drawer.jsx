@@ -58,7 +58,7 @@ export default function Drawer(props) {
                 <section className="py-6">
                     <ul className={`list-none text-base ${getTextColor(theme)}`}>
                         <li>
-                            <Link to="/edit-profile" className={`px-4 py-2 flex items-center gap-2 text-start ${getTextColor(theme)} ${getHoverTextHighlightColor(theme)} cursor-pointer`}>
+                            <Link to="/edit-profile" onClick={() => page !== '/edit-profile' && setOpenDrawer(false)} className={`px-4 py-2 flex items-center gap-2 text-start ${getTextColor(theme)} ${page === '/edit-profile' ? `${getBgHighlightColor(theme)}` : `${getHoverTextHighlightColor(theme)}`} cursor-pointer`}>
                                 <FaUserCog className="flex-shrink-0 text-lg" />
                                 Edit profile
                             </Link>
