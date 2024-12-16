@@ -359,6 +359,25 @@ function getToPrimaryColor(theme) {
     }
 }
 
+function getBorderPrimaryColor(theme) {
+    switch (theme) {
+        case 'red':
+            return '!border-red-primary';
+        case 'green':
+            return '!border-green-primary';
+        case 'blue':
+            return '!border-blue-primary';
+        case 'yellow':
+            return '!border-yellow-primary';
+        case 'teal':
+            return '!border-teal-primary';
+        case 'dark':
+            return '!border-dark-primary';
+        default:
+            return '!border-purple-primary';
+    }
+}
+
 function getBorderNeutralColor(theme) {
     switch (theme) {
         case 'red':
@@ -413,6 +432,25 @@ function getBorderText20Color(theme) {
             return '!border-dark-text/20';
         default:
             return '!border-purple-text/20';
+    }
+}
+
+function getHoverBorderHighlightColor(theme) {
+    switch (theme) {
+        case 'red':
+            return 'hover:!border-red-highlight';
+        case 'green':
+            return 'hover:!border-green-highlight';
+        case 'blue':
+            return 'hover:!border-blue-highlight';
+        case 'yellow':
+            return 'hover:!border-yellow-highlight';
+        case 'teal':
+            return 'hover:!border-teal-highlight';
+        case 'dark':
+            return 'hover:!border-dark-highlight';
+        default:
+            return 'hover:!border-purple-highlight';
     }
 }
 
@@ -481,7 +519,8 @@ export {
     getHoverOppositeTextColor, getHoverTextHighlightColor,
     getDisabledOppositeTextColor,
     getFromSecondaryColor, getToPrimaryColor,
-    getBorderNeutralColor, getBorderErrorColor, getBorderText20Color,
+    getBorderPrimaryColor, getBorderNeutralColor, getBorderErrorColor, getBorderText20Color,
+    getHoverBorderHighlightColor,
     getFocusBorderPrimaryColor, getFocusBorderHighlightColor,
     getShadowColor
 };
