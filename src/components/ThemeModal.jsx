@@ -3,7 +3,7 @@ import {useSelector} from 'react-redux';
 
 import themes from '../../config/theme';
 
-import {getBgPrimaryColor, getBackgroundColor, getTextPrimaryColor, getTextColor, getOppositeTextColor, getHoverTextHighlightColor, getBorderPrimaryColor, getHoverBorderHighlightColor} from '../css/color';
+import {getBgPrimaryColor, getBackgroundColor, getTextPrimaryColor, getTextColor, getOppositeTextColor, getHoverTextHighlightColor, getHoverBorderHighlightColor} from '../css/color';
 
 import contr from '../controllers/themeModal';
 
@@ -32,7 +32,7 @@ export default function ThemeModal(props) {
                     }
                 </main>
                 <footer className="text-end">
-                    <button onClick={() => setThemeModal(false)} className={`py-1 px-8 ${theme !== 'dark' ? getTextPrimaryColor(theme) : ''} border ${theme !== 'dark' ? getBorderPrimaryColor(theme) : ''} rounded-md ${getHoverTextHighlightColor(theme)} ${getHoverBorderHighlightColor(theme)}`}>Close</button>
+                    <button onClick={() => setThemeModal(false)} className={`py-1 ${theme !== 'dark' ? getTextPrimaryColor(theme) : ''} rounded-md ${getHoverTextHighlightColor(theme)} ${getHoverBorderHighlightColor(theme)}`}>Close</button>
                 </footer>
             </Box>
         </Modal>
