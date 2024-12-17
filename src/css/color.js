@@ -36,6 +36,25 @@ function getBgHighlightColor(theme) {
     }
 }
 
+function getBgErrorColor(theme) {
+    switch (theme) {
+        case 'red':
+            return '!bg-red-error';
+        case 'green':
+            return '!bg-green-error';
+        case 'blue':
+            return '!bg-blue-error';
+        case 'yellow':
+            return '!bg-yellow-error';
+        case 'teal':
+            return '!bg-teal-error';
+        case 'dark':
+            return '!bg-dark-error';
+        default:
+            return '!bg-purple-error';
+    }
+}
+
 function getBackgroundColor(theme) {
     switch (theme) {
         case 'red':
@@ -531,7 +550,7 @@ function getShadowColor(theme) {
 }
 
 export {
-    getBgPrimaryColor, getBgHighlightColor, getBackgroundColor,
+    getBgPrimaryColor, getBgHighlightColor, getBgErrorColor, getBackgroundColor,
     getHoverBgHighlightColor, getHoverBgErrorColor, getHoverBgNeutral50Color,
     getDisabledBgColor, getDisabledBgNeutralColor, getDisabledBgHighlightColor, getDisabledBgError60Color,
     getTextColor, getTextPrimaryColor, getOppositeTextColor, getTextHighlightColor, getTextErrorColor,
