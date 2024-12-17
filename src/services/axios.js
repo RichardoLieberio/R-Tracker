@@ -54,8 +54,8 @@ function responseSuccess(response) {
         store.dispatch(setAuthentication(false));
         setToast('error', response.data.msg);
 
-        request.authenticated.navigate(request.authenticated.route, request.authenticated.options);
-        return response;
+        history.replaceState('', null, request.authenticated.route);
+        location.reload();
     } else {
         return response;
     }

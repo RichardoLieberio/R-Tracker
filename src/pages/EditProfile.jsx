@@ -1,5 +1,5 @@
 import {useState, useEffect, useRef} from 'react';
-import {useNavigate, useLocation} from 'react-router-dom';
+import {useLocation} from 'react-router-dom';
 import {useSelector, useDispatch} from 'react-redux';
 
 import {axiosController} from '../services/axios';
@@ -47,7 +47,6 @@ export default function EditProfile() {
     const confPwdInputRef = useRef(null);
     const hasToggled = useRef(null);
 
-    const navigate = useNavigate();
     const location = useLocation();
 
     const theme = useSelector((state) => state.web.theme);
@@ -123,7 +122,7 @@ export default function EditProfile() {
             setNameModal(false);
             setSavingNewName(true);
             setNameError({});
-            await contr.changeName(newName, csrfToken, accessToken, setNameError, setNewName, userInfo.name, navigate);
+            await contr.changeName(newName, csrfToken, accessToken, setNameError, setNewName, userInfo.name);
             setSavingNewName(false);
         }
     }

@@ -18,7 +18,7 @@ function inputErrorHandler(theme, error, value, setLabelClass, setInputClass, pw
     }
 }
 
-async function changeName(name, csrfToken, accessToken, setNameError, setNewName, originalName, navigate) {
+async function changeName(name, csrfToken, accessToken, setNameError, setNewName, originalName) {
     if (name === originalName) return setNewName('');
 
     const data = {name};
@@ -29,10 +29,8 @@ async function changeName(name, csrfToken, accessToken, setNameError, setNewName
             'CSRF-Token': csrfToken
         },
         authenticated: {
-            navigate,
             code: 401,
-            route: '/login',
-            options: {replace: true}
+            route: '/login'
         }
     };
 
