@@ -57,7 +57,7 @@ export default function EditNameModal(props) {
 
     return (
         <Modal open={nameModal} onClose={() => setNameModal(false)} aria-labelledby="Theme Modal" aria-describedby="Choose your theme">
-            <Box className={`w-1/3 min-w-56 phone:min-w-72 tablet:min-w-80 desktop:min-w-96 h-auto p-8 absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 flex flex-col gap-8 rounded-lg tablet:rounded-xl ${getBackgroundColor(theme)} ${getTextColor(theme)}`}>
+            <Box className={`w-1/3 min-w-56 phone:min-w-72 tablet:min-w-80 desktop:min-w-96 h-auto p-8 absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 flex flex-col gap-6 rounded-lg tablet:rounded-xl ${getBackgroundColor(theme)} ${getTextColor(theme)}`}>
                 <header className="flex flex-col gap-1">
                     <h2 className="text-xl font-semibold">Edit Name</h2>
                     <small className="text-sm">Update your name in the field below.</small>
