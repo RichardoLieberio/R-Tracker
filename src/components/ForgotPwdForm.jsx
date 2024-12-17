@@ -86,10 +86,17 @@ export default function ForgotPwdForm(props) {
                 clearInterval(interval);
             };
         } else {
-            resendRef.current.className = 'text-purple-primary cursor-pointer hover:underline';
-            resendRef.current.textContent = 'Resend';
+            if (!isSubmitting) {
+                resendRef.current.className = 'text-purple-primary cursor-pointer hover:underline';
+                resendRef.current.textContent = 'Resend';
+            }
         }
-    }, [second]);
+    }, [second, isSubmitting]);
+
+    useEffect(function() {
+        if (isSubmitting) resendRef.current.className = 'text-purple-link';
+        if (!isSubmitting && second <= 0) resendRef.current.className = 'text-purple-primary cursor-pointer hover:underline';
+    }, [isSubmitting]); // eslint-disable-line react-hooks/exhaustive-deps
 
     function pwdHandler(e) {
         setPwd(e.target.value);
@@ -148,7 +155,7 @@ export default function ForgotPwdForm(props) {
     }
 
     function resendOtp() {
-        if (second === 0) {
+        if (second === 0 && !isSubmitting) {
             resendRef.current.className = 'text-purple-link';
             resendRef.current.textContent = `Resend (${process.env.RESEND_EMAIL_TIMEOUT})`;
             setSecond(+process.env.RESEND_EMAIL_TIMEOUT);
