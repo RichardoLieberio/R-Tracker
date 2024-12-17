@@ -4,12 +4,10 @@ import {useSelector} from 'react-redux';
 
 import {getTextColor, getBackgroundColor} from '../css/color';
 
-export default function MainLayout({children}) {
+export default function MainLayout({noThemeRoutes, children}) {
     const location = useLocation();
 
     const theme = useSelector((state) => state.web.theme);
-
-    const noThemeRoutes = ['/login', '/register', '/forgot-password'];
 
     return (
         <main className={`w-full min-w-60 min-h-screen relative text-base ${noThemeRoutes.includes(location.pathname) ? 'text-purple-text bg-purple-background' : `${getTextColor(theme)} ${getBackgroundColor(theme)}`}`}>
@@ -19,5 +17,6 @@ export default function MainLayout({children}) {
 }
 
 MainLayout.propTypes = {
+    noThemeRoutes: PropTypes.array,
     children: PropTypes.node
 };
