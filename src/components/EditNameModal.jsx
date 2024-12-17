@@ -22,7 +22,7 @@ export default function EditNameModal(props) {
     const [labelClass, setLabelClass] = useState(newName ? css(theme).labelTopBlur : css(theme).labelMiddle);
     const [inputClass, setInputClass] = useState(nameError.name ? css(theme).defaultInput : css(theme).defaultInputError);
 
-    const tabletBreakpoint = useMediaQuery(`(min-width: ${breakpoints.tablet})`);
+    const phoneBreakpoint = useMediaQuery(`(min-width: ${breakpoints.phone})`);
 
     useEffect(function() {
         nameError.name
@@ -77,11 +77,8 @@ export default function EditNameModal(props) {
                     </form>
                 </main>
                 <footer className="flex items-center justify-end gap-4">
-                    {
-                        tabletBreakpoint &&
-                        <button onClick={() => setNameModal(false)} className={`py-1 px-8 ${theme !== 'dark' ? getTextPrimaryColor(theme) : ''} rounded-md ${getHoverTextHighlightColor(theme)} ${getHoverBorderHighlightColor(theme)}`}>Close</button>
-                    }
-                    <button onClick={saveName} disabled={savingNewName} className={`py-1 px-8 ${getOppositeTextColor(theme)} ${getBgPrimaryColor(theme)} rounded-md ${getHoverBgHighlightColor(theme)} ${getDisabledBgHighlightColor(theme)} disabled:cursor-not-allowed`}>Save</button>
+                    <button onClick={() => setNameModal(false)} className={`py-1 ${phoneBreakpoint ? 'px-8' : 'px-4'} ${theme !== 'dark' ? getTextPrimaryColor(theme) : ''} rounded-md ${getHoverTextHighlightColor(theme)} ${getHoverBorderHighlightColor(theme)}`}>Close</button>
+                    <button onClick={saveName} disabled={savingNewName} className={`py-1 ${phoneBreakpoint ? 'px-8' : 'px-4'} ${getOppositeTextColor(theme)} ${getBgPrimaryColor(theme)} rounded-md ${getHoverBgHighlightColor(theme)} ${getDisabledBgHighlightColor(theme)} disabled:cursor-not-allowed`}>Save</button>
                 </footer>
             </Box>
         </Modal>
