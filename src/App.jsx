@@ -27,10 +27,13 @@ import Loading from './components/Loading';
 import MainLayout from './components/MainLayout';
 import SharedLayout from './components/SharedLayout';
 
+const noThemeRoutes = ['/login', '/register', '/forgot-password'];
+
 export default function App() {
     const [loading, setLoading] = useState(true);
 
     const theme = useSelector((state) => state.web.theme);
+    const page = useSelector((state) => state.web.page);
 
     useEffect(function() {
         contr.themeSetup();
@@ -38,12 +41,12 @@ export default function App() {
     }, []);
 
     function toastClassName(context) {
-        const className = getToastClassName(theme);
+        const className = getToastClassName(noThemeRoutes.includes(page) ? 'purple' : theme);
         return `${context.defaultClassName} !${className[context?.type]}`;
     }
 
     function bodyClassName() {
-        const className = getOppositeTextColor(theme);
+        const className = getOppositeTextColor(noThemeRoutes.includes(page) ? 'purple' : theme);
         return `${className} ml-2 flex items-center text-base`;
     }
 
@@ -63,7 +66,7 @@ export default function App() {
     return loading
     ?   <Loading defaultSize theme={theme} />
     :   <BrowserRouter>
-            <MainLayout>
+            <MainLayout noThemeRoutes={noThemeRoutes}>
                 <ToastContainer {...toastConfig} />
                 <Routes>
                     <Route element={<Authenticated />}>
