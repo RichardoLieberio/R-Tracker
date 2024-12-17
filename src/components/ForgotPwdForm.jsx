@@ -95,7 +95,7 @@ export default function ForgotPwdForm(props) {
 
     useEffect(function() {
         if (isSubmitting) resendRef.current.className = 'text-purple-link';
-        if (!isSubmitting && second <= 0) resendRef.current.className = 'text-purple-primary cursor-pointer hover:underline';
+        if (!isSubmitting && second === 0) resendRef.current.className = 'text-purple-primary cursor-pointer hover:underline';
     }, [isSubmitting]); // eslint-disable-line react-hooks/exhaustive-deps
 
     function pwdHandler(e) {
