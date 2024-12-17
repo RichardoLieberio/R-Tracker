@@ -53,6 +53,7 @@ function responseSuccess(response) {
         store.dispatch(clearUserInfo());
         store.dispatch(setAuthentication(false));
         setToast('error', response.data.msg);
+
         request.authenticated.navigate(request.authenticated.route, request.authenticated.options);
         return response;
     } else {
