@@ -34,7 +34,7 @@ export default function App() {
 
     useEffect(function() {
         contr.themeSetup();
-        contr.getInfo(setLoading);
+        contr.getInfo(setLoading, false);
     }, []);
 
     function toastClassName(context) {

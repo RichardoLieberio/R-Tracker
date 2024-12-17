@@ -4,7 +4,7 @@ import axios from '../services/axios';
 
 import store from '../redux/store';
 import {changeTheme} from '../redux/webSlice';
-import {clearAccessToken, setUserInfo, clearUserInfo, setAuthentication} from '../redux/authSlice';
+import {setUserInfo, setAuthentication} from '../redux/authSlice';
 
 function themeSetup() {
     const theme = Cookies.get('theme');
@@ -12,12 +12,17 @@ function themeSetup() {
     Cookies.set('theme', theme ?? 'purple');
 }
 
-async function getInfo(setLoading, accessToken='') {
+async function getInfo(setLoading, useAuthenticated, accessToken='') {
     const config = {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${accessToken}`
         }
+    };
+
+    if (useAuthenticated) config.authenticated = {
+        code: 401,
+        route: '/login'
     };
 
     const response = await axios.get('/api/user/info', config);
@@ -30,9 +35,6 @@ async function getInfo(setLoading, accessToken='') {
             setLoading(false);
             break;
         case 401:
-            store.dispatch(clearAccessToken());
-            store.dispatch(clearUserInfo());
-            store.dispatch(setAuthentication(false));
             setLoading(false);
             break;
     }

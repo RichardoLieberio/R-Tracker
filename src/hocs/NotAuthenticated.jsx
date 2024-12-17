@@ -14,7 +14,7 @@ export default function NotAuthenticated() {
     const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
     useEffect(function() {
-        if (isAuthenticated) contr.getInfo(setLoading, accessToken);
+        if (isAuthenticated) contr.getInfo(setLoading, false, accessToken);
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     return !isAuthenticated
