@@ -11,8 +11,8 @@ export default function(theme) {
         defaultInputError: `w-full px-3 py-2 ${getBackgroundColor(theme)} pl-10 border ${getBorderErrorColor(theme)} rounded-md outline-none`,
         pwdInput: `w-full px-3 py-2 pr-10 ${getBackgroundColor(theme)} border ${getBorderNeutralColor(theme)} rounded-md outline-none ${theme === 'dark' ? getFocusBorderHighlightColor(theme) : getFocusBorderPrimaryColor(theme)} ${getDisabledBgColor(theme)} disabled:cursor-not-allowed`,
         pwdInputError: `w-full px-10 py-2 ${getBackgroundColor(theme)} border ${getBorderErrorColor(theme)} rounded-md outline-none`,
-        otp: `!w-8 !h-10 tablet:!w-10 tablet:!h-12 text-2xl border ${getBorderNeutralColor(theme)} ${theme === 'dark' ? getOutlineTextColor(theme) : getOutlinePrimaryColor(theme)} rounded-md`,
-        disabledOtp: `!w-8 !h-10 tablet:!w-10 tablet:!h-12 text-2xl bg-purple-disabled border ${getBorderNeutralColor(theme)} rounded-md cursor-not-allowed`,
-        errorOtp: `!w-8 !h-10 tablet:!w-10 tablet:!h-12 text-2xl border ${getBorderErrorColor(theme)} ${getOutlineErrorColor(theme)} rounded-md`
+        otp: `!w-7 phone:!w-8 phone:!h-10 desktop:!w-10 desktop:!h-12 text-2xl ${getBackgroundColor(theme)} border ${getBorderNeutralColor(theme)} ${theme === 'dark' ? getOutlineTextColor(theme) : getOutlinePrimaryColor(theme)} rounded-md`,
+        disabledOtp: `!w-7 phone:!w-8 phone:!h-10 desktop:!w-10 desktop:!h-12 text-2xl ${getBackgroundColor(theme)} ${getDisabledBgColor(theme)} border ${getBorderNeutralColor(theme)} rounded-md cursor-not-allowed`,
+        errorOtp: `!w-7 phone:!w-8 phone:!h-10 desktop:!w-10 desktop:!h-12 text-2xl ${getBackgroundColor(theme)} border ${getBorderErrorColor(theme)} ${getOutlineErrorColor(theme)} rounded-md`
     };
 };

@@ -283,6 +283,44 @@ function getTextHighlightColor(theme) {
     }
 }
 
+function getTextLinkColor(theme) {
+    switch (theme) {
+        case 'red':
+            return '!text-red-link';
+        case 'green':
+            return '!text-green-link';
+        case 'blue':
+            return '!text-blue-link';
+        case 'yellow':
+            return '!text-yellow-link';
+        case 'teal':
+            return '!text-teal-link';
+        case 'dark':
+            return '!text-dark-link';
+        default:
+            return '!text-purple-link';
+    }
+}
+
+function getTextDisabledColor(theme) {
+    switch (theme) {
+        case 'red':
+            return '!text-red-disabled';
+        case 'green':
+            return '!text-green-disabled';
+        case 'blue':
+            return '!text-blue-disabled';
+        case 'yellow':
+            return '!text-yellow-disabled';
+        case 'teal':
+            return '!text-teal-disabled';
+        case 'dark':
+            return '!text-dark-disabled';
+        default:
+            return '!text-purple-disabled';
+    }
+}
+
 function getTextErrorColor(theme) {
     switch (theme) {
         case 'red':
@@ -610,7 +648,7 @@ export {
     getBgPrimaryColor, getBgHighlightColor, getBgErrorColor, getBackgroundColor,
     getHoverBgHighlightColor, getHoverBgErrorColor, getHoverBgNeutral50Color,
     getDisabledBgColor, getDisabledBgNeutralColor, getDisabledBgHighlightColor, getDisabledBgError60Color,
-    getTextColor, getTextPrimaryColor, getOppositeTextColor, getTextHighlightColor, getTextErrorColor,
+    getTextColor, getTextPrimaryColor, getOppositeTextColor, getTextHighlightColor, getTextLinkColor, getTextDisabledColor, getTextErrorColor,
     getHoverOppositeTextColor, getHoverTextHighlightColor,
     getDisabledOppositeTextColor,
     getFromSecondaryColor, getToPrimaryColor,
