@@ -22,8 +22,7 @@ async function resendOtp(email, csrfToken, accessToken, setFormError) {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${accessToken}`,
             'CSRF-Token': csrfToken
-        },
-        useAbortController: true
+        }
     };
 
     const response = await axios.post('/api/request/reset-password', data, config);
@@ -53,8 +52,7 @@ async function resetPwd(email, otp, pwd, confPwd, csrfToken, accessToken, setFor
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${accessToken}`,
             'CSRF-Token': csrfToken
-        },
-        useAbortController: true
+        }
     };
 
     const response = await axios.patch('/api/user/reset-password', data, config);

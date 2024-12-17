@@ -13,8 +13,7 @@ async function resendOtp(name, email, pwd, confPwd, csrfToken, accessToken, setF
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${accessToken}`,
             'CSRF-Token': csrfToken
-        },
-        useAbortController: true
+        }
     };
 
     const response = await axios.post('/api/user/register', data, config);
@@ -45,8 +44,7 @@ async function verify(email, otp, csrfToken, accessToken, setFormError, setOtpEr
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${accessToken}`,
             'CSRF-Token': csrfToken
-        },
-        useAbortController: true
+        }
     };
 
     const response = await axios.post('/api/user/verify', data, config);
