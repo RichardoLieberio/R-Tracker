@@ -1,10 +1,16 @@
 import {useState, useEffect, useRef} from 'react';
-import {useLocation} from 'react-router-dom';
+import {useNavigate, useLocation} from 'react-router-dom';
 import {useSelector, useDispatch} from 'react-redux';
 
 import {axiosController} from '../services/axios';
+import getCSRFToken from '../services/getCSRFToken';
+import {getToast} from '../services/toastService';
 
 import {changePage} from '../redux/webSlice';
+
+import themeConfig from '../../config/theme';
+
+import contr from '../controllers/editProfile';
 
 import {
     getBgPrimaryColor, getBackgroundColor,
@@ -17,9 +23,17 @@ import css from '../css/editProfile';
 
 import {HelmetProvider} from 'react-helmet-async';
 import EditProfileHead from '../head/EditProfileHead';
+import {MoonLoader} from 'react-spinners';
 import {FaPencilAlt, FaEye, FaEyeSlash} from 'react-icons/fa';
+import EditNameModal from '../components/EditNameModal';
 
 export default function EditProfile() {
+    const [newName, setNewName] = useState('');
+    const [nameModal, setNameModal] = useState(false);
+    const [savingNewName, setSavingNewName] = useState(false);
+    const [nameError, setNameError] = useState({});
+
+    const [csrfToken, setCSRFToken] = useState('');
     const [pwd, setPwd] = useState('');
     const [showPwd, setShowPwd] = useState(false);
     const [confPwd, setConfPwd] = useState('');
@@ -33,15 +47,19 @@ export default function EditProfile() {
     const confPwdInputRef = useRef(null);
     const hasToggled = useRef(null);
 
+    const navigate = useNavigate();
     const location = useLocation();
 
     const theme = useSelector((state) => state.web.theme);
+    const accessToken = useSelector((state) => state.auth.accessToken);
     const userInfo = useSelector((state) => state.auth.userInfo);
 
     const dispatch = useDispatch();
 
     useEffect(function() {
+        getToast();
         dispatch(changePage(location.pathname));
+        getCSRFToken(setCSRFToken);
 
         return function() {
             axiosController && axiosController.abort();
@@ -100,6 +118,16 @@ export default function EditProfile() {
         hasToggled.current = true;
     }
 
+    async function saveName() {
+        if (!savingNewName) {
+            setNameModal(false);
+            setSavingNewName(true);
+            setNameError({});
+            await contr.changeName(newName, csrfToken, accessToken, setNameError, setNewName, userInfo.name, navigate);
+            setSavingNewName(false);
+        }
+    }
+
     return (
         <HelmetProvider>
             <EditProfileHead />
@@ -113,7 +141,10 @@ export default function EditProfile() {
                         <div className="relative flex flex-col">
                             <span className={`px-2 absolute left-1 -top-3 text-sm ${getBackgroundColor(theme)} transition-transform cursor-text`}>Name</span>
                             <span className={`w-full px-3 py-2 pr-10 truncate border ${getBorderNeutralColor(theme)} rounded-md`}>{userInfo.name}</span>
-                            <div className="px-3 py-3 absolute right-0 top-0 rounded-tr-md rounded-br-md cursor-pointer"><FaPencilAlt /></div>
+                            <div onClick={() => !savingNewName && setNameModal(true)} className={`px-3 py-3 absolute right-0 top-0 rounded-tr-md rounded-br-md ${savingNewName ? 'cursor-default' : 'cursor-pointer'}`}>
+                                {savingNewName ? <MoonLoader size={16} color={themeConfig[theme].text} /> : <FaPencilAlt />}
+                            </div>
+                            <EditNameModal newName={newName} setNewName={setNewName} nameModal={nameModal} setNameModal={setNameModal} savingNewName={savingNewName} nameError={nameError} saveName={saveName} />
                         </div>
                         <div className="relative flex flex-col">
                             <span className={`px-2 absolute left-1 -top-3 text-sm ${getBackgroundColor(theme)} transition-transform cursor-text`}>Email</span>
