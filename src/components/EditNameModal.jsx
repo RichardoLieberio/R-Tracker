@@ -7,7 +7,7 @@ import breakpoints from '../../config/breakpoints';
 
 import contr from '../controllers/editProfile';
 
-import {getBackgroundColor, getBgPrimaryColor, getBgErrorColor, getHoverBgHighlightColor, getDisabledBgHighlightColor, getTextColor, getTextPrimaryColor, getOppositeTextColor, getHoverTextHighlightColor, getHoverBorderHighlightColor} from '../css/color';
+import {getBackgroundColor, getBgPrimaryColor, getBgErrorColor, getHoverBgHighlightColor, getDisabledBgHighlightColor, getTextColor, getTextPrimaryColor, getTextErrorColor, getOppositeTextColor, getHoverTextHighlightColor, getHoverBorderHighlightColor} from '../css/color';
 import css from '../css/editProfile';
 
 import {Modal, Box} from '@mui/material';
@@ -32,7 +32,7 @@ export default function EditNameModal(props) {
 
     useEffect(function() {
         contr.inputErrorHandler(theme, nameError.name, newName, setLabelClass, setInputClass);
-    }, [nameError]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [nameError, theme]); // eslint-disable-line react-hooks/exhaustive-deps
 
     function nameHandler(e) {
         setNewName(e.target.value);
@@ -57,7 +57,7 @@ export default function EditNameModal(props) {
 
     return (
         <Modal open={nameModal} onClose={() => setNameModal(false)} aria-labelledby="Theme Modal" aria-describedby="Choose your theme">
-            <Box className={`w-1/3 min-w-56 phone:min-w-72 tablet:min-w-80 desktop:min-w-96 h-auto p-8 absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 flex flex-col gap-8 rounded-lg tablet:rounded-xl ${getBackgroundColor(theme)} ${getTextColor(theme)}`}>
+            <Box className={`w-1/3 min-w-56 phone:min-w-72 tablet:min-w-80 desktop:min-w-96 h-auto p-7 phone:p-8 absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 flex flex-col gap-8 rounded-lg tablet:rounded-xl ${getBackgroundColor(theme)} ${getTextColor(theme)}`}>
                 <header className="flex flex-col gap-1">
                     <h2 className="text-xl font-semibold">Edit Name</h2>
                     <small className="text-sm">Update your name in the field below.</small>
@@ -68,7 +68,7 @@ export default function EditNameModal(props) {
                             nameError.name
                             &&  <div className="px-3 py-3 absolute left-0 top-0 rounded-tr-md rounded-br-md">
                                     <Tooltip title={nameError.name} placement="top-start" posY={-8} className={`w-fit max-w-32 phone:max-w-40 tablet:max-w-48 desktop:max-w-56 px-4 py-1 text-sm ${getOppositeTextColor(theme)} ${getBgErrorColor(theme)} rounded-md`}>
-                                        <MdErrorOutline className="text-lg text-purple-error" />
+                                        <MdErrorOutline className={`text-lg ${getTextErrorColor(theme)}`} />
                                     </Tooltip>
                                 </div>
                         }
