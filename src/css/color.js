@@ -530,6 +530,63 @@ function getFocusBorderHighlightColor(theme) {
     }
 }
 
+function getOutlinePrimaryColor(theme) {
+    switch (theme) {
+        case 'red':
+            return '!outline-red-primary';
+        case 'green':
+            return '!outline-green-primary';
+        case 'blue':
+            return '!outline-blue-primary';
+        case 'yellow':
+            return '!outline-yellow-primary';
+        case 'teal':
+            return '!outline-teal-primary';
+        case 'dark':
+            return '!outline-dark-primary';
+        default:
+            return '!outline-purple-primary';
+    }
+}
+
+function getOutlineTextColor(theme) {
+    switch (theme) {
+        case 'red':
+            return '!outline-red-text';
+        case 'green':
+            return '!outline-green-text';
+        case 'blue':
+            return '!outline-blue-text';
+        case 'yellow':
+            return '!outline-yellow-text';
+        case 'teal':
+            return '!outline-teal-text';
+        case 'dark':
+            return '!outline-dark-text';
+        default:
+            return '!outline-purple-text';
+    }
+}
+
+function getOutlineErrorColor(theme) {
+    switch (theme) {
+        case 'red':
+            return '!outline-red-error';
+        case 'green':
+            return '!outline-green-error';
+        case 'blue':
+            return '!outline-blue-error';
+        case 'yellow':
+            return '!outline-yellow-error';
+        case 'teal':
+            return '!outline-teal-error';
+        case 'dark':
+            return '!outline-dark-error';
+        default:
+            return '!outline-purple-error';
+    }
+}
+
 function getShadowColor(theme) {
     switch (theme) {
         case 'red':
@@ -560,5 +617,6 @@ export {
     getBorderPrimaryColor, getBorderNeutralColor, getBorderErrorColor, getBorderText20Color,
     getHoverBorderHighlightColor,
     getFocusBorderPrimaryColor, getFocusBorderHighlightColor,
+    getOutlinePrimaryColor, getOutlineTextColor, getOutlineErrorColor,
     getShadowColor
 };
