@@ -23,6 +23,9 @@ export const authSlice = createSlice({
             state.userInfo = null;
             state.isAdmin = false;
         },
+        setName: function(state, action) {
+            state.userInfo.name = action.payload;
+        },
         setAuthentication: function(state, action) {
             state.isAuthenticated = action.payload;
         },
@@ -35,6 +38,6 @@ export const authSlice = createSlice({
     }
 });
 
-export const {setAccessToken, clearAccessToken, setUserInfo, clearUserInfo, setAuthentication, logout} = authSlice.actions;
+export const {setAccessToken, clearAccessToken, setUserInfo, clearUserInfo, setName, setAuthentication, logout} = authSlice.actions;
 
 export default authSlice.reducer;
