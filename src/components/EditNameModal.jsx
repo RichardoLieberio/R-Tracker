@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import {useState, useEffect, useRef} from 'react';
+import {useState, useEffect} from 'react';
 import {useSelector} from 'react-redux';
 import {useMediaQuery} from '@mui/material';
 
@@ -22,9 +22,6 @@ export default function EditNameModal(props) {
     const [labelClass, setLabelClass] = useState(newName ? css(theme).labelTopBlur : css(theme).labelMiddle);
     const [inputClass, setInputClass] = useState(nameError.name ? css(theme).defaultInput : css(theme).defaultInputError);
 
-    const labelRef = useRef(null);
-    const inputRef = useRef(null);
-
     const tabletBreakpoint = useMediaQuery(`(min-width: ${breakpoints.tablet})`);
 
     useEffect(function() {
@@ -42,13 +39,20 @@ export default function EditNameModal(props) {
     }
 
     function nameInputFocus() {
-        if (nameError.name) labelRef.current.className = css(theme).labelTopError
-        else labelRef.current.className = css(theme).labelTopFocus;
+        if (nameError.name) setLabelClass(css(theme).labelTopError)
+        else setLabelClass(css(theme).labelTopFocus);
     }
 
     function nameInputBlur() {
-        if (nameError.name) labelRef.current.className = newName ? css(theme).labelTopError : css(theme).labelMiddleError
-        else labelRef.current.className = newName ? css(theme).labelTopBlur : css(theme).labelMiddle;
+        if (nameError.name) setLabelClass(newName ? css(theme).labelTopError : css(theme).labelMiddleError)
+        else setLabelClass(newName ? css(theme).labelTopBlur : css(theme).labelMiddle);
+    }
+
+    function enterKeyDown(e) {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            saveName();
+        }
     }
 
     return (
@@ -56,7 +60,7 @@ export default function EditNameModal(props) {
             <Box className={`w-48 phone:w-72 tablet:w-96 desktop:min-w-96 desktop:w-1/3 h-auto p-8 absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 flex flex-col gap-6 rounded-lg tablet:rounded-xl ${getBackgroundColor(theme)} ${getTextColor(theme)}`}>
                 <header className="text-xl">Edit Name</header>
                 <main>
-                    <form className="relative" autoCapitalize="off" autoComplete="off" spellCheck="false">
+                    <form onKeyDown={enterKeyDown} className="relative" autoCapitalize="off" autoComplete="off" spellCheck="false">
                         {
                             nameError.name
                             &&  <div className="px-3 py-3 absolute left-0 top-0 rounded-tr-md rounded-br-md">
@@ -65,8 +69,8 @@ export default function EditNameModal(props) {
                                     </Tooltip>
                                 </div>
                         }
-                        <label htmlFor="name" ref={labelRef} className={labelClass}>New Name</label>
-                        <input type="text" id="name" value={newName} ref={inputRef} disabled={savingNewName} onChange={nameHandler} onFocus={nameInputFocus} onBlur={nameInputBlur} className={inputClass} />
+                        <label htmlFor="name" className={labelClass}>New Name</label>
+                        <input type="text" id="name" value={newName} disabled={savingNewName} autoFocus onChange={nameHandler} onFocus={nameInputFocus} onBlur={nameInputBlur} className={inputClass} />
                     </form>
                 </main>
                 <footer className="flex items-center justify-end gap-4">
