@@ -62,7 +62,7 @@ async function getInfo(req, res) {
 
 async function changeName(req, res) {
     await User.changeName(req.userId, req.data.name);
-    res.json({status: 200, msg: 'Name updated successfully.'});
+    res.json({status: 200, msg: 'Name updated successfully.', name: req.data.name});
 }
 
 async function changeEmail(req, res) {
