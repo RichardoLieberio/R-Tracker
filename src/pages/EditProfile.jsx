@@ -13,8 +13,9 @@ import themeConfig from '../../config/theme';
 import contr from '../controllers/editProfile';
 
 import {
-    getBgPrimaryColor, getBackgroundColor,
+    getBgPrimaryColor, getBackgroundColor, getBgErrorColor,
     getHoverBgHighlightColor, getHoverBgErrorColor,
+    getDisabledBgHighlightColor,
     getOppositeTextColor, getTextErrorColor,
     getHoverOppositeTextColor,
     getBorderNeutralColor, getBorderErrorColor
@@ -25,8 +26,11 @@ import {HelmetProvider} from 'react-helmet-async';
 import EditProfileHead from '../head/EditProfileHead';
 import {MoonLoader} from 'react-spinners';
 import {FaPencilAlt, FaEye, FaEyeSlash} from 'react-icons/fa';
+import {MdErrorOutline} from 'react-icons/md';
 import EditNameModal from '../components/EditNameModal';
 import EditEmailModal from '../components/EditEmailModal';
+import Tooltip from '../components/Tooltip';
+import ButtonSpinner from '../components/ButtonSpinner';
 
 export default function EditProfile() {
     const [csrfToken, setCSRFToken] = useState('');
@@ -45,15 +49,20 @@ export default function EditProfile() {
     const [otpError, setOtpError] = useState('');
     const [step, setStep] = useState('email');
 
-    const [pwd, setPwd] = useState('');
-    const [showPwd, setShowPwd] = useState(false);
+    const [oldPwd, setOldPwd] = useState('');
+    const [showOldPwd, setShowOldPwd] = useState(false);
+    const [newPwd, setNewPwd] = useState('');
+    const [showNewPwd, setShowNewPwd] = useState(false);
     const [confPwd, setConfPwd] = useState('');
     const [showConfPwd, setShowConfPwd] = useState(false);
+
     const [savingNewPwd, setSavingNewPwd] = useState(false);
     const [pwdError, setPwdError] = useState({});
 
-    const pwdLabelRef = useRef(null);
-    const pwdInputRef = useRef(null);
+    const oldPwdLabelRef = useRef(null);
+    const oldPwdInputRef = useRef(null);
+    const newPwdLabelRef = useRef(null);
+    const newPwdInputRef = useRef(null);
     const confPwdLabelRef = useRef(null);
     const confPwdInputRef = useRef(null);
     const hasToggled = useRef(null);
@@ -77,8 +86,24 @@ export default function EditProfile() {
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(function() {
-        hasToggled.current && pwdInputRef.current && pwdInputRef.current.focus();
-    }, [showPwd]);
+        contr.inputEffect(theme, oldPwdLabelRef, oldPwdInputRef, oldPwd, pwdError.oldPwd);
+    }, [theme, oldPwd, pwdError.oldPwd]);
+
+    useEffect(function() {
+        contr.inputEffect(theme, newPwdLabelRef, newPwdInputRef, newPwd, pwdError.newPwd);
+    }, [theme, newPwd, pwdError.newPwd]);
+
+    useEffect(function() {
+        contr.inputEffect(theme, confPwdLabelRef, confPwdInputRef, confPwd, pwdError.confPwd);
+    }, [theme, confPwd, pwdError.confPwd]);
+
+    useEffect(function() {
+        hasToggled.current && oldPwdInputRef.current && oldPwdInputRef.current.focus();
+    }, [showOldPwd]);
+
+    useEffect(function() {
+        hasToggled.current && newPwdInputRef.current && newPwdInputRef.current.focus();
+    }, [showNewPwd]);
 
     useEffect(function() {
         hasToggled.current && confPwdInputRef.current && confPwdInputRef.current.focus();
@@ -123,18 +148,32 @@ export default function EditProfile() {
         }
     }
 
-    function pwdHandler(e) {
-        setPwd(e.target.value);
+    function oldPwdHandler(e) {
+        setOldPwd(e.target.value);
     }
 
-    function pwdInputFocus() {
-        if (pwdError.pwd) pwdLabelRef.current.className = css(theme).labelTopError
-        else pwdLabelRef.current.className = css(theme).labelTopFocus;
+    function oldPwdInputFocus() {
+        if (pwdError.oldPwd) oldPwdLabelRef.current.className = css(theme).labelTopError
+        else oldPwdLabelRef.current.className = css(theme).labelTopFocus;
     }
 
-    function pwdInputBlur() {
-        if (pwdError.pwd) pwdLabelRef.current.className = pwd ? css(theme).labelTopError : css(theme).labelMiddleError
-        else pwdLabelRef.current.className = pwd ? css(theme).labelTopBlur : css(theme).labelMiddle;
+    function oldPwdInputBlur() {
+        if (pwdError.oldPwd) oldPwdLabelRef.current.className = oldPwd ? css(theme).labelTopError : css(theme).labelMiddleError
+        else oldPwdLabelRef.current.className = oldPwd ? css(theme).labelTopBlur : css(theme).labelMiddle;
+    }
+
+    function newPwdHandler(e) {
+        setNewPwd(e.target.value);
+    }
+
+    function newPwdInputFocus() {
+        if (pwdError.newPwd) newPwdLabelRef.current.className = css(theme).labelTopError
+        else newPwdLabelRef.current.className = css(theme).labelTopFocus;
+    }
+
+    function newPwdInputBlur() {
+        if (pwdError.newPwd) newPwdLabelRef.current.className = newPwd ? css(theme).labelTopError : css(theme).labelMiddleError
+        else newPwdLabelRef.current.className = newPwd ? css(theme).labelTopBlur : css(theme).labelMiddle;
     }
 
     function confPwdHandler(e) {
@@ -151,14 +190,28 @@ export default function EditProfile() {
         else confPwdLabelRef.current.className = confPwd ? css(theme).labelTopBlur : css(theme).labelMiddle;
     }
 
-    function togglePwd() {
-        setShowPwd(value => !value);
+    function toggleOldPwd() {
+        setShowOldPwd(value => !value);
+        hasToggled.current = true;
+    }
+
+    function toggleNewPwd() {
+        setShowNewPwd(value => !value);
         hasToggled.current = true;
     }
 
     function toggleConfPwd() {
         setShowConfPwd(value => !value);
         hasToggled.current = true;
+    }
+
+    async function changePwd() {
+        if (!savingNewPwd) {
+            setSavingNewPwd(true);
+            setPwdError({});
+            await contr.changePwd(oldPwd, setOldPwd, newPwd, setNewPwd, confPwd, setConfPwd, csrfToken, accessToken, setPwdError);
+            setSavingNewPwd(false);
+        }
     }
 
     const editNameProps = {newName, setNewName, nameModal, setNameModal, nameError, savingNewName, saveName};
@@ -206,19 +259,54 @@ export default function EditProfile() {
                         <p className="text-sm">Enter your new password and confirm it to update your login credentials.</p>
                     </header>
                     <main>
-                        <form action="" className="flex flex-col gap-4" autoCapitalize="off" autoComplete="off" spellCheck="false">
+                        <form onKeyDown={(e) => e.key === 'Enter' && changePwd()} className="flex flex-col gap-4" autoCapitalize="off" autoComplete="off" spellCheck="false">
                             <div className="relative">
-                                <label htmlFor="pwd" ref={pwdLabelRef} className={css(theme).labelMiddle}>New Password</label>
-                                <input type={showPwd ? "text" : "password"} id="pwd" value={pwd} ref={pwdInputRef} disabled={savingNewPwd} onChange={pwdHandler} onFocus={pwdInputFocus} onBlur={pwdInputBlur} className={css(theme).pwdInput} />
-                                <div onClick={togglePwd} className="px-3 py-3 absolute right-0 top-0 rounded-tr-md rounded-br-md cursor-pointer">
+                                {
+                                    pwdError.oldPwd
+                                    &&  <div className="px-3 py-3 absolute left-0 top-0 rounded-tr-md rounded-br-md">
+                                            <Tooltip title={pwdError.oldPwd} placement="top-start" posY={-8} className={`w-fit max-w-32 phone:max-w-40 tablet:max-w-48 desktop:max-w-56 px-4 py-1 text-sm ${getOppositeTextColor(theme)} ${getBgErrorColor(theme)} rounded-md`}>
+                                                <MdErrorOutline className={`text-lg ${getTextErrorColor(theme)}`} />
+                                            </Tooltip>
+                                        </div>
+                                }
+                                <label htmlFor="oldPwd" ref={oldPwdLabelRef} className={css(theme).labelMiddle}>Current Password</label>
+                                <input type={showOldPwd ? "text" : "password"} id="oldPwd" value={oldPwd} ref={oldPwdInputRef} disabled={savingNewPwd} onChange={oldPwdHandler} onFocus={oldPwdInputFocus} onBlur={oldPwdInputBlur} className={css(theme).pwdInput} />
+                                <div onClick={toggleOldPwd} className="px-3 py-3 absolute right-0 top-0 rounded-tr-md rounded-br-md cursor-pointer">
                                     {
-                                        showPwd
+                                        showOldPwd
                                         ? <FaEyeSlash />
                                         : <FaEye />
                                     }
                                 </div>
                             </div>
                             <div className="relative">
+                                {
+                                    pwdError.newPwd
+                                    &&  <div className="px-3 py-3 absolute left-0 top-0 rounded-tr-md rounded-br-md">
+                                            <Tooltip title={pwdError.newPwd} placement="top-start" posY={-8} className={`w-fit max-w-32 phone:max-w-40 tablet:max-w-48 desktop:max-w-56 px-4 py-1 text-sm ${getOppositeTextColor(theme)} ${getBgErrorColor(theme)} rounded-md`}>
+                                                <MdErrorOutline className={`text-lg ${getTextErrorColor(theme)}`} />
+                                            </Tooltip>
+                                        </div>
+                                }
+                                <label htmlFor="newPwd" ref={newPwdLabelRef} className={css(theme).labelMiddle}>New Password</label>
+                                <input type={showNewPwd ? "text" : "password"} id="newPwd" value={newPwd} ref={newPwdInputRef} disabled={savingNewPwd} onChange={newPwdHandler} onFocus={newPwdInputFocus} onBlur={newPwdInputBlur} className={css(theme).pwdInput} />
+                                <div onClick={toggleNewPwd} className="px-3 py-3 absolute right-0 top-0 rounded-tr-md rounded-br-md cursor-pointer">
+                                    {
+                                        showNewPwd
+                                        ? <FaEyeSlash />
+                                        : <FaEye />
+                                    }
+                                </div>
+                            </div>
+                            <div className="relative">
+                                {
+                                    pwdError.confPwd
+                                    &&  <div className="px-3 py-3 absolute left-0 top-0 rounded-tr-md rounded-br-md">
+                                            <Tooltip title={pwdError.confPwd} placement="top-start" posY={-8} className={`w-fit max-w-32 phone:max-w-40 tablet:max-w-48 desktop:max-w-56 px-4 py-1 text-sm ${getOppositeTextColor(theme)} ${getBgErrorColor(theme)} rounded-md`}>
+                                                <MdErrorOutline className={`text-lg ${getTextErrorColor(theme)}`} />
+                                            </Tooltip>
+                                        </div>
+                                }
                                 <label htmlFor="confPwd" ref={confPwdLabelRef} className={css(theme).labelMiddle}>Confirm New Password</label>
                                 <input type={showConfPwd ? "text" : "password"} id="confPwd" value={confPwd} ref={confPwdInputRef} disabled={savingNewPwd} onChange={confPwdHandler} onFocus={confPwdInputFocus} onBlur={confPwdInputBlur} className={css(theme).pwdInput} />
                                 <div onClick={toggleConfPwd} className="px-3 py-3 absolute right-0 top-0 rounded-tr-md rounded-br-md cursor-pointer">
@@ -232,7 +320,10 @@ export default function EditProfile() {
                         </form>
                     </main>
                     <footer className="text-end">
-                        <button className={`py-1 px-8 ${getOppositeTextColor(theme)} ${getBgPrimaryColor(theme)} rounded-md ${getHoverBgHighlightColor(theme)}`}>Change Password</button>
+                        <button onClick={changePwd} disabled={savingNewPwd} className={`py-1 px-8 relative ${getOppositeTextColor(theme)} ${getBgPrimaryColor(theme)} rounded-md ${getHoverBgHighlightColor(theme)} ${getDisabledBgHighlightColor(theme)} disabled:cursor-not-allowed`}>
+                            {savingNewPwd && <ButtonSpinner />}
+                            <span className={savingNewPwd ? 'opacity-0' : ''}>Change password</span>
+                        </button>
                     </footer>
                 </section>
                 <section className="flex flex-col gap-8">

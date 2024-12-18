@@ -18,6 +18,18 @@ function inputErrorHandler(theme, error, value, setLabelClass, setInputClass, pw
     }
 }
 
+function inputEffect(theme, labelRef, inputRef, input, error) {
+    inputRef.current.className = error ? css(theme).pwdInputError : css(theme).pwdInput;
+
+    labelRef.current.className = error
+    ? inputRef.current === document.activeElement
+        ? css(theme).labelTopError
+        : input ? css(theme).labelTopError : css(theme).labelMiddleError
+    : inputRef.current === document.activeElement
+        ? css(theme).labelTopFocus
+        : input ? css(theme).labelTopBlur : css(theme).labelMiddle;
+}
+
 async function changeName(name, csrfToken, accessToken, setNameError, setNewName, originalName, setNameModal) {
     if (name === originalName) return setNameError({});
 
@@ -163,4 +175,41 @@ async function changeEmail(email, setNewEmail, setEmailError, otp, setOtp, setOt
     }
 }
 
-export default {inputErrorHandler, changeName, requestChangeEmail, resendOtp, changeEmail};
+async function changePwd(oldPwd, setOldPwd, newPwd, setNewPwd, confPwd, setConfPwd, csrfToken, accessToken, setPwdError) {
+    const data = {oldPwd, newPwd, confPwd};
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`,
+            'CSRF-Token': csrfToken
+        },
+        authenticated: {
+            codes: [401, 404],
+            route: '/login'
+        }
+    };
+
+    const response = await axios.patch('/api/user/change-password', data, config);
+    const status = response?.data?.status;
+
+    switch (status) {
+        case 200:
+            toast.success(response.data.msg);
+            setOldPwd('');
+            setNewPwd('');
+            setConfPwd('');
+            break;
+        case 400:
+            toast.error(response.data.msg);
+            break;
+        case 403:
+            setToast('error', response.data.msg);
+            location.reload();
+            break;
+        case 422:
+            setPwdError(response.data.msg);
+            break;
+    }
+}
+
+export default {inputErrorHandler, inputEffect, changeName, requestChangeEmail, resendOtp, changeEmail, changePwd};
