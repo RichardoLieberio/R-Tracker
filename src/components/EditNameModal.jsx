@@ -7,7 +7,14 @@ import breakpoints from '../../config/breakpoints';
 
 import contr from '../controllers/editProfile';
 
-import {getBackgroundColor, getBgPrimaryColor, getBgErrorColor, getHoverBgHighlightColor, getDisabledBgHighlightColor, getTextColor, getTextPrimaryColor, getTextErrorColor, getOppositeTextColor, getHoverTextHighlightColor, getHoverBorderHighlightColor} from '../css/color';
+import {
+    getBackgroundColor, getBgPrimaryColor, getBgErrorColor,
+    getHoverBgHighlightColor,
+    getDisabledBgHighlightColor,
+    getTextColor, getTextPrimaryColor, getTextErrorColor, getOppositeTextColor,
+    getHoverTextHighlightColor,
+    getHoverBorderHighlightColor
+} from '../css/color';
 import css from '../css/editProfile';
 
 import {Modal, Box} from '@mui/material';
@@ -15,20 +22,14 @@ import Tooltip from './Tooltip';
 import {MdErrorOutline} from 'react-icons/md';
 
 export default function EditNameModal(props) {
-    const {newName, setNewName, nameModal, setNameModal, savingNewName, nameError, saveName} = props;
+    const {newName, setNewName, nameModal, setNameModal, nameError, savingNewName, saveName} = props;
 
     const theme = useSelector((state) => state.web.theme);
 
-    const [labelClass, setLabelClass] = useState(newName ? css(theme).labelTopBlur : css(theme).labelMiddle);
-    const [inputClass, setInputClass] = useState(nameError.name ? css(theme).defaultInput : css(theme).defaultInputError);
+    const [labelClass, setLabelClass] = useState(css(theme).labelMiddle);
+    const [inputClass, setInputClass] = useState(css(theme).defaultInput);
 
     const phoneBreakpoint = useMediaQuery(`(min-width: ${breakpoints.phone})`);
-
-    useEffect(function() {
-        nameError.name
-        ? setLabelClass(newName ? css(theme).labelTopError : css(theme).labelMiddleError)
-        : setLabelClass(newName ? css(theme).labelTopBlur : css(theme).labelMiddle);
-    }, [nameModal]); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(function() {
         contr.inputErrorHandler(theme, nameError.name, newName, setLabelClass, setInputClass);
@@ -49,14 +50,14 @@ export default function EditNameModal(props) {
     }
 
     function enterKeyDown(e) {
-        if (e.key === "Enter") {
+        if (e.key === 'Enter') {
             e.preventDefault();
             saveName();
         }
     }
 
     return (
-        <Modal open={nameModal} onClose={() => setNameModal(false)} aria-labelledby="Theme Modal" aria-describedby="Choose your theme">
+        <Modal open={nameModal} onClose={() => setNameModal(false)} aria-labelledby="Edit Name Modal" aria-describedby="Edit your name">
             <Box className={`w-1/3 min-w-56 phone:min-w-72 tablet:min-w-80 desktop:min-w-96 h-auto p-7 phone:p-8 absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 flex flex-col gap-8 rounded-lg tablet:rounded-xl ${getBackgroundColor(theme)} ${getTextColor(theme)}`}>
                 <header className="flex flex-col gap-1">
                     <h2 className="text-xl font-semibold">Edit Name</h2>
@@ -90,7 +91,7 @@ EditNameModal.propTypes = {
     setNewName: PropTypes.func,
     nameModal: PropTypes.bool,
     setNameModal: PropTypes.func,
-    savingNewName: PropTypes.bool,
     nameError: PropTypes.object,
+    savingNewName: PropTypes.bool,
     saveName: PropTypes.func
 };
