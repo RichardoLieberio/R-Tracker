@@ -50,8 +50,9 @@ userTokenSchema.statics.clearToken = async function(user_id, session=null) {
     await this.findOneAndUpdate({user_id}, {access_token: '', refresh_token: ''}, options);
 }
 
-userTokenSchema.statics.deleteAccount = async function(user_id, session) {
-    await this.findOneAndDelete({user_id}, {session});
+userTokenSchema.statics.deleteAccount = async function(user_id, session=null) {
+    const options = session ? {session} : {};
+    await this.findOneAndDelete({user_id}, options);
 }
 
 const UserToken = mongoose.model('UserToken', userTokenSchema);
