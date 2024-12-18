@@ -18,7 +18,7 @@ export default function ThemeModal(props) {
     return (
         <Modal open={themeModal} onClose={() => setThemeModal(false)} aria-labelledby="Theme Modal" aria-describedby="Choose your theme">
             <Box className={`w-48 phone:w-72 h-auto p-8 absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 flex flex-col gap-6 rounded-lg tablet:rounded-xl ${getBackgroundColor(theme)} ${getTextColor(theme)}`}>
-                <header className="text-xl">Theme</header>
+                <header className="text-xl font-semibold">Theme</header>
                 <main className="flex flex-wrap gap-4">
                     {
                         Object.keys(themes).map(eachTheme =>
