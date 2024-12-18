@@ -81,7 +81,7 @@ userSchema.statics.getInfo = async function(id) {
 }
 
 userSchema.statics.changeName = async function(_id, name) {
-    await this.findOneAndUpdate({_id}, {name, updated_at: Date.now()});
+    return !!await this.findOneAndUpdate({_id}, {name, updated_at: Date.now()});
 }
 
 userSchema.statics.changeEmail = async function(_id, email, session) {
