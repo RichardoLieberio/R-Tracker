@@ -107,7 +107,7 @@ async function changeEmail(req, res, next) {
 }
 
 function changePwd(req, res, next) {
-    const {oldPwd, newPwd} = req.body;
+    const {oldPwd, newPwd, confPwd} = req.body;
     const errorMsg = {};
     req.data = {};
 
@@ -120,6 +120,9 @@ function changePwd(req, res, next) {
     newPwdValidation.error
     ? errorMsg['newPwd'] = newPwdValidation.error
     : req.data['newPwd'] = newPwdValidation.pwd;
+
+    const confPwdValidation = validateConfPwd(newPwd, confPwd);
+    if (confPwdValidation.error) errorMsg['confPwd'] = confPwdValidation.error;
 
     if (Object.entries(errorMsg).length) return res.json({status: 422, msg: errorMsg});
     next();
