@@ -8,8 +8,10 @@ import {setAccessToken, setUserInfo, setAuthentication} from '../redux/authSlice
 
 import css from '../css/loginForm';
 
-function inputEffect(labelRef, inputRef, input, error) {
-    inputRef.current.className = error ? css.defaultInputError : css.defaultInput;
+function inputEffect(labelRef, inputRef, input, error, pwd=false) {
+    inputRef.current.className = pwd
+    ? error ? css.pwdInputError : css.pwdInput
+    : error ? css.defaultInputError : css.defaultInput;
 
     labelRef.current.className = error
     ? inputRef.current === document.activeElement

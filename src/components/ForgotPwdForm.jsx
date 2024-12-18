@@ -52,11 +52,11 @@ export default function ForgotPwdForm(props) {
     }, []);
 
     useEffect(function() {
-        contr.inputEffect(pwdLabelRef, pwdInputRef, pwd, formError.pwd);
+        contr.inputEffect(pwdLabelRef, pwdInputRef, pwd, formError.pwd, true);
     }, [pwd, formError.pwd]);
 
     useEffect(function() {
-        contr.inputEffect(confPwdLabelRef, confPwdInputRef, confPwd, formError.confPwd);
+        contr.inputEffect(confPwdLabelRef, confPwdInputRef, confPwd, formError.confPwd, true);
     }, [confPwd, formError.confPwd]);
 
     useEffect(function() {

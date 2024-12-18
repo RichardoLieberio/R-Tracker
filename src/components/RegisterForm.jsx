@@ -62,11 +62,11 @@ export default function RegisterForm(props) {
     }, [email, formError.email, step]);
 
     useEffect(function() {
-        contr.inputEffect(pwdLabelRef, pwdInputRef, pwd, formError.pwd);
+        contr.inputEffect(pwdLabelRef, pwdInputRef, pwd, formError.pwd, true);
     }, [pwd, formError.pwd, step]);
 
     useEffect(function() {
-        contr.inputEffect(confPwdLabelRef, confPwdInputRef, confPwd, formError.confPwd);
+        contr.inputEffect(confPwdLabelRef, confPwdInputRef, confPwd, formError.confPwd, true);
     }, [confPwd, formError.confPwd, step]);
 
     useEffect(function() {

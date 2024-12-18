@@ -48,7 +48,7 @@ export default function LoginForm() {
     }, [email, formError.email]);
 
     useEffect(function() {
-        contr.inputEffect(pwdLabelRef, pwdInputRef, pwd, formError.pwd);
+        contr.inputEffect(pwdLabelRef, pwdInputRef, pwd, formError.pwd, true);
     }, [pwd, formError.pwd]);
 
     useEffect(function() {
