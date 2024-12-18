@@ -56,7 +56,7 @@ async function resetPwd(req, res) {
 }
 
 async function getInfo(req, res) {
-    const userInfo = (await User.getInfo(req.userId)).toObject();
+    const userInfo = (await User.getInfo(req.userId))?.toObject();
     if (!userInfo) return notFoundHandler(req, res, 'Failed to fetch information. Account not found.');
 
     delete userInfo._id;
