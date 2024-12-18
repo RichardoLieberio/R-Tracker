@@ -21,7 +21,7 @@ async function getInfo(setLoading, useAuthenticated, accessToken='') {
     };
 
     if (useAuthenticated) config.authenticated = {
-        code: 401,
+        codes: [401, 404],
         route: '/login'
     };
 
