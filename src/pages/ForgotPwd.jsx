@@ -34,7 +34,7 @@ export default function ForgotPwd() {
                     case 'email':
                         const forgotPwdEmailState = {
                             email, setEmail,
-                            setStep
+                            step, setStep
                         };
                         return <ForgotPwdEmail {...forgotPwdEmailState} />;
                     case 'form':

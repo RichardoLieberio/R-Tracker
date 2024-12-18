@@ -41,19 +41,35 @@ export default function LoginForm() {
     useEffect(function() {
         getToast();
         getCSRFToken(setCSRFToken);
+    }, []);
 
-        emailInputBlur();
-        pwdInputBlur();
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    useEffect(function() {
+        emailInputRef.current.className = formError.email ? css.defaultInputError : css.defaultInput;
+
+        emailLabelRef.current.className = formError.email
+        ? emailInputRef.current === document.activeElement
+            ? css.labelTopError
+            : email ? css.labelTopError : css.labelMiddleError
+        : emailInputRef.current === document.activeElement
+            ? css.labelTopFocus
+            : email ? css.labelTopBlur : css.labelMiddle;
+    }, [email, formError.email]);
+
+    useEffect(function() {
+        pwdInputRef.current.className = formError.pwd ? css.defaultInputError : css.defaultInput;
+
+        pwdLabelRef.current.className = formError.pwd
+        ? pwdInputRef.current === document.activeElement
+            ? css.labelTopError
+            : pwd ? css.labelTopError : css.labelMiddleError
+        : pwdInputRef.current === document.activeElement
+            ? css.labelTopFocus
+            : pwd ? css.labelTopBlur : css.labelMiddle;
+    }, [pwd, formError.pwd]);
 
     useEffect(function() {
         hasToggled.current && pwdInputRef.current && pwdInputRef.current.focus();
     }, [showPwd]);
-
-    useEffect(function() {
-        contr.inputErrorHandler(formError.email, email, emailLabelRef, emailInputRef);
-        contr.inputErrorHandler(formError.pwd, pwd, pwdLabelRef, pwdInputRef, true);
-    }, [formError]); // eslint-disable-line react-hooks/exhaustive-deps
 
     function emailHandler(e) {
         setEmail(e.target.value);
@@ -94,6 +110,9 @@ export default function LoginForm() {
 
     async function login() {
         if (!isSubmitting) {
+            emailInputBlur();
+            pwdInputBlur();
+
             setIsSubmitting(true);
             setFormError({});
             await contr.login(email, pwd, rememberMe, csrfToken, accessToken, setFormError, navigate);

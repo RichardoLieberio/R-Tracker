@@ -49,11 +49,43 @@ export default function ForgotPwdForm(props) {
     useEffect(function() {
         getToast();
         getCSRFToken(setCSRFToken);
+    }, []);
 
-        pwdInputBlur();
-        confPwdInputBlur();
-        otpInputBlur();
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    useEffect(function() {
+        pwdInputRef.current.className = formError.pwd ? css.defaultInputError : css.defaultInput;
+
+        pwdLabelRef.current.className = formError.pwd
+        ? pwdInputRef.current === document.activeElement
+            ? css.labelTopError
+            : pwd ? css.labelTopError : css.labelMiddleError
+        : pwdInputRef.current === document.activeElement
+            ? css.labelTopFocus
+            : pwd ? css.labelTopBlur : css.labelMiddle;
+    }, [pwd, formError.pwd]);
+
+    useEffect(function() {
+        confPwdInputRef.current.className = formError.confPwd ? css.defaultInputError : css.defaultInput;
+
+        confPwdLabelRef.current.className = formError.confPwd
+        ? confPwdInputRef.current === document.activeElement
+            ? css.labelTopError
+            : confPwd ? css.labelTopError : css.labelMiddleError
+        : confPwdInputRef.current === document.activeElement
+            ? css.labelTopFocus
+            : confPwd ? css.labelTopBlur : css.labelMiddle;
+    }, [confPwd, formError.confPwd]);
+
+    useEffect(function() {
+        otpInputRef.current.className = formError.otp ? css.defaultInputError : css.defaultInput;
+
+        otpLabelRef.current.className = formError.otp
+        ? otpInputRef.current === document.activeElement
+            ? css.labelTopError
+            : otp ? css.labelTopError : css.labelMiddleError
+        : otpInputRef.current === document.activeElement
+            ? css.labelTopFocus
+            : otp ? css.labelTopBlur : css.labelMiddle;
+    }, [otp, formError.otp]);
 
     useEffect(function() {
         hasToggled.current && pwdInputRef.current && pwdInputRef.current.focus();
@@ -62,12 +94,6 @@ export default function ForgotPwdForm(props) {
     useEffect(function() {
         hasToggled.current && confPwdInputRef.current && confPwdInputRef.current.focus();
     }, [showConfPwd]);
-
-    useEffect(function() {
-        contr.inputErrorHandler(formError.pwd, pwd, pwdLabelRef, pwdInputRef, true);
-        contr.inputErrorHandler(formError.confPwd, confPwd, confPwdLabelRef, confPwdInputRef, true);
-        contr.inputErrorHandler(formError.otp, otp, otpLabelRef, otpInputRef);
-    }, [formError]); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(function() {
         if (second > 0) {
@@ -159,6 +185,10 @@ export default function ForgotPwdForm(props) {
         e.preventDefault();
 
         if (!isSubmitting) {
+            pwdInputBlur();
+            confPwdInputBlur();
+            otpInputBlur();
+
             setIsSubmitting(true);
             setFormError({});
             await contr.resetPwd(email, otp, pwd, confPwd, csrfToken, accessToken, setFormError, navigate);

@@ -3,18 +3,6 @@ import {toast} from 'react-toastify';
 import axios from '../services/axios';
 import {setToast} from '../services/toastService';
 
-import css from '../css/forgotPwdForm';
-
-function inputErrorHandler(error, value, label, input, pwd=false) {
-    if (error) {
-        label.current.className = value ? css.labelTopError : css.labelMiddleError;
-        input.current.className = pwd ? css.pwdInputError : css.defaultInputError;
-    } else {
-        label.current.className = value ? css.labelTopBlur : css.labelMiddle;
-        input.current.className = pwd ? css.pwdInput : css.defaultInput;
-    }
-}
-
 async function resendOtp(email, csrfToken, accessToken, setFormError) {
     const data = {email};
     const config = {
@@ -83,4 +71,4 @@ async function resetPwd(email, otp, pwd, confPwd, csrfToken, accessToken, setFor
     }
 }
 
-export default {inputErrorHandler, resendOtp, resetPwd};
+export default {resendOtp, resetPwd};

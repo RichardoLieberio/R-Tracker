@@ -15,7 +15,7 @@ import ButtonSpinner from './ButtonSpinner';
 import {MdErrorOutline} from 'react-icons/md';
 
 export default function ForgotPwdEmail(props) {
-    const {email, setEmail, setStep} = props;
+    const {email, setEmail, step, setStep} = props;
     const [csrfToken, setCSRFToken] = useState('');
     const [formError, setFormError] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -28,12 +28,19 @@ export default function ForgotPwdEmail(props) {
     useEffect(function() {
         getToast();
         getCSRFToken(setCSRFToken);
-        emailInputBlur();
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    }, []);
 
     useEffect(function() {
-        contr.inputErrorHandler(formError.email, email, emailLabelRef, emailInputRef);
-    }, [formError]); // eslint-disable-line react-hooks/exhaustive-deps
+        emailInputRef.current.className = formError.email ? css.defaultInputError : css.defaultInput;
+
+        emailLabelRef.current.className = formError.email
+        ? emailInputRef.current === document.activeElement
+            ? css.labelTopError
+            : email ? css.labelTopError : css.labelMiddleError
+        : emailInputRef.current === document.activeElement
+            ? css.labelTopFocus
+            : email ? css.labelTopBlur : css.labelMiddle;
+    }, [email, formError.email, step]);
 
     function emailHandler(e) {
         setEmail(e.target.value);
@@ -53,6 +60,8 @@ export default function ForgotPwdEmail(props) {
         e.preventDefault();
 
         if (!isSubmitting) {
+            emailInputBlur();
+
             setIsSubmitting(true);
             setFormError({});
             await contr.requestResetPwd(email, csrfToken, accessToken, setFormError, setStep);
@@ -93,5 +102,6 @@ export default function ForgotPwdEmail(props) {
 ForgotPwdEmail.propTypes = {
     email: PropTypes.string,
     setEmail: PropTypes.func,
+    step: PropTypes.string,
     setStep: PropTypes.func
 };
