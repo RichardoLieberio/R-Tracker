@@ -21,6 +21,6 @@ routes.get('/info', errorHandler(authRequired, true), errorHandler(controller.ge
 routes.patch('/change-name', errorHandler(authRequired, true), csrfHandler(csrfProtection), validation.changeName, limiter(5), errorHandler(controller.changeName));
 routes.patch('/change-email', errorHandler(authRequired, true), csrfHandler(csrfProtection), errorHandler(validation.changeEmail, true), limiter(3), transactionHandler(controller.changeEmail));
 routes.patch('/change-password', errorHandler(authRequired, true), csrfHandler(csrfProtection), validation.changePwd, limiter(3), errorHandler(controller.changePwd));
-routes.delete('/:id', errorHandler(authRequired, true), csrfHandler(csrfProtection), transactionHandler(controller.deleteAccount));
+routes.delete('/', errorHandler(authRequired, true), csrfHandler(csrfProtection), transactionHandler(controller.deleteAccount));
 
 module.exports = routes;
