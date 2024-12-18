@@ -3,7 +3,7 @@ import axios from 'axios';
 import {setToast} from '../services/toastService';
 
 import store from '../redux/store';
-import {setAccessToken, clearAccessToken, clearUserInfo, setAuthentication} from '../redux/authSlice';
+import {setAccessToken, setAuthentication, logout} from '../redux/authSlice';
 
 import {toast} from 'react-toastify';
 
@@ -49,9 +49,7 @@ function responseSuccess(response) {
         request.headers['Authorization'] = `Bearer ${accessToken}`;
         return axiosInstance(request);
     } else if (request.authenticated?.codes.includes(status)) {
-        store.dispatch(clearAccessToken());
-        store.dispatch(clearUserInfo());
-        store.dispatch(setAuthentication(false));
+        store.dispatch(logout());
         setToast('error', response.data.msg);
 
         history.replaceState('', null, request.authenticated.route);
