@@ -123,10 +123,12 @@ userSchema.methods.checkCredentials = async function(data) {
 userSchema.methods.changePwd = async function(_id, pwds) {
     const {oldPwd, newPwd} = pwds;
     const user = await this.constructor.findOne({_id});
+
+    if (!user) return null;
     if (!await bcrypt.compare(oldPwd, user.pwd)) return false;
 
     const pwd = await bcrypt.hash(newPwd, +process.env.SALT_ROUNDS);
-    await this.findOneAndUpdate({_id}, {pwd, updated_at: Date.now()});
+    await this.constructor.findOneAndUpdate({_id}, {pwd, updated_at: Date.now()});
 
     return true;
 }
