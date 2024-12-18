@@ -75,8 +75,11 @@ async function changeEmail(req, res) {
     const request = await ChangeEmailToken.checkRequest(req.userId, email, otp, req.mongooseSession);
     if (!request) throw new TransactionError({status: 400, msg: 'Invalid email or OTP.'});
 
+    const used = await User.isEmailRegistered(email);
+    if (used) return res.json({status: 409, msg: 'Failed to change email. Email is registered.'});
+
     const changed = await User.changeEmail(req.userId, email, req.mongooseSession);
-    if (!changed) return res.json({status: 404, msg: 'Failed to change email. Account not found.'});
+    if (!changed) return notFoundHandler(req, res, 'Failed to change email. Account not found.');
 
     sendMail('new-email-verified', {to: email});
 
