@@ -130,8 +130,9 @@ export default function EditEmailModal(props) {
                         </main>
                         <footer className="flex items-center justify-end gap-4">
                             <button onClick={() => setEmailModal(false)} className={`py-1 ${phoneBreakpoint ? 'px-8' : 'px-4'} ${theme !== 'dark' ? getTextPrimaryColor(theme) : ''} rounded-md ${getHoverTextHighlightColor(theme)} ${getHoverBorderHighlightColor(theme)}`}>Close</button>
-                            <button onClick={requestChangeEmail} disabled={savingNewEmail} className={`py-1 ${phoneBreakpoint ? 'px-8' : 'px-4'} ${getOppositeTextColor(theme)} ${getBgPrimaryColor(theme)} rounded-md ${getHoverBgHighlightColor(theme)} ${getDisabledBgHighlightColor(theme)} disabled:cursor-not-allowed`}>
-                                {savingNewEmail ? <ButtonSpinner /> : 'Send'}
+                            <button onClick={requestChangeEmail} disabled={savingNewEmail} className={`py-1 ${phoneBreakpoint ? 'px-8' : 'px-4'} relative ${getOppositeTextColor(theme)} ${getBgPrimaryColor(theme)} rounded-md ${getHoverBgHighlightColor(theme)} ${getDisabledBgHighlightColor(theme)} disabled:cursor-not-allowed`}>
+                                {savingNewEmail && <ButtonSpinner />}
+                                <span className={savingNewEmail ? 'opacity-0' : ''}>Send</span>
                             </button>
                         </footer>
                     </>
@@ -168,8 +169,9 @@ export default function EditEmailModal(props) {
                         </main>
                         <footer className="flex items-center justify-end gap-4">
                             <button onClick={() => setStep('email')} className={`py-1 ${phoneBreakpoint ? 'px-8' : 'px-4'} ${theme !== 'dark' ? getTextPrimaryColor(theme) : ''} rounded-md ${getHoverTextHighlightColor(theme)} ${getHoverBorderHighlightColor(theme)}`}>Back</button>
-                            <button onClick={changeEmail} disabled={savingNewEmail} className={`py-1 ${phoneBreakpoint ? 'px-8' : 'px-4'} ${getOppositeTextColor(theme)} ${getBgPrimaryColor(theme)} rounded-md ${getHoverBgHighlightColor(theme)} ${getDisabledBgHighlightColor(theme)} disabled:cursor-not-allowed`}>
-                                {savingNewEmail ? <ButtonSpinner /> : 'Save'}
+                            <button onClick={changeEmail} disabled={savingNewEmail} className={`py-1 ${phoneBreakpoint ? 'px-8' : 'px-4'} relative ${getOppositeTextColor(theme)} ${getBgPrimaryColor(theme)} rounded-md ${getHoverBgHighlightColor(theme)} ${getDisabledBgHighlightColor(theme)} disabled:cursor-not-allowed`}>
+                                {savingNewEmail && <ButtonSpinner />}
+                                <span className={savingNewEmail ? 'opacity-0' : ''}>Save</span>
                             </button>
                         </footer>
                     </>

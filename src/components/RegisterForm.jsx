@@ -227,8 +227,9 @@ export default function RegisterForm(props) {
                                 }
                             </div>
                         </div>
-                        <button onClick={register} disabled={isSubmitting} className="py-2 text-purple-oppositeText bg-purple-primary rounded-md hover:bg-purple-highlight disabled:bg-purple-highlight disabled:cursor-not-allowed">
-                            {isSubmitting ? <ButtonSpinner noTheme /> : 'Register'}
+                        <button onClick={register} disabled={isSubmitting} className="py-2 relative text-purple-oppositeText bg-purple-primary rounded-md hover:bg-purple-highlight disabled:bg-purple-highlight disabled:cursor-not-allowed">
+                            {isSubmitting && <ButtonSpinner />}
+                            <span className={isSubmitting ? 'opacity-0' : ''}>Register</span>
                         </button>
                     </section>
                     <small className="mx-auto text-sm text-purple-text">

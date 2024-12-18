@@ -80,8 +80,9 @@ export default function ForgotPwdEmail(props) {
                     <label htmlFor="email" ref={emailLabelRef}>Email</label>
                     <input type="email" id="email" value={email} ref={emailInputRef} disabled={isSubmitting} onChange={emailHandler} onFocus={emailInputFocus} onBlur={emailInputBlur} className={css.defaultInput} />
                 </div>
-                <button onClick={sendRequest} disabled={isSubmitting} className="w-full mt-4 py-2 text-purple-oppositeText bg-purple-primary rounded-md hover:bg-purple-highlight disabled:bg-purple-highlight disabled:cursor-not-allowed">
-                    {isSubmitting ? <ButtonSpinner noTheme /> : 'Submit'}
+                <button onClick={sendRequest} disabled={isSubmitting} className="w-full mt-4 py-2 relative text-purple-oppositeText bg-purple-primary rounded-md hover:bg-purple-highlight disabled:bg-purple-highlight disabled:cursor-not-allowed">
+                    {isSubmitting && <ButtonSpinner />}
+                    <span className={isSubmitting ? 'opacity-0' : ''}>Submit</span>
                 </button>
                 <Link to="/login" rel="nofollow" className="mx-auto text-sm text-purple-link hover:underline">Back to login</Link>
             </form>

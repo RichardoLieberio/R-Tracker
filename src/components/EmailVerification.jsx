@@ -110,8 +110,9 @@ export default function VerifyEmail(props) {
                     <span className="text-sm text-purple-text">
                         Didn&apos;t receive your OTP? <span onClick={resendOtp} ref={resendRef} className="text-purple-link">Resend{second ? ` (${second})` : ''}</span>
                     </span>
-                    <button onClick={verify} disabled={isSubmitting} className="w-full mt-4 py-2 text-purple-oppositeText bg-purple-primary rounded-md hover:bg-purple-highlight disabled:bg-purple-highlight disabled:cursor-not-allowed">
-                        {isSubmitting ? <ButtonSpinner noTheme /> : 'Submit'}
+                    <button onClick={verify} disabled={isSubmitting} className="w-full mt-4 py-2 relative text-purple-oppositeText bg-purple-primary rounded-md hover:bg-purple-highlight disabled:bg-purple-highlight disabled:cursor-not-allowed">
+                        {isSubmitting && <ButtonSpinner />}
+                        <span className={isSubmitting ? 'opacity-0' : ''}>Submit</span>
                     </button>
                 </form>
             </section>

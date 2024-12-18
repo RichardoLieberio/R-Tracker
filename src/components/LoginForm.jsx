@@ -156,8 +156,9 @@ export default function LoginForm() {
                                 && <Link to="/forgot-password" rel="nofollow" className="text-sm text-purple-link cursor-pointer hover:underline">Forgot password?</Link>
                             }
                         </div>
-                        <button onClick={login} disabled={isSubmitting} className="py-2 text-purple-oppositeText bg-purple-primary rounded-md hover:bg-purple-highlight disabled:bg-purple-highlight disabled:cursor-not-allowed">
-                            {isSubmitting ? <ButtonSpinner noTheme /> : 'Login'}
+                        <button onClick={login} disabled={isSubmitting} className="py-2 relative text-purple-oppositeText bg-purple-primary rounded-md hover:bg-purple-highlight disabled:bg-purple-highlight disabled:cursor-not-allowed">
+                            {isSubmitting && <ButtonSpinner />}
+                            <span className={isSubmitting ? 'opacity-0' : ''}>Login</span>
                         </button>
                         {
                             !tabletBreakpoint
