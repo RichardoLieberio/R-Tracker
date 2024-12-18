@@ -98,7 +98,7 @@ export default function EditEmailModal(props) {
     }
 
     function enterKeyDown(e) {
-        if (e.key === "Enter") {
+        if (e.key === 'Enter') {
             e.preventDefault();
             step === 'email' ? requestChangeEmail() : changeEmail();
         }
