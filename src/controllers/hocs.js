@@ -17,13 +17,14 @@ async function getInfo(setLoading, useAuthenticated, accessToken='') {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${accessToken}`
+        },
+        authenticated: {
+            codes: [404],
+            route: '/login'
         }
     };
 
-    if (useAuthenticated) config.authenticated = {
-        codes: [401, 404],
-        route: '/login'
-    };
+    useAuthenticated && config.authenticated.codes.push(401);
 
     const response = await axios.get('/api/user/info', config);
     const status = response?.data?.status;
