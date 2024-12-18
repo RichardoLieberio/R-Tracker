@@ -48,7 +48,7 @@ function responseSuccess(response) {
 
         request.headers['Authorization'] = `Bearer ${accessToken}`;
         return axiosInstance(request);
-    } else if (status === request.authenticated?.code) {
+    } else if (request.authenticated?.codes.includes(status)) {
         store.dispatch(clearAccessToken());
         store.dispatch(clearUserInfo());
         store.dispatch(setAuthentication(false));
