@@ -85,7 +85,9 @@ async function changeEmail(req, res) {
 
 async function changePwd(req, res) {
     const changed = await (new User()).changePwd(req.userId, req.data);
-    if (!changed) return res.json({status: 400, msg: 'Password is incorrect.'});
+
+    if (changed === null) return notFoundHandler(req, res, 'Failed to change password. Account not found.');
+    if (!changed) return res.json({status: 400, msg: 'Current password is incorrect.'});
 
     res.json({status: 200, msg: 'Password updated successfully.'});
 }
