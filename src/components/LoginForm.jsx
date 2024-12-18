@@ -47,11 +47,8 @@ export default function LoginForm() {
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(function() {
-        if (hasToggled.current && pwdInputRef.current) {
-            pwdInputRef.current.focus();
-            pwdInputRef.current.setSelectionRange(pwd.length, pwd.length);
-        }
-    }, [hasToggled, showPwd, pwd]);
+        hasToggled.current && pwdInputRef.current && pwdInputRef.current.focus();
+    }, [showPwd]);
 
     useEffect(function() {
         contr.inputErrorHandler(formError.email, email, emailLabelRef, emailInputRef);

@@ -77,18 +77,12 @@ export default function EditProfile() {
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(function() {
-        if (hasToggled.current && pwdInputRef.current) {
-            pwdInputRef.current.focus();
-            pwdInputRef.current.setSelectionRange(pwd.length, pwd.length);
-        }
-    }, [hasToggled, showPwd, pwd]);
+        hasToggled.current && pwdInputRef.current && pwdInputRef.current.focus();
+    }, [showPwd]);
 
     useEffect(function() {
-        if (hasToggled.current && confPwdInputRef.current) {
-            confPwdInputRef.current.focus();
-            confPwdInputRef.current.setSelectionRange(confPwd.length, confPwd.length);
-        }
-    }, [hasToggled, showConfPwd, confPwd]);
+        hasToggled.current && confPwdInputRef.current && confPwdInputRef.current.focus();
+    }, [showConfPwd]);
 
     function openNameModal() {
         !savingNewName && setNameModal(true);
