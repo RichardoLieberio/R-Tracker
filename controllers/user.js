@@ -93,9 +93,9 @@ async function changePwd(req, res) {
 }
 
 async function deleteAccount(req, res) {
-    if (!mongooseIdValidation(req.params.id) || req.userId !== req.params.id) return res.json({status: 404, msg: 'Failed to delete account. Account not found.'});
-
     const {email, name} = await User.deleteAccount(req.userId, req.mongooseSession);
+    if (!email) return notFoundHandler(req, res, 'Failed to delete account. Account not found.');
+
     await UserToken.deleteAccount(req.userId, req.mongooseSession);
     sendMail('account-deleted', {to: email, name});
 
