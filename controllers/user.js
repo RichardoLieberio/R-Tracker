@@ -4,6 +4,7 @@ const generateOtp = require('../services/generateOtp');
 const mongooseIdValidation = require('../services/mongooseIdValidation');
 const generateRefreshToken = require('../services/generateRefreshToken');
 const generateAccessToken = require('../services/generateAccessToken');
+const notFoundHandler = require('../services/notFoundHandler');
 
 const User = require('../models/User');
 const UserToken = require('../models/UserToken');
@@ -56,6 +57,8 @@ async function resetPwd(req, res) {
 
 async function getInfo(req, res) {
     const userInfo = (await User.getInfo(req.userId)).toObject();
+    if (!userInfo) return notFoundHandler(req, res, 'Failed to fetch information. Account not found.');
+
     delete userInfo._id;
     res.json({status: 200, msg: 'User information retrieved successfully.', userInfo});
 }
