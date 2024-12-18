@@ -6,6 +6,20 @@ import {setToast} from '../services/toastService';
 import store from '../redux/store';
 import {setAccessToken, setUserInfo, setAuthentication} from '../redux/authSlice';
 
+import css from '../css/loginForm';
+
+function inputEffect(labelRef, inputRef, input, error) {
+    inputRef.current.className = error ? css.defaultInputError : css.defaultInput;
+
+    labelRef.current.className = error
+    ? inputRef.current === document.activeElement
+        ? css.labelTopError
+        : input ? css.labelTopError : css.labelMiddleError
+    : inputRef.current === document.activeElement
+        ? css.labelTopFocus
+        : input ? css.labelTopBlur : css.labelMiddle;
+}
+
 async function login(email, pwd, rememberMe, csrfToken, accessToken, setFormError, navigate) {
     const data = {email, pwd, rememberMe};
     const config = {
@@ -41,4 +55,4 @@ async function login(email, pwd, rememberMe, csrfToken, accessToken, setFormErro
     }
 }
 
-export default {login};
+export default {inputEffect, login};

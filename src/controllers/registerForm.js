@@ -3,6 +3,20 @@ import {toast} from 'react-toastify';
 import axios from '../services/axios';
 import {setToast} from '../services/toastService';
 
+import css from '../css/registerForm';
+
+function inputEffect(labelRef, inputRef, input, error) {
+    inputRef.current.className = error ? css.defaultInputError : css.defaultInput;
+
+    labelRef.current.className = error
+    ? inputRef.current === document.activeElement
+        ? css.labelTopError
+        : input ? css.labelTopError : css.labelMiddleError
+    : inputRef.current === document.activeElement
+        ? css.labelTopFocus
+        : input ? css.labelTopBlur : css.labelMiddle;
+}
+
 async function register(name, email, pwd, confPwd, csrfToken, accessToken, setFormError, setStep) {
     const data = {name, email, pwd, confPwd};
     const config = {
@@ -34,4 +48,4 @@ async function register(name, email, pwd, confPwd, csrfToken, accessToken, setFo
     }
 }
 
-export default {register};
+export default {inputEffect, register};

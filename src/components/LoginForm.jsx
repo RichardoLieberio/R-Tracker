@@ -44,27 +44,11 @@ export default function LoginForm() {
     }, []);
 
     useEffect(function() {
-        emailInputRef.current.className = formError.email ? css.defaultInputError : css.defaultInput;
-
-        emailLabelRef.current.className = formError.email
-        ? emailInputRef.current === document.activeElement
-            ? css.labelTopError
-            : email ? css.labelTopError : css.labelMiddleError
-        : emailInputRef.current === document.activeElement
-            ? css.labelTopFocus
-            : email ? css.labelTopBlur : css.labelMiddle;
+        contr.inputEffect(emailLabelRef, emailInputRef, email, formError.email);
     }, [email, formError.email]);
 
     useEffect(function() {
-        pwdInputRef.current.className = formError.pwd ? css.defaultInputError : css.defaultInput;
-
-        pwdLabelRef.current.className = formError.pwd
-        ? pwdInputRef.current === document.activeElement
-            ? css.labelTopError
-            : pwd ? css.labelTopError : css.labelMiddleError
-        : pwdInputRef.current === document.activeElement
-            ? css.labelTopFocus
-            : pwd ? css.labelTopBlur : css.labelMiddle;
+        contr.inputEffect(pwdLabelRef, pwdInputRef, pwd, formError.pwd);
     }, [pwd, formError.pwd]);
 
     useEffect(function() {

@@ -52,39 +52,15 @@ export default function ForgotPwdForm(props) {
     }, []);
 
     useEffect(function() {
-        pwdInputRef.current.className = formError.pwd ? css.defaultInputError : css.defaultInput;
-
-        pwdLabelRef.current.className = formError.pwd
-        ? pwdInputRef.current === document.activeElement
-            ? css.labelTopError
-            : pwd ? css.labelTopError : css.labelMiddleError
-        : pwdInputRef.current === document.activeElement
-            ? css.labelTopFocus
-            : pwd ? css.labelTopBlur : css.labelMiddle;
+        contr.inputEffect(pwdLabelRef, pwdInputRef, pwd, formError.pwd);
     }, [pwd, formError.pwd]);
 
     useEffect(function() {
-        confPwdInputRef.current.className = formError.confPwd ? css.defaultInputError : css.defaultInput;
-
-        confPwdLabelRef.current.className = formError.confPwd
-        ? confPwdInputRef.current === document.activeElement
-            ? css.labelTopError
-            : confPwd ? css.labelTopError : css.labelMiddleError
-        : confPwdInputRef.current === document.activeElement
-            ? css.labelTopFocus
-            : confPwd ? css.labelTopBlur : css.labelMiddle;
+        contr.inputEffect(confPwdLabelRef, confPwdInputRef, confPwd, formError.confPwd);
     }, [confPwd, formError.confPwd]);
 
     useEffect(function() {
-        otpInputRef.current.className = formError.otp ? css.defaultInputError : css.defaultInput;
-
-        otpLabelRef.current.className = formError.otp
-        ? otpInputRef.current === document.activeElement
-            ? css.labelTopError
-            : otp ? css.labelTopError : css.labelMiddleError
-        : otpInputRef.current === document.activeElement
-            ? css.labelTopFocus
-            : otp ? css.labelTopBlur : css.labelMiddle;
+        contr.inputEffect(otpLabelRef, otpInputRef, otp, formError.otp);
     }, [otp, formError.otp]);
 
     useEffect(function() {

@@ -31,15 +31,7 @@ export default function ForgotPwdEmail(props) {
     }, []);
 
     useEffect(function() {
-        emailInputRef.current.className = formError.email ? css.defaultInputError : css.defaultInput;
-
-        emailLabelRef.current.className = formError.email
-        ? emailInputRef.current === document.activeElement
-            ? css.labelTopError
-            : email ? css.labelTopError : css.labelMiddleError
-        : emailInputRef.current === document.activeElement
-            ? css.labelTopFocus
-            : email ? css.labelTopBlur : css.labelMiddle;
+        contr.inputEffect(emailLabelRef, emailInputRef, email, formError.email);
     }, [email, formError.email, step]);
 
     function emailHandler(e) {
