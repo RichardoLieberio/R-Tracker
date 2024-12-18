@@ -14,6 +14,7 @@ import {
 import {Link} from 'react-router-dom';
 import {Drawer as MuiDrawer} from '@mui/material';
 import {FaUserCog, FaUserCircle, FaPalette} from 'react-icons/fa';
+import ButtonSpinner from './ButtonSpinner';
 
 export default function Drawer(props) {
     const {openDrawer, setOpenDrawer, setThemeModal, isSigningOut, signout, pages} = props;
@@ -71,7 +72,9 @@ export default function Drawer(props) {
                         </li>
                     </ul>
                 </section>
-                <button disabled={isSigningOut} onClick={signout} className={`mt-auto mb-6 mx-4 py-1 ${getTextErrorColor(theme)} ${isSigningOut ? '' : `border ${getBorderErrorColor(theme)}`} rounded-md ${getHoverOppositeTextColor(theme)} ${getHoverBgErrorColor(theme)} ${getDisabledOppositeTextColor(theme)} ${getDisabledBgError60Color(theme)} disabled:cursor-not-allowed`}>Sign out</button>
+                <button disabled={isSigningOut} onClick={signout} className={`mt-auto mb-6 mx-4 py-1 ${getTextErrorColor(theme)} ${isSigningOut ? '' : `border ${getBorderErrorColor(theme)}`} rounded-md ${getHoverOppositeTextColor(theme)} ${getHoverBgErrorColor(theme)} ${getDisabledOppositeTextColor(theme)} ${getDisabledBgError60Color(theme)} disabled:cursor-not-allowed`}>
+                    {isSigningOut ? <ButtonSpinner /> : 'Sign out'}
+                </button>
             </section>
         </MuiDrawer>
     );

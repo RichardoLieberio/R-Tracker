@@ -13,6 +13,7 @@ import contr from '../controllers/loginForm';
 import css from '../css/loginForm';
 
 import Tooltip from './Tooltip';
+import ButtonSpinner from './ButtonSpinner';
 import {FaEye, FaEyeSlash} from 'react-icons/fa';
 import {MdErrorOutline} from 'react-icons/md';
 
@@ -155,7 +156,9 @@ export default function LoginForm() {
                                 && <Link to="/forgot-password" rel="nofollow" className="text-sm text-purple-link cursor-pointer hover:underline">Forgot password?</Link>
                             }
                         </div>
-                        <button onClick={login} disabled={isSubmitting} className="py-2 text-purple-oppositeText bg-purple-primary rounded-md hover:bg-purple-highlight disabled:bg-purple-highlight disabled:cursor-not-allowed">Login</button>
+                        <button onClick={login} disabled={isSubmitting} className="py-2 text-purple-oppositeText bg-purple-primary rounded-md hover:bg-purple-highlight disabled:bg-purple-highlight disabled:cursor-not-allowed">
+                            {isSubmitting ? <ButtonSpinner noTheme /> : 'Login'}
+                        </button>
                         {
                             !tabletBreakpoint
                             &&  <span className="w-full text-center">

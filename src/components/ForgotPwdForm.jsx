@@ -15,6 +15,7 @@ import css from '../css/forgotPwdForm';
 
 import {IoArrowBack} from 'react-icons/io5';
 import Tooltip from './Tooltip';
+import ButtonSpinner from './ButtonSpinner';
 import {FaEye, FaEyeSlash} from 'react-icons/fa';
 import {MdErrorOutline} from 'react-icons/md';
 
@@ -78,7 +79,6 @@ export default function ForgotPwdForm(props) {
         if (second > 0) {
             const interval = setInterval(function() {
                 resendRef.current.className = 'text-purple-link';
-                resendRef.current.textContent = `Resend (${second - 1})`;
                 setSecond((second) => second - 1);
             }, 1000);
 
@@ -86,10 +86,7 @@ export default function ForgotPwdForm(props) {
                 clearInterval(interval);
             };
         } else {
-            if (!isSubmitting) {
-                resendRef.current.className = 'text-purple-primary cursor-pointer hover:underline';
-                resendRef.current.textContent = 'Resend';
-            }
+            if (!isSubmitting) resendRef.current.className = 'text-purple-primary cursor-pointer hover:underline';
         }
     }, [second, isSubmitting]);
 
@@ -238,9 +235,11 @@ export default function ForgotPwdForm(props) {
                         <input type="otp" id="otp" value={otp} ref={otpInputRef} disabled={isSubmitting} onChange={otpHandler} onFocus={otpInputFocus} onBlur={otpInputBlur} className={css.defaultInput} />
                     </div>
                     <span className="text-sm text-purple-text">
-                        Didn&apos;t receive your OTP? <span onClick={resendOtp} ref={resendRef} className="text-purple-link">Resend ({process.env.RESEND_EMAIL_TIMEOUT})</span>
+                        Didn&apos;t receive your OTP? <span onClick={resendOtp} ref={resendRef} className="text-purple-link">Resend{second ? ` (${second})` : ''}</span>
                     </span>
-                    <button onClick={resetPwd} disabled={isSubmitting} className="w-full mt-4 py-2 text-purple-oppositeText bg-purple-primary rounded-md hover:bg-purple-highlight disabled:bg-purple-highlight disabled:cursor-not-allowed">Submit</button>
+                    <button onClick={resetPwd} disabled={isSubmitting} className="w-full mt-4 py-2 text-purple-oppositeText bg-purple-primary rounded-md hover:bg-purple-highlight disabled:bg-purple-highlight disabled:cursor-not-allowed">
+                        {isSubmitting ? <ButtonSpinner noTheme /> : 'Submit'}
+                    </button>
                 </form>
             </section>
         </section>

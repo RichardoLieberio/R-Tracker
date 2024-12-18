@@ -19,6 +19,7 @@ import css from '../css/editProfile';
 
 import {Modal, Box} from '@mui/material';
 import Tooltip from './Tooltip';
+import ButtonSpinner from './ButtonSpinner';
 import {MdErrorOutline} from 'react-icons/md';
 
 export default function EditNameModal(props) {
@@ -79,7 +80,9 @@ export default function EditNameModal(props) {
                 </main>
                 <footer className="flex items-center justify-end gap-4">
                     <button onClick={() => setNameModal(false)} className={`py-1 ${phoneBreakpoint ? 'px-8' : 'px-4'} ${theme !== 'dark' ? getTextPrimaryColor(theme) : ''} rounded-md ${getHoverTextHighlightColor(theme)} ${getHoverBorderHighlightColor(theme)}`}>Close</button>
-                    <button onClick={saveName} disabled={savingNewName} className={`py-1 ${phoneBreakpoint ? 'px-8' : 'px-4'} ${getOppositeTextColor(theme)} ${getBgPrimaryColor(theme)} rounded-md ${getHoverBgHighlightColor(theme)} ${getDisabledBgHighlightColor(theme)} disabled:cursor-not-allowed`}>Save</button>
+                    <button onClick={saveName} disabled={savingNewName} className={`py-1 ${phoneBreakpoint ? 'px-8' : 'px-4'} ${getOppositeTextColor(theme)} ${getBgPrimaryColor(theme)} rounded-md ${getHoverBgHighlightColor(theme)} ${getDisabledBgHighlightColor(theme)} disabled:cursor-not-allowed`}>
+                        {savingNewName ? <ButtonSpinner /> : 'Save'}
+                    </button>
                 </footer>
             </Box>
         </Modal>

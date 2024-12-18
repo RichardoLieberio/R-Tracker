@@ -14,6 +14,7 @@ import contr from '../controllers/registerForm';
 import css from '../css/registerForm';
 
 import Tooltip from './Tooltip';
+import ButtonSpinner from './ButtonSpinner';
 import {FaEye, FaEyeSlash} from 'react-icons/fa';
 import {MdErrorOutline} from 'react-icons/md';
 
@@ -226,7 +227,9 @@ export default function RegisterForm(props) {
                                 }
                             </div>
                         </div>
-                        <button onClick={register} disabled={isSubmitting} className="py-2 text-purple-oppositeText bg-purple-primary rounded-md hover:bg-purple-highlight disabled:bg-purple-highlight disabled:cursor-not-allowed">Register</button>
+                        <button onClick={register} disabled={isSubmitting} className="py-2 text-purple-oppositeText bg-purple-primary rounded-md hover:bg-purple-highlight disabled:bg-purple-highlight disabled:cursor-not-allowed">
+                            {isSubmitting ? <ButtonSpinner noTheme /> : 'Register'}
+                        </button>
                     </section>
                     <small className="mx-auto text-sm text-purple-text">
                         Already have an account? <Link to="/login" rel="nofollow" className="text-purple-link hover:underline">Login</Link>

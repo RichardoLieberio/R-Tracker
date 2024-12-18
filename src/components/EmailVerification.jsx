@@ -11,6 +11,7 @@ import css from '../css/emailVerification';
 import {IoArrowBack} from 'react-icons/io5';
 import {MdErrorOutline} from 'react-icons/md';
 import OtpInput from 'react-otp-input';
+import ButtonSpinner from './ButtonSpinner';
 
 export default function VerifyEmail(props) {
     const {
@@ -37,7 +38,6 @@ export default function VerifyEmail(props) {
         if (second > 0) {
             const interval = setInterval(function() {
                 resendRef.current.className = 'text-purple-link';
-                resendRef.current.textContent = `Resend (${second - 1})`;
                 setSecond((second) => second - 1);
             }, 1000);
 
@@ -45,10 +45,7 @@ export default function VerifyEmail(props) {
                 clearInterval(interval);
             };
         } else {
-            if (!isSubmitting) {
-                resendRef.current.className = 'text-purple-primary cursor-pointer hover:underline';
-                resendRef.current.textContent = 'Resend';
-            }
+            if (!isSubmitting) resendRef.current.className = 'text-purple-primary cursor-pointer hover:underline';
         }
     }, [second, isSubmitting]);
 
@@ -64,7 +61,6 @@ export default function VerifyEmail(props) {
     function resendOtp() {
         if (second === 0 && !isSubmitting) {
             resendRef.current.className = 'text-purple-link';
-            resendRef.current.textContent = `Resend (${process.env.RESEND_EMAIL_TIMEOUT})`;
             setSecond(+process.env.RESEND_EMAIL_TIMEOUT);
 
             contr.resendOtp(name, email, pwd, confPwd, csrfToken, accessToken, setFormError, setStep);
@@ -112,9 +108,11 @@ export default function VerifyEmail(props) {
                         />
                     </div>
                     <span className="text-sm text-purple-text">
-                        Didn&apos;t receive your OTP? <span onClick={resendOtp} ref={resendRef} className="text-purple-link">Resend ({process.env.RESEND_EMAIL_TIMEOUT})</span>
+                        Didn&apos;t receive your OTP? <span onClick={resendOtp} ref={resendRef} className="text-purple-link">Resend{second ? ` (${second})` : ''}</span>
                     </span>
-                    <button onClick={verify} disabled={isSubmitting} className="w-full mt-4 py-2 text-purple-oppositeText bg-purple-primary rounded-md hover:bg-purple-highlight disabled:bg-purple-highlight disabled:cursor-not-allowed">Submit</button>
+                    <button onClick={verify} disabled={isSubmitting} className="w-full mt-4 py-2 text-purple-oppositeText bg-purple-primary rounded-md hover:bg-purple-highlight disabled:bg-purple-highlight disabled:cursor-not-allowed">
+                        {isSubmitting ? <ButtonSpinner noTheme /> : 'Submit'}
+                    </button>
                 </form>
             </section>
         </section>

@@ -11,6 +11,7 @@ import contr from '../controllers/forgotPwdEmail';
 import css from '../css/forgotPwdEmail';
 
 import Tooltip from './Tooltip';
+import ButtonSpinner from './ButtonSpinner';
 import {MdErrorOutline} from 'react-icons/md';
 
 export default function ForgotPwdEmail(props) {
@@ -79,7 +80,9 @@ export default function ForgotPwdEmail(props) {
                     <label htmlFor="email" ref={emailLabelRef}>Email</label>
                     <input type="email" id="email" value={email} ref={emailInputRef} disabled={isSubmitting} onChange={emailHandler} onFocus={emailInputFocus} onBlur={emailInputBlur} className={css.defaultInput} />
                 </div>
-                <button onClick={sendRequest} disabled={isSubmitting} className="w-full mt-4 py-2 text-purple-oppositeText bg-purple-primary rounded-md hover:bg-purple-highlight disabled:bg-purple-highlight disabled:cursor-not-allowed">Submit</button>
+                <button onClick={sendRequest} disabled={isSubmitting} className="w-full mt-4 py-2 text-purple-oppositeText bg-purple-primary rounded-md hover:bg-purple-highlight disabled:bg-purple-highlight disabled:cursor-not-allowed">
+                    {isSubmitting ? <ButtonSpinner noTheme /> : 'Submit'}
+                </button>
                 <Link to="/login" rel="nofollow" className="mx-auto text-sm text-purple-link hover:underline">Back to login</Link>
             </form>
         </section>
