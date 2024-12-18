@@ -64,7 +64,9 @@ async function getInfo(req, res) {
 }
 
 async function changeName(req, res) {
-    await User.changeName(req.userId, req.data.name);
+    const changed = await User.changeName(req.userId, req.data.name);
+    if (!changed) return notFoundHandler(req, res, 'Failed to change name. Account not found.');
+
     res.json({status: 200, msg: 'Name updated successfully.', name: req.data.name});
 }
 
