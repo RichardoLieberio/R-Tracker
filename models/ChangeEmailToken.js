@@ -11,7 +11,6 @@ const changeEmailTokenSchema = mongoose.Schema({
         type: String,
         trim: true,
         lowercase: true,
-        unique: true,
         required: true
     },
     otp: {
