@@ -3,17 +3,17 @@ import {createSlice} from '@reduxjs/toolkit';
 export const dataSlice = createSlice({
     name: 'data',
     initialState: {
-        expenses: [],
-        expenseCategories: [],
-        users: []
+        expenses: null,
+        expenseCategories: null,
+        users: null
     },
     reducers: {
-        setExpenses: function(state, action) {
-            state.expenses = action.payload;
+        setUsers: function(state, action) {
+            state.users = action.payload;
         }
     }
 });
 
-export const {setExpenses} = dataSlice.actions;
+export const {setUsers} = dataSlice.actions;
 
 export default dataSlice.reducer;
