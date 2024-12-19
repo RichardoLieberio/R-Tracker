@@ -1,5 +1,5 @@
 import {useState, useEffect, useRef} from 'react';
-import {useLocation} from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 import {useSelector, useDispatch} from 'react-redux';
 
 import {axiosController} from '../services/axios';
@@ -73,6 +73,7 @@ export default function EditProfile() {
     const hasToggled = useRef(null);
 
     const location = useLocation();
+    const navigate = useNavigate();
 
     const theme = useSelector((state) => state.web.theme);
     const accessToken = useSelector((state) => state.auth.accessToken);
@@ -219,9 +220,18 @@ export default function EditProfile() {
         }
     }
 
+    async function deactivate() {
+        if (!deactivating) {
+            setDeactivating(true);
+            setConfirmationModal(false);
+            await contr.deactivate(csrfToken, accessToken, navigate);
+            setDeactivating(false);
+        }
+    }
+
     const editNameProps = {newName, setNewName, nameModal, setNameModal, nameError, savingNewName, saveName};
     const editEmailProps = {step, setStep, newEmail, setNewEmail, emailError, otp, setOtp, otpError, emailModal, setEmailModal, savingNewEmail, requestChangeEmail, resendOtp, changeEmail};
-    const deactiveProps = {confirmationModal, setConfirmationModal, deactivating};
+    const deactiveProps = {confirmationModal, setConfirmationModal, deactivating, deactivate};
 
     return (
         <HelmetProvider>

@@ -4,7 +4,7 @@ import axios from '../services/axios';
 import {setToast} from '../services/toastService';
 
 import store from '../redux/store';
-import {setName, setEmail} from '../redux/authSlice';
+import {setName, setEmail, logout} from '../redux/authSlice';
 
 import css from '../css/editProfile';
 
@@ -212,4 +212,33 @@ async function changePwd(oldPwd, setOldPwd, newPwd, setNewPwd, confPwd, setConfP
     }
 }
 
-export default {inputErrorHandler, inputEffect, changeName, requestChangeEmail, resendOtp, changeEmail, changePwd};
+async function deactivate(csrfToken, accessToken, navigate) {
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`,
+            'CSRF-Token': csrfToken
+        },
+        authenticated: {
+            codes: [401, 404],
+            route: '/login'
+        }
+    };
+
+    const response = await axios.delete('/api/user', config);
+    const status = response?.data?.status;
+
+    switch (status) {
+        case 200:
+            store.dispatch(logout());
+            setToast('success', response.data.msg);
+            navigate('/login', {replace: true});
+            break;
+        case 403:
+            setToast('error', response.data.msg);
+            location.reload();
+            break;
+    }
+}
+
+export default {inputErrorHandler, inputEffect, changeName, requestChangeEmail, resendOtp, changeEmail, changePwd, deactivate};
