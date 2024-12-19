@@ -6,7 +6,7 @@ import {setToast} from '../services/toastService';
 import store from '../redux/store';
 import {setAccessToken, setUserInfo, setAuthentication} from '../redux/authSlice';
 
-import css from '../css/loginForm';
+import css from '../css/login';
 
 function inputEffect(labelRef, inputRef, input, error, pwd=false) {
     inputRef.current.className = pwd

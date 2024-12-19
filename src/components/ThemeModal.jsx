@@ -5,7 +5,7 @@ import themes from '../../config/theme';
 
 import {getBgPrimaryColor, getBackgroundColor, getTextPrimaryColor, getTextColor, getOppositeTextColor, getHoverTextHighlightColor, getHoverBorderHighlightColor} from '../css/color';
 
-import contr from '../controllers/themeModal';
+import contr from '../controllers/sharedLayout';
 
 import {Modal, Box} from '@mui/material';
 import {FaCheck} from 'react-icons/fa6';

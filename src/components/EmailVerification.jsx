@@ -4,9 +4,9 @@ import {useSelector} from 'react-redux';
 
 import getCSRFToken from '../services/getCSRFToken';
 
-import contr from '../controllers/emailVerification';
+import contr from '../controllers/register';
 
-import css from '../css/emailVerification';
+import css from '../css/register';
 
 import {IoArrowBack} from 'react-icons/io5';
 import {MdErrorOutline} from 'react-icons/md';
@@ -104,13 +104,13 @@ export default function VerifyEmail(props) {
                             shouldAutoFocus={true}
                             renderInput={(props) => <input {...props} disabled={isSubmitting} />}
                             containerStyle="gap-1 phone:gap-2"
-                            inputStyle={isSubmitting ? css.disabledOtp : otpError ? css.errorOtp : css.otp}
+                            inputStyle={otpError ? css.errorOtp : css.otp}
                         />
                     </div>
                     <span className="text-sm text-purple-text">
                         Didn&apos;t receive your OTP? <span onClick={resendOtp} ref={resendRef} className="text-purple-link">Resend{second ? ` (${second})` : ''}</span>
                     </span>
-                    <button onClick={verify} disabled={isSubmitting} className="w-full mt-4 py-2 relative text-purple-oppositeText bg-purple-primary rounded-md hover:bg-purple-highlight disabled:bg-purple-highlight disabled:cursor-not-allowed">
+                    <button onClick={verify} disabled={isSubmitting} className="w-full mt-4 py-2 relative text-purple-oppositeText bg-purple-primary rounded-md hover:bg-purple-highlight disabled:bg-purple-neutral disabled:cursor-not-allowed">
                         {isSubmitting && <ButtonSpinner />}
                         <span className={isSubmitting ? 'opacity-0' : ''}>Submit</span>
                     </button>

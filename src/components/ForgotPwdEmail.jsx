@@ -6,9 +6,9 @@ import {useSelector} from 'react-redux';
 import getCSRFToken from '../services/getCSRFToken';
 import {getToast} from '../services/toastService';
 
-import contr from '../controllers/forgotPwdEmail';
+import contr from '../controllers/forgotPwd';
 
-import css from '../css/forgotPwdEmail';
+import css from '../css/forgotPwd';
 
 import Tooltip from './Tooltip';
 import ButtonSpinner from './ButtonSpinner';
@@ -81,7 +81,7 @@ export default function ForgotPwdEmail(props) {
                     <label htmlFor="email" ref={emailLabelRef}>Email</label>
                     <input type="email" id="email" value={email} ref={emailInputRef} disabled={isSubmitting} onChange={emailHandler} onFocus={emailInputFocus} onBlur={emailInputBlur} className={css.defaultInput} />
                 </div>
-                <button onClick={sendRequest} disabled={isSubmitting} className="w-full mt-4 py-2 relative text-purple-oppositeText bg-purple-primary rounded-md hover:bg-purple-highlight disabled:bg-purple-highlight disabled:cursor-not-allowed">
+                <button onClick={sendRequest} disabled={isSubmitting} className="w-full mt-4 py-2 relative text-purple-oppositeText bg-purple-primary rounded-md hover:bg-purple-highlight disabled:bg-purple-neutral disabled:cursor-not-allowed">
                     {isSubmitting && <ButtonSpinner />}
                     <span className={isSubmitting ? 'opacity-0' : ''}>Submit</span>
                 </button>

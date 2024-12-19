@@ -9,9 +9,9 @@ import breakpoints from '../../config/breakpoints';
 import getCSRFToken from '../services/getCSRFToken';
 import {getToast} from '../services/toastService';
 
-import contr from '../controllers/registerForm';
+import contr from '../controllers/register';
 
-import css from '../css/registerForm';
+import css from '../css/register';
 
 import Tooltip from './Tooltip';
 import ButtonSpinner from './ButtonSpinner';
@@ -230,7 +230,7 @@ export default function RegisterForm(props) {
                                 }
                             </div>
                         </div>
-                        <button onClick={register} disabled={isSubmitting} className="py-2 relative text-purple-oppositeText bg-purple-primary rounded-md hover:bg-purple-highlight disabled:bg-purple-highlight disabled:cursor-not-allowed">
+                        <button onClick={register} disabled={isSubmitting} className="py-2 relative text-purple-oppositeText bg-purple-primary rounded-md hover:bg-purple-highlight disabled:bg-purple-neutral disabled:cursor-not-allowed">
                             {isSubmitting && <ButtonSpinner />}
                             <span className={isSubmitting ? 'opacity-0' : ''}>Register</span>
                         </button>

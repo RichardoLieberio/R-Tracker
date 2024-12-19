@@ -15,9 +15,10 @@ import contr from '../controllers/editProfile';
 import {
     getBgPrimaryColor, getBackgroundColor, getBgErrorColor,
     getHoverBgHighlightColor, getHoverBgErrorColor,
-    getDisabledBgHighlightColor,
+    getDisabledBgNeutralColor,
     getOppositeTextColor, getTextErrorColor,
     getHoverOppositeTextColor,
+    getDisabledOppositeTextColor,
     getBorderNeutralColor, getBorderErrorColor
 } from '../css/color';
 import css from '../css/editProfile';
@@ -29,6 +30,7 @@ import {FaPencilAlt, FaEye, FaEyeSlash} from 'react-icons/fa';
 import {MdErrorOutline} from 'react-icons/md';
 import EditNameModal from '../components/EditNameModal';
 import EditEmailModal from '../components/EditEmailModal';
+import ConfirmDeactiveAccount from '../components/ConfirmDeactiveAccount';
 import Tooltip from '../components/Tooltip';
 import ButtonSpinner from '../components/ButtonSpinner';
 
@@ -58,6 +60,9 @@ export default function EditProfile() {
 
     const [savingNewPwd, setSavingNewPwd] = useState(false);
     const [pwdError, setPwdError] = useState({});
+
+    const [confirmationModal, setConfirmationModal] = useState(false);
+    const [deactivating, setDeactivating] = useState(false);
 
     const oldPwdLabelRef = useRef(null);
     const oldPwdInputRef = useRef(null);
@@ -216,6 +221,7 @@ export default function EditProfile() {
 
     const editNameProps = {newName, setNewName, nameModal, setNameModal, nameError, savingNewName, saveName};
     const editEmailProps = {step, setStep, newEmail, setNewEmail, emailError, otp, setOtp, otpError, emailModal, setEmailModal, savingNewEmail, requestChangeEmail, resendOtp, changeEmail};
+    const deactiveProps = {confirmationModal, setConfirmationModal, deactivating};
 
     return (
         <HelmetProvider>
@@ -320,7 +326,7 @@ export default function EditProfile() {
                         </form>
                     </main>
                     <footer className="text-end">
-                        <button onClick={changePwd} disabled={savingNewPwd} className={`py-1 px-8 relative ${getOppositeTextColor(theme)} ${getBgPrimaryColor(theme)} rounded-md ${getHoverBgHighlightColor(theme)} ${getDisabledBgHighlightColor(theme)} disabled:cursor-not-allowed`}>
+                        <button onClick={changePwd} disabled={savingNewPwd} className={`py-1 px-8 relative ${getOppositeTextColor(theme)} ${getBgPrimaryColor(theme)} rounded-md ${getHoverBgHighlightColor(theme)} ${getDisabledBgNeutralColor(theme)} disabled:cursor-not-allowed`}>
                             {savingNewPwd && <ButtonSpinner />}
                             <span className={savingNewPwd ? 'opacity-0' : ''}>Change password</span>
                         </button>
@@ -332,7 +338,11 @@ export default function EditProfile() {
                         <p className="text-sm">Once you deactivate your account, all your data will be permanently deleted, and this action cannot be undone.</p>
                     </header>
                     <main>
-                        <button className={`py-1 px-8 ${getTextErrorColor(theme)} border ${getBorderErrorColor(theme)} rounded-md ${getHoverOppositeTextColor(theme)} ${getHoverBgErrorColor(theme)}`}>Deactivate Account</button>
+                        <button onClick={() => setConfirmationModal(true)} disabled={deactivating} className={`py-1 px-8 relative ${getTextErrorColor(theme)} ${deactivating ? '' : `border ${getBorderErrorColor(theme)}`} rounded-md ${getHoverOppositeTextColor(theme)} ${getHoverBgErrorColor(theme)} ${getDisabledBgNeutralColor(theme)} ${getDisabledOppositeTextColor(theme)} disabled:cursor-not-allowed`}>
+                            {deactivating && <ButtonSpinner />}
+                            <span className={deactivating ? 'opacity-0' : ''}>Deactivate account</span>
+                        </button>
+                        <ConfirmDeactiveAccount {...deactiveProps} />
                     </main>
                 </section>
             </section>

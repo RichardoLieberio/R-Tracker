@@ -9,9 +9,9 @@ import breakpoints from '../../config/breakpoints';
 import getCSRFToken from '../services/getCSRFToken';
 import {getToast} from '../services/toastService';
 
-import contr from '../controllers/forgotPwdForm';
+import contr from '../controllers/forgotPwd';
 
-import css from '../css/forgotPwdForm';
+import css from '../css/forgotPwd';
 
 import {IoArrowBack} from 'react-icons/io5';
 import Tooltip from './Tooltip';
@@ -237,7 +237,7 @@ export default function ForgotPwdForm(props) {
                     <span className="text-sm text-purple-text">
                         Didn&apos;t receive your OTP? <span onClick={resendOtp} ref={resendRef} className="text-purple-link">Resend{second ? ` (${second})` : ''}</span>
                     </span>
-                    <button onClick={resetPwd} disabled={isSubmitting} className="w-full mt-4 py-2 relative text-purple-oppositeText bg-purple-primary rounded-md hover:bg-purple-highlight disabled:bg-purple-highlight disabled:cursor-not-allowed">
+                    <button onClick={resetPwd} disabled={isSubmitting} className="w-full mt-4 py-2 relative text-purple-oppositeText bg-purple-primary rounded-md hover:bg-purple-highlight disabled:bg-purple-neutral disabled:cursor-not-allowed">
                         {isSubmitting && <ButtonSpinner />}
                         <span className={isSubmitting ? 'opacity-0' : ''}>Submit</span>
                     </button>

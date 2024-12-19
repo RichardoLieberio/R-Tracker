@@ -6,6 +6,53 @@ import {setToast} from '../services/toastService';
 import store from '../redux/store';
 import {setAccessToken, setUserInfo} from '../redux/authSlice';
 
+import css from '../css/register';
+
+function inputEffect(labelRef, inputRef, input, error, pwd=false) {
+    inputRef.current.className = pwd
+    ? error ? css.pwdInputError : css.pwdInput
+    : error ? css.defaultInputError : css.defaultInput;
+
+    labelRef.current.className = error
+    ? inputRef.current === document.activeElement
+        ? css.labelTopError
+        : input ? css.labelTopError : css.labelMiddleError
+    : inputRef.current === document.activeElement
+        ? css.labelTopFocus
+        : input ? css.labelTopBlur : css.labelMiddle;
+}
+
+async function register(name, email, pwd, confPwd, csrfToken, accessToken, setFormError, setStep) {
+    const data = {name, email, pwd, confPwd};
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`,
+            'CSRF-Token': csrfToken
+        },
+        useAbortController: true
+    };
+
+    const response = await axios.post('/api/user/register', data, config);
+    const status = response?.data?.status;
+
+    switch (status) {
+        case 202:
+            setStep('verification');
+            break;
+        case 401:
+            toast.error(response.data.msg);
+            break;
+        case 403:
+            setToast('error', response.data.msg);
+            location.reload();
+            break;
+        case 422:
+            setFormError(response.data.msg);
+            break;
+    }
+}
+
 async function resendOtp(name, email, pwd, confPwd, csrfToken, accessToken, setFormError, setStep) {
     const data = {name, email, pwd, confPwd};
     const config = {
@@ -77,4 +124,4 @@ async function verify(email, otp, csrfToken, accessToken, setFormError, setOtpEr
     }
 }
 
-export default {resendOtp, verify};
+export default {inputEffect, register, resendOtp, verify};
