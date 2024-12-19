@@ -79,7 +79,7 @@ export default function EditNameModal(props) {
                     </form>
                 </main>
                 <footer className="flex items-center justify-end gap-4">
-                    <button onClick={() => setNameModal(false)} className={`py-1 ${phoneBreakpoint ? 'px-8' : 'px-4'} ${theme !== 'dark' ? getTextPrimaryColor(theme) : ''} rounded-md ${getHoverTextHighlightColor(theme)} ${getHoverBorderHighlightColor(theme)}`}>Close</button>
+                    <button onClick={() => setNameModal(false)} className={`py-1 px-4 ${theme !== 'dark' ? getTextPrimaryColor(theme) : ''} rounded-md ${getHoverTextHighlightColor(theme)} ${getHoverBorderHighlightColor(theme)}`}>Close</button>
                     <button onClick={saveName} disabled={savingNewName} className={`py-1 ${phoneBreakpoint ? 'px-8' : 'px-4'} relative ${getOppositeTextColor(theme)} ${getBgPrimaryColor(theme)} rounded-md ${getHoverBgHighlightColor(theme)} ${getDisabledBgHighlightColor(theme)} disabled:cursor-not-allowed`}>
                         {savingNewName && <ButtonSpinner />}
                         <span className={savingNewName ? 'opacity-0' : ''}>Save</span>
