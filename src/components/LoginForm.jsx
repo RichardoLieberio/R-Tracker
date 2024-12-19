@@ -1,11 +1,10 @@
+import PropTypes from 'prop-types';
 import {useState, useEffect, useRef} from 'react';
 import {useNavigate, Link} from 'react-router-dom';
 import {useSelector} from 'react-redux';
 import {useMediaQuery} from '@mui/material';
 
 import breakpoints from '../../config/breakpoints';
-
-import getCSRFToken from '../services/getCSRFToken';
 
 import contr from '../controllers/login';
 
@@ -16,11 +15,12 @@ import ButtonSpinner from './ButtonSpinner';
 import {FaEye, FaEyeSlash} from 'react-icons/fa';
 import {MdErrorOutline} from 'react-icons/md';
 
-export default function LoginForm() {
+export default function LoginForm(props) {
+    const {csrfToken} = props;
+
     const [email, setEmail] = useState('');
     const [pwd, setPwd] = useState('');
     const [rememberMe, setRememberMe] = useState(false);
-    const [csrfToken, setCSRFToken] = useState('');
     const [showPwd, setShowPwd] = useState(false);
     const [formError, setFormError] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -36,10 +36,6 @@ export default function LoginForm() {
     const accessToken = useSelector((state) => state.auth.accessToken);
 
     const tabletBreakpoint = useMediaQuery(`(min-width: ${breakpoints.tablet})`);
-
-    useEffect(function() {
-        getCSRFToken(setCSRFToken);
-    }, []);
 
     useEffect(function() {
         contr.inputEffect(emailLabelRef, emailInputRef, email, formError.email);
@@ -190,3 +186,7 @@ export default function LoginForm() {
         </div>
     );
 }
+
+LoginForm.propTypes = {
+    csrfToken: PropTypes.string
+};

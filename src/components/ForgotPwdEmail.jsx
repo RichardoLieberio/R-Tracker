@@ -3,8 +3,6 @@ import {useState, useEffect, useRef} from 'react';
 import {Link} from 'react-router-dom';
 import {useSelector} from 'react-redux';
 
-import getCSRFToken from '../services/getCSRFToken';
-
 import contr from '../controllers/forgotPwd';
 
 import css from '../css/forgotPwd';
@@ -14,8 +12,7 @@ import ButtonSpinner from './ButtonSpinner';
 import {MdErrorOutline} from 'react-icons/md';
 
 export default function ForgotPwdEmail(props) {
-    const {email, setEmail, step, setStep} = props;
-    const [csrfToken, setCSRFToken] = useState('');
+    const {email, setEmail, step, setStep, csrfToken} = props;
     const [formError, setFormError] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -23,10 +20,6 @@ export default function ForgotPwdEmail(props) {
     const emailInputRef = useRef(null);
 
     const accessToken = useSelector((state) => state.auth.accessToken);
-
-    useEffect(function() {
-        getCSRFToken(setCSRFToken);
-    }, []);
 
     useEffect(function() {
         contr.inputEffect(emailLabelRef, emailInputRef, email, formError.email);
@@ -93,5 +86,6 @@ ForgotPwdEmail.propTypes = {
     email: PropTypes.string,
     setEmail: PropTypes.func,
     step: PropTypes.string,
-    setStep: PropTypes.func
+    setStep: PropTypes.func,
+    csrfToken: PropTypes.string
 };

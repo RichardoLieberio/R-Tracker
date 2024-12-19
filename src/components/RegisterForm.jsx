@@ -6,8 +6,6 @@ import {useMediaQuery} from '@mui/material';
 
 import breakpoints from '../../config/breakpoints';
 
-import getCSRFToken from '../services/getCSRFToken';
-
 import contr from '../controllers/register';
 
 import css from '../css/register';
@@ -24,10 +22,10 @@ export default function RegisterForm(props) {
         pwd, setPwd,
         confPwd, setConfPwd,
         formError, setFormError,
-        step, setStep
+        step, setStep,
+        csrfToken
     } = props;
 
-    const [csrfToken, setCSRFToken] = useState('');
     const [showPwd, setShowPwd] = useState(false);
     const [showConfPwd, setShowConfPwd] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -46,10 +44,6 @@ export default function RegisterForm(props) {
 
     const phoneBreakpoint = useMediaQuery(`(min-width: ${breakpoints.phone})`);
     const tabletBreakpoint = useMediaQuery(`(min-width: ${breakpoints.tablet})`);
-
-    useEffect(function() {
-        getCSRFToken(setCSRFToken);
-    }, []);
 
     useEffect(function() {
         contr.inputEffect(nameLabelRef, nameInputRef, name, formError.name);
@@ -271,5 +265,6 @@ RegisterForm.propTypes = {
     formError: PropTypes.object,
     setFormError: PropTypes.func,
     step: PropTypes.string,
-    setStep: PropTypes.func
+    setStep: PropTypes.func,
+    csrfToken: PropTypes.string
 };

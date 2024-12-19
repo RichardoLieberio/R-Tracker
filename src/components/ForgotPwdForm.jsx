@@ -6,8 +6,6 @@ import {useMediaQuery} from '@mui/material';
 
 import breakpoints from '../../config/breakpoints';
 
-import getCSRFToken from '../services/getCSRFToken';
-
 import contr from '../controllers/forgotPwd';
 
 import css from '../css/forgotPwd';
@@ -19,11 +17,10 @@ import {FaEye, FaEyeSlash} from 'react-icons/fa';
 import {MdErrorOutline} from 'react-icons/md';
 
 export default function ForgotPwdForm(props) {
-    const {email, setStep} = props;
+    const {email, setStep, csrfToken} = props;
     const [pwd, setPwd] = useState('');
     const [confPwd, setConfPwd] = useState('');
     const [otp, setOtp] = useState('');
-    const [csrfToken, setCSRFToken] = useState('');
     const [second, setSecond] = useState(+process.env.RESEND_EMAIL_TIMEOUT);
     const [showPwd, setShowPwd] = useState(false);
     const [showConfPwd, setShowConfPwd] = useState(false);
@@ -44,10 +41,6 @@ export default function ForgotPwdForm(props) {
     const accessToken = useSelector((state) => state.auth.accessToken);
 
     const phoneBreakpoint = useMediaQuery(`(min-width: ${breakpoints.phone})`);
-
-    useEffect(function() {
-        getCSRFToken(setCSRFToken);
-    }, []);
 
     useEffect(function() {
         contr.inputEffect(pwdLabelRef, pwdInputRef, pwd, formError.pwd, true);
@@ -247,5 +240,6 @@ export default function ForgotPwdForm(props) {
 
 ForgotPwdForm.propTypes = {
     email: PropTypes.string,
-    setStep: PropTypes.func
+    setStep: PropTypes.func,
+    csrfToken: PropTypes.string
 };

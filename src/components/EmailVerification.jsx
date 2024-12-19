@@ -2,8 +2,6 @@ import PropTypes from 'prop-types';
 import {useState, useEffect, useRef} from 'react';
 import {useSelector} from 'react-redux';
 
-import getCSRFToken from '../services/getCSRFToken';
-
 import contr from '../controllers/register';
 
 import css from '../css/register';
@@ -17,11 +15,11 @@ export default function VerifyEmail(props) {
     const {
         name, email, pwd, confPwd,
         setFormError,
-        setStep
+        setStep,
+        csrfToken
     } = props;
 
     const [otp, setOtp] = useState('');
-    const [csrfToken, setCSRFToken] = useState('');
     const [second, setSecond] = useState(+process.env.RESEND_EMAIL_TIMEOUT);
     const [otpError, setOtpError] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -29,10 +27,6 @@ export default function VerifyEmail(props) {
     const resendRef = useRef(null);
 
     const accessToken = useSelector((state) => state.auth.accessToken);
-
-    useEffect(function() {
-        getCSRFToken(setCSRFToken);
-    }, []);
 
     useEffect(function() {
         if (second > 0) {
@@ -126,5 +120,6 @@ VerifyEmail.propTypes = {
     pwd: PropTypes.string,
     confPwd: PropTypes.string,
     setFormError: PropTypes.func,
-    setStep: PropTypes.func
+    setStep: PropTypes.func,
+    csrfToken: PropTypes.string
 };
