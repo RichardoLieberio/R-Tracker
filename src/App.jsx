@@ -2,6 +2,8 @@ import {useState, useEffect} from 'react';
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import {useSelector} from 'react-redux';
 
+import noThemeRoutes from '../config/noThemeRoutes';
+
 import Admin from './hocs/Admin';
 import Authenticated from './hocs/Authenticated';
 import NotAuthenticated from './hocs/NotAuthenticated';
@@ -26,8 +28,6 @@ import {ToastContainer} from 'react-toastify';
 import Loading from './components/Loading';
 import MainLayout from './components/MainLayout';
 import SharedLayout from './components/SharedLayout';
-
-const noThemeRoutes = ['/login', '/register', '/forgot-password'];
 
 export default function App() {
     const [loading, setLoading] = useState(true);
@@ -63,30 +63,36 @@ export default function App() {
         bodyClassName
     };
 
-    return loading
-    ?   <Loading defaultSize theme={theme} />
-    :   <BrowserRouter>
-            <MainLayout noThemeRoutes={noThemeRoutes}>
-                <ToastContainer {...toastConfig} />
-                <Routes>
-                    <Route element={<Authenticated />}>
-                        <Route element={<SharedLayout />}>
-                            <Route path="/" element={<Expense />} />
-                            <Route path="/charts" element={<Chart />} />
-                            <Route path="/edit-profile" element={<EditProfile />} />
-                            <Route element={<Admin />}>
-                                <Route path="/admin/user" element={<User />} />
-                                <Route path="/admin/expense-category" element={<ExpenseCategory />} />
+    return (
+        <BrowserRouter>
+            <MainLayout>
+                {
+                    loading
+                    ? <Loading defaultSize />
+                    : <>
+                        <ToastContainer {...toastConfig} />
+                        <Routes>
+                            <Route element={<Authenticated />}>
+                                <Route element={<SharedLayout />}>
+                                    <Route path="/" element={<Expense />} />
+                                    <Route path="/charts" element={<Chart />} />
+                                    <Route path="/edit-profile" element={<EditProfile />} />
+                                    <Route element={<Admin />}>
+                                        <Route path="/admin/user" element={<User />} />
+                                        <Route path="/admin/expense-category" element={<ExpenseCategory />} />
+                                    </Route>
+                                </Route>
                             </Route>
-                        </Route>
-                    </Route>
-                    <Route element={<NotAuthenticated />}>
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/register" element={<Register />} />
-                        <Route path="/forgot-password" element={<ForgotPwd />} />
-                    </Route>
-                    <Route path="*" element={<NotFound />} />
-                </Routes>
+                            <Route element={<NotAuthenticated />}>
+                                <Route path="/login" element={<Login />} />
+                                <Route path="/register" element={<Register />} />
+                                <Route path="/forgot-password" element={<ForgotPwd />} />
+                            </Route>
+                            <Route path="*" element={<NotFound />} />
+                        </Routes>
+                    </>
+                }
             </MainLayout>
-        </BrowserRouter>;
+        </BrowserRouter>
+    );
 }
