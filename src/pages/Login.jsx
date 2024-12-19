@@ -25,7 +25,9 @@ export default function Login() {
     return (
         <HelmetProvider>
             <LoginHead />
-            <LoginForm />
+            <main className="w-full min-w-60 min-h-screen relative text-purple-text bg-purple-background">
+                <LoginForm />
+            </main>
         </HelmetProvider>
     );
 }

@@ -29,22 +29,24 @@ export default function ForgotPwd() {
     return (
         <HelmetProvider>
             <ForgotPwdHead />
-            {(function() {
-                switch (step) {
-                    case 'email':
-                        const forgotPwdEmailState = {
-                            email, setEmail,
-                            step, setStep
-                        };
-                        return <ForgotPwdEmail {...forgotPwdEmailState} />;
-                    case 'form':
-                        const forgotPwdFormState = {
-                            email,
-                            setStep
-                        };
-                        return <ForgotPwdForm {...forgotPwdFormState} />;
-                }
-            })()}
+            <main className="w-full min-w-60 min-h-screen relative text-purple-text bg-purple-background">
+                {(function() {
+                    switch (step) {
+                        case 'email':
+                            const forgotPwdEmailState = {
+                                email, setEmail,
+                                step, setStep
+                            };
+                            return <ForgotPwdEmail {...forgotPwdEmailState} />;
+                        case 'form':
+                            const forgotPwdFormState = {
+                                email,
+                                setStep
+                            };
+                            return <ForgotPwdForm {...forgotPwdFormState} />;
+                    }
+                })()}
+            </main>
         </HelmetProvider>
     );
 }

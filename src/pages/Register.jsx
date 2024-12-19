@@ -34,29 +34,31 @@ export default function Register() {
     return (
         <HelmetProvider>
             <RegisterHeead />
-            {(function() {
-                switch (step) {
-                    case 'register':
-                        const registerFormState = {
-                            name, setName,
-                            email, setEmail,
-                            pwd, setPwd,
-                            confPwd, setConfPwd,
-                            formError, setFormError,
-                            setStep
-                        };
-                        return <RegisterForm {...registerFormState} />;
-                    case 'verification':
-                        const emailVerificationState = {
-                            name, email, pwd, confPwd,
-                            setFormError,
-                            setStep
-                        };
-                        return <EmailVerification {...emailVerificationState} />;
-                    case 'verified':
-                        return <EmailVerified />;
-                }
-            })()}
+            <main className="w-full min-w-60 min-h-screen relative text-purple-text bg-purple-background">
+                {(function() {
+                    switch (step) {
+                        case 'register':
+                            const registerFormState = {
+                                name, setName,
+                                email, setEmail,
+                                pwd, setPwd,
+                                confPwd, setConfPwd,
+                                formError, setFormError,
+                                setStep
+                            };
+                            return <RegisterForm {...registerFormState} />;
+                        case 'verification':
+                            const emailVerificationState = {
+                                name, email, pwd, confPwd,
+                                setFormError,
+                                setStep
+                            };
+                            return <EmailVerification {...emailVerificationState} />;
+                        case 'verified':
+                            return <EmailVerified />;
+                    }
+                })()}
+            </main>
         </HelmetProvider>
     );
 
