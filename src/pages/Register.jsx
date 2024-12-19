@@ -4,6 +4,7 @@ import {useDispatch} from 'react-redux';
 
 import {axiosController} from '../services/axios';
 import {getToast} from '../services/toastService';
+import getCSRFToken from '../services/getCSRFToken';
 
 import {changePage} from '../redux/webSlice';
 
@@ -20,6 +21,7 @@ export default function Register() {
     const [confPwd, setConfPwd] = useState('');
     const [formError, setFormError] = useState({});
     const [step, setStep] = useState('register');
+    const [csrfToken, setCSRFToken] = useState('');
 
     const location = useLocation();
     const dispatch = useDispatch();
@@ -27,6 +29,7 @@ export default function Register() {
     useEffect(function() {
         getToast();
         dispatch(changePage(location.pathname));
+        getCSRFToken(setCSRFToken);
 
         return function() {
             axiosController && axiosController.abort();
@@ -46,14 +49,16 @@ export default function Register() {
                                 pwd, setPwd,
                                 confPwd, setConfPwd,
                                 formError, setFormError,
-                                setStep
+                                setStep,
+                                csrfToken
                             };
                             return <RegisterForm {...registerFormState} />;
                         case 'verification':
                             const emailVerificationState = {
                                 name, email, pwd, confPwd,
                                 setFormError,
-                                setStep
+                                setStep,
+                                csrfToken
                             };
                             return <EmailVerification {...emailVerificationState} />;
                         case 'verified':

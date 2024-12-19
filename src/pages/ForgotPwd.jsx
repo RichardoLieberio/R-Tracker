@@ -4,6 +4,7 @@ import {useDispatch} from 'react-redux';
 
 import {axiosController} from '../services/axios';
 import {getToast} from '../services/toastService';
+import getCSRFToken from '../services/getCSRFToken';
 
 import {changePage} from '../redux/webSlice';
 
@@ -15,6 +16,7 @@ import ForgotPwdForm from '../components/ForgotPwdForm';
 export default function ForgotPwd() {
     const [email, setEmail] = useState('');
     const [step, setStep] = useState('email');
+    const [csrfToken, setCSRFToken] = useState('');
 
     const location = useLocation();
     const dispatch = useDispatch();
@@ -22,6 +24,7 @@ export default function ForgotPwd() {
     useEffect(function() {
         getToast();
         dispatch(changePage(location.pathname));
+        getCSRFToken(setCSRFToken);
 
         return function() {
             axiosController && axiosController.abort();
@@ -35,16 +38,10 @@ export default function ForgotPwd() {
                 {(function() {
                     switch (step) {
                         case 'email':
-                            const forgotPwdEmailState = {
-                                email, setEmail,
-                                step, setStep
-                            };
+                            const forgotPwdEmailState = {email, setEmail, step, setStep, csrfToken};
                             return <ForgotPwdEmail {...forgotPwdEmailState} />;
                         case 'form':
-                            const forgotPwdFormState = {
-                                email,
-                                setStep
-                            };
+                            const forgotPwdFormState = {email, setStep, csrfToken};
                             return <ForgotPwdForm {...forgotPwdFormState} />;
                     }
                 })()}
