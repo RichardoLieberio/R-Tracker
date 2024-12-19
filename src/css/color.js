@@ -112,6 +112,25 @@ function getHoverBgErrorColor(theme) {
     }
 }
 
+function getHoverBgError60Color(theme) {
+    switch (theme) {
+        case 'red':
+            return 'hover:!bg-red-error/50';
+        case 'green':
+            return 'hover:!bg-green-error/50';
+        case 'blue':
+            return 'hover:!bg-blue-error/50';
+        case 'yellow':
+            return 'hover:!bg-yellow-error/50';
+        case 'teal':
+            return 'hover:!bg-teal-error/50';
+        case 'dark':
+            return 'hover:!bg-dark-error/50';
+        default:
+            return 'hover:!bg-purple-error/50';
+    }
+}
+
 function getHoverBgNeutral50Color(theme) {
     switch (theme) {
         case 'red':
@@ -185,25 +204,6 @@ function getDisabledBgHighlightColor(theme) {
             return 'disabled:!bg-dark-highlight';
         default:
             return 'disabled:!bg-purple-highlight';
-    }
-}
-
-function getDisabledBgError60Color(theme) {
-    switch (theme) {
-        case 'red':
-            return 'disabled:!bg-red-error/60';
-        case 'green':
-            return 'disabled:!bg-green-error/60';
-        case 'blue':
-            return 'disabled:!bg-blue-error/60';
-        case 'yellow':
-            return 'disabled:!bg-yellow-error/60';
-        case 'teal':
-            return 'disabled:!bg-teal-error/60';
-        case 'dark':
-            return 'disabled:!bg-dark-error/60';
-        default:
-            return 'disabled:!bg-purple-error/60';
     }
 }
 
@@ -646,8 +646,8 @@ function getShadowColor(theme) {
 
 export {
     getBgPrimaryColor, getBgHighlightColor, getBgErrorColor, getBackgroundColor,
-    getHoverBgHighlightColor, getHoverBgErrorColor, getHoverBgNeutral50Color,
-    getDisabledBgColor, getDisabledBgNeutralColor, getDisabledBgHighlightColor, getDisabledBgError60Color,
+    getHoverBgHighlightColor, getHoverBgErrorColor, getHoverBgError60Color, getHoverBgNeutral50Color,
+    getDisabledBgColor, getDisabledBgNeutralColor, getDisabledBgHighlightColor,
     getTextColor, getTextPrimaryColor, getOppositeTextColor, getTextHighlightColor, getTextLinkColor, getTextDisabledColor, getTextErrorColor,
     getHoverOppositeTextColor, getHoverTextHighlightColor,
     getDisabledOppositeTextColor,
