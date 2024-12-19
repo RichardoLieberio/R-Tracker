@@ -22,7 +22,7 @@ export default function Loading(props) {
 
     return (
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-            <HashLoader size={loadSize} color={themeConfig[theme].primary} />
+            <HashLoader size={loadSize} color={theme === 'dark' ? themeConfig[theme].text : themeConfig[theme].primary} />
         </div>
     );
 }
