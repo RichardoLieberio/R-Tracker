@@ -4,7 +4,7 @@ import {useSelector} from 'react-redux';
 import {
     getBgPrimaryColor, getBgHighlightColor, getBackgroundColor,
     getHoverBgErrorColor,
-    getDisabledBgError60Color,
+    getDisabledBgNeutralColor,
     getTextColor, getOppositeTextColor, getTextErrorColor,
     getHoverOppositeTextColor, getHoverTextHighlightColor,
     getDisabledOppositeTextColor,
@@ -72,7 +72,7 @@ export default function Drawer(props) {
                         </li>
                     </ul>
                 </section>
-                <button disabled={isSigningOut} onClick={signout} className={`mt-auto mb-6 mx-4 py-1 relative ${getTextErrorColor(theme)} ${isSigningOut ? '' : `border ${getBorderErrorColor(theme)}`} rounded-md ${getHoverOppositeTextColor(theme)} ${getHoverBgErrorColor(theme)} ${getDisabledOppositeTextColor(theme)} ${getDisabledBgError60Color(theme)} disabled:cursor-not-allowed`}>
+                <button disabled={isSigningOut} onClick={signout} className={`mt-auto mb-6 mx-4 py-1 relative ${getTextErrorColor(theme)} ${isSigningOut ? '' : `border ${getBorderErrorColor(theme)}`} rounded-md ${getHoverOppositeTextColor(theme)} ${getHoverBgErrorColor(theme)} ${getDisabledOppositeTextColor(theme)} ${getDisabledBgNeutralColor(theme)} disabled:cursor-not-allowed`}>
                     {isSigningOut && <ButtonSpinner />}
                     <span className={isSigningOut ? 'opacity-0' : ''}>Sign out</span>
                 </button>
