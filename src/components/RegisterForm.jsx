@@ -7,7 +7,6 @@ import {useMediaQuery} from '@mui/material';
 import breakpoints from '../../config/breakpoints';
 
 import getCSRFToken from '../services/getCSRFToken';
-import {getToast} from '../services/toastService';
 
 import contr from '../controllers/register';
 
@@ -49,7 +48,6 @@ export default function RegisterForm(props) {
     const tabletBreakpoint = useMediaQuery(`(min-width: ${breakpoints.tablet})`);
 
     useEffect(function() {
-        getToast();
         getCSRFToken(setCSRFToken);
     }, []);
 

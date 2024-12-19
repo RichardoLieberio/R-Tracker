@@ -4,7 +4,6 @@ import {Link} from 'react-router-dom';
 import {useSelector} from 'react-redux';
 
 import getCSRFToken from '../services/getCSRFToken';
-import {getToast} from '../services/toastService';
 
 import contr from '../controllers/forgotPwd';
 
@@ -26,7 +25,6 @@ export default function ForgotPwdEmail(props) {
     const accessToken = useSelector((state) => state.auth.accessToken);
 
     useEffect(function() {
-        getToast();
         getCSRFToken(setCSRFToken);
     }, []);
 

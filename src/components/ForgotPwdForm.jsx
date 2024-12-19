@@ -7,7 +7,6 @@ import {useMediaQuery} from '@mui/material';
 import breakpoints from '../../config/breakpoints';
 
 import getCSRFToken from '../services/getCSRFToken';
-import {getToast} from '../services/toastService';
 
 import contr from '../controllers/forgotPwd';
 
@@ -47,7 +46,6 @@ export default function ForgotPwdForm(props) {
     const phoneBreakpoint = useMediaQuery(`(min-width: ${breakpoints.phone})`);
 
     useEffect(function() {
-        getToast();
         getCSRFToken(setCSRFToken);
     }, []);
 
