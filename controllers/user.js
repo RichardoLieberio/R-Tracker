@@ -11,6 +11,7 @@ const UserToken = require('../models/UserToken');
 const InactiveUser = require('../models/InactiveUser');
 const PwdResetToken = require('../models/PwdResetToken');
 const ChangeEmailToken = require('../models/ChangeEmailToken');
+const Expense = require('../models/Expense');
 
 async function register(req, res) {
     const otp = generateOtp(+process.env.OTP_LENGTH);
@@ -97,6 +98,7 @@ async function deleteAccount(req, res) {
     if (!email) return notFoundHandler(req, res, 'Failed to delete account. Account not found.');
 
     await UserToken.deleteAccount(req.userId, req.mongooseSession);
+    await Expense.deleteAllExpense(req.userId, req.mongooseSession);
     sendMail('account-deleted', {to: email, name});
 
     res.json({status: 200, msg: 'Your account has been deleted.'});
