@@ -20,7 +20,7 @@ import {IoWarningOutline} from 'react-icons/io5';
 import ButtonSpinner from './ButtonSpinner';
 
 export default function ConfirmDeactiveAccount(props) {
-    const {confirmationModal, setConfirmationModal, deactivating} = props;
+    const {confirmationModal, setConfirmationModal, deactivating, deactivate} = props;
 
     const [confirmation, setConfirmation] = useState('');
 
@@ -36,16 +36,14 @@ export default function ConfirmDeactiveAccount(props) {
         setConfirmation(e.target.value.toUpperCase());
     }
 
-    function deactivate() {
-        if (confirmation === process.env.DEACTIVATE_CONFIRMATION_WORD) {
-            console.log('Hello');
-        }
+    function deactivateHandler() {
+        confirmation === process.env.DEACTIVATE_CONFIRMATION_WORD && deactivate();
     }
 
     function enterKeyDown(e) {
         if (e.key === 'Enter') {
             e.preventDefault();
-            deactivate();
+            deactivateHandler();
         }
     }
 
@@ -69,7 +67,7 @@ export default function ConfirmDeactiveAccount(props) {
                 </main>
                 <footer className="flex items-center justify-end gap-4">
                     <button onClick={() => setConfirmationModal(false)} className={`py-1 px-4 ${theme !== 'dark' ? getTextPrimaryColor(theme) : ''} rounded-md ${getHoverTextHighlightColor(theme)} ${getHoverBorderHighlightColor(theme)}`}>Close</button>
-                    <button onClick={deactivate} disabled={deactivating || confirmation !== process.env.DEACTIVATE_CONFIRMATION_WORD} className={`py-1 ${phoneBreakpoint ? 'px-8' : 'px-4'} relative ${getOppositeTextColor(theme)} ${getBgErrorColor(theme)} rounded-md ${getHoverBgError60Color(theme)} ${getDisabledBgNeutralColor(theme)} disabled:cursor-not-allowed`}>
+                    <button onClick={deactivateHandler} disabled={deactivating || confirmation !== process.env.DEACTIVATE_CONFIRMATION_WORD} className={`py-1 ${phoneBreakpoint ? 'px-8' : 'px-4'} relative ${getOppositeTextColor(theme)} ${getBgErrorColor(theme)} rounded-md ${getHoverBgError60Color(theme)} ${getDisabledBgNeutralColor(theme)} disabled:cursor-not-allowed`}>
                         {deactivating && <ButtonSpinner />}
                         <span className={deactivating ? 'opacity-0' : ''}>Submit</span>
                     </button>
@@ -82,5 +80,6 @@ export default function ConfirmDeactiveAccount(props) {
 ConfirmDeactiveAccount.propTypes = {
     confirmationModal: PropTypes.bool,
     setConfirmationModal: PropTypes.func,
-    deactivating: PropTypes.bool
+    deactivating: PropTypes.bool,
+    deactivate: PropTypes.func
 };
