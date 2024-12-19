@@ -54,6 +54,11 @@ function responseSuccess(response) {
 
         history.replaceState('', null, request.authenticated.route);
         location.reload();
+    } else if (request.adminRequest?.codes.includes(status)) {
+        setToast('error', 'Access denied!');
+
+        history.replaceState('/', null, request.adminRequest.route);
+        location.reload();
     } else {
         return response;
     }
