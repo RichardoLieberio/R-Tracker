@@ -43,6 +43,10 @@ expenseSchema.statics.deleteExpense = async function(_id, user_id) {
     return !!await this.findOneAndDelete({_id, user_id});
 }
 
+expenseSchema.statics.deleteAllExpense = async function(user_id, session) {
+    await this.deleteMany({user_id}, {session});
+}
+
 const Expense = mongoose.model('Expense', expenseSchema);
 
 module.exports = Expense;
