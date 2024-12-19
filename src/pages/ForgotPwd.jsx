@@ -3,6 +3,7 @@ import {useLocation} from 'react-router-dom';
 import {useDispatch} from 'react-redux';
 
 import {axiosController} from '../services/axios';
+import {getToast} from '../services/toastService';
 
 import {changePage} from '../redux/webSlice';
 
@@ -19,6 +20,7 @@ export default function ForgotPwd() {
     const dispatch = useDispatch();
 
     useEffect(function() {
+        getToast();
         dispatch(changePage(location.pathname));
 
         return function() {
