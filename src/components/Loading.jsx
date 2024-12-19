@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import {useSelector} from 'react-redux';
 import {useMediaQuery} from '@mui/material';
 
 import themeConfig from '../../config/theme';
@@ -7,7 +8,9 @@ import breakpoints from '../../config/breakpoints';
 import {HashLoader} from 'react-spinners';
 
 export default function Loading(props) {
-    const {defaultSize, size, theme} = props;
+    const {defaultSize, size} = props;
+
+    const theme = useSelector((state) => state.web.theme);
 
     const phoneBreakpoint = useMediaQuery(`(min-width: ${breakpoints.phone})`);
     const tabletBreakpoint = useMediaQuery(`(min-width: ${breakpoints.tablet})`);
@@ -29,6 +32,5 @@ export default function Loading(props) {
 
 Loading.propTypes = {
     defaultSize: PropTypes.bool,
-    size: PropTypes.number,
-    theme: PropTypes.string
+    size: PropTypes.number
 };
