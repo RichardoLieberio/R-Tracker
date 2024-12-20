@@ -17,6 +17,25 @@ function getBgPrimaryColor(theme) {
     }
 }
 
+function getBgNeutral10Color(theme) {
+    switch (theme) {
+        case 'red':
+            return '!bg-red-neutral/10';
+        case 'green':
+            return '!bg-green-neutral/10';
+        case 'blue':
+            return '!bg-blue-neutral/10';
+        case 'yellow':
+            return '!bg-yellow-neutral/10';
+        case 'teal':
+            return '!bg-teal-neutral/10';
+        case 'dark':
+            return '!bg-dark-neutral/10';
+        default:
+            return '!bg-purple-neutral/10';
+    }
+}
+
 function getBgHighlightColor(theme) {
     switch (theme) {
         case 'red':
@@ -280,6 +299,25 @@ function getOppositeTextColor(theme) {
             return '!text-dark-oppositeText';
         default:
             return '!text-purple-oppositeText';
+    }
+}
+
+function getTextNeutralColor(theme) {
+    switch (theme) {
+        case 'red':
+            return '!text-red-neutral';
+        case 'green':
+            return '!text-green-neutral';
+        case 'blue':
+            return '!text-blue-neutral';
+        case 'yellow':
+            return '!text-yellow-neutral';
+        case 'teal':
+            return '!text-teal-neutral';
+        case 'dark':
+            return '!text-dark-neutral';
+        default:
+            return '!text-purple-neutral';
     }
 }
 
@@ -663,11 +701,49 @@ function getShadowColor(theme) {
     }
 }
 
+function getScrollbarTrackBackground(theme) {
+    switch (theme) {
+        case 'red':
+            return '!scrollbar-track-red-background';
+        case 'green':
+            return '!scrollbar-track-green-background';
+        case 'blue':
+            return '!scrollbar-track-blue-background';
+        case 'yellow':
+            return '!scrollbar-track-yellow-background';
+        case 'teal':
+            return '!scrollbar-track-teal-background';
+        case 'dark':
+            return '!scrollbar-track-dark-background';
+        default:
+            return '!scrollbar-track-purple-background';
+    }
+}
+
+function getScrollbarThumbText(theme) {
+    switch (theme) {
+        case 'red':
+            return '!scrollbar-thumb-red-text';
+        case 'green':
+            return '!scrollbar-thumb-green-text';
+        case 'blue':
+            return '!scrollbar-thumb-blue-text';
+        case 'yellow':
+            return '!scrollbar-thumb-yellow-text';
+        case 'teal':
+            return '!scrollbar-thumb-teal-text';
+        case 'dark':
+            return '!scrollbar-thumb-dark-text';
+        default:
+            return '!scrollbar-thumb-purple-text';
+    }
+}
+
 export {
-    getBgPrimaryColor, getBgHighlightColor, getBgErrorColor, getBackgroundColor,
+    getBgPrimaryColor, getBgNeutral10Color, getBgHighlightColor, getBgErrorColor, getBackgroundColor,
     getHoverBgHighlightColor, getHoverBgErrorColor, getHoverBgError60Color, getHoverBgNeutral50Color,
     getDisabledBgColor, getDisabledBgNeutralColor, getDisabledBgNeutral30Color, getDisabledBgHighlightColor,
-    getTextColor, getTextPrimaryColor, getOppositeTextColor, getTextHighlightColor, getTextLinkColor, getTextDisabledColor, getTextErrorColor,
+    getTextColor, getTextPrimaryColor, getOppositeTextColor, getTextNeutralColor, getTextHighlightColor, getTextLinkColor, getTextDisabledColor, getTextErrorColor,
     getHoverOppositeTextColor, getHoverTextHighlightColor,
     getDisabledOppositeTextColor,
     getFromSecondaryColor, getToPrimaryColor,
@@ -675,5 +751,6 @@ export {
     getHoverBorderHighlightColor,
     getFocusBorderPrimaryColor, getFocusBorderHighlightColor,
     getOutlinePrimaryColor, getOutlineTextColor, getOutlineErrorColor,
-    getShadowColor
+    getShadowColor,
+    getScrollbarTrackBackground, getScrollbarThumbText
 };
