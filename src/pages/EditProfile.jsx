@@ -236,7 +236,7 @@ export default function EditProfile() {
     return (
         <HelmetProvider>
             <EditProfileHead />
-            <section className="w-1/3 min-w-56 phone:min-w-72 tablet:min-w-80 desktop:min-w-96 mx-auto py-8 flex flex-col gap-12">
+            <section className="w-1/3 min-w-56 phone:min-w-72 tablet:min-w-80 desktop:min-w-96 mx-auto py-8 pb-16 flex flex-col gap-12">
                 <section className="flex flex-col gap-8">
                     <header className="flex flex-col gap-1">
                         <h2 className="text-xl font-semibold">My Account</h2>
