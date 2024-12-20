@@ -17,10 +17,10 @@ export const userPageSlice = createSlice({
             state.orderBy = action.payload;
         },
         setPage: function(state, action) {
-            state.page = action.payload;
+            state.page = action.payload < 1 ? 1 : action.payload;
         },
         setRowsPerPage: function(state, action) {
-            state.rowsPerPage = state.rowsOption.include(action.payload) ? action.payload : 5;
+            state.rowsPerPage = state.rowsOption.includes(action.payload) ? action.payload : 5;
         }
     }
 });
