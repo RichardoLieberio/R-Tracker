@@ -1,3 +1,5 @@
+import scrollbar from 'tailwind-scrollbar';
+
 import breakpoints from './config/breakpoints';
 import theme from './config/theme';
 
@@ -14,6 +16,8 @@ export default {
       colors: theme,
     },
   },
-  plugins: [],
+  plugins: [
+    scrollbar,
+  ],
 }
 
