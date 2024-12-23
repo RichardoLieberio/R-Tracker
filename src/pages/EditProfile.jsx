@@ -244,7 +244,7 @@ export default function EditProfile() {
                     </header>
                     <main className="flex flex-col gap-4">
                         <div className="relative flex flex-col">
-                            <span className={`px-2 absolute left-1 -top-3 text-sm ${getBackgroundColor(theme)} transition-transform cursor-text`}>Name</span>
+                            <span className={`px-2 absolute left-1 -top-3 text-sm ${getBackgroundColor(theme)}`}>Name</span>
                             <span className={`w-full px-3 py-2 pr-10 truncate border ${getBorderNeutralColor(theme)} rounded-md`}>{userInfo.name}</span>
                             <div onClick={openNameModal} className={`px-3 py-3 absolute right-0 top-0 rounded-tr-md rounded-br-md ${savingNewName ? 'cursor-default' : 'cursor-pointer'}`}>
                                 {
@@ -256,7 +256,7 @@ export default function EditProfile() {
                             <EditNameModal {...editNameProps} />
                         </div>
                         <div className="relative flex flex-col">
-                            <span className={`px-2 absolute left-1 -top-3 text-sm ${getBackgroundColor(theme)} transition-transform cursor-text`}>Email</span>
+                            <span className={`px-2 absolute left-1 -top-3 text-sm ${getBackgroundColor(theme)}`}>Email</span>
                             <span className={`w-full px-3 py-2 pr-10 truncate border ${getBorderNeutralColor(theme)} rounded-md`}>{userInfo.email}</span>
                             <div onClick={openEmailModal} className={`px-3 py-3 absolute right-0 top-0 rounded-tr-md rounded-br-md ${savingNewEmail ? 'cursor-default' : 'cursor-pointer'}`}>
                                 {
