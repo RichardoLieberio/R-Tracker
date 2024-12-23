@@ -26,13 +26,13 @@ async function deleteAccount(req, res) {
     if (!mongooseIdValidation(req.params.id)) throw new TransactionError({status: 404, msg: 'Failed to delete account. Account not found.'});
     if (req.userId === req.params.id) throw new TransactionError({status: 400, msg: 'Cannnot delete your own account.'});
 
-    const {email} = await User.deleteAccount(req.params.id, req.mongooseSession);
+    const {_id, email} = await User.deleteAccount(req.params.id, req.mongooseSession);
     if (!email) throw new TransactionError({status: 404, msg: 'Failed to delete account. Account not found.'});
 
     await UserToken.deleteAccount(req.userId, req.mongooseSession);
     await Expense.deleteAllExpense(req.userId, req.mongooseSession);
 
-    res.json({status: 200, msg: 'User account deleted successfully.'});
+    res.json({status: 200, msg: 'User account deleted successfully.', userId: _id});
 }
 
 async function changePwd(req, res) {
