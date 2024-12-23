@@ -37,7 +37,7 @@ export default function ConfirmDeactiveAccount(props) {
     }
 
     function deactivateHandler() {
-        confirmation === process.env.DEACTIVATE_CONFIRMATION_WORD && deactivate();
+        confirmation === process.env.CONFIRMATION_WORD && deactivate();
     }
 
     function enterKeyDown(e) {
@@ -61,13 +61,13 @@ export default function ConfirmDeactiveAccount(props) {
                         </ul>
                     </div>
                     <form onKeyDown={enterKeyDown} className="flex flex-col gap-1" autoCapitalize="off" autoComplete="off" spellCheck="false">
-                        <span>To confirm this, type <b>&quot;{process.env.DEACTIVATE_CONFIRMATION_WORD}&quot;</b></span>
+                        <span>To confirm this, type <b>&quot;{process.env.CONFIRMATION_WORD}&quot;</b></span>
                         <input type="text" value={confirmation} disabled={deactivating} onChange={confirmationHandler} className={css(theme).defaultInput} />
                     </form>
                 </main>
                 <footer className="flex items-center justify-end gap-4">
                     <button onClick={() => setConfirmationModal(false)} className={`py-1 px-4 ${theme !== 'dark' ? getTextPrimaryColor(theme) : ''} rounded-md ${getHoverTextHighlightColor(theme)} ${getHoverBorderHighlightColor(theme)}`}>Close</button>
-                    <button onClick={deactivateHandler} disabled={deactivating || confirmation !== process.env.DEACTIVATE_CONFIRMATION_WORD} className={`py-1 ${phoneBreakpoint ? 'px-8' : 'px-4'} relative ${getOppositeTextColor(theme)} ${getBgErrorColor(theme)} rounded-md ${getHoverBgError60Color(theme)} ${getDisabledBgNeutralColor(theme)} disabled:cursor-not-allowed`}>
+                    <button onClick={deactivateHandler} disabled={deactivating || confirmation !== process.env.CONFIRMATION_WORD} className={`py-1 ${phoneBreakpoint ? 'px-8' : 'px-4'} relative ${getOppositeTextColor(theme)} ${getBgErrorColor(theme)} rounded-md ${getHoverBgError60Color(theme)} ${getDisabledBgNeutralColor(theme)} disabled:cursor-not-allowed`}>
                         {deactivating && <ButtonSpinner />}
                         <span className={deactivating ? 'opacity-0' : ''}>Submit</span>
                     </button>
