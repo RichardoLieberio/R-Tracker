@@ -7,7 +7,8 @@ export const userPageSlice = createSlice({
         orderBy: 'created_at',
         page: 1,
         rowsPerPage: 5,
-        rowsOption: [5, 10, 25]
+        rowsOption: [5, 10, 25],
+        user: null
     },
     reducers: {
         setOrder: function(state, action) {
@@ -21,10 +22,13 @@ export const userPageSlice = createSlice({
         },
         setRowsPerPage: function(state, action) {
             state.rowsPerPage = state.rowsOption.includes(action.payload) ? action.payload : 5;
+        },
+        setUser: function(state, action) {
+            state.user = action.payload;
         }
     }
 });
 
-export const {setOrder, setOrderBy, setPage, setRowsPerPage} = userPageSlice.actions;
+export const {setOrder, setOrderBy, setPage, setRowsPerPage, setUser} = userPageSlice.actions;
 
 export default userPageSlice.reducer;
