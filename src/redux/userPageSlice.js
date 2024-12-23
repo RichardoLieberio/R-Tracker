@@ -27,8 +27,8 @@ export const userPageSlice = createSlice({
         setUser: function(state, action) {
             state.user = action.payload;
         },
-        clearUser: function(state) {
-            state.user = null;
+        clearUser: function(state, action) {
+            if (state.user._id === action.payload) state.user = null;
         },
         addProcess: function(state, action) {
             state.processing = [...state.processing, action.payload];
