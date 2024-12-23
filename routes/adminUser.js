@@ -12,6 +12,7 @@ const routes = express.Router();
 
 routes.get('/', errorHandler(controller.getAllUsers));
 routes.patch('/:id', csrfHandler(csrfProtection), errorHandler(validation.updateUser, true), transactionHandler(controller.updateUser));
+routes.delete('/:id', csrfHandler(csrfProtection), transactionHandler(controller.deleteAccount))
 routes.patch('/:id/change-passsword', csrfHandler(csrfProtection), errorHandler(validation.changePwd, true), transactionHandler(controller.changePwd));
 routes.post('/:id/block-token', csrfHandler(csrfProtection), errorHandler(controller.blockToken));
 routes.post('/:id/whitelist', csrfHandler(csrfProtection), errorHandler(controller.whitelist));
