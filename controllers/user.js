@@ -94,12 +94,12 @@ async function changePwd(req, res) {
 }
 
 async function deleteAccount(req, res) {
-    const {email, name} = await User.deleteAccount(req.userId, req.mongooseSession);
-    if (!email) return notFoundHandler(req, res, 'Failed to delete account. Account not found.');
+    const account = await User.deleteAccount(req.userId, req.mongooseSession);
+    if (!account) return notFoundHandler(req, res, 'Failed to delete account. Account not found.');
 
     await UserToken.deleteAccount(req.userId, req.mongooseSession);
     await Expense.deleteAllExpense(req.userId, req.mongooseSession);
-    sendMail('account-deleted', {to: email, name});
+    sendMail('account-deleted', {to: account.email, name: account.name});
 
     res.json({status: 200, msg: 'Your account has been deleted.'});
 }
