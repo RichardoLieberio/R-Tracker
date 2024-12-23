@@ -22,7 +22,7 @@ import {IoSettingsSharp} from 'react-icons/io5';
 import ButtonSpinner from './ButtonSpinner';
 
 export default function UserModal(props) {
-    const {userModal, setUserModal, deleteAccountModal} = props;
+    const {userModal, setUserModal, setDeleteAccountModal} = props;
 
     const theme = useSelector((state) => state.web.theme);
     const user = useSelector((state) => state.userPage.user);
@@ -97,7 +97,7 @@ export default function UserModal(props) {
                                 </button>
                             </MenuItem>
                             <MenuItem>
-                                <button onClick={() => deleteAccountModal(true)} className={`px-4 py-2 flex items-center gap-2 text-start ${getTextErrorColor(theme)} ${getHoverBgNeutral50Color(theme)}`}>
+                                <button onClick={() => setDeleteAccountModal(true)} className={`px-4 py-2 flex items-center gap-2 text-start ${getTextErrorColor(theme)} ${getHoverBgNeutral50Color(theme)}`}>
                                     <FaTrashAlt className="flex-shrink-0 text-lg" />
                                     Delete account
                                 </button>
@@ -113,5 +113,5 @@ export default function UserModal(props) {
 UserModal.propTypes = {
     userModal: PropTypes.bool,
     setUserModal: PropTypes.func,
-    deleteAccountModal: PropTypes.func
+    setDeleteAccountModal: PropTypes.func
 };
