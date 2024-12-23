@@ -6,6 +6,7 @@ import {useMediaQuery} from '@mui/material';
 import breakpoints from '../../config/breakpoints';
 
 import {axiosController} from '../services/axios';
+import getCSRFToken from '../services/getCSRFToken';
 import {getToast} from '../services/toastService';
 
 import {changePage} from '../redux/webSlice';
@@ -20,11 +21,15 @@ import {
 
 import UserTable from '../components/UserTable';
 import UserDetail from '../components/UserDetail';
+import UserModal from '../components/UserModal';
+import ConfirmDeleteAccount from '../components/ConfirmDeleteAccount';
 
 export default function User() {
+    const [csrfToken, setCSRFToken] = useState('');
     const [search, setSearch] = useState('');
     const [passUsers, setPassUsers] = useState(null);
     const [userModal, setUserModal] = useState(false);
+    const [deleteAccountModal, setDeleteAccountModal] = useState(false);
 
     const location = useLocation();
     const dispatch = useDispatch();
@@ -32,13 +37,16 @@ export default function User() {
     const theme = useSelector((state) => state.web.theme);
     const accessToken = useSelector((state) => state.auth.accessToken);
     const users = useSelector((state) => state.data.users);
+    const user = useSelector((state) => state.userPage.user);
+    const processing = useSelector((state) => state.userPage.processing);
 
     const desktopBreakpoint = useMediaQuery(`(min-width: ${breakpoints.desktop})`);
 
     useEffect(function() {
         getToast();
-
         dispatch(changePage(location.pathname));
+
+        getCSRFToken(setCSRFToken);
         !users && contr.getAllUsers(accessToken);
 
         return function() {
@@ -50,10 +58,26 @@ export default function User() {
         if (users) setPassUsers(users);
     }, [users]);
 
+    useEffect(function() {
+        if (!user) {
+            setUserModal(false);
+            setDeleteAccountModal(false);
+        }
+    }, [user]);
+
+    useEffect(function() {
+        setUserModal(false);
+        setDeleteAccountModal(false);
+    }, [desktopBreakpoint]);
+
     function searchHandler(e) {
         setSearch(e.target.value);
         if (e.target.value.length >= 3) setPassUsers(users?.filter(({name, email}) => name.toLowerCase().includes(e.target.value.toLowerCase()) || email.toLowerCase().includes(e.target.value.toLowerCase())))
         else if (search.length >= 3) setPassUsers(users);
+    }
+
+    function deleteAccount() {
+        if (!processing.includes(user._id)) contr.deleteUserAccount(user._id, csrfToken, accessToken);
     }
 
     return (
@@ -64,11 +88,14 @@ export default function User() {
             </header>
             <main className="w-full desktop:flex desktop:gap-24">
                 {
-                    passUsers && <UserTable users={passUsers} />
+                    passUsers && <UserTable users={passUsers} setUserModal={setUserModal} />
                 }
                 {
-                    desktopBreakpoint && <UserDetail />
+                    desktopBreakpoint
+                    ? <UserDetail setDeleteAccountModal={setDeleteAccountModal} />
+                    : <UserModal userModal={userModal} setUserModal={setUserModal} setDeleteAccountModal={setDeleteAccountModal} />
                 }
+                <ConfirmDeleteAccount deleteAccountModal={deleteAccountModal} setDeleteAccountModal={setDeleteAccountModal} deleteAccount={deleteAccount} />
             </main>
         </section>
     );
