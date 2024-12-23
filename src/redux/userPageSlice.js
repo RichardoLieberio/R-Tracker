@@ -25,10 +25,13 @@ export const userPageSlice = createSlice({
         },
         setUser: function(state, action) {
             state.user = action.payload;
+        },
+        clearUser: function(state) {
+            state.user = null;
         }
     }
 });
 
-export const {setOrder, setOrderBy, setPage, setRowsPerPage, setUser} = userPageSlice.actions;
+export const {setOrder, setOrderBy, setPage, setRowsPerPage, setUser, clearUser} = userPageSlice.actions;
 
 export default userPageSlice.reducer;
