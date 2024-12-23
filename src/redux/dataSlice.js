@@ -12,7 +12,7 @@ export const dataSlice = createSlice({
             state.users = action.payload;
         },
         deleteUser: function(state, action) {
-            state.user = state.user.filter(user => user._id !== action.payload);
+            state.users = state.users.filter(user => user._id !== action.payload);
         }
     }
 });
