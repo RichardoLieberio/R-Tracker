@@ -12,17 +12,19 @@ import {changePage} from '../redux/webSlice';
 
 import contr from '../controllers/user';
 
-import UserTable from '../components/UserTable';
-
 import {
     getBackgroundColor,
     getBorderNeutralColor,
     getFocusBorderPrimaryColor, getFocusBorderHighlightColor
 } from '../css/color';
 
+import UserTable from '../components/UserTable';
+import UserDetail from '../components/UserDetail';
+
 export default function User() {
     const [search, setSearch] = useState('');
     const [passUsers, setPassUsers] = useState(null);
+    const [userModal, setUserModal] = useState(false);
 
     const location = useLocation();
     const dispatch = useDispatch();
@@ -65,10 +67,7 @@ export default function User() {
                     passUsers && <UserTable users={passUsers} />
                 }
                 {
-                    desktopBreakpoint &&
-                    <div className="w-1/2 h-96 sticky top-24 bg-red-200">
-                        hello
-                    </div>
+                    desktopBreakpoint && <UserDetail />
                 }
             </main>
         </section>
