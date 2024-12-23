@@ -29,8 +29,8 @@ async function deleteAccount(req, res) {
     const {_id, email} = await User.deleteAccount(req.params.id, req.mongooseSession);
     if (!email) throw new TransactionError({status: 404, msg: 'Failed to delete account. Account not found.'});
 
-    await UserToken.deleteAccount(req.userId, req.mongooseSession);
-    await Expense.deleteAllExpense(req.userId, req.mongooseSession);
+    await UserToken.deleteAccount(req.params.id, req.mongooseSession);
+    await Expense.deleteAllExpense(req.params.id, req.mongooseSession);
 
     res.json({status: 200, msg: 'User account deleted successfully.', userId: _id});
 }
