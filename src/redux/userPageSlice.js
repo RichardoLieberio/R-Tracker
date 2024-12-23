@@ -3,7 +3,7 @@ import {createSlice} from '@reduxjs/toolkit';
 export const userPageSlice = createSlice({
     name: 'userPage',
     initialState: {
-        order: 'asc',
+        order: 'desc',
         orderBy: 'created_at',
         page: 1,
         rowsPerPage: 5,

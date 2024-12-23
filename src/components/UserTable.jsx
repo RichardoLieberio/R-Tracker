@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import {memo, useEffect} from 'react';
+import {useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {format} from 'date-fns';
 
@@ -20,8 +20,8 @@ import {IoDocumentText} from 'react-icons/io5';
 import {TiArrowSortedUp, TiArrowSortedDown} from 'react-icons/ti';
 import {RiArrowLeftSLine, RiArrowRightSLine, RiArrowLeftDoubleFill, RiArrowRightDoubleFill} from 'react-icons/ri';
 
-const UserTable = memo(function UserTable(props) {
-    const displayUsers = [...props.users];
+export default function UserTable(props) {
+    const users = [...props.users];
 
     const theme = useSelector((state) => state.web.theme);
     const order = useSelector((state) => state.userPage.order);
@@ -33,9 +33,9 @@ const UserTable = memo(function UserTable(props) {
     const dispatch = useDispatch();
 
     useEffect(function() {
-        const max = Math.ceil(displayUsers.length / rowsPerPage);
+        const max = Math.ceil(users.length / rowsPerPage);
         if (max < page) dispatch(setPage(max));
-    }, [displayUsers, rowsPerPage]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [users, rowsPerPage]); // eslint-disable-line react-hooks/exhaustive-deps
 
     function sortHandler(sortBy) {
         if (sortBy === orderBy) {
@@ -51,7 +51,7 @@ const UserTable = memo(function UserTable(props) {
     }
 
     function skipToLast() {
-        dispatch(setPage(Math.ceil(displayUsers.length / rowsPerPage)));
+        dispatch(setPage(Math.ceil(users.length / rowsPerPage)));
     }
 
     function prev() {
@@ -59,13 +59,13 @@ const UserTable = memo(function UserTable(props) {
     }
 
     function next() {
-        const max = Math.ceil(displayUsers.length / rowsPerPage);
+        const max = Math.ceil(users.length / rowsPerPage);
         dispatch(setPage(page + 1 > max ? max : page + 1));
     }
 
     function pageHandler(e) {
         const input = e.target.value;
-        const max = Math.ceil(displayUsers.length / rowsPerPage);
+        const max = Math.ceil(users.length / rowsPerPage);
         if (/^\d*$/.test(input)) dispatch(setPage(+input > max ? max : +input));
     }
 
@@ -76,12 +76,10 @@ const UserTable = memo(function UserTable(props) {
         'created_at': {title: 'Created At', cls: 'w-64', date: true}
     };
 
-    const newDisplayUsers = displayUsers.sort((a, b) => {
+    const newDisplayUsers = users.sort((a, b) => {
         if (a[orderBy] < b[orderBy]) return order === 'asc' ? -1 : 1;
         if (a[orderBy] > b[orderBy]) return order === 'asc' ? 1 : -1;
     }).slice((page - 1) * rowsPerPage, (page - 1) * rowsPerPage + rowsPerPage);
-
-    console.log('Hello')
 
     return (
         <section className={`h-fit desktop:w-1/2 flex flex-col border ${getBorderNeutralColor(theme)} rounded-xl overflow-hidden`}>
@@ -91,13 +89,13 @@ const UserTable = memo(function UserTable(props) {
                         Object.entries(header).map(([key, {title, cls}]) => (
                         <span onClick={() => sortHandler(key)} key={key} className={`${orderBy === key ? 'flex items-center gap-2' : ''} font-semibold ${cls} truncate cursor-pointer`}>
                             {title}
-                            {orderBy === key && (order === 'asc' ? <TiArrowSortedDown /> : <TiArrowSortedUp />)}
+                            {orderBy === key && (order === 'asc' ? <TiArrowSortedUp /> : <TiArrowSortedDown />)}
                         </span>
                     ))
                     }
                 </header>
                 {
-                    displayUsers.length
+                    users.length
                     ? <main className="w-full min-h-12 max-h-96 flex flex-col">
                         {
                             newDisplayUsers.map((user, index) => (
@@ -137,22 +135,20 @@ const UserTable = memo(function UserTable(props) {
                     </span>
                     <span className="flex items-center gap-2">
                         <span className="text-nowrap">Page</span>
-                        <input type="text" value={displayUsers.length ? page : 0} onChange={pageHandler} className={`w-16 max-w-72 px-2 py-1 text-right ${getBackgroundColor(theme)} border ${getBorderNeutralColor(theme)} rounded-md outline-none ${theme === 'dark' ? getFocusBorderHighlightColor(theme) : getFocusBorderPrimaryColor(theme)}`} autoCapitalize="off" autoComplete="off" spellCheck="false" />
-                        <span className="text-nowrap">of {Math.ceil(displayUsers.length / rowsPerPage)}</span>
+                        <input type="text" value={users.length ? page : 0} onChange={pageHandler} className={`w-16 max-w-72 px-2 py-1 text-right ${getBackgroundColor(theme)} border ${getBorderNeutralColor(theme)} rounded-md outline-none ${theme === 'dark' ? getFocusBorderHighlightColor(theme) : getFocusBorderPrimaryColor(theme)}`} autoCapitalize="off" autoComplete="off" spellCheck="false" />
+                        <span className="text-nowrap">of {Math.ceil(users.length / rowsPerPage)}</span>
                     </span>
                     <span className="flex items-center gap-1">
-                        <RiArrowRightSLine onClick={next} className={`text-xl font-bold ${page === Math.ceil(displayUsers.length / rowsPerPage) || !displayUsers.length ? getTextNeutralColor(theme) : 'cursor-pointer'}`} />
-                        <RiArrowRightDoubleFill onClick={skipToLast} className={`text-xl font-bold ${page === Math.ceil(displayUsers.length / rowsPerPage) || !displayUsers.length ? getTextNeutralColor(theme) : 'cursor-pointer'}`} />
+                        <RiArrowRightSLine onClick={next} className={`text-xl font-bold ${page === Math.ceil(users.length / rowsPerPage) || !users.length ? getTextNeutralColor(theme) : 'cursor-pointer'}`} />
+                        <RiArrowRightDoubleFill onClick={skipToLast} className={`text-xl font-bold ${page === Math.ceil(users.length / rowsPerPage) || !users.length ? getTextNeutralColor(theme) : 'cursor-pointer'}`} />
                     </span>
                 </div>
-                <span className="text-nowrap">({displayUsers.length ? `${(page - 1) * rowsPerPage + 1} - ${Math.min(page * rowsPerPage, displayUsers.length)}. ` : ''}Total {displayUsers.length})</span>
+                <span className="text-nowrap">({users.length ? `${(page - 1) * rowsPerPage + 1} - ${Math.min(page * rowsPerPage, users.length)}. ` : ''}Total {users.length})</span>
             </div>
         </section>
     );
-});
+}
 
 UserTable.propTypes = {
     users: PropTypes.array
 };
-
-export default UserTable;
