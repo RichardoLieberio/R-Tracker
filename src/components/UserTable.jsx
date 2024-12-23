@@ -3,7 +3,7 @@ import {useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {format} from 'date-fns';
 
-import {setOrder, setOrderBy, setPage, setRowsPerPage} from '../redux/userPageSlice';
+import {setOrder, setOrderBy, setPage, setRowsPerPage, setUser} from '../redux/userPageSlice';
 
 import {
     getBackgroundColor, getBgNeutral10Color,
@@ -82,7 +82,7 @@ export default function UserTable(props) {
     }).slice((page - 1) * rowsPerPage, (page - 1) * rowsPerPage + rowsPerPage);
 
     return (
-        <section className={`h-fit desktop:w-1/2 flex flex-col border ${getBorderNeutralColor(theme)} rounded-xl overflow-hidden`}>
+        <section className={`desktop:flex-1 desktop:whitespace-nowrap desktop:overflow-hidden w-full desktop:w-auto h-fit flex flex-col border ${getBorderNeutralColor(theme)} rounded-xl overflow-hidden`}>
             <div className={`w-full relative flex flex-col overflow-auto scrollbar-thin ${getScrollbarTrackBackground(theme)} ${getScrollbarThumbText(theme)}`}>
                 <header className={`w-max px-6 py-3 sticky top-0 flex items-center gap-12 ${getBackgroundColor(theme)} border-b ${getBorderNeutralColor(theme)}`}>
                     {
@@ -99,7 +99,7 @@ export default function UserTable(props) {
                     ? <main className="w-full min-h-12 max-h-96 flex flex-col">
                         {
                             newDisplayUsers.map((user, index) => (
-                                <div key={index} className={`w-max px-6 py-3 flex items-center gap-12 ${index % 2 === 0 ? getBgNeutral10Color(theme) : getBackgroundColor(theme)} ${getHoverBgNeutral50Color(theme)} cursor-pointer`}>
+                                <div onClick={() => dispatch(setUser(user))} key={index} className={`w-max px-6 py-3 flex items-center gap-12 ${index % 2 === 0 ? getBgNeutral10Color(theme) : getBackgroundColor(theme)} ${getHoverBgNeutral50Color(theme)} cursor-pointer`}>
                                     {
                                         Object.entries(header).map(([key, {cls, date}]) => <span key={key + index} className={`${cls} truncate`}>{date ? format(new Date(user[key]), 'MMMM dd, yyyy HH:mm:ss') : user[key]}</span>)
                                     }
@@ -150,5 +150,6 @@ export default function UserTable(props) {
 }
 
 UserTable.propTypes = {
-    users: PropTypes.array
+    users: PropTypes.array,
+    setUser: PropTypes.func
 };
