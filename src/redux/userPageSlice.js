@@ -8,7 +8,8 @@ export const userPageSlice = createSlice({
         page: 1,
         rowsPerPage: 5,
         rowsOption: [5, 10, 25],
-        user: null
+        user: null,
+        processing: []
     },
     reducers: {
         setOrder: function(state, action) {
@@ -28,10 +29,16 @@ export const userPageSlice = createSlice({
         },
         clearUser: function(state) {
             state.user = null;
+        },
+        addProcess: function(state, action) {
+            state.processing = [...state.processing, action.payload];
+        },
+        deleteProcess: function(state, action) {
+            state.processing = state.processing.filter(id => id !== action.payload);
         }
     }
 });
 
-export const {setOrder, setOrderBy, setPage, setRowsPerPage, setUser, clearUser} = userPageSlice.actions;
+export const {setOrder, setOrderBy, setPage, setRowsPerPage, setUser, clearUser, addProcess, deleteProcess} = userPageSlice.actions;
 
 export default userPageSlice.reducer;
