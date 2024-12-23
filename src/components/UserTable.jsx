@@ -22,6 +22,7 @@ import {RiArrowLeftSLine, RiArrowRightSLine, RiArrowLeftDoubleFill, RiArrowRight
 
 export default function UserTable(props) {
     const users = [...props.users];
+    const {setUserModal} = props;
 
     const theme = useSelector((state) => state.web.theme);
     const order = useSelector((state) => state.userPage.order);
@@ -69,6 +70,11 @@ export default function UserTable(props) {
         if (/^\d*$/.test(input)) dispatch(setPage(+input > max ? max : +input));
     }
 
+    function rowHandler(user) {
+        dispatch(setUser(user));
+        setUserModal(true);
+    }
+
     const header = {
         'email': {title: 'Email', cls: 'w-64'},
         'name': {title: 'Name', cls: 'w-48'},
@@ -99,7 +105,7 @@ export default function UserTable(props) {
                     ? <main className="w-full min-h-12 max-h-96 flex flex-col">
                         {
                             newDisplayUsers.map((user, index) => (
-                                <div onClick={() => dispatch(setUser(user))} key={index} className={`w-max px-6 py-3 flex items-center gap-12 ${index % 2 === 0 ? getBgNeutral10Color(theme) : getBackgroundColor(theme)} ${getHoverBgNeutral50Color(theme)} cursor-pointer`}>
+                                <div onClick={() => rowHandler(user)} key={index} className={`w-max px-6 py-3 flex items-center gap-12 ${index % 2 === 0 ? getBgNeutral10Color(theme) : getBackgroundColor(theme)} ${getHoverBgNeutral50Color(theme)} cursor-pointer`}>
                                     {
                                         Object.entries(header).map(([key, {cls, date}]) => <span key={key + index} className={`${cls} truncate`}>{date ? format(new Date(user[key]), 'MMMM dd, yyyy HH:mm:ss') : user[key]}</span>)
                                     }
@@ -151,5 +157,5 @@ export default function UserTable(props) {
 
 UserTable.propTypes = {
     users: PropTypes.array,
-    setUser: PropTypes.func
+    setUserModal: PropTypes.func
 };
