@@ -121,7 +121,7 @@ export default function UserDetail(props) {
                                 </div>
                                 <div className="relative flex flex-col">
                                     <span className={`px-2 absolute left-1 -top-3 text-sm ${getBackgroundColor(theme)}`}>Reason</span>
-                                    <span className={`px-3 py-2 text-wrap border ${getBorderNeutralColor(theme)} rounded-md break-words`}>{user.blacklist_reason ?? '-'}</span>
+                                    <span className={`px-3 py-2 text-wrap border ${getBorderNeutralColor(theme)} rounded-md break-words`}>{user.blacklist_reason || '-'}</span>
                                 </div>
                             </main>
                         </section>
