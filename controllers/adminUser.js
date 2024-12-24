@@ -47,14 +47,6 @@ async function changePwd(req, res) {
     res.json({status: 200, msg: 'User password changed successfully.'});
 }
 
-async function blockToken(req, res) {
-    if (!mongooseIdValidation(req.params.id)) return res.json({status: 404, msg: 'Failed to block token. User not found.'});
-    if (req.userId === req.params.id) return res.json({status: 400, msg: 'Cannnot block your own token.'});
-
-    await UserToken.clearToken(req.params.id);
-    res.json({status: 200, msg: 'User token blocked successfully.'});
-}
-
 async function whitelist(req, res) {
     if (!mongooseIdValidation(req.params.id)) return res.json({status: 404, msg: 'Failed to whitelist user. User not found.'});
     if (req.userId === req.params.id) return res.json({status: 400, msg: 'Cannnot whitelist yourself.'});
@@ -77,6 +69,14 @@ async function blacklist(req, res) {
     res.json({status: 200, msg: 'User blacklisted successfully.'});
 }
 
+async function blockToken(req, res) {
+    if (!mongooseIdValidation(req.params.id)) return res.json({status: 404, msg: 'Failed to block token. User not found.'});
+    if (req.userId === req.params.id) return res.json({status: 400, msg: 'Cannnot block your own token.'});
+
+    await UserToken.clearToken(req.params.id);
+    res.json({status: 200, msg: 'User token blocked successfully.'});
+}
+
 async function getUserExpenses(req, res) {
     if (!mongooseIdValidation(req.params.id)) throw new TransactionError({status: 404, msg: 'Failed to get expenses. User not found.'});
 
@@ -84,4 +84,4 @@ async function getUserExpenses(req, res) {
     res.json({status: 200, msg: 'Expenses retrieved successfully.', expenses});
 }
 
-module.exports = {getAllUsers, updateUser, deleteAccount, changePwd, blockToken, whitelist, blacklist, getUserExpenses};
+module.exports = {getAllUsers, updateUser, deleteAccount, changePwd, whitelist, blacklist, blockToken, getUserExpenses};
