@@ -12,12 +12,12 @@ import {
 } from '../css/color';
 
 import {Menu, MenuButton, MenuItems, MenuItem} from '@headlessui/react';
-import {FaUserCog, FaLock, FaHockeyPuck, FaUserAltSlash, FaTrashAlt} from 'react-icons/fa';
+import {FaUserCog, FaLock, FaHockeyPuck, FaUserAltSlash, FaUserCheck, FaTrashAlt} from 'react-icons/fa';
 import {IoSettingsSharp, IoDocumentText} from 'react-icons/io5';
 import ButtonSpinner from './ButtonSpinner';
 
 export default function UserDetail(props) {
-    const {setDeleteAccountModal} = props;
+    const {setBlacklistModal, setWhitelistModal, setDeleteAccountModal} = props;
 
     const theme = useSelector((state) => state.web.theme);
     const user = useSelector((state) => state.userPage.user);
@@ -57,10 +57,17 @@ export default function UserDetail(props) {
                                         </button>
                                     </MenuItem>
                                     <MenuItem>
-                                        <button className={`px-4 py-2 flex items-center gap-2 text-start ${getTextErrorColor(theme)} ${getHoverBgNeutral50Color(theme)}`}>
-                                            <FaUserAltSlash className="flex-shrink-0 text-lg" />
-                                            Blacklist
-                                        </button>
+                                        {
+                                            user.blacklisted
+                                            ?   <button onClick={() => setWhitelistModal(true)} className={`px-4 py-2 flex items-center gap-2 text-start ${getHoverBgNeutral50Color(theme)}`}>
+                                                    <FaUserCheck className="flex-shrink-0 text-lg" />
+                                                    Whitelist
+                                                </button>
+                                            :   <button onClick={() => setBlacklistModal(true)} className={`px-4 py-2 flex items-center gap-2 text-start ${getTextErrorColor(theme)} ${getHoverBgNeutral50Color(theme)}`}>
+                                                    <FaUserAltSlash className="flex-shrink-0 text-lg" />
+                                                    Blacklist
+                                                </button>
+                                        }
                                     </MenuItem>
                                     <MenuItem>
                                         <button onClick={() => setDeleteAccountModal(true)} className={`px-4 py-2 flex items-center gap-2 text-start ${getTextErrorColor(theme)} ${getHoverBgNeutral50Color(theme)}`}>
@@ -99,6 +106,26 @@ export default function UserDetail(props) {
                             </div>
                         </main>
                     </section>
+                    {
+                        user.blacklisted &&
+                        <section className="flex flex-col gap-8">
+                            <header className="flex items-center justify-between text-xl font-semibold">Blacklisted</header>
+                            <main className="flex flex-col gap-4">
+                                <div className="relative flex flex-col">
+                                    <span className={`px-2 absolute left-1 -top-3 text-sm ${getBackgroundColor(theme)}`}>Blacklisted By</span>
+                                    <span className={`px-3 py-2 text-wrap border ${getBorderNeutralColor(theme)} rounded-md break-words`}>{user.blacklisted_by.name}</span>
+                                </div>
+                                <div className="relative flex flex-col">
+                                    <span className={`px-2 absolute left-1 -top-3 text-sm ${getBackgroundColor(theme)}`}>Blacklisted At</span>
+                                    <span className={`px-3 py-2 text-wrap border ${getBorderNeutralColor(theme)} rounded-md break-words`}>{format(new Date(user.blacklisted_at), 'MMMM dd, yyyy HH:mm:ss')}</span>
+                                </div>
+                                <div className="relative flex flex-col">
+                                    <span className={`px-2 absolute left-1 -top-3 text-sm ${getBackgroundColor(theme)}`}>Reason</span>
+                                    <span className={`px-3 py-2 text-wrap border ${getBorderNeutralColor(theme)} rounded-md break-words`}>{user.blacklist_reason ?? '-'}</span>
+                                </div>
+                            </main>
+                        </section>
+                    }
                 </>
                 : <>
                     <IoDocumentText /> No data
@@ -110,5 +137,7 @@ export default function UserDetail(props) {
 }
 
 UserDetail.propTypes = {
+    setBlacklistModal: PropTypes.func,
+    setWhitelistModal: PropTypes.func,
     setDeleteAccountModal: PropTypes.func
 }
