@@ -35,8 +35,13 @@ export const userPageSlice = createSlice({
             if (state.user._id === action.payload) state.user = null;
         },
         checkAndAddBlacklist: function(state, action) {
-            const {_id, ...blacklistProps} = action.payload;
-            if (state.user._id === _id) state.user = {...state.user, ...blacklistProps};
+            const {data, setBlacklistModal} = action.payload;
+            const {_id, ...blacklistProps} = data;
+
+            if (state.user._id === _id) {
+                state.user = {...state.user, ...blacklistProps};
+                setBlacklistModal(false);
+            }
         },
         addProcess: function(state, action) {
             state.processing = [...state.processing, action.payload];
