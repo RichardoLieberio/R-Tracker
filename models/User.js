@@ -110,7 +110,8 @@ userSchema.statics.whitelist = async function(_id) {
 }
 
 userSchema.statics.blacklist = async function(_id, blacklist_reason, blacklisted_by, session) {
-    return !!await this.findOneAndUpdate({_id}, {blacklisted: true, blacklist_reason, blacklisted_by, blacklisted_at: Date.now()}, {session});
+    const result = await this.findOneAndUpdate({_id}, {blacklisted: true, blacklist_reason, blacklisted_by, blacklisted_at: Date.now()}, {session, new: true}).populate('blacklisted_by', 'name');
+    return result ? {_id: result._id, blacklisted: result.blacklisted, blacklist_reason: result.blacklist_reason, blacklisted_by: result.blacklisted_by.name, blacklisted_at: result.blacklisted_at} : null;
 }
 
 userSchema.methods.checkCredentials = async function(data) {
