@@ -34,6 +34,10 @@ export const userPageSlice = createSlice({
         clearUser: function(state, action) {
             if (state.user._id === action.payload) state.user = null;
         },
+        checkAndAddBlacklist: function(state, action) {
+            const {_id, ...blacklistProps} = action.payload;
+            if (state.user._id === _id) state.user = {...state.user, ...blacklistProps};
+        },
         addProcess: function(state, action) {
             state.processing = [...state.processing, action.payload];
         },
@@ -43,6 +47,6 @@ export const userPageSlice = createSlice({
     }
 });
 
-export const {setOrder, setOrderBy, setSearch, setPage, setRowsPerPage, setUser, clearUser, addProcess, deleteProcess} = userPageSlice.actions;
+export const {setOrder, setOrderBy, setSearch, setPage, setRowsPerPage, setUser, clearUser, checkAndAddBlacklist, addProcess, deleteProcess} = userPageSlice.actions;
 
 export default userPageSlice.reducer;
