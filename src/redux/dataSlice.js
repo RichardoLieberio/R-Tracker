@@ -18,12 +18,23 @@ export const dataSlice = createSlice({
                 return {...user, ...blacklistProps};
             });
         },
+        removeBlacklist: function(state, action) {
+            state.users = state.users.map(user => {
+                if (user._id === action.payload) {
+                    delete user.blacklisted;
+                    delete user.blacklist_reason;
+                    delete user.blacklisted_by;
+                    delete user.blacklisted_at;
+                }
+                return user;
+            });
+        },
         deleteUser: function(state, action) {
             state.users = state.users.filter(user => user._id !== action.payload);
         }
     }
 });
 
-export const {setUsers, addBlacklist, deleteUser} = dataSlice.actions;
+export const {setUsers, addBlacklist, removeBlacklist, deleteUser} = dataSlice.actions;
 
 export default dataSlice.reducer;
