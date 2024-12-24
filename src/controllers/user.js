@@ -2,8 +2,20 @@ import {toast} from 'react-toastify';
 import axios from '../services/axios';
 
 import store from '../redux/store';
-import {setUsers, deleteUser} from '../redux/dataSlice';
-import {clearUser, addProcess, deleteProcess} from '../redux/userPageSlice';
+import {setUsers, addBlacklist, deleteUser} from '../redux/dataSlice';
+import {clearUser} from '../redux/userPageSlice';
+
+import css from '../css/user';
+
+function inputErrorHandler(theme, error, value, setLabelClass, setInputClass, pwd=false) {
+    if (error) {
+        setLabelClass(value ? css(theme).labelTopError : css(theme).labelMiddleError);
+        setInputClass(pwd ? css(theme).pwdInputError : css(theme).defaultInputError);
+    } else {
+        setLabelClass(value ? css(theme).labelTopBlur : css(theme).labelMiddle);
+        setInputClass(pwd ? css(theme).pwdInput : css(theme).defaultInput);
+    }
+}
 
 async function getAllUsers(accessToken) {
     const config = {
@@ -32,9 +44,48 @@ async function getAllUsers(accessToken) {
     }
 }
 
-async function deleteUserAccount(id, csrfToken, accessToken) {
-    store.dispatch(addProcess(id));
+async function blacklistUser(id, reason, csrfToken, accessToken, setBlacklistError) {
+    const data = {reason};
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`,
+            'CSRF-Token': csrfToken
+        },
+        authenticated: {
+            codes: [401],
+            route: '/login'
+        },
+        adminRequest: {
+            codes: [403],
+            route: '/admin/user'
+        }
+    };
 
+    const response = await axios.patch(`/api/admin/user/${id}/blacklist`, data, config);
+    const status = response?.data?.status;
+
+    switch (status) {
+        case 200:
+            toast.success(response.data.msg);
+            store.dispatch(addBlacklist(response.data.data));
+            break;
+        case 400:
+            toast.error(response.data.msg);
+            break;
+        case 404:
+            toast.error(response.data.msg);
+            store.dispatch(deleteUser(id));
+            store.dispatch(clearUser(id));
+            break;
+        case 422:
+            setBlacklistError(response.data.msg);
+            toast.error(response.data.msg.reason);
+            break;
+    }
+}
+
+async function deleteUserAccount(id, csrfToken, accessToken) {
     const config = {
         headers: {
             'Content-Type': 'application/json',
@@ -65,12 +116,10 @@ async function deleteUserAccount(id, csrfToken, accessToken) {
             break;
         case 404:
             toast.error(response.data.msg);
-            store.dispatch(deleteUser(response.data.userId));
-            store.dispatch(clearUser(response.data.userId));
+            store.dispatch(deleteUser(id));
+            store.dispatch(clearUser(id));
             break;
     }
-
-    store.dispatch(deleteProcess(id));
 }
 
-export default {getAllUsers, deleteUserAccount};
+export default {inputErrorHandler, getAllUsers, blacklistUser, deleteUserAccount};
