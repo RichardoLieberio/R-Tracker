@@ -2,8 +2,8 @@ import {toast} from 'react-toastify';
 import axios from '../services/axios';
 
 import store from '../redux/store';
-import {setUsers, addBlacklist, deleteUser} from '../redux/dataSlice';
-import {clearUser, checkAndAddBlacklist} from '../redux/userPageSlice';
+import {setUsers, addBlacklist, removeBlacklist, deleteUser} from '../redux/dataSlice';
+import {clearUser, checkAndAddBlacklist, checkAndRemoveBlacklist} from '../redux/userPageSlice';
 
 import css from '../css/user';
 
@@ -87,6 +87,44 @@ async function blacklistUser(id, reason, csrfToken, accessToken, setBlacklistMod
     }
 }
 
+async function whitelistUser(id, csrfToken, accessToken, setWhitelistModal) {
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`,
+            'CSRF-Token': csrfToken
+        },
+        authenticated: {
+            codes: [401],
+            route: '/login'
+        },
+        adminRequest: {
+            codes: [403],
+            route: '/admin/user'
+        }
+    };
+
+    const response = await axios.patch(`/api/admin/user/${id}/whitelist`, {}, config);
+    const status = response?.data?.status;
+
+    switch (status) {
+        case 200:
+            toast.success(response.data.msg);
+            store.dispatch(removeBlacklist(response.data.userId));
+            store.dispatch(checkAndRemoveBlacklist(response.data.userId));
+            store.getState().userPage.user._id === id && setWhitelistModal(false);
+            break;
+        case 400:
+            toast.error(response.data.msg);
+            break;
+        case 404:
+            toast.error(response.data.msg);
+            store.dispatch(deleteUser(id));
+            store.dispatch(clearUser(id));
+            break;
+    }
+}
+
 async function deleteUserAccount(id, csrfToken, accessToken) {
     const config = {
         headers: {
@@ -124,4 +162,4 @@ async function deleteUserAccount(id, csrfToken, accessToken) {
     }
 }
 
-export default {inputErrorHandler, getAllUsers, blacklistUser, deleteUserAccount};
+export default {inputErrorHandler, getAllUsers, blacklistUser, whitelistUser, deleteUserAccount};
