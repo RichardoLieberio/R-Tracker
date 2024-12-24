@@ -10,6 +10,7 @@ import getCSRFToken from '../services/getCSRFToken';
 import {getToast} from '../services/toastService';
 
 import {changePage} from '../redux/webSlice';
+import {setSearch} from '../redux/userPageSlice';
 
 import contr from '../controllers/user';
 
@@ -26,7 +27,6 @@ import ConfirmDeleteAccount from '../components/ConfirmDeleteAccount';
 
 export default function User() {
     const [csrfToken, setCSRFToken] = useState('');
-    const [search, setSearch] = useState('');
     const [passUsers, setPassUsers] = useState(null);
     const [userModal, setUserModal] = useState(false);
     const [deleteAccountModal, setDeleteAccountModal] = useState(false);
@@ -37,6 +37,7 @@ export default function User() {
     const theme = useSelector((state) => state.web.theme);
     const accessToken = useSelector((state) => state.auth.accessToken);
     const users = useSelector((state) => state.data.users);
+    const search = useSelector((state) => state.userPage.search);
     const user = useSelector((state) => state.userPage.user);
     const processing = useSelector((state) => state.userPage.processing);
 
@@ -55,8 +56,11 @@ export default function User() {
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(function() {
-        if (users) setPassUsers(users);
-    }, [users]);
+        if (users) {
+            if (search.length >= 3) setPassUsers(users.filter(({name, email}) => name.toLowerCase().includes(search.toLowerCase()) || email.toLowerCase().includes(search.toLowerCase())))
+            else setPassUsers(users);
+        }
+    }, [users]); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(function() {
         if (!user) {
@@ -71,7 +75,7 @@ export default function User() {
     }, [desktopBreakpoint]);
 
     function searchHandler(e) {
-        setSearch(e.target.value);
+        dispatch(setSearch(e.target.value));
         if (e.target.value.length >= 3) setPassUsers(users?.filter(({name, email}) => name.toLowerCase().includes(e.target.value.toLowerCase()) || email.toLowerCase().includes(e.target.value.toLowerCase())))
         else if (search.length >= 3) setPassUsers(users);
     }
