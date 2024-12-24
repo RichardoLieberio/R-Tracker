@@ -26,7 +26,7 @@ async function getInfo(setLoading, useAuthenticated, accessToken='') {
 
     useAuthenticated && config.authenticated.codes.push(401);
 
-    const response = await axios.get('/api/user/info', config);
+    const response = await axios.get('/api/user/info', {}, config);
     const status = response?.data?.status;
 
     switch (status) {

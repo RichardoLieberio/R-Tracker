@@ -13,7 +13,7 @@ async function signout(navigate) {
         useAbortController: true
     };
 
-    const response = await axios.post('/api/auth/logout', config);
+    const response = await axios.post('/api/auth/logout', {}, config);
     const status = response?.data?.status;
 
     switch (status) {
