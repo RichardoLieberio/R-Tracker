@@ -93,7 +93,7 @@ userSchema.statics.deleteAccount = async function(id, session) {
 }
 
 userSchema.statics.getAllUsers = async function() {
-    return await this.find({}, {pwd: 0});
+    return await this.find({}, {pwd: 0}).populate('blacklisted_by', 'name');
 }
 
 userSchema.statics.updateUser = async function(_id, data, session) {
@@ -111,7 +111,7 @@ userSchema.statics.whitelist = async function(_id) {
 
 userSchema.statics.blacklist = async function(_id, blacklist_reason, blacklisted_by, session) {
     const result = await this.findOneAndUpdate({_id}, {blacklisted: true, blacklist_reason, blacklisted_by, blacklisted_at: Date.now()}, {session, new: true}).populate('blacklisted_by', 'name');
-    return result ? {_id: result._id, blacklisted: result.blacklisted, blacklist_reason: result.blacklist_reason, blacklisted_by: result.blacklisted_by.name, blacklisted_at: result.blacklisted_at} : null;
+    return result ? {_id: result._id, blacklisted: result.blacklisted, blacklist_reason: result.blacklist_reason, blacklisted_by: result.blacklisted_by, blacklisted_at: result.blacklisted_at} : null;
 }
 
 userSchema.methods.checkCredentials = async function(data) {
