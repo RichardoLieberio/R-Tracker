@@ -20,6 +20,8 @@ import {
     getFocusBorderPrimaryColor, getFocusBorderHighlightColor
 } from '../css/color';
 
+import {HelmetProvider} from 'react-helmet-async';
+import UserHead from '../head/UserHead';
 import UserTable from '../components/UserTable';
 import UserDetail from '../components/UserDetail';
 import UserModal from '../components/UserModal';
@@ -122,24 +124,27 @@ export default function User() {
     }
 
     return (
-        <section className="w-5/6 min-w-56 mx-auto py-8 pb-16 flex flex-col gap-8">
-            <header className="flex items-center gap-2">
-                <label htmlFor="search">Search</label>
-                <input type="text" id="search" value={search} onChange={searchHandler} className={`w-full max-w-72 px-3 py-2 ${getBackgroundColor(theme)} border ${getBorderNeutralColor(theme)} rounded-md outline-none ${theme === 'dark' ? getFocusBorderHighlightColor(theme) : getFocusBorderPrimaryColor(theme)}`} autoCapitalize="off" autoComplete="off" spellCheck="false" />
-            </header>
-            <main className="w-full desktop:flex desktop:gap-24">
-                {
-                    passUsers && <UserTable users={passUsers} setUserModal={setUserModal} />
-                }
-                {
-                    desktopBreakpoint
-                    ? <UserDetail setBlacklistModal={setBlacklistModal} setWhitelistModal={setWhitelistModal} setDeleteAccountModal={setDeleteAccountModal} />
-                    : <UserModal userModal={userModal} setUserModal={setUserModal} setBlacklistModal={setBlacklistModal} setWhitelistModal={setWhitelistModal} setDeleteAccountModal={setDeleteAccountModal} />
-                }
-                <BlacklistModal blacklistModal={blacklistModal} setBlacklistModal={setBlacklistModal} blacklistReason={blacklistReason} setBlacklistReason={setBlacklistReason} blacklistError={blacklistError} blacklistUser={blacklistUser} />
-                <WhitelistModal whitelistModal={whitelistModal} setWhitelistModal={setWhitelistModal} whitelistUser={whitelistUser} />
-                <ConfirmDeleteAccount deleteAccountModal={deleteAccountModal} setDeleteAccountModal={setDeleteAccountModal} deleteAccount={deleteAccount} />
-            </main>
-        </section>
+        <HelmetProvider>
+            <UserHead />
+            <section className="w-5/6 min-w-56 mx-auto py-8 pb-16 flex flex-col gap-8">
+                <header className="flex items-center gap-2">
+                    <label htmlFor="search">Search</label>
+                    <input type="text" id="search" value={search} onChange={searchHandler} className={`w-full max-w-72 px-3 py-2 ${getBackgroundColor(theme)} border ${getBorderNeutralColor(theme)} rounded-md outline-none ${theme === 'dark' ? getFocusBorderHighlightColor(theme) : getFocusBorderPrimaryColor(theme)}`} autoCapitalize="off" autoComplete="off" spellCheck="false" />
+                </header>
+                <main className="w-full desktop:flex desktop:gap-24">
+                    {
+                        passUsers && <UserTable users={passUsers} setUserModal={setUserModal} />
+                    }
+                    {
+                        desktopBreakpoint
+                        ? <UserDetail setBlacklistModal={setBlacklistModal} setWhitelistModal={setWhitelistModal} setDeleteAccountModal={setDeleteAccountModal} />
+                        : <UserModal userModal={userModal} setUserModal={setUserModal} setBlacklistModal={setBlacklistModal} setWhitelistModal={setWhitelistModal} setDeleteAccountModal={setDeleteAccountModal} />
+                    }
+                    <BlacklistModal blacklistModal={blacklistModal} setBlacklistModal={setBlacklistModal} blacklistReason={blacklistReason} setBlacklistReason={setBlacklistReason} blacklistError={blacklistError} blacklistUser={blacklistUser} />
+                    <WhitelistModal whitelistModal={whitelistModal} setWhitelistModal={setWhitelistModal} whitelistUser={whitelistUser} />
+                    <ConfirmDeleteAccount deleteAccountModal={deleteAccountModal} setDeleteAccountModal={setDeleteAccountModal} deleteAccount={deleteAccount} />
+                </main>
+            </section>
+        </HelmetProvider>
     );
 }
