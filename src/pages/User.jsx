@@ -10,7 +10,7 @@ import getCSRFToken from '../services/getCSRFToken';
 import {getToast} from '../services/toastService';
 
 import {changePage} from '../redux/webSlice';
-import {setSearch} from '../redux/userPageSlice';
+import {setSearch, addProcess, deleteProcess} from '../redux/userPageSlice';
 
 import contr from '../controllers/user';
 
@@ -23,12 +23,18 @@ import {
 import UserTable from '../components/UserTable';
 import UserDetail from '../components/UserDetail';
 import UserModal from '../components/UserModal';
+import BlacklistModal from '../components/BlacklistModal';
 import ConfirmDeleteAccount from '../components/ConfirmDeleteAccount';
 
 export default function User() {
     const [csrfToken, setCSRFToken] = useState('');
     const [passUsers, setPassUsers] = useState(null);
     const [userModal, setUserModal] = useState(false);
+
+    const [blacklistModal, setBlacklistModal] = useState(false);
+    const [blacklistReason, setBlacklistReason] = useState('');
+    const [blacklistError, setBlacklistError] = useState({});
+
     const [deleteAccountModal, setDeleteAccountModal] = useState(false);
 
     const location = useLocation();
@@ -63,14 +69,19 @@ export default function User() {
     }, [users]); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(function() {
+        setBlacklistReason('');
+        setBlacklistError({});
+
         if (!user) {
             setUserModal(false);
+            setBlacklistModal(false);
             setDeleteAccountModal(false);
         }
     }, [user]);
 
     useEffect(function() {
         setUserModal(false);
+        setBlacklistModal(false);
         setDeleteAccountModal(false);
     }, [desktopBreakpoint]);
 
@@ -80,8 +91,20 @@ export default function User() {
         else if (search.length >= 3) setPassUsers(users);
     }
 
-    function deleteAccount() {
-        if (!processing.includes(user._id)) contr.deleteUserAccount(user._id, csrfToken, accessToken);
+    async function blacklistUser() {
+        if (!processing.includes(user._id)) {
+            dispatch(addProcess(user._id));
+            await contr.blacklistUser(user._id, blacklistReason, csrfToken, accessToken, setBlacklistModal, setBlacklistError);
+            dispatch(deleteProcess(user._id));
+        }
+    }
+
+    async function deleteAccount() {
+        if (!processing.includes(user._id)) {
+            dispatch(addProcess(user._id));
+            await contr.deleteUserAccount(user._id, csrfToken, accessToken);
+            dispatch(deleteProcess(user._id));
+        }
     }
 
     return (
@@ -96,9 +119,10 @@ export default function User() {
                 }
                 {
                     desktopBreakpoint
-                    ? <UserDetail setDeleteAccountModal={setDeleteAccountModal} />
-                    : <UserModal userModal={userModal} setUserModal={setUserModal} setDeleteAccountModal={setDeleteAccountModal} />
+                    ? <UserDetail setBlacklistModal={setBlacklistModal} setWhitelistModal={setWhitelistModal} setDeleteAccountModal={setDeleteAccountModal} />
+                    : <UserModal userModal={userModal} setUserModal={setUserModal} setBlacklistModal={setBlacklistModal} setWhitelistModal={setWhitelistModal} setDeleteAccountModal={setDeleteAccountModal} />
                 }
+                <BlacklistModal blacklistModal={blacklistModal} setBlacklistModal={setBlacklistModal} blacklistReason={blacklistReason} setBlacklistReason={setBlacklistReason} blacklistError={blacklistError} blacklistUser={blacklistUser} />
                 <ConfirmDeleteAccount deleteAccountModal={deleteAccountModal} setDeleteAccountModal={setDeleteAccountModal} deleteAccount={deleteAccount} />
             </main>
         </section>
