@@ -225,7 +225,7 @@ async function deactivate(csrfToken, accessToken, navigate) {
         }
     };
 
-    const response = await axios.delete('/api/user', {}, config);
+    const response = await axios.delete('/api/user', config);
     const status = response?.data?.status;
 
     switch (status) {

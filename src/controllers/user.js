@@ -34,7 +34,7 @@ async function getAllUsers(accessToken) {
         }
     };
 
-    const response = await axios.get('/api/admin/user', {}, config);
+    const response = await axios.get('/api/admin/user', config);
     const status = response?.data?.status;
 
     switch (status) {
@@ -142,7 +142,7 @@ async function deleteUserAccount(id, csrfToken, accessToken) {
         }
     };
 
-    const response = await axios.delete(`/api/admin/user/${id}`, {}, config);
+    const response = await axios.delete(`/api/admin/user/${id}`, config);
     const status = response?.data?.status;
 
     switch (status) {
