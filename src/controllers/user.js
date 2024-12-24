@@ -3,7 +3,7 @@ import axios from '../services/axios';
 
 import store from '../redux/store';
 import {setUsers, addBlacklist, deleteUser} from '../redux/dataSlice';
-import {clearUser} from '../redux/userPageSlice';
+import {clearUser, checkAndAddBlacklist} from '../redux/userPageSlice';
 
 import css from '../css/user';
 
@@ -69,6 +69,7 @@ async function blacklistUser(id, reason, csrfToken, accessToken, setBlacklistErr
         case 200:
             toast.success(response.data.msg);
             store.dispatch(addBlacklist(response.data.data));
+            store.dispatch(checkAndAddBlacklist(response.data.data));
             break;
         case 400:
             toast.error(response.data.msg);
