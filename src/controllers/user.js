@@ -69,7 +69,8 @@ async function blacklistUser(id, reason, csrfToken, accessToken, setBlacklistMod
         case 200:
             toast.success(response.data.msg);
             store.dispatch(addBlacklist(response.data.data));
-            store.dispatch(checkAndAddBlacklist({data: response.data.data, setBlacklistModal}));
+            store.dispatch(checkAndAddBlacklist(response.data.data));
+            store.getState().userPage.user._id === id && setBlacklistModal(false);
             break;
         case 400:
             toast.error(response.data.msg);
