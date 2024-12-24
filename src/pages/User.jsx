@@ -24,6 +24,7 @@ import UserTable from '../components/UserTable';
 import UserDetail from '../components/UserDetail';
 import UserModal from '../components/UserModal';
 import BlacklistModal from '../components/BlacklistModal';
+import WhitelistModal from '../components/WhitelistModal';
 import ConfirmDeleteAccount from '../components/ConfirmDeleteAccount';
 
 export default function User() {
@@ -34,6 +35,8 @@ export default function User() {
     const [blacklistModal, setBlacklistModal] = useState(false);
     const [blacklistReason, setBlacklistReason] = useState('');
     const [blacklistError, setBlacklistError] = useState({});
+
+    const [whitelistModal, setWhitelistModal] = useState(false);
 
     const [deleteAccountModal, setDeleteAccountModal] = useState(false);
 
@@ -75,6 +78,7 @@ export default function User() {
         if (!user) {
             setUserModal(false);
             setBlacklistModal(false);
+            setWhitelistModal(false);
             setDeleteAccountModal(false);
         }
     }, [user]);
@@ -82,6 +86,7 @@ export default function User() {
     useEffect(function() {
         setUserModal(false);
         setBlacklistModal(false);
+        setWhitelistModal(false);
         setDeleteAccountModal(false);
     }, [desktopBreakpoint]);
 
@@ -94,7 +99,16 @@ export default function User() {
     async function blacklistUser() {
         if (!processing.includes(user._id)) {
             dispatch(addProcess(user._id));
+            setBlacklistError({});
             await contr.blacklistUser(user._id, blacklistReason, csrfToken, accessToken, setBlacklistModal, setBlacklistError);
+            dispatch(deleteProcess(user._id));
+        }
+    }
+
+    async function whitelistUser() {
+        if (!processing.includes(user._id)) {
+            dispatch(addProcess(user._id));
+            await contr.whitelistUser(user._id, csrfToken, accessToken, setWhitelistModal);
             dispatch(deleteProcess(user._id));
         }
     }
@@ -123,6 +137,7 @@ export default function User() {
                     : <UserModal userModal={userModal} setUserModal={setUserModal} setBlacklistModal={setBlacklistModal} setWhitelistModal={setWhitelistModal} setDeleteAccountModal={setDeleteAccountModal} />
                 }
                 <BlacklistModal blacklistModal={blacklistModal} setBlacklistModal={setBlacklistModal} blacklistReason={blacklistReason} setBlacklistReason={setBlacklistReason} blacklistError={blacklistError} blacklistUser={blacklistUser} />
+                <WhitelistModal whitelistModal={whitelistModal} setWhitelistModal={setWhitelistModal} whitelistUser={whitelistUser} />
                 <ConfirmDeleteAccount deleteAccountModal={deleteAccountModal} setDeleteAccountModal={setDeleteAccountModal} deleteAccount={deleteAccount} />
             </main>
         </section>
