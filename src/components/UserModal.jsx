@@ -12,7 +12,9 @@ import {
     getTextPrimaryColor, getTextColor, getOppositeTextColor, getTextErrorColor,
     getHoverTextHighlightColor,
     getBorderNeutralColor,
-    getShadowColor
+    getShadowColor,
+    getScrollbarTrackBackground,
+    getScrollbarThumbText
 } from '../css/color';
 
 import {Modal, Box} from '@mui/material';
@@ -32,56 +34,58 @@ export default function UserModal(props) {
 
     return (
         <Modal open={userModal} onClose={() => setUserModal(false)} aria-labelledby="User Modal" aria-describedby="User account information">
-            <Box className={`w-1/2 min-w-56 phone:min-w-72 tablet:min-w-80 desktop:min-w-96 h-auto p-7 phone:p-8 absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 flex flex-col gap-8 rounded-lg tablet:rounded-xl ${getBackgroundColor(theme)} ${getTextColor(theme)}`}>
-                <section className="flex flex-col gap-8">
-                    <header className="flex items-center justify-between text-xl font-semibold">Account Information</header>
-                    <main className="flex flex-col gap-4">
-                        <div className="relative flex flex-col">
-                            <span className={`px-2 absolute left-1 -top-3 text-sm ${getBackgroundColor(theme)}`}>Name</span>
-                            <span className={`px-3 py-2 text-wrap border ${getBorderNeutralColor(theme)} rounded-md break-words`}>{user ? user.name : '-'}</span>
-                        </div>
-                        <div className="relative flex flex-col">
-                            <span className={`px-2 absolute left-1 -top-3 text-sm ${getBackgroundColor(theme)}`}>Email</span>
-                            <span className={`px-3 py-2 border ${getBorderNeutralColor(theme)} rounded-md break-words`}>{user ? user.email : '-'}</span>
-                        </div>
-                        <div className="relative flex flex-col">
-                            <span className={`px-2 absolute left-1 -top-3 text-sm ${getBackgroundColor(theme)}`}>Role</span>
-                            <span className={`px-3 py-2 text-wrap border ${getBorderNeutralColor(theme)} rounded-md break-words`}>{user ? user.role : '-'}</span>
-                        </div>
-                        <div className="flex-1 relative flex flex-col">
-                            <span className={`px-2 absolute left-1 -top-3 text-sm ${getBackgroundColor(theme)}`}>Created At</span>
-                            <span className={`px-3 py-2 text-wrap border ${getBorderNeutralColor(theme)} rounded-md break-words`}>{user ? format(new Date(user.created_at), 'MMMM dd, yyyy HH:mm:ss') : '-'}</span>
-                        </div>
-                        {
-                            user?.updated_at &&
-                            <div className="flex-1 relative flex flex-col">
-                                <span className={`px-2 absolute left-1 -top-3 text-sm ${getBackgroundColor(theme)}`}>Updated At</span>
-                                <span className={`px-3 py-2 text-wrap border ${getBorderNeutralColor(theme)} rounded-md break-words`}>{format(new Date(user.updated_at), 'MMMM dd, yyyy HH:mm:ss')}</span>
-                            </div>
-                        }
-                    </main>
-                </section>
-                {
-                    user?.blacklisted &&
+            <Box className={`w-1/2 min-w-56 phone:min-w-72 tablet:min-w-80 desktop:min-w-96 h-auto py-7 phone:py-8 absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 flex flex-col gap-8 rounded-lg tablet:rounded-xl ${getBackgroundColor(theme)} ${getTextColor(theme)}`}>
+                <main className={`max-h-96 px-7 phone:px-8 flex flex-col gap-8 overflow-auto scrollbar-thin ${getScrollbarTrackBackground(theme)} ${getScrollbarThumbText(theme)}`}>
                     <section className="flex flex-col gap-8">
-                        <header className="flex items-center justify-between text-xl font-semibold">Blacklisted</header>
+                        <header className="flex items-center justify-between text-xl font-semibold">Account Information</header>
                         <main className="flex flex-col gap-4">
                             <div className="relative flex flex-col">
-                                <span className={`px-2 absolute left-1 -top-3 text-sm ${getBackgroundColor(theme)}`}>Blacklisted By</span>
-                                <span className={`px-3 py-2 text-wrap border ${getBorderNeutralColor(theme)} rounded-md break-words`}>{user.blacklisted_by.name}</span>
+                                <span className={`px-2 absolute left-1 -top-3 text-sm ${getBackgroundColor(theme)}`}>Name</span>
+                                <span className={`px-3 py-2 text-wrap border ${getBorderNeutralColor(theme)} rounded-md break-words`}>{user ? user.name : '-'}</span>
                             </div>
                             <div className="relative flex flex-col">
-                                <span className={`px-2 absolute left-1 -top-3 text-sm ${getBackgroundColor(theme)}`}>Blacklisted At</span>
-                                <span className={`px-3 py-2 border ${getBorderNeutralColor(theme)} rounded-md break-words`}>{format(new Date(user.blacklisted_at), 'MMMM dd, yyyy HH:mm:ss')}</span>
+                                <span className={`px-2 absolute left-1 -top-3 text-sm ${getBackgroundColor(theme)}`}>Email</span>
+                                <span className={`px-3 py-2 border ${getBorderNeutralColor(theme)} rounded-md break-words`}>{user ? user.email : '-'}</span>
                             </div>
                             <div className="relative flex flex-col">
-                                <span className={`px-2 absolute left-1 -top-3 text-sm ${getBackgroundColor(theme)}`}>Reason</span>
-                                <span className={`px-3 py-2 text-wrap border ${getBorderNeutralColor(theme)} rounded-md break-words`}>{user.blacklist_reason || '-'}</span>
+                                <span className={`px-2 absolute left-1 -top-3 text-sm ${getBackgroundColor(theme)}`}>Role</span>
+                                <span className={`px-3 py-2 text-wrap border ${getBorderNeutralColor(theme)} rounded-md break-words`}>{user ? user.role : '-'}</span>
                             </div>
+                            <div className="flex-1 relative flex flex-col">
+                                <span className={`px-2 absolute left-1 -top-3 text-sm ${getBackgroundColor(theme)}`}>Created At</span>
+                                <span className={`px-3 py-2 text-wrap border ${getBorderNeutralColor(theme)} rounded-md break-words`}>{user ? format(new Date(user.created_at), 'MMMM dd, yyyy HH:mm:ss') : '-'}</span>
+                            </div>
+                            {
+                                user?.updated_at &&
+                                <div className="flex-1 relative flex flex-col">
+                                    <span className={`px-2 absolute left-1 -top-3 text-sm ${getBackgroundColor(theme)}`}>Updated At</span>
+                                    <span className={`px-3 py-2 text-wrap border ${getBorderNeutralColor(theme)} rounded-md break-words`}>{format(new Date(user.updated_at), 'MMMM dd, yyyy HH:mm:ss')}</span>
+                                </div>
+                            }
                         </main>
                     </section>
-                }
-                <footer className="flex items-center justify-end gap-4">
+                    {
+                        user?.blacklisted &&
+                        <section className="flex flex-col gap-8">
+                            <header className="flex items-center justify-between text-xl font-semibold">Blacklisted</header>
+                            <main className="flex flex-col gap-4">
+                                <div className="relative flex flex-col">
+                                    <span className={`px-2 absolute left-1 -top-3 text-sm ${getBackgroundColor(theme)}`}>Blacklisted By</span>
+                                    <span className={`px-3 py-2 text-wrap border ${getBorderNeutralColor(theme)} rounded-md break-words`}>{user.blacklisted_by.name}</span>
+                                </div>
+                                <div className="relative flex flex-col">
+                                    <span className={`px-2 absolute left-1 -top-3 text-sm ${getBackgroundColor(theme)}`}>Blacklisted At</span>
+                                    <span className={`px-3 py-2 border ${getBorderNeutralColor(theme)} rounded-md break-words`}>{format(new Date(user.blacklisted_at), 'MMMM dd, yyyy HH:mm:ss')}</span>
+                                </div>
+                                <div className="relative flex flex-col">
+                                    <span className={`px-2 absolute left-1 -top-3 text-sm ${getBackgroundColor(theme)}`}>Reason</span>
+                                    <span className={`px-3 py-2 text-wrap border ${getBorderNeutralColor(theme)} rounded-md break-words`}>{user.blacklist_reason || '-'}</span>
+                                </div>
+                            </main>
+                        </section>
+                    }
+                </main>
+                <footer className="px-7 phone:px-8 flex items-center justify-end gap-4">
                     <button onClick={() => setUserModal(false)} className={`py-1 px-4 ${theme !== 'dark' ? getTextPrimaryColor(theme) : ''} rounded-md ${getHoverTextHighlightColor(theme)}`}>Close</button>
                     <Menu>
                         <MenuButton disabled={processing.includes(user?._id)} className={`w-fit py-1 ${phoneBreakpoint ? 'px-8' : 'px-4'} relative ${getOppositeTextColor(theme)} ${getBgPrimaryColor(theme)} rounded-md ${getHoverBgHighlightColor(theme)} ${getDisabledBgNeutralColor(theme)} disabled:cursor-not-allowed`}>
