@@ -17,12 +17,12 @@ import {
 
 import {Modal, Box} from '@mui/material';
 import {Menu, MenuButton, MenuItems, MenuItem} from '@headlessui/react';
-import {FaUserCog, FaLock, FaHockeyPuck, FaUserAltSlash, FaTrashAlt} from 'react-icons/fa';
+import {FaUserCog, FaLock, FaHockeyPuck, FaUserAltSlash, FaUserCheck, FaTrashAlt} from 'react-icons/fa';
 import {IoSettingsSharp} from 'react-icons/io5';
 import ButtonSpinner from './ButtonSpinner';
 
 export default function UserModal(props) {
-    const {userModal, setUserModal, setDeleteAccountModal} = props;
+    const {userModal, setUserModal, setBlacklistModal, setWhitelistModal, setDeleteAccountModal} = props;
 
     const theme = useSelector((state) => state.web.theme);
     const user = useSelector((state) => state.userPage.user);
@@ -33,7 +33,7 @@ export default function UserModal(props) {
     return (
         <Modal open={userModal} onClose={() => setUserModal(false)} aria-labelledby="User Modal" aria-describedby="User account information">
             <Box className={`w-1/2 min-w-56 phone:min-w-72 tablet:min-w-80 desktop:min-w-96 h-auto p-7 phone:p-8 absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 flex flex-col gap-8 rounded-lg tablet:rounded-xl ${getBackgroundColor(theme)} ${getTextColor(theme)}`}>
-                <main className="flex flex-col gap-8">
+                <section className="flex flex-col gap-8">
                     <header className="flex items-center justify-between text-xl font-semibold">Account Information</header>
                     <main className="flex flex-col gap-4">
                         <div className="relative flex flex-col">
@@ -60,7 +60,27 @@ export default function UserModal(props) {
                             </div>
                         }
                     </main>
-                </main>
+                </section>
+                {
+                    user?.blacklisted &&
+                    <section className="flex flex-col gap-8">
+                        <header className="flex items-center justify-between text-xl font-semibold">Blacklisted</header>
+                        <main className="flex flex-col gap-4">
+                            <div className="relative flex flex-col">
+                                <span className={`px-2 absolute left-1 -top-3 text-sm ${getBackgroundColor(theme)}`}>Blacklisted By</span>
+                                <span className={`px-3 py-2 text-wrap border ${getBorderNeutralColor(theme)} rounded-md break-words`}>{user.blacklisted_by.name}</span>
+                            </div>
+                            <div className="relative flex flex-col">
+                                <span className={`px-2 absolute left-1 -top-3 text-sm ${getBackgroundColor(theme)}`}>Blacklisted At</span>
+                                <span className={`px-3 py-2 border ${getBorderNeutralColor(theme)} rounded-md break-words`}>{format(new Date(user.blacklisted_at), 'MMMM dd, yyyy HH:mm:ss')}</span>
+                            </div>
+                            <div className="relative flex flex-col">
+                                <span className={`px-2 absolute left-1 -top-3 text-sm ${getBackgroundColor(theme)}`}>Reason</span>
+                                <span className={`px-3 py-2 text-wrap border ${getBorderNeutralColor(theme)} rounded-md break-words`}>{user.blacklist_reason}</span>
+                            </div>
+                        </main>
+                    </section>
+                }
                 <footer className="flex items-center justify-end gap-4">
                     <button onClick={() => setUserModal(false)} className={`py-1 px-4 ${theme !== 'dark' ? getTextPrimaryColor(theme) : ''} rounded-md ${getHoverTextHighlightColor(theme)}`}>Close</button>
                     <Menu>
@@ -91,10 +111,17 @@ export default function UserModal(props) {
                                 </button>
                             </MenuItem>
                             <MenuItem>
-                                <button className={`px-4 py-2 flex items-center gap-2 text-start ${getTextErrorColor(theme)} ${getHoverBgNeutral50Color(theme)}`}>
-                                    <FaUserAltSlash className="flex-shrink-0 text-lg" />
-                                    Blacklist
-                                </button>
+                                {
+                                    user?.blacklisted
+                                    ?   <button onClick={() => setWhitelistModal(true)} className={`px-4 py-2 flex items-center gap-2 text-start ${getHoverBgNeutral50Color(theme)}`}>
+                                            <FaUserCheck className="flex-shrink-0 text-lg" />
+                                            Whitelist
+                                        </button>
+                                    :   <button onClick={() => setBlacklistModal(true)} className={`px-4 py-2 flex items-center gap-2 text-start ${getTextErrorColor(theme)} ${getHoverBgNeutral50Color(theme)}`}>
+                                            <FaUserAltSlash className="flex-shrink-0 text-lg" />
+                                            Blacklist
+                                        </button>
+                                }
                             </MenuItem>
                             <MenuItem>
                                 <button onClick={() => setDeleteAccountModal(true)} className={`px-4 py-2 flex items-center gap-2 text-start ${getTextErrorColor(theme)} ${getHoverBgNeutral50Color(theme)}`}>
@@ -113,5 +140,7 @@ export default function UserModal(props) {
 UserModal.propTypes = {
     userModal: PropTypes.bool,
     setUserModal: PropTypes.func,
+    setBlacklistModal: PropTypes.func,
+    setWhitelistModal: PropTypes.func,
     setDeleteAccountModal: PropTypes.func
 };
