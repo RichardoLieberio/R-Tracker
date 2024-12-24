@@ -93,6 +93,25 @@ function getBackgroundColor(theme) {
     }
 }
 
+function getHoverBgPrimaryColor(theme) {
+    switch (theme) {
+        case 'red':
+            return 'hover:!bg-red-primary';
+        case 'green':
+            return 'hover:!bg-green-primary';
+        case 'blue':
+            return 'hover:!bg-blue-primary';
+        case 'yellow':
+            return 'hover:!bg-yellow-primary';
+        case 'teal':
+            return 'hover:!bg-teal-primary';
+        case 'dark':
+            return 'hover:!bg-dark-primary';
+        default:
+            return 'hover:!bg-purple-primary';
+    }
+}
+
 function getHoverBgHighlightColor(theme) {
     switch (theme) {
         case 'red':
@@ -741,7 +760,7 @@ function getScrollbarThumbText(theme) {
 
 export {
     getBgPrimaryColor, getBgNeutral10Color, getBgHighlightColor, getBgErrorColor, getBackgroundColor,
-    getHoverBgHighlightColor, getHoverBgErrorColor, getHoverBgError60Color, getHoverBgNeutral50Color,
+    getHoverBgPrimaryColor, getHoverBgHighlightColor, getHoverBgErrorColor, getHoverBgError60Color, getHoverBgNeutral50Color,
     getDisabledBgColor, getDisabledBgNeutralColor, getDisabledBgNeutral30Color, getDisabledBgHighlightColor,
     getTextColor, getTextPrimaryColor, getOppositeTextColor, getTextNeutralColor, getTextHighlightColor, getTextLinkColor, getTextDisabledColor, getTextErrorColor,
     getHoverOppositeTextColor, getHoverTextHighlightColor,
