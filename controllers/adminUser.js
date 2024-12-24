@@ -54,7 +54,7 @@ async function whitelist(req, res) {
     const whitelisted = await User.whitelist(req.params.id);
     if (!whitelisted) return res.json({status: 404, msg: 'Failed to whitelist user. User not found.'});
 
-    res.json({status: 200, msg: 'User whitelisted successfully.'});
+    res.json({status: 200, msg: 'User whitelisted successfully.', userId: req.params.id});
 }
 
 async function blacklist(req, res) {
