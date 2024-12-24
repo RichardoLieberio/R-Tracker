@@ -91,16 +91,16 @@ export default function UserDetail(props) {
                                 <span className={`px-2 absolute left-1 -top-3 text-sm ${getBackgroundColor(theme)}`}>Role</span>
                                 <span className={`px-3 py-2 text-wrap border ${getBorderNeutralColor(theme)} rounded-md break-words`}>{user.role}</span>
                             </div>
-                            <div className="flex gap-8">
+                            <div className="flex flex-wrap gap-x-8 gap-y-4">
                                 <div className="flex-1 relative flex flex-col">
                                     <span className={`px-2 absolute left-1 -top-3 text-sm ${getBackgroundColor(theme)}`}>Created At</span>
-                                    <span className={`px-3 py-2 text-wrap border ${getBorderNeutralColor(theme)} rounded-md break-words`}>{format(new Date(user.created_at), 'MMMM dd, yyyy HH:mm:ss')}</span>
+                                    <span className={`px-3 py-2 border ${getBorderNeutralColor(theme)} rounded-md`}>{format(new Date(user.created_at), 'MMMM dd, yyyy HH:mm:ss')}</span>
                                 </div>
                                 {
                                     user.updated_at &&
                                     <div className="flex-1 relative flex flex-col">
                                         <span className={`px-2 absolute left-1 -top-3 text-sm ${getBackgroundColor(theme)}`}>Updated At</span>
-                                        <span className={`px-3 py-2 text-wrap border ${getBorderNeutralColor(theme)} rounded-md break-words`}>{format(new Date(user.updated_at), 'MMMM dd, yyyy HH:mm:ss')}</span>
+                                        <span className={`px-3 py-2 border ${getBorderNeutralColor(theme)} rounded-md`}>{format(new Date(user.updated_at), 'MMMM dd, yyyy HH:mm:ss')}</span>
                                     </div>
                                 }
                             </div>
