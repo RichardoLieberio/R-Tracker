@@ -7,6 +7,9 @@ import {getToast} from '../services/toastService';
 
 import {changePage} from '../redux/webSlice';
 
+import {HelmetProvider} from 'react-helmet-async';
+import ExpenseCategoryHead from '../head/ExpenseCategoryHead';
+
 export default function ExpenseCategory() {
     const location = useLocation();
     const dispatch = useDispatch();
@@ -21,6 +24,9 @@ export default function ExpenseCategory() {
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
-        <h1>Expense Category Page</h1>
+        <HelmetProvider>
+            <ExpenseCategoryHead />
+            <h1>Expense Category Page</h1>
+        </HelmetProvider>
     );
 }
