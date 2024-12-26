@@ -17,7 +17,7 @@ import {IoSettingsSharp, IoDocumentText} from 'react-icons/io5';
 import ButtonSpinner from './ButtonSpinner';
 
 export default function UserDetail(props) {
-    const {blockToken, setBlacklistModal, setWhitelistModal, setDeleteAccountModal} = props;
+    const {setChangePwdModal, blockToken, setBlacklistModal, setWhitelistModal, setDeleteAccountModal} = props;
 
     const theme = useSelector((state) => state.web.theme);
     const user = useSelector((state) => state.userPage.user);
@@ -45,7 +45,7 @@ export default function UserDetail(props) {
                                         </button>
                                     </MenuItem>
                                     <MenuItem>
-                                        <button className={`px-4 py-2 flex items-center gap-2 text-start ${getHoverBgNeutral50Color(theme)}`}>
+                                        <button onClick={() => setChangePwdModal(true)} className={`px-4 py-2 flex items-center gap-2 text-start ${getHoverBgNeutral50Color(theme)}`}>
                                             <FaLock className="flex-shrink-0 text-lg" />
                                             Change password
                                         </button>
@@ -137,6 +137,7 @@ export default function UserDetail(props) {
 }
 
 UserDetail.propTypes = {
+    setChangePwdModal: PropTypes.func,
     blockToken: PropTypes.func,
     setBlacklistModal: PropTypes.func,
     setWhitelistModal: PropTypes.func,
