@@ -102,7 +102,8 @@ userSchema.statics.updateUser = async function(_id, data, session) {
 
 userSchema.statics.changePwdByAdmin = async function(_id, rawPwd, session) {
     const pwd = await bcrypt.hash(rawPwd, +process.env.SALT_ROUNDS);
-    return !!await this.findOneAndUpdate({_id}, {pwd, updated_at: Date.now()}, {session});
+    const result = await this.findOneAndUpdate({_id}, {pwd, updated_at: Date.now()}, {session, new: true});
+    return result ? {_id: result._id, updated_at: result.updated_at} : null;
 }
 
 userSchema.statics.whitelist = async function(_id) {
