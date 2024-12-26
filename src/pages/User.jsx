@@ -98,6 +98,14 @@ export default function User() {
         else if (search.length >= 3) setPassUsers(users);
     }
 
+    async function blockToken() {
+        if (!processing.includes(user._id)) {
+            dispatch(addProcess(user._id));
+            await contr.blockToken(user._id, csrfToken, accessToken);
+            dispatch(deleteProcess(user._id));
+        }
+    }
+
     async function blacklistUser() {
         if (!processing.includes(user._id)) {
             dispatch(addProcess(user._id));
@@ -137,8 +145,8 @@ export default function User() {
                     }
                     {
                         desktopBreakpoint
-                        ? <UserDetail setBlacklistModal={setBlacklistModal} setWhitelistModal={setWhitelistModal} setDeleteAccountModal={setDeleteAccountModal} />
-                        : <UserModal userModal={userModal} setUserModal={setUserModal} setBlacklistModal={setBlacklistModal} setWhitelistModal={setWhitelistModal} setDeleteAccountModal={setDeleteAccountModal} />
+                        ? <UserDetail blockToken={blockToken} setBlacklistModal={setBlacklistModal} setWhitelistModal={setWhitelistModal} setDeleteAccountModal={setDeleteAccountModal} />
+                        : <UserModal blockToken={blockToken} userModal={userModal} setUserModal={setUserModal} setBlacklistModal={setBlacklistModal} setWhitelistModal={setWhitelistModal} setDeleteAccountModal={setDeleteAccountModal} />
                     }
                     <BlacklistModal blacklistModal={blacklistModal} setBlacklistModal={setBlacklistModal} blacklistReason={blacklistReason} setBlacklistReason={setBlacklistReason} blacklistError={blacklistError} blacklistUser={blacklistUser} />
                     <WhitelistModal whitelistModal={whitelistModal} setWhitelistModal={setWhitelistModal} whitelistUser={whitelistUser} />

@@ -44,6 +44,41 @@ async function getAllUsers(accessToken) {
     }
 }
 
+async function blockToken(id, csrfToken, accessToken) {
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`,
+            'CSRF-Token': csrfToken
+        },
+        authenticated: {
+            codes: [401],
+            route: '/login'
+        },
+        adminRequest: {
+            codes: [403],
+            route: '/admin/user'
+        }
+    };
+
+    const response = await axios.patch(`/api/admin/user/${id}/block-token`, {}, config);
+    const status = response?.data?.status;
+
+    switch (status) {
+        case 200:
+            toast.success(response.data.msg);
+            break;
+        case 400:
+            toast.error(response.data.msg);
+            break;
+        case 404:
+            toast.error(response.data.msg);
+            store.dispatch(deleteUser(id));
+            store.dispatch(clearUser(id));
+            break;
+    }
+}
+
 async function blacklistUser(id, reason, csrfToken, accessToken, setBlacklistModal, setBlacklistError) {
     const data = {reason};
     const config = {
@@ -162,4 +197,4 @@ async function deleteUserAccount(id, csrfToken, accessToken) {
     }
 }
 
-export default {inputErrorHandler, getAllUsers, blacklistUser, whitelistUser, deleteUserAccount};
+export default {inputErrorHandler, getAllUsers, blockToken, blacklistUser, whitelistUser, deleteUserAccount};
