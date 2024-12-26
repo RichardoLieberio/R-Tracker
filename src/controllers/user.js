@@ -44,6 +44,49 @@ async function getAllUsers(accessToken) {
     }
 }
 
+async function editAccount(id, name, email, role, csrfToken, accessToken, setEditAccountModal, setAccountError) {
+    const data = {name, email, role};
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`,
+            'CSRF-Token': csrfToken
+        },
+        authenticated: {
+            codes: [401],
+            route: '/login'
+        },
+        adminRequest: {
+            codes: [403],
+            route: '/admin/user'
+        }
+    };
+
+    const response = await axios.patch(`/api/admin/user/${id}`, data, config);
+    const status = response?.data?.status;
+
+    switch (status) {
+        case 200:
+            toast.success(response.data.msg);
+            store.dispatch(changeInfo(response.data.data));
+            store.dispatch(checkAndChangeInfo(response.data.data));
+            store.getState().userPage.user._id === id && setEditAccountModal(false);
+            break;
+        case 400:
+            toast.error(response.data.msg);
+            break;
+        case 404:
+            toast.error(response.data.msg);
+            store.dispatch(deleteUser(id));
+            store.dispatch(clearUser(id));
+            break;
+        case 422:
+            setAccountError(response.data.msg);
+            toast.error('Edit account failed.');
+            break;
+    }
+}
+
 async function changePwd(id, pwd, confPwd, csrfToken, accessToken, setChangePwdModal, setPwdError) {
     const data = {pwd, confPwd};
     const config = {
@@ -240,4 +283,4 @@ async function deleteUserAccount(id, csrfToken, accessToken) {
     }
 }
 
-export default {inputErrorHandler, getAllUsers, changePwd, blockToken, blacklistUser, whitelistUser, deleteUserAccount};
+export default {inputErrorHandler, getAllUsers, editAccount, changePwd, blockToken, blacklistUser, whitelistUser, deleteUserAccount};
