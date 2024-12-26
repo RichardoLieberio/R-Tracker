@@ -16,6 +16,7 @@ import contr from '../controllers/user';
 
 import {
     getBackgroundColor,
+    getPlaceholderText,
     getBorderNeutralColor,
     getFocusBorderPrimaryColor, getFocusBorderHighlightColor
 } from '../css/color';
@@ -181,7 +182,7 @@ export default function User() {
             <section className="w-5/6 min-w-56 mx-auto py-8 pb-16 flex flex-col gap-8">
                 <header className="flex items-center gap-2">
                     <label htmlFor="search">Search</label>
-                    <input type="text" id="search" value={search} onChange={searchHandler} className={`w-full max-w-72 px-3 py-2 ${getBackgroundColor(theme)} border ${getBorderNeutralColor(theme)} rounded-md outline-none ${theme === 'dark' ? getFocusBorderHighlightColor(theme) : getFocusBorderPrimaryColor(theme)}`} autoCapitalize="off" autoComplete="off" spellCheck="false" />
+                    <input type="text" id="search" placeholder="Enter at least 3 characters" value={search} onChange={searchHandler} className={`w-full max-w-72 px-3 py-2 ${getBackgroundColor(theme)} ${getPlaceholderText(theme)} border ${getBorderNeutralColor(theme)} rounded-md outline-none ${theme === 'dark' ? getFocusBorderHighlightColor(theme) : getFocusBorderPrimaryColor(theme)}`} autoCapitalize="off" autoComplete="off" spellCheck="false" />
                 </header>
                 <main className="w-full desktop:flex desktop:gap-24">
                     {
