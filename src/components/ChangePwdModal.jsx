@@ -91,7 +91,7 @@ export default function ChangePwdModal(props) {
         <Modal open={changePwdModal} onClose={() => setChangePwdModal(false)} aria-labelledby="Change Password Modal" aria-describedby="Change user password">
             <Box className={`w-1/3 min-w-56 phone:min-w-72 tablet:min-w-80 desktop:min-w-96 h-auto p-7 phone:p-8 absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 flex flex-col gap-8 rounded-lg tablet:rounded-xl ${getBackgroundColor(theme)} ${getTextColor(theme)}`}>
                 <header className="flex flex-col gap-1">
-                    <h2 className="text-xl font-semibold">Change Password</h2>
+                    <h2 className="text-xl font-semibold">Change User Password</h2>
                     <small className="text-sm">Enter a new password and confirm it to update user login credentials.</small>
                 </header>
                 <main>
@@ -106,7 +106,7 @@ export default function ChangePwdModal(props) {
                                     </div>
                             }
                             <label htmlFor="pwd" className={pwdLabelClass}>{phoneBreakpoint ? 'New Password' : 'Password'}</label>
-                            <input type={showPwd ? "text" : "password"} id="pwd" value={pwd} ref={pwdInputRef} disabled={processing.includes(user?._id)} autoFocus onChange={(e) => setPwd(e.target.value)} onFocus={pwdInputFocus} onBlur={pwdInputBlur} className={pwdInputClass} />
+                            <input type={showPwd ? "text" : "password"} id="pwd" value={pwd} ref={pwdInputRef} disabled={processing.includes(user?._id)} onChange={(e) => setPwd(e.target.value)} onFocus={pwdInputFocus} onBlur={pwdInputBlur} className={pwdInputClass} />
                             <div onClick={() => setShowPwd((value) => !value)} className="px-3 py-3 absolute right-0 top-0 rounded-tr-md rounded-br-md cursor-pointer">
                                 {
                                     showPwd
@@ -125,7 +125,7 @@ export default function ChangePwdModal(props) {
                                     </div>
                             }
                             <label htmlFor="confPwd" className={confPwdLabelClass}>{!phoneBreakpoint ? 'Confirm' : tabletBreakpoint ? 'Confirm New Password' : 'Confirm Password'}</label>
-                            <input type={showConfPwd ? "text" : "password"} id="confPwd" value={confPwd} ref={confPwdInputRef} disabled={processing.includes(user?._id)} autoFocus onChange={(e) => setConfPwd(e.target.value)} onFocus={confPwdInputFocus} onBlur={confPwdInputBlur} className={confPwdInputClass} />
+                            <input type={showConfPwd ? "text" : "password"} id="confPwd" value={confPwd} ref={confPwdInputRef} disabled={processing.includes(user?._id)} onChange={(e) => setConfPwd(e.target.value)} onFocus={confPwdInputFocus} onBlur={confPwdInputBlur} className={confPwdInputClass} />
                             <div onClick={() => setShowConfPwd((value) => !value)} className="px-3 py-3 absolute right-0 top-0 rounded-tr-md rounded-br-md cursor-pointer">
                                 {
                                     showConfPwd
