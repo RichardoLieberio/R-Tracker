@@ -473,6 +473,25 @@ function getDisabledOppositeTextColor(theme) {
     }
 }
 
+function getPlaceholderText(theme) {
+    switch (theme) {
+        case 'red':
+            return 'placeholder-red-neutral';
+        case 'green':
+            return 'placeholder-green-neutral';
+        case 'blue':
+            return 'placeholder-blue-neutral';
+        case 'yellow':
+            return 'placeholder-yellow-neutral';
+        case 'teal':
+            return 'placeholder-teal-neutral';
+        case 'dark':
+            return 'placeholder-dark-neutral';
+        default:
+            return 'placeholder-purple-neutral';
+    }
+}
+
 function getFromSecondaryColor(theme) {
     switch (theme) {
         case 'red':
@@ -765,6 +784,7 @@ export {
     getTextColor, getTextPrimaryColor, getOppositeTextColor, getTextNeutralColor, getTextHighlightColor, getTextLinkColor, getTextDisabledColor, getTextErrorColor,
     getHoverOppositeTextColor, getHoverTextHighlightColor,
     getDisabledOppositeTextColor,
+    getPlaceholderText,
     getFromSecondaryColor, getToPrimaryColor,
     getBorderPrimaryColor, getBorderNeutralColor, getBorderErrorColor, getBorderText20Color,
     getHoverBorderHighlightColor,
