@@ -25,7 +25,7 @@ async function updateUser(req, res, next) {
 }
 
 function changePwd(req, res, next) {
-    const {pwd} = req.body;
+    const {pwd, confPwd} = req.body;
     const errorMsg = {};
     req.data = {};
 
@@ -33,6 +33,9 @@ function changePwd(req, res, next) {
     pwdValidation.error
     ? errorMsg['pwd'] = pwdValidation.error
     : req.data['pwd'] = pwdValidation.pwd;
+
+    const confPwdValidation = validateConfPwd(pwd, confPwd);
+    if (confPwdValidation.error) errorMsg['confPwd'] = confPwdValidation.error;
 
     if (Object.entries(errorMsg).length) return res.json({status: 422, msg: errorMsg});
     next();
@@ -105,6 +108,13 @@ function validatePwd(pwd) {
     if (Object.entries(pwdRegexError).length) return {error: pwdRegexError};
 
     return {pwd};
+}
+
+function validateConfPwd(pwd, confPwd) {
+    if (!confPwd) return {error: 'Confirm password is required.'};
+    if (typeof(confPwd) !== 'string') return {error: 'Confirm password must be string.'};
+    if (pwd !== confPwd) return {error: 'Confirmed password does not match the original password.'};
+    return {confPwd};
 }
 
 function validateReason(reason) {
