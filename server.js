@@ -26,7 +26,7 @@ app.use(cors({
 }));
 app.use(cookieParser());
 app.use(sizeLimiter);
-app.use(express.json());
+app.use(express.json({limit: `${process.env.ACCEPT_JSON_MAX_SIZE_IN_MB}mb`}));
 
 app.use('/public', express.static(path.join(__dirname, 'public')));
 
