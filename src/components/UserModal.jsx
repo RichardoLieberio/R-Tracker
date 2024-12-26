@@ -24,7 +24,7 @@ import {IoSettingsSharp} from 'react-icons/io5';
 import ButtonSpinner from './ButtonSpinner';
 
 export default function UserModal(props) {
-    const {userModal, setUserModal, setChangePwdModal, blockToken, setBlacklistModal, setWhitelistModal, setDeleteAccountModal} = props;
+    const {userModal, setUserModal, setEditAccountModal, setChangePwdModal, blockToken, setBlacklistModal, setWhitelistModal, setDeleteAccountModal} = props;
 
     const theme = useSelector((state) => state.web.theme);
     const user = useSelector((state) => state.userPage.user);
@@ -97,7 +97,7 @@ export default function UserModal(props) {
                         </MenuButton>
                         <MenuItems transition anchor="top end" className={`${phoneBreakpoint ? 'w-52' : 'w-48'} mt-2 py-1 flex flex-col ${getTextColor(theme)} ${getBackgroundColor(theme)} shadow-lg ${getShadowColor(theme)} rounded-lg z-[9999] origin-top-right transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0`}>
                             <MenuItem>
-                                <button className={`px-4 py-2 flex items-center gap-2 text-start ${getHoverBgNeutral50Color(theme)}`}>
+                                <button onClick={() => setEditAccountModal(true)} className={`px-4 py-2 flex items-center gap-2 text-start ${getHoverBgNeutral50Color(theme)}`}>
                                     <FaUserCog className="flex-shrink-0 text-lg" />
                                     Edit account
                                 </button>
@@ -144,6 +144,7 @@ export default function UserModal(props) {
 UserModal.propTypes = {
     userModal: PropTypes.bool,
     setUserModal: PropTypes.func,
+    setEditAccountModal: PropTypes.func,
     setChangePwdModal: PropTypes.func,
     blockToken: PropTypes.func,
     setBlacklistModal: PropTypes.func,

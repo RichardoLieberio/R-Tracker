@@ -25,15 +25,24 @@ import UserHead from '../head/UserHead';
 import UserTable from '../components/UserTable';
 import UserDetail from '../components/UserDetail';
 import UserModal from '../components/UserModal';
+import EditAccountModal from '../components/EditAccountModal';
 import ChangePwdModal from '../components/ChangePwdModal';
 import BlacklistModal from '../components/BlacklistModal';
 import WhitelistModal from '../components/WhitelistModal';
 import ConfirmDeleteAccount from '../components/ConfirmDeleteAccount';
 
+const roleOption = ['admin', 'user'];
+
 export default function User() {
     const [csrfToken, setCSRFToken] = useState('');
     const [passUsers, setPassUsers] = useState(null);
     const [userModal, setUserModal] = useState(false);
+
+    const [editAccountModal, setEditAccountModal] = useState(false);
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [role, setRole] = useState('');
+    const [accountError, setAccountError] = useState({});
 
     const [changePwdModal, setChangePwdModal] = useState(false);
     const [pwd, setPwd] = useState('');
@@ -80,6 +89,11 @@ export default function User() {
     }, [users]); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(function() {
+        setName(user?.name || '');
+        setEmail(user?.email || '');
+        setRole(user?.role || '');
+        setAccountError({});
+
         setPwd('');
         setConfPwd('');
         setPwdError({});
@@ -88,6 +102,7 @@ export default function User() {
         setBlacklistError({});
 
         if (!user) {
+            setEditAccountModal(false);
             setUserModal(false);
             setChangePwdModal(false);
             setBlacklistModal(false);
@@ -97,6 +112,7 @@ export default function User() {
     }, [user]);
 
     useEffect(function() {
+        setEditAccountModal(false);
         setUserModal(false);
         setChangePwdModal(false);
         setBlacklistModal(false);
@@ -108,6 +124,14 @@ export default function User() {
         dispatch(setSearch(e.target.value));
         if (e.target.value.length >= 3) setPassUsers(users?.filter(({name, email}) => name.toLowerCase().includes(e.target.value.toLowerCase()) || email.toLowerCase().includes(e.target.value.toLowerCase())))
         else if (search.length >= 3) setPassUsers(users);
+    }
+
+    async function editAccount() {
+        if (!processing.includes(user._id)) {
+            dispatch(addProcess(user._id));
+            await contr.editAccount(user._id, name, email, role, csrfToken, accessToken, setEditAccountModal, setAccountError);
+            dispatch(deleteProcess(user._id));
+        }
     }
 
     async function changePwd() {
@@ -165,9 +189,10 @@ export default function User() {
                     }
                     {
                         desktopBreakpoint
-                        ? <UserDetail setChangePwdModal={setChangePwdModal} blockToken={blockToken} setBlacklistModal={setBlacklistModal} setWhitelistModal={setWhitelistModal} setDeleteAccountModal={setDeleteAccountModal} />
-                        : <UserModal userModal={userModal} setUserModal={setUserModal} setChangePwdModal={setChangePwdModal} blockToken={blockToken} setBlacklistModal={setBlacklistModal} setWhitelistModal={setWhitelistModal} setDeleteAccountModal={setDeleteAccountModal} />
+                        ? <UserDetail setEditAccountModal={setEditAccountModal} setChangePwdModal={setChangePwdModal} blockToken={blockToken} setBlacklistModal={setBlacklistModal} setWhitelistModal={setWhitelistModal} setDeleteAccountModal={setDeleteAccountModal} />
+                        : <UserModal userModal={userModal} setUserModal={setUserModal} setEditAccountModal={setEditAccountModal} setChangePwdModal={setChangePwdModal} blockToken={blockToken} setBlacklistModal={setBlacklistModal} setWhitelistModal={setWhitelistModal} setDeleteAccountModal={setDeleteAccountModal} />
                     }
+                    <EditAccountModal editAccountModal={editAccountModal} setEditAccountModal={setEditAccountModal} name={name} setName={setName} email={email} setEmail={setEmail} role={role} setRole={setRole} roleOption={roleOption} accountError={accountError} editAccount={editAccount} />
                     <ChangePwdModal changePwdModal={changePwdModal} setChangePwdModal={setChangePwdModal} pwd={pwd} setPwd={setPwd} confPwd={confPwd} setConfPwd={setConfPwd} pwdError={pwdError} changePwd={changePwd} />
                     <BlacklistModal blacklistModal={blacklistModal} setBlacklistModal={setBlacklistModal} blacklistReason={blacklistReason} setBlacklistReason={setBlacklistReason} blacklistError={blacklistError} blacklistUser={blacklistUser} />
                     <WhitelistModal whitelistModal={whitelistModal} setWhitelistModal={setWhitelistModal} whitelistUser={whitelistUser} />
