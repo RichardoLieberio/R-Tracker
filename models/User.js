@@ -97,7 +97,8 @@ userSchema.statics.getAllUsers = async function() {
 }
 
 userSchema.statics.updateUser = async function(_id, data, session) {
-    return await this.findOneAndUpdate({_id}, {...data, updated_at: Date.now()}, {session});
+    const result = await this.findOneAndUpdate({_id}, {...data, updated_at: Date.now()}, {session, new: true});
+    return result ? {_id: result._id, name: result.name, email: result.email, role: result.role, updated_at: result.updated_at} : null;
 }
 
 userSchema.statics.changePwdByAdmin = async function(_id, rawPwd, session) {
