@@ -14,12 +14,10 @@ async function updateUser(req, res) {
     if (!mongooseIdValidation(req.params.id)) throw new TransactionError({status: 404, msg: 'Failed to update user. User not found.'});
     if (req.userId === req.params.id) throw new TransactionError({status: 400, msg: 'Cannnot update your own data.'});
 
-    const updated = await User.updateUser(req.params.id, req.data, req.mongooseSession);
-    if (!updated) throw new TransactionError({status: 404, msg: 'Failed to update user. User not found.'});
+    const data = await User.updateUser(req.params.id, req.data, req.mongooseSession);
+    if (!data) throw new TransactionError({status: 404, msg: 'Failed to update user. User not found.'});
 
-    if (updated.email !== req.data.email || updated.role !== req.data.role) await UserToken.clearToken(req.params.id, req.mongooseSession);
-
-    res.json({status: 200, msg: 'User updated successfully.'});
+    res.json({status: 200, msg: 'User updated successfully.', data});
 }
 
 async function deleteAccount(req, res) {
