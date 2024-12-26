@@ -25,6 +25,7 @@ import UserHead from '../head/UserHead';
 import UserTable from '../components/UserTable';
 import UserDetail from '../components/UserDetail';
 import UserModal from '../components/UserModal';
+import ChangePwdModal from '../components/ChangePwdModal';
 import BlacklistModal from '../components/BlacklistModal';
 import WhitelistModal from '../components/WhitelistModal';
 import ConfirmDeleteAccount from '../components/ConfirmDeleteAccount';
@@ -33,6 +34,11 @@ export default function User() {
     const [csrfToken, setCSRFToken] = useState('');
     const [passUsers, setPassUsers] = useState(null);
     const [userModal, setUserModal] = useState(false);
+
+    const [changePwdModal, setChangePwdModal] = useState(false);
+    const [pwd, setPwd] = useState('');
+    const [confPwd, setConfPwd] = useState('');
+    const [pwdError, setPwdError] = useState({});
 
     const [blacklistModal, setBlacklistModal] = useState(false);
     const [blacklistReason, setBlacklistReason] = useState('');
@@ -74,11 +80,16 @@ export default function User() {
     }, [users]); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(function() {
+        setPwd('');
+        setConfPwd('');
+        setPwdError({});
+
         setBlacklistReason('');
         setBlacklistError({});
 
         if (!user) {
             setUserModal(false);
+            setChangePwdModal(false);
             setBlacklistModal(false);
             setWhitelistModal(false);
             setDeleteAccountModal(false);
@@ -87,6 +98,7 @@ export default function User() {
 
     useEffect(function() {
         setUserModal(false);
+        setChangePwdModal(false);
         setBlacklistModal(false);
         setWhitelistModal(false);
         setDeleteAccountModal(false);
@@ -96,6 +108,14 @@ export default function User() {
         dispatch(setSearch(e.target.value));
         if (e.target.value.length >= 3) setPassUsers(users?.filter(({name, email}) => name.toLowerCase().includes(e.target.value.toLowerCase()) || email.toLowerCase().includes(e.target.value.toLowerCase())))
         else if (search.length >= 3) setPassUsers(users);
+    }
+
+    async function changePwd() {
+        if (!processing.includes(user._id)) {
+            dispatch(addProcess(user._id));
+            await contr.changePwd(user._id, pwd, confPwd, csrfToken, accessToken, setChangePwdModal, setPwdError);
+            dispatch(deleteProcess(user._id));
+        }
     }
 
     async function blockToken() {
@@ -145,9 +165,10 @@ export default function User() {
                     }
                     {
                         desktopBreakpoint
-                        ? <UserDetail blockToken={blockToken} setBlacklistModal={setBlacklistModal} setWhitelistModal={setWhitelistModal} setDeleteAccountModal={setDeleteAccountModal} />
-                        : <UserModal blockToken={blockToken} userModal={userModal} setUserModal={setUserModal} setBlacklistModal={setBlacklistModal} setWhitelistModal={setWhitelistModal} setDeleteAccountModal={setDeleteAccountModal} />
+                        ? <UserDetail setChangePwdModal={setChangePwdModal} blockToken={blockToken} setBlacklistModal={setBlacklistModal} setWhitelistModal={setWhitelistModal} setDeleteAccountModal={setDeleteAccountModal} />
+                        : <UserModal userModal={userModal} setUserModal={setUserModal} setChangePwdModal={setChangePwdModal} blockToken={blockToken} setBlacklistModal={setBlacklistModal} setWhitelistModal={setWhitelistModal} setDeleteAccountModal={setDeleteAccountModal} />
                     }
+                    <ChangePwdModal changePwdModal={changePwdModal} setChangePwdModal={setChangePwdModal} pwd={pwd} setPwd={setPwd} confPwd={confPwd} setConfPwd={setConfPwd} pwdError={pwdError} changePwd={changePwd} />
                     <BlacklistModal blacklistModal={blacklistModal} setBlacklistModal={setBlacklistModal} blacklistReason={blacklistReason} setBlacklistReason={setBlacklistReason} blacklistError={blacklistError} blacklistUser={blacklistUser} />
                     <WhitelistModal whitelistModal={whitelistModal} setWhitelistModal={setWhitelistModal} whitelistUser={whitelistUser} />
                     <ConfirmDeleteAccount deleteAccountModal={deleteAccountModal} setDeleteAccountModal={setDeleteAccountModal} deleteAccount={deleteAccount} />
