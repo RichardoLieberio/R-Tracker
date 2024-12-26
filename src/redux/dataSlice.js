@@ -11,11 +11,11 @@ export const dataSlice = createSlice({
         setUsers: function(state, action) {
             state.users = action.payload;
         },
-        addBlacklist: function(state, action) {
-            const {_id, ...blacklistProps} = action.payload;
+        changeInfo: function(state, action) {
+            const {_id, ...props} = action.payload;
             state.users = state.users.map(user => {
                 if (user._id !== _id) return user;
-                return {...user, ...blacklistProps};
+                return {...user, ...props};
             });
         },
         removeBlacklist: function(state, action) {
@@ -35,6 +35,6 @@ export const dataSlice = createSlice({
     }
 });
 
-export const {setUsers, addBlacklist, removeBlacklist, deleteUser} = dataSlice.actions;
+export const {setUsers, changeInfo, removeBlacklist, deleteUser} = dataSlice.actions;
 
 export default dataSlice.reducer;
