@@ -2,8 +2,8 @@ import {toast} from 'react-toastify';
 import axios from '../services/axios';
 
 import store from '../redux/store';
-import {setUsers, addBlacklist, removeBlacklist, deleteUser} from '../redux/dataSlice';
-import {clearUser, checkAndAddBlacklist, checkAndRemoveBlacklist} from '../redux/userPageSlice';
+import {setUsers, changeInfo, removeBlacklist, deleteUser} from '../redux/dataSlice';
+import {clearUser, checkAndChangeInfo, checkAndRemoveBlacklist} from '../redux/userPageSlice';
 
 import css from '../css/user';
 
@@ -40,6 +40,49 @@ async function getAllUsers(accessToken) {
     switch (status) {
         case 200:
             store.dispatch(setUsers(response.data.users));
+            break;
+    }
+}
+
+async function changePwd(id, pwd, confPwd, csrfToken, accessToken, setChangePwdModal, setPwdError) {
+    const data = {pwd, confPwd};
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`,
+            'CSRF-Token': csrfToken
+        },
+        authenticated: {
+            codes: [401],
+            route: '/login'
+        },
+        adminRequest: {
+            codes: [403],
+            route: '/admin/user'
+        }
+    };
+
+    const response = await axios.patch(`/api/admin/user/${id}/change-password`, data, config);
+    const status = response?.data?.status;
+
+    switch (status) {
+        case 200:
+            toast.success(response.data.msg);
+            store.dispatch(changeInfo(response.data.data));
+            store.dispatch(checkAndChangeInfo(response.data.data));
+            store.getState().userPage.user._id === id && setChangePwdModal(false);
+            break;
+        case 400:
+            toast.error(response.data.msg);
+            break;
+        case 404:
+            toast.error(response.data.msg);
+            store.dispatch(deleteUser(id));
+            store.dispatch(clearUser(id));
+            break;
+        case 422:
+            setPwdError(response.data.msg);
+            toast.error('Change password failed.');
             break;
     }
 }
@@ -103,8 +146,8 @@ async function blacklistUser(id, reason, csrfToken, accessToken, setBlacklistMod
     switch (status) {
         case 200:
             toast.success(response.data.msg);
-            store.dispatch(addBlacklist(response.data.data));
-            store.dispatch(checkAndAddBlacklist(response.data.data));
+            store.dispatch(changeInfo(response.data.data));
+            store.dispatch(checkAndChangeInfo(response.data.data));
             store.getState().userPage.user._id === id && setBlacklistModal(false);
             break;
         case 400:
@@ -117,7 +160,7 @@ async function blacklistUser(id, reason, csrfToken, accessToken, setBlacklistMod
             break;
         case 422:
             setBlacklistError(response.data.msg);
-            toast.error(response.data.msg.reason);
+            toast.error('Blacklist failed');
             break;
     }
 }
@@ -197,4 +240,4 @@ async function deleteUserAccount(id, csrfToken, accessToken) {
     }
 }
 
-export default {inputErrorHandler, getAllUsers, blockToken, blacklistUser, whitelistUser, deleteUserAccount};
+export default {inputErrorHandler, getAllUsers, changePwd, blockToken, blacklistUser, whitelistUser, deleteUserAccount};
