@@ -53,7 +53,7 @@ export default function ConfirmDeleteAccount(props) {
         <Modal open={deleteAccountModal} onClose={() => setDeleteAccountModal(false)} aria-labelledby="Delete Account Modal" aria-describedby="Delete user account">
             <Box className={`w-1/3 min-w-56 phone:min-w-72 tablet:min-w-80 desktop:min-w-96 h-auto p-7 phone:p-8 absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 flex flex-col gap-8 rounded-lg tablet:rounded-xl ${getBackgroundColor(theme)} ${getTextColor(theme)}`}>
                 <header className="flex flex-col gap-1">
-                    <h2 className="text-xl font-semibold">Delete user account</h2>
+                    <h2 className="text-xl font-semibold">Delete User Account</h2>
                     <small className="text-sm">Delete user account will remove all of user information from our database. This cannot be undone.</small>
                 </header>
                 <main className="flex flex-col gap-6">
