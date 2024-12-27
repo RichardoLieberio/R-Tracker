@@ -8,6 +8,12 @@ export const dataSlice = createSlice({
         users: null
     },
     reducers: {
+        setExpenseCategories: function(state, action) {
+            state.expenseCategories = action.payload;
+        },
+        addExpenseCategory: function(state, action) {
+            state.expenseCategories = [...state.expenseCategories, action.payload];
+        },
         setUsers: function(state, action) {
             state.users = action.payload;
         },
@@ -35,6 +41,6 @@ export const dataSlice = createSlice({
     }
 });
 
-export const {setUsers, changeInfo, removeBlacklist, deleteUser} = dataSlice.actions;
+export const {setExpenseCategories, addExpenseCategory, setUsers, changeInfo, removeBlacklist, deleteUser} = dataSlice.actions;
 
 export default dataSlice.reducer;
