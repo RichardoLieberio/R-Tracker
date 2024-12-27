@@ -27,7 +27,7 @@ import {
 import {HelmetProvider} from 'react-helmet-async';
 import {Menu, MenuButton, MenuItems, MenuItem} from '@headlessui/react';
 import {BsThreeDotsVertical} from 'react-icons/bs';
-import {FaPencilAlt, FaEyeSlash, FaSortAlphaDown, FaSortAlphaUp} from 'react-icons/fa';
+import {FaPencilAlt, FaEye, FaEyeSlash, FaSortAlphaDown, FaSortAlphaUp} from 'react-icons/fa';
 import ExpenseCategoryHead from '../head/ExpenseCategoryHead';
 import AddCategoryModal from '../components/AddCategoryModal';
 import CategoryModal from '../components/CategoryModal';
@@ -140,9 +140,18 @@ export default function ExpenseCategory() {
                                             </button>
                                         </MenuItem>
                                         <MenuItem>
-                                            <button className={`px-4 py-2 flex items-center gap-2 text-start ${getTextErrorColor(theme)} ${getHoverBgNeutral50Color(theme)}`}>
-                                                <FaEyeSlash className="flex-shrink-0 text-lg" />
-                                                Hide
+                                            <button className={`px-4 py-2 flex items-center gap-2 text-start ${!category.hidden && getTextErrorColor(theme)} ${getHoverBgNeutral50Color(theme)}`}>
+                                                {
+                                                    category.hidden
+                                                    ? <>
+                                                        <FaEye className="flex-shrink-0 text-lg" />
+                                                        Unhide
+                                                    </>
+                                                    : <>
+                                                        <FaEyeSlash className="flex-shrink-0 text-lg" />
+                                                        Hide
+                                                    </>
+                                                }
                                             </button>
                                         </MenuItem>
                                     </MenuItems>
