@@ -56,7 +56,7 @@ export default function CategoryModal(props) {
                                     category?.updated_by &&
                                     <div className="flex-1 relative flex flex-col">
                                         <span className={`px-2 absolute left-1 -top-3 text-sm ${getBackgroundColor(theme)}`}>Updated By</span>
-                                        <span className={`px-3 py-2 text-wrap border ${getBorderNeutralColor(theme)} rounded-md break-words`}>{format(new Date(category?.updated_by), 'MMMM dd, yyyy HH:mm:ss')}</span>
+                                        <span className={`px-3 py-2 text-wrap border ${getBorderNeutralColor(theme)} rounded-md break-words`}>{category?.updated_by?.name}</span>
                                     </div>
                                 }
                                 {
