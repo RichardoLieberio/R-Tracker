@@ -12,7 +12,8 @@ export const dataSlice = createSlice({
             state.expenseCategories = action.payload;
         },
         addExpenseCategory: function(state, action) {
-            state.expenseCategories = [action.payload, ...state.expenseCategories];
+            const {data, name} = action.payload;
+            state.expenseCategories = [{...data, created_by: {_id: data.created_by, name}}, ...state.expenseCategories];
         },
         setUsers: function(state, action) {
             state.users = action.payload;
