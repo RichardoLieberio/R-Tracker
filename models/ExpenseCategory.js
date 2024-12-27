@@ -63,7 +63,7 @@ expenseCategorySchema.statics.getCategory = async function(id) {
 }
 
 expenseCategorySchema.statics.addCategory = async function(data, icon, created_by, session) {
-    await this.create([{...data, icon, created_by}], {session});
+    return await this.create([{...data, icon, created_by}], {session});
 }
 
 expenseCategorySchema.statics.editCategory = async function(_id, data, updated_by, session) {
