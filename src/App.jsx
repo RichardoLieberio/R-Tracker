@@ -38,6 +38,17 @@ export default function App() {
     useEffect(function() {
         contr.themeSetup();
         contr.getInfo(setLoading, false);
+
+        const handleDragOver = (e) => e.preventDefault();
+        const handleDrop = (e) => e.preventDefault();
+
+        window.addEventListener("dragover", handleDragOver);
+        window.addEventListener("drop", handleDrop);
+
+        return function() {
+            window.removeEventListener("dragover", handleDragOver);
+            window.removeEventListener("drop", handleDrop);
+        }
     }, []);
 
     function toastClassName(context) {
