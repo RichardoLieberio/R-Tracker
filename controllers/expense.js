@@ -1,10 +1,11 @@
 const mongooseIdValidation = require('../services/mongooseIdValidation');
 
+const User = require('../models/User');
 const Expense = require('../models/Expense');
 const ExpenseCategory = require('../models/ExpenseCategory');
 
 async function getCategories(req, res) {
-    const categories = await ExpenseCategory.getCategoriesForUser();
+    const categories = await User.isAdmin(req.userId) ? await ExpenseCategory.getCategoriesForAdmin() : await ExpenseCategory.getCategoriesForUser();
     res.json({status: 200, msg: 'Categories retrieved successfully.', categories});
 }
 
