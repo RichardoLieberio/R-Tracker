@@ -15,5 +15,6 @@ routes.post('/', csrfHandler(csrfProtection), validation.addCategory, transactio
 routes.get('/:id', errorHandler(controller.getCategory));
 routes.put('/:id', csrfHandler(csrfProtection), validation.editCategory, transactionHandler(controller.editCategory));
 routes.delete('/:id', csrfHandler(csrfProtection), errorHandler(controller.deleteCategory));
+routes.patch('/:id/hide', csrfHandler(csrfProtection), errorHandler(controller.hideCategory));
 
 module.exports = routes;
