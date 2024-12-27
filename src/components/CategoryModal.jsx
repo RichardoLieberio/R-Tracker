@@ -4,7 +4,7 @@ import {format} from 'date-fns';
 
 import {
     getBackgroundColor,
-    getTextPrimaryColor, getTextColor,
+    getTextPrimaryColor, getTextColor, getTextNeutralColor,
     getHoverTextHighlightColor,
     getBorderNeutralColor,
     getScrollbarTrackBackground,
@@ -12,6 +12,7 @@ import {
 } from '../css/color';
 
 import {Modal, Box} from '@mui/material';
+import {FaEyeSlash} from 'react-icons/fa';
 
 export default function CategoryModal(props) {
     const {modal, setModal, category} = props;
@@ -23,7 +24,10 @@ export default function CategoryModal(props) {
             <Box className={`w-1/2 min-w-56 phone:min-w-72 tablet:min-w-80 desktop:min-w-96 max-w-max h-auto py-7 phone:py-8 absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 flex flex-col gap-8 rounded-lg tablet:rounded-xl ${getBackgroundColor(theme)} ${getTextColor(theme)}`}>
                 <main className={`max-h-96 px-7 phone:px-8 flex flex-col gap-8 overflow-auto scrollbar-thin ${getScrollbarTrackBackground(theme)} ${getScrollbarThumbText(theme)}`}>
                     <section className="flex flex-col gap-8">
-                        <header className="flex items-center justify-between text-xl font-semibold">Expense Category</header>
+                        <header className="flex items-center justify-between text-xl font-semibold">
+                            Expense Category
+                            {category.hidden && <span className={`flex items-center justify-center gap-2 text-xl font-semibold ${getTextNeutralColor(theme)}`}><FaEyeSlash />Hidden</span>}
+                        </header>
                         <main className="flex flex-col desktop:flex-row gap-8">
                             <div className="desktop:px-4">
                                 <img src={`${process.env.EXPENSE_CATEGORY_URI}/${category.icon}`} alt={category.name} className="mx-auto w-20 h-20 phone:w-24 phone:h-24 tablet:w-28 tablet:h-28 desktop:w-32 desktop:h-32" />
