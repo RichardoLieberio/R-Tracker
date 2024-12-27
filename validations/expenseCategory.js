@@ -76,7 +76,7 @@ function validateColor(color) {
     if (!color) return {error: 'Color is required.'};
     if (typeof(color) !== 'string') return {error: 'Color must be string.'};
 
-    color = color.trim().toLowerCase();
+    color = color.trim().toUpperCase();
 
     if (!color) return {error: 'Color is required.'};
 
