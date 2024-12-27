@@ -568,6 +568,25 @@ function getBorderPrimaryColor(theme) {
     }
 }
 
+function getBorderTextColor(theme) {
+    switch (theme) {
+        case 'red':
+            return '!border-red-text';
+        case 'green':
+            return '!border-green-text';
+        case 'blue':
+            return '!border-blue-text';
+        case 'yellow':
+            return '!border-yellow-text';
+        case 'teal':
+            return '!border-teal-text';
+        case 'dark':
+            return '!border-dark-text';
+        default:
+            return '!border-purple-text';
+    }
+}
+
 function getBorderNeutralColor(theme) {
     switch (theme) {
         case 'red':
@@ -805,7 +824,7 @@ export {
     getDisabledOppositeTextColor,
     getPlaceholderText,
     getFromSecondaryColor, getToPrimaryColor,
-    getBorderPrimaryColor, getBorderNeutralColor, getBorderErrorColor, getBorderText20Color,
+    getBorderPrimaryColor, getBorderTextColor, getBorderNeutralColor, getBorderErrorColor, getBorderText20Color,
     getHoverBorderHighlightColor,
     getFocusBorderPrimaryColor, getFocusBorderHighlightColor,
     getOutlinePrimaryColor, getOutlineTextColor, getOutlineErrorColor,
