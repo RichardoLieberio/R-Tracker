@@ -26,7 +26,7 @@ export default function CategoryModal(props) {
                     <section className="flex flex-col gap-8">
                         <header className="flex items-center justify-between text-xl font-semibold">
                             Expense Category
-                            {category.hidden && <span className={`flex items-center justify-center gap-2 text-xl font-semibold ${getTextNeutralColor(theme)}`}><FaEyeSlash />Hidden</span>}
+                            {category.hidden && <span className={`flex items-center justify-center gap-2 ${getTextNeutralColor(theme)}`}><FaEyeSlash />Hidden</span>}
                         </header>
                         <main className="flex flex-col desktop:flex-row gap-8">
                             <div className="desktop:px-4">
