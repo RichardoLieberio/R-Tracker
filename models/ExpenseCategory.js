@@ -70,6 +70,10 @@ expenseCategorySchema.statics.editCategory = async function(_id, data, updated_b
     return await this.findOneAndUpdate({_id}, {...data, updated_by, updated_at: Date.now()}, {session});
 }
 
+expenseCategorySchema.statics.hideCategory = async function(_id, updated_by) {
+    return await this.findOneAndUpdate({_id}, {hidden: true, updated_by, updated_at: Date.now()}, {new: true}).populate('created_by', 'name').populate('updated_by', 'name');
+}
+
 expenseCategorySchema.statics.deleteCategory = async function(id) {
     return await this.findByIdAndDelete(id);
 }
