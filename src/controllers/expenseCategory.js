@@ -2,7 +2,7 @@ import {toast} from 'react-toastify';
 import axios from '../services/axios';
 
 import store from '../redux/store';
-import {setExpenseCategories, addExpenseCategory} from '../redux/dataSlice';
+import {setExpenseCategories, addExpenseCategory, updateExpenseCategory, deleteExpenseCategory} from '../redux/dataSlice';
 
 import css from '../css/expenseCategory';
 
@@ -75,4 +75,36 @@ async function addCategory(name, setName, color, setColor, icon, setIcon, csrfTo
     }
 }
 
-export default {inputErrorHandler, getCategories, addCategory};
+async function hideCategory(id, csrfToken, accessToken) {
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`,
+            'CSRF-Token': csrfToken
+        },
+        authenticated: {
+            codes: [401],
+            route: '/login'
+        },
+        adminRequest: {
+            codes: [403],
+            route: '/admin/expense-category'
+        }
+    };
+
+    const response = await axios.patch(`/api/admin/expense-category/${id}/hide`, {}, config);
+    const status = response?.data?.status;
+
+    switch (status) {
+        case 200:
+            toast.success(response.data.msg);
+            store.dispatch(updateExpenseCategory(response.data.data));
+            break;
+        case 404:
+            toast.error(response.data.msg);
+            store.dispatch(deleteExpenseCategory(id));
+            break;
+    }
+}
+
+export default {inputErrorHandler, getCategories, addCategory, hideCategory};
