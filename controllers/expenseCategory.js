@@ -14,12 +14,12 @@ async function getCategories(req, res) {
 
 async function addCategory(req, res) {
     const {file_name, base64Data} = getIconConfiguration(req.data.icon);
-    await ExpenseCategory.addCategory(req.data, file_name, req.userId, req.mongooseSession);
+    const [data] = await ExpenseCategory.addCategory(req.data, file_name, req.userId, req.mongooseSession);
 
     const iconPath = path.join(__dirname, '..', 'public', 'expense', file_name);
     await uploadFile(iconPath, base64Data);
 
-    res.json({status: 201, msg: 'Expense category created successfully.'});
+    res.json({status: 201, msg: 'Expense category created successfully.', data});
 }
 
 async function getCategory(req, res) {
