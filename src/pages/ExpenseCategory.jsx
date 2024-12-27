@@ -10,7 +10,7 @@ import getCSRFToken from '../services/getCSRFToken';
 import {getToast} from '../services/toastService';
 
 import {changePage} from '../redux/webSlice';
-import {setOrder, setOrderBy} from '../redux/categoryPageSlice';
+import {setOrder, setOrderBy, addProcess, deleteProcess} from '../redux/categoryPageSlice';
 
 import contr from '../controllers/expenseCategory';
 
@@ -57,6 +57,7 @@ export default function ExpenseCategory() {
     const expenseCategories = useSelector((state) => state.data.expenseCategories);
     const order = useSelector((state) => state.categoryPage.order);
     const orderBy = useSelector((state) => state.categoryPage.orderBy);
+    const processing = useSelector((state) => state.categoryPage.processing);
 
     const location = useLocation();
     const dispatch = useDispatch();
@@ -94,6 +95,16 @@ export default function ExpenseCategory() {
             setAddError({});
             await contr.addCategory(addName, setAddName, addColor, setAddColor, addIcon, setAddIcon, csrfToken, accessToken, setAddCategoryModal, setAddError);
             setIsAdding(false);
+        }
+    }
+
+    async function hideHandler(e, category) {
+        e.stopPropagation();
+
+        if (!processing.includes(category._id)) {
+            dispatch(addProcess(category._id));
+            await contr.hideCategory(category._id, csrfToken, accessToken);
+            dispatch(deleteProcess(category._id));
         }
     }
 
@@ -140,7 +151,7 @@ export default function ExpenseCategory() {
                                             </button>
                                         </MenuItem>
                                         <MenuItem>
-                                            <button className={`px-4 py-2 flex items-center gap-2 text-start ${!category.hidden && getTextErrorColor(theme)} ${getHoverBgNeutral50Color(theme)}`}>
+                                            <button onClick={(e) => hideHandler(e, category)} className={`px-4 py-2 flex items-center gap-2 text-start ${!category.hidden && getTextErrorColor(theme)} ${getHoverBgNeutral50Color(theme)}`}>
                                                 {
                                                     category.hidden
                                                     ? <>
