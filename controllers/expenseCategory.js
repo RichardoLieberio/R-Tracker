@@ -63,6 +63,15 @@ async function deleteCategory(req, res) {
     res.json({status: 200, msg: 'Expense category deleted successfully.'});
 }
 
+async function hideCategory(req, res) {
+    if (!mongooseIdValidation(req.params.id)) return res.json({status: 404, msg: 'Failed to hide. Expense category not found.'});
+
+    const data = await ExpenseCategory.hideCategory(req.params.id, req.userId);
+    if (!data) return res.json({status: 404, msg: 'Failed to hide. Expense category not found.'});
+
+    res.json({status: 200, msg: 'Expense category hid successfully.', data});
+}
+
 function getIconConfiguration(icon) {
     const matches = icon.match(/^data:(image\/\w+);base64,(.+)$/);
     const format = matches[1].split('/')[1];
@@ -86,4 +95,4 @@ async function deleteFile(path) {
     });
 }
 
-module.exports = {getCategories, addCategory, getCategory, editCategory, deleteCategory};
+module.exports = {getCategories, addCategory, getCategory, editCategory, deleteCategory, hideCategory};
