@@ -15,6 +15,12 @@ export const dataSlice = createSlice({
             const {data, name} = action.payload;
             state.expenseCategories = [{...data, created_by: {_id: data.created_by, name}}, ...state.expenseCategories];
         },
+        updateExpenseCategory: function(state, action) {
+            state.expenseCategories = state.expenseCategories.map(category => category._id === action.payload._id ? action.payload : category);
+        },
+        deleteExpenseCategory: function(state, action) {
+            state.expenseCategories = state.expenseCategories.filter(category => category._id !== action.payload);
+        },
         setUsers: function(state, action) {
             state.users = action.payload;
         },
@@ -42,6 +48,6 @@ export const dataSlice = createSlice({
     }
 });
 
-export const {setExpenseCategories, addExpenseCategory, setUsers, changeInfo, removeBlacklist, deleteUser} = dataSlice.actions;
+export const {setExpenseCategories, addExpenseCategory, updateExpenseCategory, deleteExpenseCategory, setUsers, changeInfo, removeBlacklist, deleteUser} = dataSlice.actions;
 
 export default dataSlice.reducer;
