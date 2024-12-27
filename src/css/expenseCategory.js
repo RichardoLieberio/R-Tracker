@@ -10,6 +10,6 @@ export default function(theme) {
         defaultInput: `w-full px-3 py-2 ${getBackgroundColor(theme)} border ${getBorderNeutralColor(theme)} rounded-md outline-none ${theme === 'dark' ? getFocusBorderHighlightColor(theme) : getFocusBorderPrimaryColor(theme)} ${getDisabledBgNeutral30Color(theme)} disabled:cursor-not-allowed`,
         defaultInputError: `w-full px-3 py-2 ${getBackgroundColor(theme)} pl-10 border ${getBorderErrorColor(theme)} rounded-md outline-none`,
         colorInput: `w-full px-3 py-2 ps-10 ${getBackgroundColor(theme)} border ${getBorderNeutralColor(theme)} rounded-md outline-none ${theme === 'dark' ? getFocusBorderHighlightColor(theme) : getFocusBorderPrimaryColor(theme)} ${getDisabledBgNeutral30Color(theme)} disabled:cursor-not-allowed`,
-        colorInputError: `w-full px-3 py-2 ps-10 ${getBackgroundColor(theme)} pl-10 border ${getBorderErrorColor(theme)} rounded-md outline-none`
+        colorInputError: `w-full px-3 py-2 ps-16 ${getBackgroundColor(theme)} pl-10 border ${getBorderErrorColor(theme)} rounded-md outline-none`
     };
 };
