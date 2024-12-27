@@ -10,6 +10,7 @@ import getCSRFToken from '../services/getCSRFToken';
 import {getToast} from '../services/toastService';
 
 import {changePage} from '../redux/webSlice';
+import {setOrder, setOrderBy} from '../redux/categoryPageSlice';
 
 import contr from '../controllers/expenseCategory';
 
@@ -17,7 +18,9 @@ import {
     getBgPrimaryColor, getBackgroundColor, getBgNeutral10Color,
     getHoverBgNeutral50Color, getHoverBgHighlightColor,
     getTextColor, getOppositeTextColor, getTextErrorColor,
+    getHoverTextHighlightColor,
     getBorderNeutralColor,
+    getHoverBorderHighlightColor,
     getShadowColor
 } from '../css/color';
 
@@ -27,9 +30,19 @@ import {BsThreeDotsVertical} from 'react-icons/bs';
 import {FaPencilAlt, FaEyeSlash, FaSortAlphaDown, FaSortAlphaUp} from 'react-icons/fa';
 import ExpenseCategoryHead from '../head/ExpenseCategoryHead';
 import AddCategoryModal from '../components/AddCategoryModal';
+import CategoryModal from '../components/CategoryModal';
+
+const orderOption = {
+    'name': 'Name',
+    'created_at': 'Created at',
+    'hidden': 'Hidden'
+};
 
 export default function ExpenseCategory() {
     const [csrfToken, setCSRFToken] = useState('');
+    const [passCategory, setPassCategory] = useState(null);
+    const [category, setCategory] = useState({});
+    const [categoryModal, setCategoryModal] = useState(false);
 
     const [addCategoryModal, setAddCategoryModal] = useState(false);
     const [addName, setAddName] = useState('');
@@ -42,6 +55,8 @@ export default function ExpenseCategory() {
     const theme = useSelector((state) => state.web.theme);
     const accessToken = useSelector((state) => state.auth.accessToken);
     const expenseCategories = useSelector((state) => state.data.expenseCategories);
+    const order = useSelector((state) => state.categoryPage.order);
+    const orderBy = useSelector((state) => state.categoryPage.orderBy);
 
     const location = useLocation();
     const dispatch = useDispatch();
@@ -61,6 +76,18 @@ export default function ExpenseCategory() {
         }
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+    useEffect(function() {
+        expenseCategories && setPassCategory([...expenseCategories].sort((a, b) => {
+            if (a[orderBy] < b[orderBy]) return order === 'asc' ? -1 : 1;
+            if (a[orderBy] > b[orderBy]) return order === 'asc' ? 1 : -1;
+        }));
+    }, [expenseCategories, order, orderBy]);
+
+    function openCategoryModal(category) {
+        setCategory(category);
+        setCategoryModal(true);
+    }
+
     async function addCategory() {
         if (!isAdding) {
             setIsAdding(true);
@@ -78,24 +105,19 @@ export default function ExpenseCategory() {
                     <section className="w-full tablet:w-auto flex items-center justify-between phone:justify-start gap-4">
                         <label htmlFor="sort">{phoneBreakpoint ? 'Sort by' : 'Sort'}</label>
                         <Menu>
-                            <MenuButton id="sort" className={`w-28 phone:w-40 tablet:w-48 h-10 px-4 text-start border ${getBorderNeutralColor(theme)} rounded-md`}>Created at</MenuButton>
+                            <MenuButton id="sort" className={`w-28 phone:w-40 tablet:w-48 h-10 px-4 text-start border ${getBorderNeutralColor(theme)} rounded-md ${getHoverTextHighlightColor(theme)} ${getHoverBorderHighlightColor(theme)}`}>{orderOption[orderBy]}</MenuButton>
                             <MenuItems transition anchor="bottom start" className={`py-1 flex flex-col ${getTextColor(theme)} ${getBackgroundColor(theme)} shadow-lg ${getShadowColor(theme)} rounded-lg z-[99999] origin-top-right transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0`}>
-                                <MenuItem>
-                                    <button className={`w-28 phone:w-40 tablet:w-48 px-4 py-2 text-start ${getHoverBgNeutral50Color(theme)}`}>Name</button>
-                                </MenuItem>
-                                <MenuItem>
-                                    <button className={`w-28 phone:w-40 tablet:w-48 px-4 py-2 text-start ${getHoverBgNeutral50Color(theme)}`}>Created By</button>
-                                </MenuItem>
-                                <MenuItem>
-                                    <button className={`w-28 phone:w-40 tablet:w-48 px-4 py-2 text-start ${getHoverBgNeutral50Color(theme)}`}>Created At</button>
-                                </MenuItem>
-                                <MenuItem>
-                                    <button className={`w-28 phone:w-40 tablet:w-48 px-4 py-2 text-start ${getHoverBgNeutral50Color(theme)}`}>Hidden</button>
-                                </MenuItem>
+                                {
+                                    Object.entries(orderOption).map(([key, value]) => (
+                                        <MenuItem key={key}>
+                                            <button onClick={() => dispatch(setOrderBy(key))} className={`w-28 phone:w-40 tablet:w-48 px-4 py-2 text-start ${getHoverBgNeutral50Color(theme)}`}>{value}</button>
+                                        </MenuItem>
+                                    ))
+                                }
                             </MenuItems>
                         </Menu>
-                        <button className={`w-10 h-10 flex items-center justify-center border ${getBorderNeutralColor(theme)} rounded-md`}>
-                            <FaSortAlphaDown />
+                        <button onClick={() => dispatch(setOrder(order === 'desc' ? 'asc' : 'desc'))} className={`w-10 h-10 flex items-center justify-center border ${getBorderNeutralColor(theme)} rounded-md ${getHoverTextHighlightColor(theme)} ${getHoverBorderHighlightColor(theme)}`}>
+                            {order === 'asc' ? <FaSortAlphaUp /> : <FaSortAlphaDown />}
                         </button>
                     </section>
                     <button onClick={() => setAddCategoryModal(true)} className={`w-fit py-1 px-8 relative ${getOppositeTextColor(theme)} ${getBgPrimaryColor(theme)} rounded-md ${getHoverBgHighlightColor(theme)}`}>Add category</button>
@@ -103,11 +125,11 @@ export default function ExpenseCategory() {
                 </header>
                 <main className={`grid ${fullLayout ? 'grid-cols-5' : 'phone:grid-cols-2 tablet:grid-cols-3 desktop:grid-cols-4'} gap-4 text-center`}>
                     {
-                        expenseCategories?.map(category => (
-                            <div key={category._id} className={`w-full px-6 py-4 relative flex flex-col gap-2 ${category.hidden && getBgNeutral10Color(theme)} border ${getBorderNeutralColor(theme)} rounded-xl ${getHoverBgNeutral50Color(theme)} cursor-pointer`}>
+                        passCategory?.map(category => (
+                            <div onClick={() => openCategoryModal(category)} key={category._id} className={`w-full px-6 py-4 relative flex flex-col gap-2 ${category.hidden && getBgNeutral10Color(theme)} border ${getBorderNeutralColor(theme)} rounded-xl ${getHoverBgNeutral50Color(theme)} cursor-pointer`}>
                                 {category.hidden && <FaEyeSlash className="absolute top-4 left-4" />}
                                 <Menu>
-                                    <MenuButton className="absolute top-4 right-3">
+                                    <MenuButton onClick={e => e.stopPropagation()} className="absolute top-4 right-3">
                                         <BsThreeDotsVertical />
                                     </MenuButton>
                                     <MenuItems transition anchor="bottom end" className={`w-36 mt-2 py-1 flex flex-col ${getTextColor(theme)} ${getBackgroundColor(theme)} shadow-lg ${getShadowColor(theme)} rounded-lg origin-top-right transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0`}>
@@ -126,13 +148,14 @@ export default function ExpenseCategory() {
                                     </MenuItems>
                                 </Menu>
                                 <div className="p-3 mx-auto rounded-full" style={{backgroundColor: `#${category.color}`}}>
-                                    <img src={`${process.env.API_URI}/public/expense/${category.icon}`} alt={category.name} className="w-10 h-10 mx-auto rounded-full" />
+                                    <img src={`${process.env.EXPENSE_CATEGORY_URI}/${category.icon}`} alt={category.name} className="w-10 h-10" />
                                 </div>
                                 <span className="truncate overflow-hidden">{category.name}</span>
                             </div>
                         ))
                     }
                 </main>
+                <CategoryModal modal={categoryModal} setModal={setCategoryModal} category={category} />
             </section>
         </HelmetProvider>
     );
