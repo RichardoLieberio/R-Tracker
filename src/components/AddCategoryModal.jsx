@@ -153,7 +153,7 @@ export default function AddCategoryModal(props) {
                                     <div className={`px-3 py-3 ${error.color ? 'ps-10' : ''} absolute left-0 bottom-0 rounded-tr-md rounded-br-md pointer-events-none`}><FaHashtag /></div>
                                 }
                                 <label htmlFor="color" className={colorLabelClass}>Hex Color</label>
-                                <input type="text" id="color" value={color} disabled={processing} onChange={(e) => setColor(e.target.value)} onFocus={colorInputFocus} onBlur={colorInputBlur} className={colorInputClass} />
+                                <input type="text" id="color" value={color} disabled={processing} onChange={(e) => setColor(e.target.value.toUpperCase())} onFocus={colorInputFocus} onBlur={colorInputBlur} className={colorInputClass} />
                             </div>
                         </section>
                         <section className="flex flex-col gap-6">
