@@ -13,7 +13,7 @@ import {
     getDisabledBgNeutralColor,
     getTextColor, getTextPrimaryColor, getTextErrorColor, getOppositeTextColor,
     getHoverTextHighlightColor,
-    getBorderPrimaryColor
+    getBorderPrimaryColor, getBorderTextColor
 } from '../css/color';
 import css from '../css/expenseCategory';
 
@@ -169,7 +169,7 @@ export default function AddCategoryModal(props) {
                                     <h2 className={error.icon && getTextErrorColor(theme)}>{phoneBreakpoint ? 'Upload icon' : 'Upload'}</h2>
                                 </div>
                             </div>
-                            <div onDrop={dropHandler} onDragOver={e => e.preventDefault()} className={`h-52 relative ${getBgNeutral10Color(theme)} border border-dashed ${getBorderPrimaryColor(theme)} rounded-lg`}>
+                            <div onDrop={dropHandler} onDragOver={e => e.preventDefault()} className={`h-52 relative ${getBgNeutral10Color(theme)} border border-dashed ${theme === 'dark' ? getBorderTextColor(theme) : getBorderPrimaryColor(theme)} rounded-lg`}>
                                 <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-2">
                                     {
                                         icon
@@ -186,7 +186,7 @@ export default function AddCategoryModal(props) {
                                             </div>
                                         </>
                                         : <>
-                                            <FiUpload className={`text-4xl ${getTextPrimaryColor(theme)}`} />
+                                            <FiUpload className={`text-4xl ${theme === 'dark' ? getOppositeTextColor(theme) : getTextPrimaryColor(theme)}`} />
                                             <div className="flex flex-col items-center">
                                                 <small className="text-xs whitespace-nowrap">Max file size {process.env.MAX_FILE_SIZE_IN_MB}MB</small>
                                                 <span className="text-sm whitespace-nowrap">Drag & drop your file or</span>
