@@ -17,6 +17,25 @@ function getBgPrimaryColor(theme) {
     }
 }
 
+function getBgNeutralColor(theme) {
+    switch (theme) {
+        case 'red':
+            return '!bg-red-neutral';
+        case 'green':
+            return '!bg-green-neutral';
+        case 'blue':
+            return '!bg-blue-neutral';
+        case 'yellow':
+            return '!bg-yellow-neutral';
+        case 'teal':
+            return '!bg-teal-neutral';
+        case 'dark':
+            return '!bg-dark-neutral';
+        default:
+            return '!bg-purple-neutral';
+    }
+}
+
 function getBgNeutral10Color(theme) {
     switch (theme) {
         case 'red':
@@ -778,7 +797,7 @@ function getScrollbarThumbText(theme) {
 }
 
 export {
-    getBgPrimaryColor, getBgNeutral10Color, getBgHighlightColor, getBgErrorColor, getBackgroundColor,
+    getBgPrimaryColor, getBgNeutralColor, getBgNeutral10Color, getBgHighlightColor, getBgErrorColor, getBackgroundColor,
     getHoverBgPrimaryColor, getHoverBgHighlightColor, getHoverBgErrorColor, getHoverBgError60Color, getHoverBgNeutral50Color,
     getDisabledBgColor, getDisabledBgNeutralColor, getDisabledBgNeutral30Color, getDisabledBgHighlightColor,
     getTextColor, getTextPrimaryColor, getOppositeTextColor, getTextNeutralColor, getTextHighlightColor, getTextLinkColor, getTextDisabledColor, getTextErrorColor,
