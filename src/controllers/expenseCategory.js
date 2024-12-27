@@ -62,7 +62,7 @@ async function addCategory(name, setName, color, setColor, icon, setIcon, csrfTo
     switch (status) {
         case 201:
             toast.success(response.data.msg);
-            store.dispatch(addExpenseCategory(response.data.data));
+            store.dispatch(addExpenseCategory({data: response.data.data, name: store.getState().auth.userInfo.name}));
             setModal(false);
             setName('');
             setColor('');
