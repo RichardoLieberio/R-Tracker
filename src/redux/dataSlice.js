@@ -12,7 +12,7 @@ export const dataSlice = createSlice({
             state.expenseCategories = action.payload;
         },
         addExpenseCategory: function(state, action) {
-            state.expenseCategories = [...state.expenseCategories, action.payload];
+            state.expenseCategories = [action.payload, ...state.expenseCategories];
         },
         setUsers: function(state, action) {
             state.users = action.payload;
