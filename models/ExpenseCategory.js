@@ -15,7 +15,7 @@ const expenseCategorySchema = mongoose.Schema({
     color: {
         type: String,
         trim: true,
-        lowercase: true,
+        uppercase: true,
         minLength: 3,
         maxLength: 6,
         required: true
@@ -51,11 +51,11 @@ expenseCategorySchema.statics.isCategoryUseable = async function(_id) {
 }
 
 expenseCategorySchema.statics.getCategoriesForAdmin = async function() {
-    return await this.find();
+    return await this.find().sort({created_at: -1}).populate('created_by', 'name').populate('updated_by', 'name');
 }
 
 expenseCategorySchema.statics.getCategoriesForUser = async function() {
-    return await this.find({hidden: false}).select('name icon color');
+    return await this.find({hidden: false}).select('name icon color').sort({created_at: -1});
 }
 
 expenseCategorySchema.statics.getCategory = async function(id) {
