@@ -90,6 +90,7 @@ export default function ExpenseCategory() {
 
     useEffect(function() {
         if (expenseCategories) {
+            categoryModal && setCategory(expenseCategories.filter(cat => cat._id === category._id)[0]);
             deleteCategoryModal && !expenseCategories.some(cat => cat._id === category._id) && setDeleteCategoryModal(false);
         }
     }, [expenseCategories]); // eslint-disable-line react-hooks/exhaustive-deps
