@@ -27,14 +27,16 @@ import {
 import {HelmetProvider} from 'react-helmet-async';
 import {Menu, MenuButton, MenuItems, MenuItem} from '@headlessui/react';
 import {BsThreeDotsVertical} from 'react-icons/bs';
-import {FaPencilAlt, FaEye, FaEyeSlash, FaSortAlphaDown, FaSortAlphaUp} from 'react-icons/fa';
+import {FaPencilAlt, FaEye, FaEyeSlash, FaTrashAlt, FaSortAlphaDown, FaSortAlphaUp} from 'react-icons/fa';
 import ExpenseCategoryHead from '../head/ExpenseCategoryHead';
 import AddCategoryModal from '../components/AddCategoryModal';
 import CategoryModal from '../components/CategoryModal';
+import ConfirmDeleteCategory from '../components/ConfirmDeleteCategory';
 
 const orderOption = {
     'name': 'Name',
     'created_at': 'Created at',
+    'updated_at': 'Updated at',
     'hidden': 'Hidden'
 };
 
@@ -51,6 +53,8 @@ export default function ExpenseCategory() {
     const [addIconText, setAddIconText] = useState('');
     const [addError, setAddError] = useState({});
     const [isAdding, setIsAdding] = useState(false);
+
+    const [deleteCategoryModal, setDeleteCategoryModal] = useState(false);
 
     const theme = useSelector((state) => state.web.theme);
     const accessToken = useSelector((state) => state.auth.accessToken);
@@ -84,9 +88,21 @@ export default function ExpenseCategory() {
         }));
     }, [expenseCategories, order, orderBy]);
 
+    useEffect(function() {
+        if (expenseCategories) {
+            deleteCategoryModal && !expenseCategories.some(cat => cat._id === category._id) && setDeleteCategoryModal(false);
+        }
+    }, [expenseCategories]); // eslint-disable-line react-hooks/exhaustive-deps
+
     function openCategoryModal(category) {
         setCategory(category);
         setCategoryModal(true);
+    }
+
+    async function openDeleteModal(e, category) {
+        e.stopPropagation();
+        setCategory(category);
+        setDeleteCategoryModal(true);
     }
 
     async function addCategory() {
@@ -106,6 +122,14 @@ export default function ExpenseCategory() {
             category.hidden
             ? await contr.unhideCategory(category._id, csrfToken, accessToken)
             : await contr.hideCategory(category._id, csrfToken, accessToken);
+            dispatch(deleteProcess(category._id));
+        }
+    }
+
+    async function deleteHandler() {
+        if (!processing.includes(category._id)) {
+            dispatch(addProcess(category._id));
+            await contr.deleteCategory(category._id, csrfToken, accessToken);
             dispatch(deleteProcess(category._id));
         }
     }
@@ -142,7 +166,7 @@ export default function ExpenseCategory() {
                             <div onClick={() => openCategoryModal(category)} key={category._id} className={`w-full px-6 py-4 relative flex flex-col gap-2 ${category.hidden && getBgNeutral10Color(theme)} border ${getBorderNeutralColor(theme)} rounded-xl ${getHoverBgNeutral50Color(theme)} cursor-pointer`}>
                                 {category.hidden && <FaEyeSlash className="absolute top-4 left-4" />}
                                 <Menu>
-                                    <MenuButton onClick={e => e.stopPropagation()} className="absolute top-4 right-3">
+                                    <MenuButton onClick={e => e.stopPropagation()} className="p-1 absolute top-3 right-2">
                                         <BsThreeDotsVertical />
                                     </MenuButton>
                                     <MenuItems transition anchor="bottom end" className={`w-36 mt-2 py-1 flex flex-col ${getTextColor(theme)} ${getBackgroundColor(theme)} shadow-lg ${getShadowColor(theme)} rounded-lg origin-top-right transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0`}>
@@ -167,6 +191,12 @@ export default function ExpenseCategory() {
                                                 }
                                             </button>
                                         </MenuItem>
+                                        <MenuItem>
+                                            <button onClick={(e) => openDeleteModal(e, category)} className={`px-4 py-2 flex items-center gap-2 text-start ${getTextErrorColor(theme)} ${getHoverBgNeutral50Color(theme)}`}>
+                                                <FaTrashAlt className="flex-shrink-0 text-lg" />
+                                                Delete
+                                            </button>
+                                        </MenuItem>
                                     </MenuItems>
                                 </Menu>
                                 <div className="p-3 mx-auto rounded-full" style={{backgroundColor: `#${category.color}`}}>
@@ -178,6 +208,7 @@ export default function ExpenseCategory() {
                     }
                 </main>
                 <CategoryModal modal={categoryModal} setModal={setCategoryModal} category={category} />
+                <ConfirmDeleteCategory modal={deleteCategoryModal} setModal={setDeleteCategoryModal} deleteCategory={deleteHandler} disabled={processing.includes(category._id)} />
             </section>
         </HelmetProvider>
     );
