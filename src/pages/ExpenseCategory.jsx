@@ -103,7 +103,9 @@ export default function ExpenseCategory() {
 
         if (!processing.includes(category._id)) {
             dispatch(addProcess(category._id));
-            await contr.hideCategory(category._id, csrfToken, accessToken);
+            category.hidden
+            ? await contr.unhideCategory(category._id, csrfToken, accessToken)
+            : await contr.hideCategory(category._id, csrfToken, accessToken);
             dispatch(deleteProcess(category._id));
         }
     }
@@ -151,7 +153,7 @@ export default function ExpenseCategory() {
                                             </button>
                                         </MenuItem>
                                         <MenuItem>
-                                            <button onClick={(e) => hideHandler(e, category)} className={`px-4 py-2 flex items-center gap-2 text-start ${!category.hidden && getTextErrorColor(theme)} ${getHoverBgNeutral50Color(theme)}`}>
+                                            <button onClick={(e) => hideHandler(e, category)} className={`px-4 py-2 flex items-center gap-2 text-start ${getHoverBgNeutral50Color(theme)}`}>
                                                 {
                                                     category.hidden
                                                     ? <>
