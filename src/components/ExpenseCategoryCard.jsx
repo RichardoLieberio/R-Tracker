@@ -14,7 +14,7 @@ import {BsThreeDotsVertical} from 'react-icons/bs';
 import {FaPencilAlt, FaEye, FaEyeSlash, FaTrashAlt} from 'react-icons/fa';
 
 export default function ExpenseCategoryCard(props) {
-    const {category, openCategoryModal, openDeleteModal, hide} = props;
+    const {category, openCategoryModal, openEditModal, openDeleteModal, hide} = props;
 
     const theme = useSelector((state) => state.web.theme);
 
@@ -27,7 +27,7 @@ export default function ExpenseCategoryCard(props) {
                 </MenuButton>
                 <MenuItems transition anchor="bottom end" className={`w-36 mt-2 py-1 flex flex-col ${getTextColor(theme)} ${getBackgroundColor(theme)} shadow-lg ${getShadowColor(theme)} rounded-lg origin-top-right transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0`}>
                     <MenuItem>
-                        <button className={`px-4 py-2 flex items-center gap-2 text-start ${getHoverBgNeutral50Color(theme)}`}>
+                        <button onClick={(e) => openEditModal(e, category)} className={`px-4 py-2 flex items-center gap-2 text-start ${getHoverBgNeutral50Color(theme)}`}>
                             <FaPencilAlt className="flex-shrink-0 text-lg" />
                             Edit
                         </button>
@@ -66,6 +66,7 @@ export default function ExpenseCategoryCard(props) {
 ExpenseCategoryCard.propTypes = {
     category: PropTypes.object,
     openCategoryModal: PropTypes.func,
+    openEditModal: PropTypes.func,
     openDeleteModal: PropTypes.func,
     hide: PropTypes.func,
 };
