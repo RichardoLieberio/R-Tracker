@@ -23,7 +23,7 @@ function addCategory(req, res, next) {
 }
 
 function editCategory(req, res, next) {
-    const {name, icon, color, hidden} = req.body;
+    const {name, icon, color} = req.body;
     const errorMsg = {};
     req.data = {};
 
@@ -43,11 +43,6 @@ function editCategory(req, res, next) {
     colorValidation.error
     ? errorMsg['color'] = colorValidation.error
     : req.data['color'] = colorValidation.color;
-
-    const hiddenValidation = validateHidden(hidden);
-    hiddenValidation.error
-    ? errorMsg['hidden'] = hiddenValidation.error
-    : req.data['hidden'] = hiddenValidation.hidden;
 
     if (Object.entries(errorMsg).length) return res.json({status: 422, msg: errorMsg});
     next();
@@ -84,13 +79,6 @@ function validateColor(color) {
     if (!hexColorPattern.test(color)) return {error: 'Invalid hex color.'};
 
     return {color};
-}
-
-function validateHidden(hidden) {
-    if (hidden === undefined) return {error: 'Hidden is required.'};
-    if (typeof(hidden) !== 'boolean') return {error: 'Hidden must be boolean.'};
-
-    return {hidden};
 }
 
 module.exports = {addCategory, editCategory};
