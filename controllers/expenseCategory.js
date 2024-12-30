@@ -37,18 +37,18 @@ async function editCategory(req, res) {
         req.data.icon = file_name;
     }
 
-    const category = await ExpenseCategory.editCategory(req.params.id, req.data, req.userId, req.mongooseSession);
-    if (!category) throw new TransactionError({status: 404, msg: 'Failed to edit. Expense category not found.'});
+    const data = await ExpenseCategory.editCategory(req.params.id, req.data, req.userId, req.mongooseSession);
+    if (!data) throw new TransactionError({status: 404, msg: 'Failed to edit. Expense category not found.'});
 
     if (req.data.icon) {
         const newIconPath = path.join(__dirname, '..', 'public', 'expense', req.data.icon);
-        const oldIconPath = path.join(__dirname, '..', 'public', 'expense', category.icon);
+        const oldIconPath = path.join(__dirname, '..', 'public', 'expense', data.icon);
 
         await uploadFile(newIconPath, base64Data);
         deleteFile(oldIconPath);
     }
 
-    res.json({status: 200, msg: 'Expense category updated successfully.', ...(req.data.icon && {newIconPath: req.data.icon})});
+    res.json({status: 200, msg: 'Expense category updated successfully.', data});
 }
 
 async function deleteCategory(req, res) {
