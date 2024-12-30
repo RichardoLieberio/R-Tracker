@@ -139,4 +139,36 @@ async function unhideCategory(id, csrfToken, accessToken) {
     }
 }
 
-export default {inputErrorHandler, getCategories, addCategory, hideCategory, unhideCategory};
+async function deleteCategory(id, csrfToken, accessToken) {
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`,
+            'CSRF-Token': csrfToken
+        },
+        authenticated: {
+            codes: [401],
+            route: '/login'
+        },
+        adminRequest: {
+            codes: [403],
+            route: '/admin/expense-category'
+        }
+    };
+
+    const response = await axios.delete(`/api/admin/expense-category/${id}`, config);
+    const status = response?.data?.status;
+
+    switch (status) {
+        case 200:
+            toast.success(response.data.msg);
+            store.dispatch(deleteExpenseCategory(response.data.id));
+            break;
+        case 404:
+            toast.error(response.data.msg);
+            store.dispatch(deleteExpenseCategory(id));
+            break;
+    }
+}
+
+export default {inputErrorHandler, getCategories, addCategory, hideCategory, unhideCategory, deleteCategory};
