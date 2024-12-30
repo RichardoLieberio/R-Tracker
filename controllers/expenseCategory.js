@@ -54,13 +54,13 @@ async function editCategory(req, res) {
 async function deleteCategory(req, res) {
     if (!mongooseIdValidation(req.params.id)) return res.json({status: 404, msg: 'Failed to delete. Expense category not found.'});
 
-    const deleted = await ExpenseCategory.deleteCategory(req.params.id);
-    if (!deleted) return res.json({status: 404, msg: 'Failed to delete. Expense category not found.'});
+    const data = await ExpenseCategory.deleteCategory(req.params.id);
+    if (!data) return res.json({status: 404, msg: 'Failed to delete. Expense category not found.'});
 
-    const iconPath = path.join(__dirname, '..', 'public', 'expense', deleted.icon);
+    const iconPath = path.join(__dirname, '..', 'public', 'expense', data.icon);
     deleteFile(iconPath);
 
-    res.json({status: 200, msg: 'Expense category deleted successfully.'});
+    res.json({status: 200, msg: 'Expense category deleted successfully.', id: data._id});
 }
 
 async function hideCategory(req, res) {
