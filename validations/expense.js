@@ -3,7 +3,7 @@ const mongooseIdValidation = require('../services/mongooseIdValidation');
 const ExpenseCategory = require('../models/ExpenseCategory');
 
 async function addExpense(req, res, next) {
-    const {expense, expenseDate, category} = req.body;
+    const {expense, amount, expenseDate, category} = req.body;
     const errorMsg = {};
     req.data = {};
 
@@ -11,6 +11,11 @@ async function addExpense(req, res, next) {
     expenseValidation.error
     ? errorMsg['expense'] = expenseValidation.error
     : req.data['expense'] = expenseValidation.expense;
+
+    const amountValidation = validateAmount(amount);
+    amountValidation.error
+    ? errorMsg['amount'] = amountValidation.error
+    : req.data['amount'] = amountValidation.amount;
 
     const expenseDateValidation = validateExpenseDate(expenseDate);
     expenseDateValidation.error
@@ -27,7 +32,7 @@ async function addExpense(req, res, next) {
 }
 
 async function editExpense(req, res, next) {
-    const {expense, expenseDate, category} = req.body;
+    const {expense, amount, expenseDate, category} = req.body;
     const errorMsg = {};
     req.data = {};
 
@@ -35,6 +40,11 @@ async function editExpense(req, res, next) {
     expenseValidation.error
     ? errorMsg['expense'] = expenseValidation.error
     : req.data['expense'] = expenseValidation.expense;
+
+    const amountValidation = validateAmount(amount);
+    amountValidation.error
+    ? errorMsg['amount'] = amountValidation.error
+    : req.data['amount'] = amountValidation.amount;
 
     const expenseDateValidation = validateExpenseDate(expenseDate);
     expenseDateValidation.error
@@ -60,6 +70,14 @@ function validateExpense(expense) {
     if (expense.length > 255) return {error: 'Expense length exceeds 255 characters.'};
 
     return {expense};
+}
+
+function validateAmount(amount) {
+    if (!amount) return {error: 'Amount is required.'};
+    if (typeof(amount) !== 'number') return {error: 'Amount must be number.'};
+    if (amount < 0) return {error: 'Amount cannot be negative.'};
+
+    return {amount};
 }
 
 function validateExpenseDate(expenseDate) {
