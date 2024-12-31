@@ -7,6 +7,11 @@ const expenseSchema = mongoose.Schema({
         trim: true,
         required: true
     },
+    amount: {
+        type: Number,
+        min: 0,
+        required: true
+    },
     expense_date: {
         type: Date,
         required: true
@@ -30,13 +35,13 @@ expenseSchema.statics.getExpenses = async function(user_id) {
 }
 
 expenseSchema.statics.addExpense = async function(data, user_id) {
-    const {expense, expenseDate: expense_date, category: category_id} = data;
-    return await this.create({expense, expense_date, user_id, category_id});
+    const {expense, amount, expenseDate: expense_date, category: category_id} = data;
+    return await this.create([{expense, amount, expense_date, user_id, category_id}]);
 }
 
 expenseSchema.statics.editExpense = async function(_id, user_id, data) {
-    const {expense, expenseDate: expense_date, category: category_id} = data;
-    return await this.findOneAndUpdate({_id, user_id}, {expense, expense_date, category_id});
+    const {expense, amount, expenseDate: expense_date, category: category_id} = data;
+    return await this.findOneAndUpdate({_id, user_id}, {expense, amount, expense_date, category_id}, {new: true});
 }
 
 expenseSchema.statics.deleteExpense = async function(_id, user_id) {
