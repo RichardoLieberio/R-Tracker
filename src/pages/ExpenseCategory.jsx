@@ -10,7 +10,7 @@ import getCSRFToken from '../services/getCSRFToken';
 import {getToast} from '../services/toastService';
 
 import {changePage} from '../redux/webSlice';
-import {setOrder, setOrderBy, addProcess, deleteProcess} from '../redux/categoryPageSlice';
+import {setOrder, setOrderBy, addProcess, deleteProcess, addEditProcess, deleteEditProcess} from '../redux/categoryPageSlice';
 
 import contr from '../controllers/expenseCategory';
 
@@ -31,6 +31,7 @@ import ExpenseCategoryHead from '../head/ExpenseCategoryHead';
 import ExpenseCategoryCard from '../components/ExpenseCategoryCard';
 import AddCategoryModal from '../components/AddCategoryModal';
 import CategoryModal from '../components/CategoryModal';
+import EditCategoryModal from '../components/EditCategoryModal';
 import ConfirmDeleteCategory from '../components/ConfirmDeleteCategory';
 
 const orderOption = {
@@ -54,6 +55,13 @@ export default function ExpenseCategory() {
     const [addError, setAddError] = useState({});
     const [isAdding, setIsAdding] = useState(false);
 
+    const [editCategoryModal, setEditCategoryModal] = useState(false);
+    const [editName, setEditName] = useState('');
+    const [editColor, setEditColor] = useState('');
+    const [editIcon, setEditIcon] = useState('');
+    const [editIconText, setEditIconText] = useState('');
+    const [editError, setEditError] = useState({});
+
     const [deleteCategoryModal, setDeleteCategoryModal] = useState(false);
 
     const theme = useSelector((state) => state.web.theme);
@@ -62,6 +70,7 @@ export default function ExpenseCategory() {
     const order = useSelector((state) => state.categoryPage.order);
     const orderBy = useSelector((state) => state.categoryPage.orderBy);
     const processing = useSelector((state) => state.categoryPage.processing);
+    const editProcess = useSelector((state) => state.categoryPage.editProcess);
 
     const location = useLocation();
     const dispatch = useDispatch();
@@ -92,6 +101,7 @@ export default function ExpenseCategory() {
         if (expenseCategories) {
             const newCategory = expenseCategories.filter(cat => cat._id === category._id)[0];
             categoryModal && newCategory ? setCategory(newCategory) : setCategoryModal(false);
+            editCategoryModal && editProcess[category._id] && setEditCategoryModal(false);
             deleteCategoryModal && !newCategory && setDeleteCategoryModal(false);
         }
     }, [expenseCategories]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -99,6 +109,18 @@ export default function ExpenseCategory() {
     function openCategoryModal(category) {
         setCategory(category);
         setCategoryModal(true);
+    }
+
+    function openEditModal(e, category) {
+        e.stopPropagation();
+        setCategory(category);
+        setEditCategoryModal(true);
+
+        const {name, color, icon, iconText} = editProcess[category._id] || {};
+        setEditName(name || category.name);
+        setEditColor(color || category.color);
+        setEditIcon(icon || `${process.env.EXPENSE_CATEGORY_URI}/${category?.icon}`);
+        setEditIconText(iconText || '');
     }
 
     async function openDeleteModal(e, category) {
@@ -125,6 +147,17 @@ export default function ExpenseCategory() {
             ? await contr.unhideCategory(category._id, csrfToken, accessToken)
             : await contr.hideCategory(category._id, csrfToken, accessToken);
             dispatch(deleteProcess(category._id));
+        }
+    }
+
+    async function editHandler() {
+        if (!editProcess[category?._id]) {
+            dispatch(addEditProcess({id: category._id, data: {name: editName, color: editColor, icon: editIcon, iconText: editIconText}}));
+            const newError = {...editError};
+            delete newError[category._id];
+            setEditError({...newError});
+            await contr.editCategory(category._id, editName, editColor, editIcon, editIconText, csrfToken, accessToken, setEditError);
+            dispatch(deleteEditProcess(category._id));
         }
     }
 
@@ -164,10 +197,11 @@ export default function ExpenseCategory() {
                 </header>
                 <main className={`grid ${fullLayout ? 'grid-cols-5' : 'phone:grid-cols-2 tablet:grid-cols-3 desktop:grid-cols-4'} gap-4 text-center`}>
                     {
-                        passCategory?.map(category => <ExpenseCategoryCard key={category._id} category={category} openCategoryModal={openCategoryModal} openDeleteModal={openDeleteModal} hide={hideHandler} />)
+                        passCategory?.map(category => <ExpenseCategoryCard key={category._id} category={category} openCategoryModal={openCategoryModal} openEditModal={openEditModal} openDeleteModal={openDeleteModal} hide={hideHandler} />)
                     }
                 </main>
                 <CategoryModal modal={categoryModal} setModal={setCategoryModal} category={category} />
+                <EditCategoryModal modal={editCategoryModal} setModal={setEditCategoryModal} name={editName} setName={setEditName} color={editColor} setColor={setEditColor} icon={editIcon} setIcon={setEditIcon} iconText={editIconText} setIconText={setEditIconText} error={editError[category?._id] || {}} processing={!!editProcess[category?._id]} submit={editHandler} />
                 <ConfirmDeleteCategory modal={deleteCategoryModal} setModal={setDeleteCategoryModal} deleteCategory={deleteHandler} disabled={processing.includes(category._id)} />
             </section>
         </HelmetProvider>
