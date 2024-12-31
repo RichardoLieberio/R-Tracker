@@ -9,7 +9,13 @@ export const dataSlice = createSlice({
     },
     reducers: {
         setExpenses: function(state, action) {
-            state.expenses = action.payload;
+            const expenses = {};
+            action.payload.forEach(expense => {
+                const date = new Date(expense.expense_date).toLocaleDateString();
+                if (!expenses[date]) expenses[date] = [];
+                expenses[date].push(expense);
+            });
+            state.expenses = expenses;
         },
         setExpenseCategories: function(state, action) {
             state.expenseCategories = action.payload;
