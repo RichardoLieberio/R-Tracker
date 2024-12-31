@@ -67,7 +67,9 @@ expenseCategorySchema.statics.addCategory = async function(data, icon, created_b
 }
 
 expenseCategorySchema.statics.editCategory = async function(_id, data, updated_by, session) {
-    return await this.findOneAndUpdate({_id}, {...data, updated_by, updated_at: Date.now()}, {session, new: true}).populate('created_by', 'name').populate('updated_by', 'name');
+    const oldData = await this.findById(_id);
+    const newData = await this.findOneAndUpdate({_id}, {...data, updated_by, updated_at: Date.now()}, {session, new: true}).populate('created_by', 'name').populate('updated_by', 'name');
+    return {oldData, newData};
 }
 
 expenseCategorySchema.statics.hideCategory = async function(_id, updated_by) {
