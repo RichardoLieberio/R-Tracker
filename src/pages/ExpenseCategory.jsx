@@ -56,10 +56,6 @@ export default function ExpenseCategory() {
     const [isAdding, setIsAdding] = useState(false);
 
     const [editCategoryModal, setEditCategoryModal] = useState(false);
-    const [editName, setEditName] = useState('');
-    const [editColor, setEditColor] = useState('');
-    const [editIcon, setEditIcon] = useState('');
-    const [editIconText, setEditIconText] = useState('');
     const [editError, setEditError] = useState({});
 
     const [deleteCategoryModal, setDeleteCategoryModal] = useState(false);
@@ -115,12 +111,6 @@ export default function ExpenseCategory() {
         e.stopPropagation();
         setCategory(category);
         setEditCategoryModal(true);
-
-        const {name, color, icon, iconText} = editProcess[category._id] || {};
-        setEditName(name || category.name);
-        setEditColor(color || category.color);
-        setEditIcon(icon || `${process.env.EXPENSE_CATEGORY_URI}/${category?.icon}`);
-        setEditIconText(iconText || '');
     }
 
     async function openDeleteModal(e, category) {
@@ -150,14 +140,12 @@ export default function ExpenseCategory() {
         }
     }
 
-    async function editHandler() {
-        if (!editProcess[category?._id]) {
-            dispatch(addEditProcess({id: category._id, data: {name: editName, color: editColor, icon: editIcon, iconText: editIconText}}));
-            const newError = {...editError};
-            delete newError[category._id];
-            setEditError({...newError});
-            await contr.editCategory(category._id, editName, editColor, editIcon, editIconText, csrfToken, accessToken, setEditError);
-            dispatch(deleteEditProcess(category._id));
+    async function editHandler(id, name, color, icon, iconText) {
+        if (!editProcess[id]) {
+            dispatch(addEditProcess({id, data: {name, color, icon, iconText}}));
+            removeError(id);
+            await contr.editCategory(id, name, color, icon, iconText, csrfToken, accessToken, setEditError);
+            dispatch(deleteEditProcess(id));
         }
     }
 
@@ -167,6 +155,12 @@ export default function ExpenseCategory() {
             await contr.deleteCategory(category._id, csrfToken, accessToken);
             dispatch(deleteProcess(category._id));
         }
+    }
+
+    function removeError(id) {
+        const newError = {...editError};
+        delete newError[id];
+        setEditError({...newError});
     }
 
     return (
@@ -201,7 +195,7 @@ export default function ExpenseCategory() {
                     }
                 </main>
                 <CategoryModal modal={categoryModal} setModal={setCategoryModal} category={category} />
-                <EditCategoryModal modal={editCategoryModal} setModal={setEditCategoryModal} name={editName} setName={setEditName} color={editColor} setColor={setEditColor} icon={editIcon} setIcon={setEditIcon} iconText={editIconText} setIconText={setEditIconText} error={editError[category?._id] || {}} processing={!!editProcess[category?._id]} submit={editHandler} />
+                <EditCategoryModal modal={editCategoryModal} setModal={setEditCategoryModal} category={category} error={editError[category?._id] || {}} removeError={removeError} processing={!!editProcess[category?._id] || processing.includes(category._id)} submit={editHandler} />
                 <ConfirmDeleteCategory modal={deleteCategoryModal} setModal={setDeleteCategoryModal} deleteCategory={deleteHandler} disabled={processing.includes(category._id)} />
             </section>
         </HelmetProvider>
