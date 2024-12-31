@@ -76,7 +76,7 @@ async function addCategory(name, setName, color, setColor, icon, setIcon, csrfTo
 }
 
 async function editCategory(id, name, color, icon, iconText, csrfToken, accessToken, setError) {
-    const data = {name, color, icon: iconText ? icon : undefined};
+    const data = {name, color, icon: iconText !== null ? icon : undefined};
     const config = {
         headers: {
             'Content-Type': 'application/json',
@@ -106,7 +106,14 @@ async function editCategory(id, name, color, icon, iconText, csrfToken, accessTo
             store.dispatch(deleteExpenseCategory(id));
             break;
         case 422:
-            setError(value => ({...value, [id]: {...response.data.msg}}));
+            const {name: nameMsg, color: colorMsg, icon: iconMsg} = response.data.msg;
+            const error = {
+                name: {msg: nameMsg, value: name},
+                color: {msg: colorMsg, value: color},
+                icon: {msg: iconMsg, value: icon},
+                iconText
+            };
+            setError(value => ({...value, [id]: error}));
             toast.error('Add category failed');
             break;
     }
