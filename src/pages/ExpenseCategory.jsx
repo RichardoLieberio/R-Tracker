@@ -97,8 +97,9 @@ export default function ExpenseCategory() {
         if (expenseCategories) {
             const newCategory = expenseCategories.filter(cat => cat._id === category._id)[0];
             categoryModal && newCategory ? setCategory(newCategory) : setCategoryModal(false);
-            editCategoryModal && editProcess[category._id] && setEditCategoryModal(false);
+            editCategoryModal && !newCategory && setEditCategoryModal(false);
             deleteCategoryModal && !newCategory && setDeleteCategoryModal(false);
+            editCategoryModal && editProcess[category._id] && setEditCategoryModal(false);
         }
     }, [expenseCategories]); // eslint-disable-line react-hooks/exhaustive-deps
 
