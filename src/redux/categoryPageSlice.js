@@ -5,7 +5,8 @@ export const categoryPageSlice = createSlice({
     initialState: {
         order: 'desc',
         orderBy: 'created_at',
-        processing: []
+        processing: [],
+        editProcess: {}
     },
     reducers: {
         setOrder: function(state, action) {
@@ -19,10 +20,19 @@ export const categoryPageSlice = createSlice({
         },
         deleteProcess: function(state, action) {
             state.processing = state.processing.filter(id => id !== action.payload);
+        },
+        addEditProcess: function(state, action) {
+            const {id, data} = action.payload;
+            state.editProcess = {...state.editProcess, [id]: data};
+        },
+        deleteEditProcess: function(state, action) {
+            const newProcess = {...state.editProcess};
+            delete newProcess[action.payload];
+            state.editProcess = {...newProcess};
         }
     }
 });
 
-export const {setOrder, setOrderBy, addProcess, deleteProcess} = categoryPageSlice.actions;
+export const {setOrder, setOrderBy, addProcess, deleteProcess, addEditProcess, deleteEditProcess} = categoryPageSlice.actions;
 
 export default categoryPageSlice.reducer;
