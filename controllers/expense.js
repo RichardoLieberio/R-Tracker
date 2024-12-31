@@ -15,7 +15,7 @@ async function getExpenses(req, res) {
 }
 
 async function addExpense(req, res) {
-    const expense = await Expense.addExpense(req.data, req.userId);
+    const [expense] = await Expense.addExpense(req.data, req.userId);
     res.json({status: 201, msg: 'New expense added.', expense});
 }
 
