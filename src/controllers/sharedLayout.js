@@ -4,7 +4,10 @@ import axios from '../services/axios';
 import {setToast} from '../services/toastService';
 
 import store from '../redux/store';
-import {logout} from '../redux/authSlice';
+import {logout as authLogout} from '../redux/authSlice';
+import {logout as dataLogout} from '../redux/dataSlice';
+import {logout as userPageLogout} from '../redux/userPageSlice';
+import {logout as categoryPageLogout} from '../redux/categoryPageSlice';
 import {changeTheme as reduxChangeTheme} from '../redux/webSlice';
 
 async function signout(navigate) {
@@ -18,7 +21,10 @@ async function signout(navigate) {
 
     switch (status) {
         case 200:
-            store.dispatch(logout());
+            store.dispatch(authLogout());
+            store.dispatch(dataLogout());
+            store.dispatch(userPageLogout());
+            store.dispatch(categoryPageLogout());
             setToast('success', response.data.msg);
             navigate('/login', {replace: true});
             break;
