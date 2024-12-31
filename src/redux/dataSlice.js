@@ -44,10 +44,15 @@ export const dataSlice = createSlice({
         },
         deleteUser: function(state, action) {
             state.users = state.users.filter(user => user._id !== action.payload);
+        },
+        logout: function(state) {
+            state.expenses = null;
+            state.expenseCategories = null;
+            state.users = null;
         }
     }
 });
 
-export const {setExpenseCategories, addExpenseCategory, updateExpenseCategory, deleteExpenseCategory, setUsers, changeInfo, removeBlacklist, deleteUser} = dataSlice.actions;
+export const {setExpenseCategories, addExpenseCategory, updateExpenseCategory, deleteExpenseCategory, setUsers, changeInfo, removeBlacklist, deleteUser, logout} = dataSlice.actions;
 
 export default dataSlice.reducer;

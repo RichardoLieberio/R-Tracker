@@ -29,10 +29,16 @@ export const categoryPageSlice = createSlice({
             const newProcess = {...state.editProcess};
             delete newProcess[action.payload];
             state.editProcess = {...newProcess};
+        },
+        logout: function(state) {
+            state.order = 'desc';
+            state.orderBy = 'created_at';
+            state.processing = [];
+            state.editProcess = {};
         }
     }
 });
 
-export const {setOrder, setOrderBy, addProcess, deleteProcess, addEditProcess, deleteEditProcess} = categoryPageSlice.actions;
+export const {setOrder, setOrderBy, addProcess, deleteProcess, addEditProcess, deleteEditProcess, logout} = categoryPageSlice.actions;
 
 export default categoryPageSlice.reducer;

@@ -51,10 +51,19 @@ export const userPageSlice = createSlice({
         },
         deleteProcess: function(state, action) {
             state.processing = state.processing.filter(id => id !== action.payload);
+        },
+        logout: function(state) {
+            state.order = 'desc';
+            state.orderBy = 'created_at';
+            state.search = '';
+            state.page = 1;
+            state.rowsPerPage = 5;
+            state.user = null;
+            state.processing = [];
         }
     }
 });
 
-export const {setOrder, setOrderBy, setSearch, setPage, setRowsPerPage, setUser, clearUser, checkAndChangeInfo, checkAndRemoveBlacklist, addProcess, deleteProcess} = userPageSlice.actions;
+export const {setOrder, setOrderBy, setSearch, setPage, setRowsPerPage, setUser, clearUser, checkAndChangeInfo, checkAndRemoveBlacklist, addProcess, deleteProcess, logout} = userPageSlice.actions;
 
 export default userPageSlice.reducer;
