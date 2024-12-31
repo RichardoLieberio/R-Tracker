@@ -11,7 +11,7 @@ import {
     getBackgroundColor, getBgPrimaryColor, getBgNeutralColor, getBgNeutral10Color, getBgErrorColor,
     getHoverBgHighlightColor,
     getDisabledBgNeutralColor,
-    getTextColor, getTextPrimaryColor, getTextErrorColor, getOppositeTextColor,
+    getTextColor, getTextPrimaryColor, getTextLinkColor, getTextNeutralColor, getTextErrorColor, getOppositeTextColor,
     getHoverTextHighlightColor,
     getBorderPrimaryColor, getBorderTextColor
 } from '../css/color';
@@ -26,48 +26,62 @@ import Tooltip from './Tooltip';
 import ButtonSpinner from './ButtonSpinner';
 
 export default function EditCategoryModal(props) {
-    const {modal, setModal, name, setName, color, setColor, icon, setIcon, iconText, setIconText, error, processing, submit} = props;
+    const {modal, setModal, category, error, removeError, processing, submit} = props;
 
     const theme = useSelector((state) => state.web.theme);
 
-    const [nameLabelClass, setNameLabelClass] = useState(css(theme).labelTopBlur);
+    const [name, setName] = useState('');
+    const [color, setColor] = useState('');
+    const [icon, setIcon] = useState(null);
+    const [iconText, setIconText] = useState(null);
+
+    const [nameLabelClass, setNameLabelClass] = useState(css(theme).labelMiddle);
     const [nameInputClass, setNameInputClass] = useState(css(theme).defaultInput);
-    const [colorLabelClass, setColorLabelClass] = useState(css(theme).labelTopBlur);
+    const [colorLabelClass, setColorLabelClass] = useState(css(theme).labelMiddle);
     const [colorInputClass, setColorInputClass] = useState(css(theme).colorInput);
-    const [showHex, setShowHex] = useState(false);
+    const [showHex, setShowHex] = useState(true);
 
     const imageRef = useRef(null);
 
     const phoneBreakpoint = useMediaQuery(`(min-width: ${breakpoints.phone})`);
 
     useEffect(function() {
-        contr.inputErrorHandler(theme, error.name, name, setNameLabelClass, setNameInputClass);
-        contr.inputErrorHandler(theme, error.color, color, setColorLabelClass, setColorInputClass, true);
-    }, [error, modal, theme]); // eslint-disable-line react-hooks/exhaustive-deps
+        contr.inputErrorHandler(theme, error.name?.msg, name, setNameLabelClass, setNameInputClass);
+        contr.inputErrorHandler(theme, error.color?.msg, color, setColorLabelClass, setColorInputClass, true);
+    }, [error, theme]); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(function() {
-        setShowHex(color ? true : false);
+        if (modal) {
+            setShowHex(error.color?.value === undefined ? !!category.color : !!error.color?.value);
+            setName(error.name?.value ?? category.name);
+            setColor(error.color?.value ?? category.color);
+            setIcon(error.icon?.value === undefined ? `${process.env.EXPENSE_CATEGORY_URI}/${category?.icon}` : error.icon?.value ?? '');
+            setIconText(error.iconText ?? null);
+
+            contr.inputErrorHandler(theme, error.name?.msg, error.name?.value ?? category.name, setNameLabelClass, setNameInputClass);
+            contr.inputErrorHandler(theme, error.color?.msg, error.color?.value ?? category.color, setColorLabelClass, setColorInputClass, true);
+        }
     }, [modal]); // eslint-disable-line react-hooks/exhaustive-deps
 
     function nameInputFocus() {
-        if (error.name) setNameLabelClass(css(theme).labelTopError)
+        if (error.name?.msg) setNameLabelClass(css(theme).labelTopError)
         else setNameLabelClass(css(theme).labelTopFocus);
     }
 
     function nameInputBlur() {
-        if (error.name) setNameLabelClass(name ? css(theme).labelTopError : css(theme).labelMiddleError)
+        if (error.name?.msg) setNameLabelClass(name ? css(theme).labelTopError : css(theme).labelMiddleError)
         else setNameLabelClass(name ? css(theme).labelTopBlur : css(theme).labelMiddle);
     }
 
     function colorInputFocus() {
         setShowHex(true);
-        if (error.color) setColorLabelClass(css(theme).labelTopError)
+        if (error.color?.msg) setColorLabelClass(css(theme).labelTopError)
         else setColorLabelClass(css(theme).labelTopFocus);
     }
 
     function colorInputBlur() {
         setShowHex(color ? true : false);
-        if (error.color) setColorLabelClass(color ? css(theme).labelTopError : css(theme).labelMiddleError)
+        if (error.color?.msg) setColorLabelClass(color ? css(theme).labelTopError : css(theme).labelMiddleError)
         else setColorLabelClass(color ? css(theme).labelTopBlur : css(theme).labelMiddle);
     }
 
@@ -110,10 +124,20 @@ export default function EditCategoryModal(props) {
         setIconText('');
     }
 
+    function reset() {
+        if (processing) return;
+        setShowHex(true);
+        setName(category.name);
+        setColor(category.color);
+        setIcon(`${process.env.EXPENSE_CATEGORY_URI}/${category?.icon}`);
+        setIconText(null);
+        removeError(category._id);
+    }
+
     function enterKeyDown(e) {
         if (e.key === 'Enter') {
             e.preventDefault();
-            submit();
+            submit(category._id, name, color, icon, iconText);
         }
     }
 
@@ -122,35 +146,35 @@ export default function EditCategoryModal(props) {
             <Box className={`w-1/3 min-w-56 phone:min-w-72 tablet:min-w-80 desktop:min-w-96 h-auto p-7 phone:p-8 absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 flex flex-col gap-8 rounded-lg tablet:rounded-xl ${getBackgroundColor(theme)} ${getTextColor(theme)}`}>
                 <header className="flex flex-col gap-1">
                     <h2 className="text-xl font-semibold">Edit Expense Category</h2>
-                    <small className="text-sm">Update the details for your expense category. Customize its Name, assign a Color for easy identification, and select an Icon to represent it visually.</small>
+                    <small className="text-sm">Update the details for your expense category. Customize its Name, assign a Color for easy identification, and select an Icon to represent it visually. <span onClick={reset} className={processing ? theme === 'dark' ? getTextNeutralColor(theme) : getTextLinkColor(theme) : `${theme == 'dark' ? getTextLinkColor(theme) : getTextPrimaryColor(theme)} cursor-pointer hover:underline`}>Reset</span></small>
                 </header>
                 <main>
                     <form onKeyDown={enterKeyDown} className="flex flex-col gap-8" autoCapitalize="off" autoComplete="off" spellCheck="false">
                         <section className="flex flex-col gap-4">
                             <div className="relative">
                                 {
-                                    error.name
+                                    error.name?.msg
                                     &&  <div className="px-3 py-3 absolute left-0 top-0 rounded-tr-md rounded-br-md">
-                                            <Tooltip title={error.name} placement="top-start" posY={-8} className={`w-fit max-w-32 phone:max-w-40 tablet:max-w-48 desktop:max-w-56 px-4 py-1 text-sm ${getOppositeTextColor(theme)} ${getBgErrorColor(theme)} rounded-md`}>
+                                            <Tooltip title={error.name.msg} placement="top-start" posY={-8} className={`w-fit max-w-32 phone:max-w-40 tablet:max-w-48 desktop:max-w-56 px-4 py-1 text-sm ${getOppositeTextColor(theme)} ${getBgErrorColor(theme)} rounded-md`}>
                                                 <MdErrorOutline className={`text-lg ${getTextErrorColor(theme)}`} />
                                             </Tooltip>
                                         </div>
                                 }
                                 <label htmlFor="name" className={nameLabelClass}>Name</label>
-                                <input type="text" id="name" value={name} disabled={processing} autoFocus onChange={(e) => setName(e.target.value)} onFocus={nameInputFocus} onBlur={nameInputBlur} className={nameInputClass} />
+                                <input type="text" id="name" value={name} disabled={processing} onChange={(e) => setName(e.target.value)} onFocus={nameInputFocus} onBlur={nameInputBlur} className={nameInputClass} />
                             </div>
                             <div className="relative">
                                 {
-                                    error.color
+                                    error.color?.msg
                                     &&  <div className="px-3 py-3 absolute left-0 top-0 rounded-tr-md rounded-br-md">
-                                            <Tooltip title={error.color} placement="top-start" posY={-8} className={`w-fit max-w-32 phone:max-w-40 tablet:max-w-48 desktop:max-w-56 px-4 py-1 text-sm ${getOppositeTextColor(theme)} ${getBgErrorColor(theme)} rounded-md`}>
+                                            <Tooltip title={error.color.msg} placement="top-start" posY={-8} className={`w-fit max-w-32 phone:max-w-40 tablet:max-w-48 desktop:max-w-56 px-4 py-1 text-sm ${getOppositeTextColor(theme)} ${getBgErrorColor(theme)} rounded-md`}>
                                                 <MdErrorOutline className={`text-lg ${getTextErrorColor(theme)}`} />
                                             </Tooltip>
                                         </div>
                                 }
                                 {
                                     showHex &&
-                                    <div className={`px-3 py-3 ${error.color ? 'ps-10' : ''} absolute left-0 bottom-0 rounded-tr-md rounded-br-md pointer-events-none`}><FaHashtag /></div>
+                                    <div className={`px-3 py-3 ${error.color?.msg ? 'ps-10' : ''} absolute left-0 bottom-0 rounded-tr-md rounded-br-md pointer-events-none`}><FaHashtag /></div>
                                 }
                                 <label htmlFor="color" className={colorLabelClass}>Hex Color</label>
                                 <input type="text" id="color" value={color} disabled={processing} onChange={(e) => setColor(e.target.value.toUpperCase())} onFocus={colorInputFocus} onBlur={colorInputBlur} className={colorInputClass} />
@@ -161,12 +185,12 @@ export default function EditCategoryModal(props) {
                                 <div className={`w-full h-[1px] ${getBgNeutralColor(theme)}`}></div>
                                 <div className={`px-2 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-1 ${getBackgroundColor(theme)}`}>
                                     {
-                                        error.icon
-                                        &&  <Tooltip title={error.icon} placement="top-start" posY={-8} className={`w-fit max-w-32 phone:max-w-40 tablet:max-w-48 desktop:max-w-56 px-4 py-1 text-sm ${getOppositeTextColor(theme)} ${getBgErrorColor(theme)} rounded-md`}>
+                                        error.icon?.msg
+                                        &&  <Tooltip title={error.icon.msg} placement="top-start" posY={-8} className={`w-fit max-w-32 phone:max-w-40 tablet:max-w-48 desktop:max-w-56 px-4 py-1 text-sm ${getOppositeTextColor(theme)} ${getBgErrorColor(theme)} rounded-md`}>
                                                 <MdErrorOutline className={`text-lg ${getTextErrorColor(theme)}`} />
                                             </Tooltip>
                                     }
-                                    <h2 className={error.icon && getTextErrorColor(theme)}>{phoneBreakpoint ? 'Upload icon' : 'Upload'}</h2>
+                                    <h2 className={error.icon?.msg && getTextErrorColor(theme)}>{phoneBreakpoint ? 'Upload icon' : 'Upload'}</h2>
                                 </div>
                             </div>
                             <div onDrop={dropHandler} onDragOver={e => e.preventDefault()} className={`h-52 relative ${getBgNeutral10Color(theme)} border border-dashed ${theme === 'dark' ? getBorderTextColor(theme) : getBorderPrimaryColor(theme)} rounded-lg`}>
@@ -181,8 +205,8 @@ export default function EditCategoryModal(props) {
                                                 </div>
                                             </div>
                                             <div className="w-32 phone:w-40 tablet:w-44 desktop:w-full desktop:min-w-52 desktop:max-w-60 flex items-center justify-center">
-                                                <span className="text-start text-ellipsis whitespace-nowrap overflow-hidden">{iconText.substring(0, iconText.lastIndexOf('.'))}</span>
-                                                <span>{iconText.substring(iconText.lastIndexOf('.'))}</span>
+                                                <span className="text-start text-ellipsis whitespace-nowrap overflow-hidden">{iconText?.substring(0, iconText?.lastIndexOf('.'))}</span>
+                                                <span>{iconText?.substring(iconText?.lastIndexOf('.'))}</span>
                                             </div>
                                         </>
                                         : <>
@@ -202,7 +226,7 @@ export default function EditCategoryModal(props) {
                 </main>
                 <footer className="flex items-center justify-end gap-4">
                     <button onClick={() => setModal(false)} className={`py-1 px-4 ${theme !== 'dark' ? getTextPrimaryColor(theme) : ''} rounded-md ${getHoverTextHighlightColor(theme)}`}>Close</button>
-                    <button onClick={submit} disabled={processing} className={`py-1 ${phoneBreakpoint ? 'px-8' : 'px-4'} relative ${getOppositeTextColor(theme)} ${getBgPrimaryColor(theme)} rounded-md ${getHoverBgHighlightColor(theme)} ${getDisabledBgNeutralColor(theme)} disabled:cursor-not-allowed`}>
+                    <button onClick={() => submit(category._id, name, color, icon, iconText)} disabled={processing} className={`py-1 ${phoneBreakpoint ? 'px-8' : 'px-4'} relative ${getOppositeTextColor(theme)} ${getBgPrimaryColor(theme)} rounded-md ${getHoverBgHighlightColor(theme)} ${getDisabledBgNeutralColor(theme)} disabled:cursor-not-allowed`}>
                         {processing && <ButtonSpinner />}
                         <span className={processing ? 'opacity-0' : ''}>Submit</span>
                     </button>
@@ -215,15 +239,9 @@ export default function EditCategoryModal(props) {
 EditCategoryModal.propTypes = {
     modal: PropTypes.bool,
     setModal: PropTypes.func,
-    name: PropTypes.string,
-    setName: PropTypes.func,
-    color: PropTypes.string,
-    setColor: PropTypes.func,
-    icon: PropTypes.string,
-    setIcon: PropTypes.func,
-    iconText: PropTypes.string,
-    setIconText: PropTypes.func,
+    category: PropTypes.object,
     error: PropTypes.object,
+    removeError: PropTypes.func,
     processing: PropTypes.bool,
     submit: PropTypes.func
 };
