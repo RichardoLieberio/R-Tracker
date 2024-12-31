@@ -75,6 +75,43 @@ async function addCategory(name, setName, color, setColor, icon, setIcon, csrfTo
     }
 }
 
+async function editCategory(id, name, color, icon, iconText, csrfToken, accessToken, setError) {
+    const data = {name, color, icon: iconText ? icon : undefined};
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`,
+            'CSRF-Token': csrfToken
+        },
+        authenticated: {
+            codes: [401],
+            route: '/login'
+        },
+        adminRequest: {
+            codes: [403],
+            route: '/admin/expense-category'
+        }
+    };
+
+    const response = await axios.put(`/api/admin/expense-category/${id}`, data, config);
+    const status = response?.data?.status;
+
+    switch (status) {
+        case 200:
+            toast.success(response.data.msg);
+            store.dispatch(updateExpenseCategory(response.data.data));
+            break;
+        case 404:
+            toast.error(response.data.msg);
+            store.dispatch(deleteExpenseCategory(id));
+            break;
+        case 422:
+            setError(value => ({...value, [id]: {...response.data.msg}}));
+            toast.error('Add category failed');
+            break;
+    }
+}
+
 async function hideCategory(id, csrfToken, accessToken) {
     const config = {
         headers: {
@@ -171,4 +208,4 @@ async function deleteCategory(id, csrfToken, accessToken) {
     }
 }
 
-export default {inputErrorHandler, getCategories, addCategory, hideCategory, unhideCategory, deleteCategory};
+export default {inputErrorHandler, getCategories, addCategory, editCategory, hideCategory, unhideCategory, deleteCategory};
