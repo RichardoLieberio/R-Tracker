@@ -28,10 +28,16 @@ export const expensePageSlice = createSlice({
             } else {
                 state.month += 1;
             }
+        },
+        setMonth: function(state, action) {
+            state.month = action.payload;
+        },
+        setYear: function(state, action) {
+            state.year = action.payload;
         }
     }
 });
 
-export const {prevMonth, nextMonth} = expensePageSlice.actions;
+export const {prevMonth, nextMonth, setMonth, setYear} = expensePageSlice.actions;
 
 export default expensePageSlice.reducer;
