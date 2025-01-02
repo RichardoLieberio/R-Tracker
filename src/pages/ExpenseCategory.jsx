@@ -33,6 +33,7 @@ import AddCategoryModal from '../components/AddCategoryModal';
 import CategoryModal from '../components/CategoryModal';
 import EditCategoryModal from '../components/EditCategoryModal';
 import ConfirmDeleteCategory from '../components/ConfirmDeleteCategory';
+import Skeleton from '../components/Skeleton';
 
 const orderOption = {
     'name': 'Name',
@@ -72,6 +73,8 @@ export default function ExpenseCategory() {
     const dispatch = useDispatch();
 
     const phoneBreakpoint = useMediaQuery(`(min-width: ${breakpoints.phone})`);
+    const tabletBreakpoint = useMediaQuery(`(min-width: ${breakpoints.tablet})`);
+    const desktopBreakpoint = useMediaQuery(`(min-width: ${breakpoints.desktop})`);
     const fullLayout = useMediaQuery('(min-width: 1200px)');
 
     useEffect(function() {
@@ -192,7 +195,9 @@ export default function ExpenseCategory() {
                 </header>
                 <main className={`grid ${fullLayout ? 'grid-cols-5' : 'phone:grid-cols-2 tablet:grid-cols-3 desktop:grid-cols-4'} gap-4 text-center`}>
                     {
-                        passCategory?.map(category => <ExpenseCategoryCard key={category._id} category={category} openCategoryModal={openCategoryModal} openEditModal={openEditModal} openDeleteModal={openDeleteModal} hide={hideHandler} />)
+                        passCategory
+                        ? passCategory.map(category => <ExpenseCategoryCard key={category._id} category={category} openCategoryModal={openCategoryModal} openEditModal={openEditModal} openDeleteModal={openDeleteModal} hide={hideHandler} />)
+                        : Array.from({length: fullLayout ? 15 : desktopBreakpoint ? 12 : tabletBreakpoint ? 9 : phoneBreakpoint ? 6 : 3}).map((_, i) => <Skeleton key={i} className="w-40 h-32" />)
                     }
                 </main>
                 <CategoryModal modal={categoryModal} setModal={setCategoryModal} category={category} />
