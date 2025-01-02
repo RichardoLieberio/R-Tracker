@@ -10,6 +10,8 @@ import {
     getTextErrorColor
 } from '../css/color';
 
+import Skeleton from './Skeleton';
+
 export default function ExpenseCalendar() {
     const theme = useSelector((state) => state.web.theme);
     const expenses = useSelector((state) => state.data.expenses);
@@ -23,19 +25,19 @@ export default function ExpenseCalendar() {
 
         let calendar = Array.from({length: firstDay === 0 ? 7 : firstDay}, (_, i) => {
             const date = lastMonthLastDate - (firstDay === 0 ? 7 : firstDay) + 1 + i;
-            const expense = expenses[new Date(year, month - 1, date).toLocaleDateString()]?.reduce((val, {amount}) => val + amount, 0);
+            const expense = expenses ? expenses[new Date(year, month - 1, date).toLocaleDateString()]?.reduce((val, {amount}) => val + amount, 0) : null;
             return {date, expense, included: false};
         });
 
         calendar = [...calendar, ...Array.from({length: monthLastDate}, (_, i) => {
             const date = i + 1;
-            const expense = expenses[new Date(year, month, date).toLocaleDateString()]?.reduce((val, {amount}) => val + amount, 0);
+            const expense = expenses ? expenses[new Date(year, month, date).toLocaleDateString()]?.reduce((val, {amount}) => val + amount, 0) : null;
             return {date, expense, included: true};
         })];
 
         if (calendar.length !== 42) calendar = [...calendar, ...Array.from({length: 42 % calendar.length}, (_, i) => {
             const date = i + 1;
-            const expense = expenses[new Date(year, month + 1, date).toLocaleDateString()]?.reduce((val, {amount}) => val + amount, 0);
+            const expense = expenses ? expenses[new Date(year, month + 1, date).toLocaleDateString()]?.reduce((val, {amount}) => val + amount, 0) : null;
             return {date, expense, included: false};
         })];
 
@@ -54,7 +56,11 @@ export default function ExpenseCalendar() {
                     calendar.map(({date, expense, included}, i) => (
                         <div key={i} className={`w-16 h-14 p-1 flex flex-col justify-between text-center ${expense && getBgHighlight20Color(theme)} border ${included ? getBorderText20Color(theme) : `border-transparent ${getBgNeutral10Color(theme)}`} rounded-md cursor-pointer ${getHoverBorderHighlightColor(theme)}`}>
                             <span className="text-sm">{date}</span>
-                            {expense && <small className={`text-xs ${getTextErrorColor(theme)} truncate`}>{expense.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</small>}
+                            {
+                                expense === null
+                                ? <Skeleton className="w-full h-3" />
+                                : expense && <small className={`text-xs ${getTextErrorColor(theme)} truncate`}>{expense.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</small>
+                            }
                         </div>
                     ))
                 }
