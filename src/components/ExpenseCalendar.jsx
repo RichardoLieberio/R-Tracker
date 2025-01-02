@@ -7,7 +7,7 @@ import {
     getBgNeutral10Color, getBgHighlight20Color,
     getBorderText20Color,
     getHoverBorderHighlightColor,
-    getTextNeutralColor
+    getTextErrorColor
 } from '../css/color';
 
 export default function ExpenseCalendar() {
@@ -54,7 +54,7 @@ export default function ExpenseCalendar() {
                     calendar.map(({date, expense, included}, i) => (
                         <div key={i} className={`w-16 h-14 p-1 flex flex-col justify-between text-center ${expense && getBgHighlight20Color(theme)} border ${included ? getBorderText20Color(theme) : `border-transparent ${getBgNeutral10Color(theme)}`} rounded-md cursor-pointer ${getHoverBorderHighlightColor(theme)}`}>
                             <span className="text-sm">{date}</span>
-                            {expense && <small className={`text-xs ${getTextNeutralColor(theme)} truncate`}>{expense}</small>}
+                            {expense && <small className={`text-xs ${getTextErrorColor(theme)} truncate`}>{expense}</small>}
                         </div>
                     ))
                 }
