@@ -31,6 +31,7 @@ import ChangePwdModal from '../components/ChangePwdModal';
 import BlacklistModal from '../components/BlacklistModal';
 import WhitelistModal from '../components/WhitelistModal';
 import ConfirmDeleteAccount from '../components/ConfirmDeleteAccount';
+import Skeleton from '../components/Skeleton';
 
 const roleOption = ['admin', 'user'];
 
@@ -186,7 +187,11 @@ export default function User() {
                 </header>
                 <main className="w-full desktop:flex desktop:gap-24">
                     {
-                        passUsers && <UserTable users={passUsers} setUserModal={setUserModal} />
+                        passUsers
+                        ? <UserTable users={passUsers} setUserModal={setUserModal} />
+                        : <div className="w-full desktop:w-fit flex-1 rounded-xl overflow-hidden">
+                            <Skeleton className="h-96"/>
+                        </div>
                     }
                     {
                         desktopBreakpoint
