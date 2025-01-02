@@ -6,11 +6,11 @@ import breakpoints from '../../config/breakpoints';
 
 import {setExpense} from '../redux/expensePageSlice';
 
-import {getHoverBgNeutral50Color} from '../css/color';
+import {getTextNeutralColor, getHoverBgNeutral50Color} from '../css/color';
 
 export default function ExpenseSection(props) {
     const {expense, setModal} = props;
-    const {month, date, amount, expenses} = expense;
+    const {date, amount, expenses} = expense;
 
     const theme = useSelector((state) => state.web.theme);
     const dispatch = useDispatch();
@@ -24,8 +24,8 @@ export default function ExpenseSection(props) {
 
     return (
         <div key={date} className="w-full flex flex-col gap-2">
-            <div className="flex items-center justify-between gap-8 text-sm">
-                <span className="whitespace-nowrap">{phoneBreakpoint ? month : month.slice(0, 3)} {date}</span>
+            <div className={`flex items-center justify-between gap-8 text-sm ${getTextNeutralColor(theme)}`}>
+                <span className="whitespace-nowrap">{date}</span>
                 <span className="truncate">Expenses: {amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</span>
             </div>
             <div className="flex flex-col">
