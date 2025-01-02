@@ -46,6 +46,7 @@ export default function Expense() {
     const expenseCategories = useSelector((state) => state.data.expenseCategories);
     const year = useSelector((state) => state.expensePage.year);
     const month = useSelector((state) => state.expensePage.month);
+    const expenseDate = useSelector((state) => state.expensePage.expenseDate);
 
     const dispatch = useDispatch();
 
@@ -85,6 +86,20 @@ export default function Expense() {
                 };
             });
     }, [month, year, expenses, expenseCategories]);
+
+    const calendarExpense = useMemo(function() {
+        if (!expenseDate || !expenses[expenseDate]) return null;
+
+        const [month, date,] = expenseDate.split('/');
+        const categories = expenseCategories.reduce((obj, {_id, name, color, icon}) => ({...obj, [_id]: {name, color, icon}}), {});
+
+        return {
+            month: months[+month - 1],
+            date,
+            amount: expenses[expenseDate].reduce((total, {amount}) => total + amount, 0),
+            expenses: expenses[expenseDate].map(expense => ({...expense, category: categories[expense.category_id]}))
+        };
+    }, [expenses, expenseDate, expenseCategories]);
 
     return (
         <HelmetProvider>
@@ -126,6 +141,7 @@ export default function Expense() {
                             </div>
                         </div>
                         <ExpenseCalendar />
+                        {calendarExpense && <ExpenseSection expense={calendarExpense} setModal={setShowExpense} />}
                     </section>
                     : <div className="w-full max-w-96 tablet:w-3/5 tablet:max-w-none mx-auto flex items-center justify-between">
                         <div className="flex items-center gap-8">
