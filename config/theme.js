@@ -13,7 +13,9 @@ export default {
         disabled: '#FFCCCB',
         success: '#28A745',
         warning: '#FFC107',
-        error: '#D32F2F'
+        error: '#D32F2F',
+        skeletonBase: '#EBEBEB',
+        skeletonHighlight: '#F5F5F5'
     },
     green: {
         primary: '#28A745',
@@ -29,7 +31,9 @@ export default {
         disabled: '#C8E6C9',
         success: '#28A745',
         warning: '#FFC107',
-        error: '#DC3545'
+        error: '#DC3545',
+        skeletonBase: '#EBEBEB',
+        skeletonHighlight: '#F5F5F5'
     },
     blue: {
         primary: '#1976D2',
@@ -45,7 +49,9 @@ export default {
         disabled: '#B3E5FC',
         success: '#28A745',
         warning: '#FFC107',
-        error: '#D32F2F'
+        error: '#D32F2F',
+        skeletonBase: '#EBEBEB',
+        skeletonHighlight: '#F5F5F5'
     },
     yellow: {
         primary: '#F9A825',
@@ -61,7 +67,9 @@ export default {
         disabled: '#FFE082',
         success: '#388E3C',
         warning: '#FF9800',
-        error: '#C62828'
+        error: '#C62828',
+        skeletonBase: '#EBEBEB',
+        skeletonHighlight: '#F5F5F5'
     },
     teal: {
         primary: '#00796B',
@@ -77,7 +85,9 @@ export default {
         disabled: '#B2EBF2',
         success: '#28A745',
         warning: '#FFC107',
-        error: '#D32F2F'
+        error: '#D32F2F',
+        skeletonBase: '#EBEBEB',
+        skeletonHighlight: '#F5F5F5'
     },
     purple: {
         primary: '#6A1B9A',
@@ -93,7 +103,9 @@ export default {
         disabled: '#EDE7F6',
         success: '#28A745',
         warning: '#FFC107',
-        error: '#D32F2F'
+        error: '#D32F2F',
+        skeletonBase: '#EBEBEB',
+        skeletonHighlight: '#F5F5F5'
     },
     dark: {
         primary: '#121212',
@@ -109,6 +121,8 @@ export default {
         disabled: '#7F7F7F',
         success: '#4CAF50',
         warning: '#FFC107',
-        error: '#D32F2F'
+        error: '#D32F2F',
+        skeletonBase: '#141414',
+        skeletonHighlight: '#0B0B0B'
     }
 };
