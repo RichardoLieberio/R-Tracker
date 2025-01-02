@@ -20,6 +20,7 @@ import NotFound from './pages/NotFound';
 
 import contr from './controllers/hocs';
 
+import 'react-loading-skeleton/dist/skeleton.css';
 import 'react-toastify/dist/ReactToastify.css';
 import getToastClassName from './css/toast';
 import {getOppositeTextColor} from './css/color';
