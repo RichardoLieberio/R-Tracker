@@ -31,10 +31,12 @@ import {FaRegCalendarAlt} from 'react-icons/fa';
 import ExpenseHead from '../head/ExpenseHead';
 import ExpenseCalendar from '../components/ExpenseCalendar';
 import ExpenseSection from '../components/ExpenseSection';
+import ExpenseModal from '../components/ExpenseModal';
 import Skeleton from '../components/Skeleton';
 
 export default function Expense() {
     const [csrfToken, setCSRFToken] = useState('');
+    const [showExpense, setShowExpense] = useState(false);
 
     const location = useLocation();
 
@@ -174,12 +176,13 @@ export default function Expense() {
                     <main className="flex flex-col gap-8">
                         {
                             displayExpense
-                            ? displayExpense.map(expense => <ExpenseSection key={expense.date} expense={expense} />)
+                            ? displayExpense.map(expense => <ExpenseSection key={expense.date} expense={expense} setModal={setShowExpense} />)
                             : Array.from({length: 4}).map((_, i) => <Skeleton key={i} className="w-full h-14 gap-4" />)
                         }
                     </main>
                 </section>
             </section>
+            <ExpenseModal modal={showExpense} setModal={setShowExpense} />
         </HelmetProvider>
     );
 }
