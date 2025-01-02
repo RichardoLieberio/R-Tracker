@@ -187,7 +187,7 @@ export default function ExpenseCategory() {
                             {order === 'asc' ? <FaSortAlphaUp /> : <FaSortAlphaDown />}
                         </button>
                     </section>
-                    <button onClick={() => setAddCategoryModal(true)} className={`w-fit py-1 px-8 relative ${getOppositeTextColor(theme)} ${getBgPrimaryColor(theme)} rounded-md ${getHoverBgHighlightColor(theme)}`}>Add category</button>
+                    <button onClick={() => setAddCategoryModal(true)} className={`w-full phone:w-fit py-1 px-8 relative ${getOppositeTextColor(theme)} ${getBgPrimaryColor(theme)} rounded-md ${getHoverBgHighlightColor(theme)}`}>Add category</button>
                     <AddCategoryModal modal={addCategoryModal} setModal={setAddCategoryModal} name={addName} setName={setAddName} color={addColor} setColor={setAddColor} icon={addIcon} setIcon={setAddIcon} iconText={addIconText} setIconText={setAddIconText} error={addError} processing={isAdding} submit={addCategory} />
                 </header>
                 <main className={`grid ${fullLayout ? 'grid-cols-5' : 'phone:grid-cols-2 tablet:grid-cols-3 desktop:grid-cols-4'} gap-4 text-center`}>
