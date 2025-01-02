@@ -9,6 +9,9 @@ import getCSRFToken from '../services/getCSRFToken';
 import {getToast} from '../services/toastService';
 
 import {changePage} from '../redux/webSlice';
+import {prevMonth, nextMonth} from '../redux/expensePageSlice';
+
+import {getTextNeutralColor} from '../css/color';
 
 import contr from '../controllers/expense';
 
@@ -23,6 +26,7 @@ export default function Expense() {
 
     const location = useLocation();
 
+    const theme = useSelector((state) => state.web.theme);
     const accessToken = useSelector((state) => state.auth.accessToken);
     const expenses = useSelector((state) => state.data.expenses);
     const year = useSelector((state) => state.expensePage.year);
@@ -53,8 +57,8 @@ export default function Expense() {
                             <span className="flex items-center gap-2 cursor-pointer">{months[month].slice(0, 3)} <TiArrowSortedDown /></span>
                         </div>
                         <div className="flex items-center gap-8">
-                            <span className="p-1 text-2xl cursor-pointer"><RiArrowLeftSLine /></span>
-                            <span className="p-1 text-2xl cursor-pointer"><RiArrowRightSLine /></span>
+                            <span onClick={() => dispatch(prevMonth())} className={`p-1 text-2xl ${year === +process.env.START_YEAR && month === 0 && getTextNeutralColor(theme)} cursor-pointer`}><RiArrowLeftSLine /></span>
+                            <span onClick={() => dispatch(nextMonth())} className={`p-1 text-2xl ${year === new Date().getFullYear() && month === 11 && getTextNeutralColor(theme)} cursor-pointer`}><RiArrowRightSLine /></span>
                         </div>
                     </div>
                     {expenses && <ExpenseCalendar />}
