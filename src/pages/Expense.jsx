@@ -31,6 +31,7 @@ import {FaRegCalendarAlt} from 'react-icons/fa';
 import ExpenseHead from '../head/ExpenseHead';
 import ExpenseCalendar from '../components/ExpenseCalendar';
 import ExpenseSection from '../components/ExpenseSection';
+import Skeleton from '../components/Skeleton';
 
 export default function Expense() {
     const [csrfToken, setCSRFToken] = useState('');
@@ -122,7 +123,7 @@ export default function Expense() {
                                 <span onClick={() => dispatch(nextMonth())} className={`p-1 text-2xl ${year === new Date().getFullYear() && month === 11 && getTextNeutralColor(theme)} cursor-pointer`}><RiArrowRightSLine /></span>
                             </div>
                         </div>
-                        {expenses && <ExpenseCalendar />}
+                        <ExpenseCalendar />
                     </section>
                     : <div className="w-full max-w-96 tablet:w-3/5 tablet:max-w-none mx-auto flex items-center justify-between">
                         <div className="flex items-center gap-8">
@@ -158,13 +159,23 @@ export default function Expense() {
                     <header className="flex flex-col-reverse phone:flex-row phone:items-center phone:justify-between gap-4">
                         <div className="flex items-center gap-2 phone:flex-col phone:items-start phone:gap-0 overflow-hidden">
                             <span className="text-xs">Expenses:</span>
-                            <span className="text-lg truncate">{displayExpense?.reduce((total, {amount}) => total + amount, 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</span>
+                            <span className="text-xl truncate">
+                                {
+                                    displayExpense
+                                    ? displayExpense.reduce((total, {amount}) => total + amount, 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                                    : <div className="w-24">
+                                        <Skeleton className="h-5" />
+                                    </div>
+                                }
+                            </span>
                         </div>
                         <button className={`w-full phone:w-fit h-fit py-1 px-8 relative ${getOppositeTextColor(theme)} ${getBgPrimaryColor(theme)} rounded-md ${getHoverBgHighlightColor(theme)} shrink-0`}>Add expense</button>
                     </header>
                     <main className="flex flex-col gap-8">
                         {
-                            displayExpense?.map(expense => <ExpenseSection key={expense.date} expense={expense} />)
+                            displayExpense
+                            ? displayExpense.map(expense => <ExpenseSection key={expense.date} expense={expense} />)
+                            : Array.from({length: 4}).map((_, i) => <Skeleton key={i} className="w-full h-14 gap-4" />)
                         }
                     </main>
                 </section>
