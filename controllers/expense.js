@@ -30,7 +30,7 @@ async function deleteExpense(req, res) {
     if (!mongooseIdValidation(req.params.id)) return res.json({status: 404, msg: 'Failed to delete. Expense not found.'});
 
     const expense = await Expense.deleteExpense(req.params.id, req.userId);
-    expense ? res.json({status: 200, msg: 'Expense deleted successfully.'}) : res.json({status: 404, msg: 'Failed to delete. Expense not found.'});
+    expense ? res.json({status: 200, msg: 'Expense deleted successfully.', id: expense._id}) : res.json({status: 404, msg: 'Failed to delete. Expense not found.'});
 }
 
 module.exports = {getCategories, getExpenses, addExpense, editExpense, deleteExpense};
