@@ -1,22 +1,32 @@
 import PropTypes from 'prop-types';
 import {useSelector} from 'react-redux';
+import {useMediaQuery} from '@mui/material';
 import {format} from 'date-fns';
 
+import breakpoints from '../../config/breakpoints';
+
 import {
-    getBackgroundColor,
-    getTextColor,
-    getBorderNeutralColor,
-    getScrollbarTrackBackground,
-    getScrollbarThumbText
+    getBgPrimaryColor, getBackgroundColor,
+    getHoverBgHighlightColor,
+    getDisabledBgNeutralColor,
+    getTextColor, getTextPrimaryColor, getOppositeTextColor,
+    getHoverTextHighlightColor,
+    getBorderPrimaryColor, getBorderNeutralColor,
+    getHoverBorderHighlightColor,
+    getScrollbarTrackBackground, getScrollbarThumbText
 } from '../css/color';
 
 import {Modal, Box} from '@mui/material';
+import ButtonSpinner from './ButtonSpinner';
 
 export default function ExpenseModal(props) {
-    const {modal, setModal} = props;
+    const {modal, setModal, deleteHandler} = props;
 
     const theme = useSelector((state) => state.web.theme);
     const expense = useSelector((state) => state.expensePage.expense);
+    const processing = useSelector((state) => state.expensePage.processing);
+
+    const desktopBreakpoint = useMediaQuery(`(min-width: ${breakpoints.desktop})`);
 
     return (
         <Modal open={modal} onClose={() => setModal(false)} aria-labelledby="Expense Modal" aria-describedby="Expense detail">
@@ -48,6 +58,19 @@ export default function ExpenseModal(props) {
                         </main>
                     </section>
                 </main>
+                <footer className="px-7 phone:px-8 flex items-center justify-between">
+                    {desktopBreakpoint && <button onClick={() => setModal(false)} className={`py-1 px-4 ${theme !== 'dark' ? getTextPrimaryColor(theme) : ''} rounded-md ${getHoverTextHighlightColor(theme)}`}>Close</button>}
+                    <div className="flex-1 desktop:flex-none flex items-center gap-4">
+                        <button onClick={deleteHandler} disabled={processing.includes(expense?._id)} className={`w-full desktop:w-fit py-1 desktop:px-8 relative ${getTextPrimaryColor(theme)} border ${getBorderPrimaryColor(theme)} ${getHoverTextHighlightColor(theme)} rounded-md ${getHoverBorderHighlightColor(theme)} ${getDisabledBgNeutralColor(theme)} disabled:border-none disabled:cursor-not-allowed`}>
+                            {processing.includes(expense?._id) && <ButtonSpinner />}
+                            <span className={processing.includes(expense?._id) ? 'opacity-0' : ''}>Delete</span>
+                        </button>
+                        <button disabled={processing.includes(expense?._id)} className={`w-full desktop:w-fit py-1 desktop:px-8 relative ${getOppositeTextColor(theme)} ${getBgPrimaryColor(theme)} rounded-md ${getHoverBgHighlightColor(theme)} ${getDisabledBgNeutralColor(theme)} disabled:cursor-not-allowed`}>
+                            {processing.includes(expense?._id) && <ButtonSpinner />}
+                            <span className={processing.includes(expense?._id) ? 'opacity-0' : ''}>Edit</span>
+                        </button>
+                    </div>
+                </footer>
             </Box>
         </Modal>
     );
@@ -55,5 +78,6 @@ export default function ExpenseModal(props) {
 
 ExpenseModal.propTypes = {
     modal: PropTypes.bool,
-    setModal: PropTypes.func
+    setModal: PropTypes.func,
+    deleteHandler: PropTypes.func
 };
