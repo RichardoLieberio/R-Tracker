@@ -45,7 +45,7 @@ expenseSchema.statics.editExpense = async function(_id, user_id, data) {
 }
 
 expenseSchema.statics.deleteExpense = async function(_id, user_id) {
-    return !!await this.findOneAndDelete({_id, user_id});
+    return await this.findOneAndDelete({_id, user_id});
 }
 
 expenseSchema.statics.deleteAllExpense = async function(user_id, session) {
