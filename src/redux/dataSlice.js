@@ -17,6 +17,14 @@ export const dataSlice = createSlice({
             });
             state.expenses = expenses;
         },
+        removeExpense: function(state, action) {
+            const newExpenses = {};
+            Object.entries(state.expenses).forEach(([date, expenses]) => {
+                const newDateExpense = expenses.filter(expense => expense._id !== action.payload);
+                if (newDateExpense.length) newExpenses[date] = newDateExpense;
+            });
+            state.expenses = newExpenses;
+        },
         setExpenseCategories: function(state, action) {
             state.expenseCategories = action.payload;
         },
@@ -62,6 +70,6 @@ export const dataSlice = createSlice({
     }
 });
 
-export const {setExpenses, setExpenseCategories, addExpenseCategory, updateExpenseCategory, deleteExpenseCategory, setUsers, changeInfo, removeBlacklist, deleteUser, logout} = dataSlice.actions;
+export const {setExpenses, removeExpense, setExpenseCategories, addExpenseCategory, updateExpenseCategory, deleteExpenseCategory, setUsers, changeInfo, removeBlacklist, deleteUser, logout} = dataSlice.actions;
 
 export default dataSlice.reducer;
