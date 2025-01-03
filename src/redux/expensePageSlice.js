@@ -6,7 +6,8 @@ export const expensePageSlice = createSlice({
         year: new Date().getFullYear(),
         month: new Date().getMonth(),
         expense: null,
-        expenseDate: null
+        expenseDate: null,
+        processing: []
     },
     reducers: {
         prevMonth: function(state) {
@@ -42,10 +43,16 @@ export const expensePageSlice = createSlice({
         },
         setExpenseDate: function(state, action) {
             state.expenseDate = action.payload;
+        },
+        addProcess: function(state, action) {
+            state.processing = [...state.processing, action.payload];
+        },
+        deleteProcess: function(state, action) {
+            state.processing = state.processing.filter(id => id !== action.payload);
         }
     }
 });
 
-export const {prevMonth, nextMonth, setMonth, setYear, setExpense, setExpenseDate} = expensePageSlice.actions;
+export const {prevMonth, nextMonth, setMonth, setYear, setExpense, setExpenseDate, addProcess, deleteProcess} = expensePageSlice.actions;
 
 export default expensePageSlice.reducer;
