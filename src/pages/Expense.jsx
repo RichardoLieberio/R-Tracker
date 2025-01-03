@@ -11,7 +11,7 @@ import getCSRFToken from '../services/getCSRFToken';
 import {getToast} from '../services/toastService';
 
 import {changePage} from '../redux/webSlice';
-import {setYear, setMonth, prevMonth, nextMonth} from '../redux/expensePageSlice';
+import {setYear, setMonth, prevMonth, nextMonth, addProcess, deleteProcess} from '../redux/expensePageSlice';
 
 import {
     getBgPrimaryColor, getBackgroundColor,
@@ -47,6 +47,8 @@ export default function Expense() {
     const year = useSelector((state) => state.expensePage.year);
     const month = useSelector((state) => state.expensePage.month);
     const expenseDate = useSelector((state) => state.expensePage.expenseDate);
+    const expense = useSelector((state) => state.expensePage.expense);
+    const processing = useSelector((state) => state.expensePage.processing);
 
     const dispatch = useDispatch();
 
@@ -99,6 +101,14 @@ export default function Expense() {
             expenses: expenses[expenseDate].map(expense => ({...expense, category: categories[expense.category_id]}))
         };
     }, [expenses, expenseDate, expenseCategories]);
+
+    async function deleteHandler() {
+        if (!processing.includes(expense?._id)) {
+            dispatch(addProcess(expense._id));
+            await contr.deleteExpense(expense._id, csrfToken, accessToken, setShowExpense);
+            dispatch(deleteProcess(expense._id));
+        }
+    }
 
     return (
         <HelmetProvider>
@@ -197,7 +207,7 @@ export default function Expense() {
                     </main>
                 </section>
             </section>
-            <ExpenseModal modal={showExpense} setModal={setShowExpense} />
+            <ExpenseModal modal={showExpense} setModal={setShowExpense} deleteHandler={deleteHandler} />
         </HelmetProvider>
     );
 }
