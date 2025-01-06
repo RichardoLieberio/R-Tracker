@@ -4,7 +4,8 @@ import axios from '../services/axios';
 import {setToast} from '../services/toastService';
 
 import store from '../redux/store';
-import {setExpenses, addExpense, removeExpense, setExpenseCategories} from '../redux/dataSlice';
+import {setExpenses, addExpense, updateExpense, removeExpense, setExpenseCategories} from '../redux/dataSlice';
+import {setExpense} from '../redux/expensePageSlice';
 
 import css from '../css/expense';
 
@@ -86,8 +87,68 @@ async function createExpense(expense, amount, expenseDate, category, csrfToken, 
             toast.success(response.data.msg);
             resetModal();
             break;
+        case 403:
+            setToast('error', response.data.msg);
+            location.reload();
+            break;
         case 422:
             setError(response.data.msg);
+            break;
+    }
+}
+
+async function editExpense(id, expense, amount, expenseDate, category, csrfToken, accessToken, setError, setEditModal, setShowModal) {
+    const data = {expense, amount, expenseDate, category};
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`,
+            'CSRF-Token': csrfToken
+        },
+        authenticated: {
+            codes: [401],
+            route: '/login'
+        }
+    };
+
+    const response = await axios.put(`/api/expense/${id}`, data, config);
+    const status = response?.data?.status;
+
+    switch (status) {
+        case 200:
+            store.dispatch(updateExpense(response.data.expense));
+            toast.success(response.data.msg);
+            if (store.getState().expensePage.expense._id === id) {
+                setEditModal(false);
+                const {_id, name, color, icon} = response.data.expense.category_id;
+                const newExpense = {...response.data.expense, category: {name, color, icon}};
+                newExpense.category_id = _id;
+                store.dispatch(setExpense(newExpense));
+            }
+            break;
+        case 403:
+            setToast('error', response.data.msg);
+            location.reload();
+            break;
+        case 404:
+            toast.error(response.data.msg);
+            store.dispatch(removeExpense(id));
+            if (store.getState().expensePage.expense._id === id) {
+                setEditModal(false);
+                setShowModal(false);
+            }
+            break;
+        case 422:
+            console.log(response.data.msg)
+            const {expense: expenseMsg, amount: amountMsg, expenseDate: expenseDateMsg, category: categoryMsg} = response.data.msg;
+            const error = {
+                expense: {msg: expenseMsg, value: expense},
+                amount: {msg: amountMsg, value: amount},
+                expenseDate: {msg: expenseDateMsg, value: expenseDate},
+                category: {msg: categoryMsg, value: category}
+            };
+            setError(value => ({...value, [id]: error}));
+            toast.error('Edit expense failed');
             break;
     }
 }
@@ -126,4 +187,4 @@ async function deleteExpense(id, csrfToken, accessToken, setModal) {
     }
 }
 
-export default {inputErrorHandler, getExpenses, getExpenseCategory, createExpense, deleteExpense};
+export default {inputErrorHandler, getExpenses, getExpenseCategory, createExpense, editExpense, deleteExpense};
