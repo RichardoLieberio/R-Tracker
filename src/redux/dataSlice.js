@@ -24,6 +24,21 @@ export const dataSlice = createSlice({
             expenses[date].push(action.payload);
             state.expenses = expenses;
         },
+        updateExpense: function(state, action) {
+            const newExpenses = {};
+
+            Object.entries({...(state.expenses || {})}).map(([key, expenses]) => expenses.map(expense => {
+                if (expense._id !== action.payload._id) {
+                    if (!newExpenses[key]) newExpenses[key] = [];
+                    newExpenses[key].push(expense);
+                }
+            }));
+
+            const date = new Date(action.payload.expense_date).toLocaleDateString();
+            if (!newExpenses[date]) newExpenses[date] = [];
+            newExpenses[date].push({...action.payload, category_id: action.payload.category_id._id});
+            state.expenses = newExpenses;
+        },
         removeExpense: function(state, action) {
             const newExpenses = {};
             Object.entries(state.expenses).forEach(([date, expenses]) => {
@@ -77,6 +92,6 @@ export const dataSlice = createSlice({
     }
 });
 
-export const {setExpenses, addExpense, removeExpense, setExpenseCategories, addExpenseCategory, updateExpenseCategory, deleteExpenseCategory, setUsers, changeInfo, removeBlacklist, deleteUser, logout} = dataSlice.actions;
+export const {setExpenses, addExpense, updateExpense, removeExpense, setExpenseCategories, addExpenseCategory, updateExpenseCategory, deleteExpenseCategory, setUsers, changeInfo, removeBlacklist, deleteUser, logout} = dataSlice.actions;
 
 export default dataSlice.reducer;
