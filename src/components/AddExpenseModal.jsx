@@ -140,7 +140,7 @@ export default function AddExpenseModal(props) {
                                         </div>
                                 }
                                 <label htmlFor="date" className={dateLabelClass}>Date</label>
-                                <input type="date" id="date" value={date} disabled={processing} onChange={(e) => setDate(e.target.value)} className={dateInputClass} />
+                                <input type="date" id="date" value={date} disabled={processing} onChange={(e) => setDate(e.target.value)} onClick={(e) => e.target.showPicker()} className={dateInputClass} />
                             </div>
                             <div className="relative">
                                 {
