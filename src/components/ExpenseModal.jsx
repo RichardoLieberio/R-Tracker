@@ -20,7 +20,7 @@ import {Modal, Box} from '@mui/material';
 import ButtonSpinner from './ButtonSpinner';
 
 export default function ExpenseModal(props) {
-    const {modal, setModal, deleteHandler} = props;
+    const {modal, setModal, setEditModal, deleteHandler} = props;
 
     const theme = useSelector((state) => state.web.theme);
     const expense = useSelector((state) => state.expensePage.expense);
@@ -65,7 +65,7 @@ export default function ExpenseModal(props) {
                             {processing.includes(expense?._id) && <ButtonSpinner />}
                             <span className={processing.includes(expense?._id) ? 'opacity-0' : ''}>Delete</span>
                         </button>
-                        <button disabled={processing.includes(expense?._id)} className={`w-full desktop:w-fit py-1 desktop:px-8 relative ${getOppositeTextColor(theme)} ${getBgPrimaryColor(theme)} rounded-md ${getHoverBgHighlightColor(theme)} ${getDisabledBgNeutralColor(theme)} disabled:cursor-not-allowed`}>
+                        <button onClick={() => setEditModal(true)} disabled={processing.includes(expense?._id)} className={`w-full desktop:w-fit py-1 desktop:px-8 relative ${getOppositeTextColor(theme)} ${getBgPrimaryColor(theme)} rounded-md ${getHoverBgHighlightColor(theme)} ${getDisabledBgNeutralColor(theme)} disabled:cursor-not-allowed`}>
                             {processing.includes(expense?._id) && <ButtonSpinner />}
                             <span className={processing.includes(expense?._id) ? 'opacity-0' : ''}>Edit</span>
                         </button>
@@ -79,5 +79,6 @@ export default function ExpenseModal(props) {
 ExpenseModal.propTypes = {
     modal: PropTypes.bool,
     setModal: PropTypes.func,
+    setEditModal: PropTypes.func,
     deleteHandler: PropTypes.func
 };
