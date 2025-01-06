@@ -139,7 +139,6 @@ async function editExpense(id, expense, amount, expenseDate, category, csrfToken
             }
             break;
         case 422:
-            console.log(response.data.msg)
             const {expense: expenseMsg, amount: amountMsg, expenseDate: expenseDateMsg, category: categoryMsg} = response.data.msg;
             const error = {
                 expense: {msg: expenseMsg, value: expense},
