@@ -17,6 +17,13 @@ export const dataSlice = createSlice({
             });
             state.expenses = expenses;
         },
+        addExpense: function(state, action) {
+            const expenses = {...(state.expenses || {})};
+            const date = new Date(action.payload.expense_date).toLocaleDateString();
+            if (!expenses[date]) expenses[date] = [];
+            expenses[date].push(action.payload);
+            state.expenses = expenses;
+        },
         removeExpense: function(state, action) {
             const newExpenses = {};
             Object.entries(state.expenses).forEach(([date, expenses]) => {
@@ -70,6 +77,6 @@ export const dataSlice = createSlice({
     }
 });
 
-export const {setExpenses, removeExpense, setExpenseCategories, addExpenseCategory, updateExpenseCategory, deleteExpenseCategory, setUsers, changeInfo, removeBlacklist, deleteUser, logout} = dataSlice.actions;
+export const {setExpenses, addExpense, removeExpense, setExpenseCategories, addExpenseCategory, updateExpenseCategory, deleteExpenseCategory, setUsers, changeInfo, removeBlacklist, deleteUser, logout} = dataSlice.actions;
 
 export default dataSlice.reducer;
