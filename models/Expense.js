@@ -41,7 +41,7 @@ expenseSchema.statics.addExpense = async function(data, user_id) {
 
 expenseSchema.statics.editExpense = async function(_id, user_id, data) {
     const {expense, amount, expenseDate: expense_date, category: category_id} = data;
-    return await this.findOneAndUpdate({_id, user_id}, {expense, amount, expense_date, category_id}, {new: true});
+    return await this.findOneAndUpdate({_id, user_id}, {expense, amount, expense_date, category_id}, {new: true}).populate('category_id');
 }
 
 expenseSchema.statics.deleteExpense = async function(_id, user_id) {
