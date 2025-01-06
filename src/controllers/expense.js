@@ -4,7 +4,19 @@ import axios from '../services/axios';
 import {setToast} from '../services/toastService';
 
 import store from '../redux/store';
-import {setExpenses, removeExpense, setExpenseCategories} from '../redux/dataSlice';
+import {setExpenses, addExpense, removeExpense, setExpenseCategories} from '../redux/dataSlice';
+
+import css from '../css/expense';
+
+function inputErrorHandler(theme, error, value, setLabelClass, setInputClass, label=false, input=false) {
+    if (error) {
+        setLabelClass(value || label ? css(theme).labelTopError : css(theme).labelMiddleError);
+        setInputClass(css(theme).defaultInputError);
+    } else {
+        setLabelClass(value || label ? css(theme).labelTopBlur : css(theme).labelMiddle);
+        setInputClass(input ? css(theme).nonFocusInput : css(theme).defaultInput);
+    }
+}
 
 async function getExpenses(accessToken) {
     const config = {
@@ -51,6 +63,35 @@ async function getExpenseCategory(accessToken) {
     }
 }
 
+async function createExpense(expense, amount, expenseDate, category, csrfToken, accessToken, setError, resetModal) {
+    const data = {expense, amount, expenseDate, category};
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`,
+            'CSRF-Token': csrfToken
+        },
+        authenticated: {
+            codes: [401],
+            route: '/login'
+        }
+    };
+
+    const response = await axios.post('/api/expense', data, config);
+    const status = response?.data?.status;
+
+    switch (status) {
+        case 201:
+            store.dispatch(addExpense(response.data.expense));
+            toast.success(response.data.msg);
+            resetModal();
+            break;
+        case 422:
+            setError(response.data.msg);
+            break;
+    }
+}
+
 async function deleteExpense(id, csrfToken, accessToken, setModal) {
     const config = {
         headers: {
@@ -85,4 +126,4 @@ async function deleteExpense(id, csrfToken, accessToken, setModal) {
     }
 }
 
-export default {getExpenses, getExpenseCategory, deleteExpense};
+export default {inputErrorHandler, getExpenses, getExpenseCategory, createExpense, deleteExpense};
