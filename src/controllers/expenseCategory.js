@@ -114,7 +114,7 @@ async function editCategory(id, name, color, icon, iconText, csrfToken, accessTo
                 iconText
             };
             setError(value => ({...value, [id]: error}));
-            toast.error('Add category failed');
+            toast.error('Edit category failed');
             break;
     }
 }
