@@ -31,12 +31,21 @@ import {FaRegCalendarAlt} from 'react-icons/fa';
 import ExpenseHead from '../head/ExpenseHead';
 import ExpenseCalendar from '../components/ExpenseCalendar';
 import ExpenseSection from '../components/ExpenseSection';
+import AddExpenseModal from '../components/AddExpenseModal';
 import ExpenseModal from '../components/ExpenseModal';
 import Skeleton from '../components/Skeleton';
 
 export default function Expense() {
     const [csrfToken, setCSRFToken] = useState('');
+    const [addExpense, setAddExpense] = useState(false);
     const [showExpense, setShowExpense] = useState(false);
+
+    const [newExpenseName, setNewExpenseName] = useState('');
+    const [newExpenseAmount, setNewExpenseAmount] = useState('');
+    const [newExpenseDate, setNewExpenseDate] = useState('');
+    const [newExpenseCategory, setNewExpenseCategory] = useState({});
+    const [newExpenseError, setNewExpenseError] = useState({});
+    const [proccessingNewExpense, setProccessingNewExpense] = useState(false);
 
     const location = useLocation();
 
@@ -102,12 +111,29 @@ export default function Expense() {
         };
     }, [expenses, expenseDate, expenseCategories]);
 
+    async function addHandler() {
+        if (!proccessingNewExpense) {
+            setProccessingNewExpense(true);
+            setNewExpenseError({});
+            await contr.createExpense(newExpenseName, +newExpenseAmount, newExpenseDate, newExpenseCategory?._id, csrfToken, accessToken, setNewExpenseError, resetAddExpenseModal);
+            setProccessingNewExpense(false);
+        }
+    }
+
     async function deleteHandler() {
         if (!processing.includes(expense?._id)) {
             dispatch(addProcess(expense._id));
             await contr.deleteExpense(expense._id, csrfToken, accessToken, setShowExpense);
             dispatch(deleteProcess(expense._id));
         }
+    }
+
+    function resetAddExpenseModal() {
+        setAddExpense(false);
+        setNewExpenseName('');
+        setNewExpenseAmount('');
+        setNewExpenseDate('');
+        setNewExpenseCategory({});
     }
 
     return (
@@ -196,7 +222,7 @@ export default function Expense() {
                                 }
                             </span>
                         </div>
-                        <button className={`w-full phone:w-fit h-fit py-1 px-8 relative ${getOppositeTextColor(theme)} ${getBgPrimaryColor(theme)} rounded-md ${getHoverBgHighlightColor(theme)} shrink-0`}>Add expense</button>
+                        <button onClick={() => setAddExpense(true)} className={`w-full phone:w-fit h-fit py-1 px-8 relative ${getOppositeTextColor(theme)} ${getBgPrimaryColor(theme)} rounded-md ${getHoverBgHighlightColor(theme)} shrink-0`}>Add expense</button>
                     </header>
                     <main className="flex flex-col gap-8">
                         {
@@ -207,6 +233,7 @@ export default function Expense() {
                     </main>
                 </section>
             </section>
+            <AddExpenseModal modal={addExpense} setModal={setAddExpense} name={newExpenseName} setName={setNewExpenseName} amount={newExpenseAmount} setAmount={setNewExpenseAmount} date={newExpenseDate} setDate={setNewExpenseDate} category={newExpenseCategory} setCategory={setNewExpenseCategory} error={newExpenseError} processing={proccessingNewExpense} submit={addHandler} />
             <ExpenseModal modal={showExpense} setModal={setShowExpense} deleteHandler={deleteHandler} />
         </HelmetProvider>
     );
