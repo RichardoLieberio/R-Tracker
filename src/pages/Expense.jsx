@@ -32,12 +32,14 @@ import ExpenseHead from '../head/ExpenseHead';
 import ExpenseCalendar from '../components/ExpenseCalendar';
 import ExpenseSection from '../components/ExpenseSection';
 import AddExpenseModal from '../components/AddExpenseModal';
+import EditExpenseModal from '../components/EditExpenseModal';
 import ExpenseModal from '../components/ExpenseModal';
 import Skeleton from '../components/Skeleton';
 
 export default function Expense() {
     const [csrfToken, setCSRFToken] = useState('');
     const [addExpense, setAddExpense] = useState(false);
+    const [editExpense, setEditExpense] = useState(false);
     const [showExpense, setShowExpense] = useState(false);
 
     const [newExpenseName, setNewExpenseName] = useState('');
@@ -46,6 +48,8 @@ export default function Expense() {
     const [newExpenseCategory, setNewExpenseCategory] = useState({});
     const [newExpenseError, setNewExpenseError] = useState({});
     const [proccessingNewExpense, setProccessingNewExpense] = useState(false);
+
+    const [editExpenseError, setEditExpenseError] = useState({});
 
     const location = useLocation();
 
@@ -120,12 +124,27 @@ export default function Expense() {
         }
     }
 
+    async function editHandler(id, name, amount, date, category) {
+        if (!processing.includes(id)) {
+            dispatch(addProcess(id));
+            removeError(id);
+            await contr.editExpense(id, name, +amount, date, category, csrfToken, accessToken, setEditExpenseError, setEditExpense, setShowExpense);
+            dispatch(deleteProcess(id));
+        }
+    }
+
     async function deleteHandler() {
         if (!processing.includes(expense?._id)) {
             dispatch(addProcess(expense._id));
             await contr.deleteExpense(expense._id, csrfToken, accessToken, setShowExpense);
             dispatch(deleteProcess(expense._id));
         }
+    }
+
+    function removeError(id) {
+        const newError = {...editExpenseError};
+        delete newError[id];
+        setEditExpenseError({...newError});
     }
 
     function resetAddExpenseModal() {
@@ -234,7 +253,8 @@ export default function Expense() {
                 </section>
             </section>
             <AddExpenseModal modal={addExpense} setModal={setAddExpense} name={newExpenseName} setName={setNewExpenseName} amount={newExpenseAmount} setAmount={setNewExpenseAmount} date={newExpenseDate} setDate={setNewExpenseDate} category={newExpenseCategory} setCategory={setNewExpenseCategory} error={newExpenseError} processing={proccessingNewExpense} submit={addHandler} />
-            <ExpenseModal modal={showExpense} setModal={setShowExpense} deleteHandler={deleteHandler} />
+            <EditExpenseModal modal={editExpense} setModal={setEditExpense} error={editExpenseError[expense?._id] || {}} submit={editHandler} />
+            <ExpenseModal modal={showExpense} setModal={setShowExpense} setEditModal={setEditExpense} deleteHandler={deleteHandler} />
         </HelmetProvider>
     );
 }
