@@ -143,7 +143,7 @@ async function editExpense(id, expense, amount, expenseDate, category, csrfToken
             const {expense: expenseMsg, amount: amountMsg, expenseDate: expenseDateMsg, category: categoryMsg} = response.data.msg;
             const error = {
                 expense: {msg: expenseMsg, value: expense},
-                amount: {msg: amountMsg, value: amount},
+                amount: {msg: amountMsg, value: amount.toString()},
                 expenseDate: {msg: expenseDateMsg, value: expenseDate},
                 category: {msg: categoryMsg, value: category}
             };
