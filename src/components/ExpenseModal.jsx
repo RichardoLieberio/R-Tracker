@@ -35,11 +35,11 @@ export default function ExpenseModal(props) {
                     <section className="flex flex-col gap-8">
                         <header className="flex items-center justify-between text-xl font-semibold">Expense Detail</header>
                         <main className="flex flex-col desktop:flex-row gap-8">
-                            <section className="flex desktop:flex-col items-center gap-4">
+                            <section className="flex desktop:flex-col items-center gap-4 overflow-hidden">
                                 <div className="p-4 rounded-full shrink-0" style={{backgroundColor: `#${expense?.category.color}`}}>
                                     <img src={`${process.env.EXPENSE_CATEGORY_URI}/${expense?.category.icon}`} alt={expense?.category.name} className="w-8 h-8 desktop:w-16 desktop:h-16 shrink-0" />
                                 </div>
-                                <span className="desktop:w-20 text-center text-wrap break-words">{expense ? expense.category.name : '-'}</span>
+                                <span className="desktop:w-20 text-start text-wrap break-words">{expense ? expense.category.name : '-'}</span>
                             </section>
                             <section className="desktop:flex-1 flex flex-col gap-4">
                                 <div className="relative flex flex-col">
