@@ -11,7 +11,7 @@ import {
     getBackgroundColor, getBgPrimaryColor, getBgErrorColor,
     getHoverBgNeutral50Color, getHoverBgHighlightColor,
     getDisabledBgNeutralColor,
-    getTextColor, getTextPrimaryColor, getTextErrorColor, getOppositeTextColor,
+    getTextColor, getTextPrimaryColor, getTextNeutralColor, getTextLinkColor, getTextErrorColor, getOppositeTextColor,
     getHoverTextHighlightColor,
     getShadowColor,
     getScrollbarTrackBackground, getScrollbarThumbText
@@ -21,11 +21,13 @@ import css from '../css/expense';
 import {Modal, Box} from '@mui/material';
 import {Menu, MenuButton, MenuItems, MenuItem} from '@headlessui/react';
 import {MdErrorOutline} from 'react-icons/md';
+import DatePicker from 'react-datepicker';
+import {IoIosCloseCircle} from 'react-icons/io';
 import Tooltip from './Tooltip';
 import ButtonSpinner from './ButtonSpinner';
 
 export default function EditExpenseModal(props) {
-    const {modal, setModal, error, submit} = props;
+    const {modal, setModal, error, removeError, submit} = props;
 
     const theme = useSelector((state) => state.web.theme);
     const expenseCategories = useSelector((state) => state.data.expenseCategories);
@@ -41,7 +43,7 @@ export default function EditExpenseModal(props) {
     const [nameInputClass, setNameInputClass] = useState(css(theme).defaultInput);
     const [amountLabelClass, setAmountLabelClass] = useState(css(theme).labelMiddle);
     const [amountInputClass, setAmountInputClass] = useState(css(theme).defaultInput);
-    const [dateLabelClass, setDateLabelClass] = useState(css(theme).labelTopBlur);
+    const [dateLabelClass, setDateLabelClass] = useState(css(theme).labelMiddle);
     const [dateInputClass, setDateInputClass] = useState(css(theme).nonFocusInput);
     const [categoryLabelClass, setCategoryLabelClass] = useState(css(theme).labelMiddle);
     const [categoryInputClass, setCategoryInputClass] = useState(css(theme).nonFocusInput);
@@ -54,8 +56,8 @@ export default function EditExpenseModal(props) {
     useEffect(function() {
         contr.inputErrorHandler(theme, error.expense?.msg, name, setNameLabelClass, setNameInputClass);
         contr.inputErrorHandler(theme, error.amount?.msg, amount, setAmountLabelClass, setAmountInputClass);
-        contr.inputErrorHandler(theme, error.expenseDate?.msg, date, setDateLabelClass, setDateInputClass, true, true);
-        contr.inputErrorHandler(theme, error.category?.msg, category?._id, setCategoryLabelClass, setCategoryInputClass, false, true);
+        contr.inputErrorHandler(theme, error.expenseDate?.msg, date, setDateLabelClass, setDateInputClass, true);
+        contr.inputErrorHandler(theme, error.category?.msg, category?._id, setCategoryLabelClass, setCategoryInputClass, true);
     }, [error, modal, theme]); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(function() {
@@ -72,8 +74,8 @@ export default function EditExpenseModal(props) {
 
             contr.inputErrorHandler(theme, error.expense?.msg, error.expense?.value ?? expense?.expense, setNameLabelClass, setNameInputClass);
             contr.inputErrorHandler(theme, error.amount?.msg, error.amount?.value ?? expense?.amount, setAmountLabelClass, setAmountInputClass);
-            contr.inputErrorHandler(theme, error.expenseDate?.msg, error.expenseDate?.value ?? expense?.expense_date, setDateLabelClass, setDateInputClass, true, true);
-            contr.inputErrorHandler(theme, error.category?.msg, error.category?.value ?? expense?.category_id, setCategoryLabelClass, setCategoryInputClass, false, true);
+            contr.inputErrorHandler(theme, error.expenseDate?.msg, error.expenseDate?.value ?? expense?.expense_date, setDateLabelClass, setDateInputClass, true);
+            contr.inputErrorHandler(theme, error.category?.msg, error.category?.value ?? expense?.category_id, setCategoryLabelClass, setCategoryInputClass, true);
         }
     }, [modal]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -110,9 +112,30 @@ export default function EditExpenseModal(props) {
         else setAmountLabelClass(amount ? css(theme).labelTopBlur : css(theme).labelMiddle);
     }
 
+    function dateHandler(date) {
+        if (!processing.includes(expense?._id)) {
+            setDateLabelClass(error.expenseDate?.msg
+                ? date ? css(theme).labelTopError : css(theme).labelMiddleError
+                : date ? css(theme).labelTopBlur : css(theme).labelMiddle);
+            setDate(date);
+        }
+    }
+
     function categoryHandler(category) {
         setCategoryLabelClass(error.category?.msg ? css(theme).labelTopError : css(theme).labelTopBlur)
         setCategory(category);
+    }
+
+    function reset() {
+        if (processing.includes(expense?._id)) return;
+        setName(expense.expense);
+        setAmount(expense.amount.toString());
+        setDate(expense.expense_date);
+        setCategory({
+            _id: expense.category_id,
+            name: expense.category.name
+        });
+        removeError(expense._id);
     }
 
     function enterKeyDown(e) {
@@ -127,7 +150,7 @@ export default function EditExpenseModal(props) {
             <Box className={`w-1/3 min-w-56 phone:min-w-72 tablet:min-w-80 desktop:min-w-96 h-auto p-7 phone:p-8 absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 flex flex-col gap-8 rounded-lg tablet:rounded-xl ${getBackgroundColor(theme)} ${getTextColor(theme)}`}>
                 <header className="flex flex-col gap-1">
                     <h2 className="text-xl font-semibold">Edit Expense</h2>
-                    <small className="text-sm">Edit the expense details below. Remember to save your changes when you&apos;re done.</small>
+                    <small className="text-sm">Edit the expense details below. Remember to save your changes when you&apos;re done. <span onClick={reset} className={processing.includes(expense?._id) ? theme === 'dark' ? getTextNeutralColor(theme) : getTextLinkColor(theme) : `${theme == 'dark' ? getTextLinkColor(theme) : getTextPrimaryColor(theme)} cursor-pointer hover:underline`}>Reset</span></small>
                 </header>
                 <main>
                     <form onKeyDown={enterKeyDown} className="flex flex-col gap-8" autoCapitalize="off" autoComplete="off" spellCheck="false">
@@ -159,14 +182,15 @@ export default function EditExpenseModal(props) {
                             <div className="relative">
                                 {
                                     error.expenseDate?.msg
-                                    &&  <div className="px-3 py-3 absolute left-0 top-0 rounded-tr-md rounded-br-md">
+                                    &&  <div className="px-3 py-3 absolute left-0 top-0 rounded-tr-md rounded-br-md z-10">
                                             <Tooltip title={error.expenseDate?.msg} placement="top-start" posY={-8} className={`w-fit max-w-32 phone:max-w-40 tablet:max-w-48 desktop:max-w-56 px-4 py-1 text-sm ${getOppositeTextColor(theme)} ${getBgErrorColor(theme)} rounded-md`}>
                                                 <MdErrorOutline className={`text-lg ${getTextErrorColor(theme)}`} />
                                             </Tooltip>
                                         </div>
                                 }
-                                <label htmlFor="date" className={dateLabelClass}>Date</label>
-                                <input type="date" id="date" value={date} disabled={processing.includes(expense?._id)} onChange={(e) => setDate(e.target.value)} onClick={(e) => e.target.showPicker()} className={dateInputClass} />
+                                <label htmlFor="date" className={`${dateLabelClass} z-10 ${processing.includes(expense?._id) ? '!cursor-text' : '!cursor-pointer'}`}>Date</label>
+                                <DatePicker id="date" disabled={processing.includes(expense?._id)} selected={date} popperPlacement="top" onChange={dateHandler} customInput={<input type="text" disabled={processing.includes(expense?._id)} className={`${dateInputClass} cursor-pointer`} />} wrapperClassName="w-full" />
+                                {date && <IoIosCloseCircle onClick={() => dateHandler('')} className={`absolute top-1/2 -translate-y-1/2 right-2 text-xl ${processing.includes(expense?._id) ? 'cursor-not-allowed' : 'cursor-pointer'}`} />}
                             </div>
                             <div className="relative">
                                 {
@@ -177,9 +201,9 @@ export default function EditExpenseModal(props) {
                                             </Tooltip>
                                         </div>
                                 }
-                                <label htmlFor="category" className={categoryLabelClass}>Category</label>
+                                <label htmlFor="category" className={`${categoryLabelClass} ${processing.includes(expense?._id) ? '!cursor-text' : '!cursor-pointer'}`}>Category</label>
                                 <Menu>
-                                    <MenuButton id="category" ref={categoryButtonRef} disabled={processing.includes(expense?._id)} className={`min-h-[42px] text-start ${categoryInputClass}`}>
+                                    <MenuButton id="category" ref={categoryButtonRef} disabled={processing.includes(expense?._id)} className={`min-h-[42px] text-start truncate ${categoryInputClass}`}>
                                         {category?.name}
                                     </MenuButton>
                                     <MenuItems transition anchor="top start" style={{width: categoryWidth}} className={`h-64 py-1 flex flex-col ${getTextColor(theme)} ${getBackgroundColor(theme)} shadow-lg ${getShadowColor(theme)} overflow-auto scrollbar-thin ${getScrollbarTrackBackground(theme)} ${getScrollbarThumbText(theme)} rounded-lg z-[99999] origin-top-right transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0`}>
@@ -217,5 +241,6 @@ EditExpenseModal.propTypes = {
     modal: PropTypes.bool,
     setModal: PropTypes.func,
     error: PropTypes.object,
+    removeError: PropTypes.func,
     submit: PropTypes.func
 };
