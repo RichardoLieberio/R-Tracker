@@ -22,6 +22,7 @@ import contr from './controllers/hocs';
 
 import 'react-loading-skeleton/dist/skeleton.css';
 import 'react-toastify/dist/ReactToastify.css';
+import 'react-datepicker/dist/react-datepicker.css';
 import getToastClassName from './css/toast';
 import {getOppositeTextColor} from './css/color';
 
