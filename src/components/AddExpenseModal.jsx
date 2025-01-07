@@ -21,6 +21,8 @@ import css from '../css/expense';
 import {Modal, Box} from '@mui/material';
 import {Menu, MenuButton, MenuItems, MenuItem} from '@headlessui/react';
 import {MdErrorOutline} from 'react-icons/md';
+import DatePicker from 'react-datepicker';
+import {IoIosCloseCircle} from 'react-icons/io';
 import Tooltip from './Tooltip';
 import ButtonSpinner from './ButtonSpinner';
 
@@ -34,7 +36,7 @@ export default function AddExpenseModal(props) {
     const [nameInputClass, setNameInputClass] = useState(css(theme).defaultInput);
     const [amountLabelClass, setAmountLabelClass] = useState(css(theme).labelMiddle);
     const [amountInputClass, setAmountInputClass] = useState(css(theme).defaultInput);
-    const [dateLabelClass, setDateLabelClass] = useState(css(theme).labelTopBlur);
+    const [dateLabelClass, setDateLabelClass] = useState(css(theme).labelMiddle);
     const [dateInputClass, setDateInputClass] = useState(css(theme).nonFocusInput);
     const [categoryLabelClass, setCategoryLabelClass] = useState(css(theme).labelMiddle);
     const [categoryInputClass, setCategoryInputClass] = useState(css(theme).nonFocusInput);
@@ -47,8 +49,8 @@ export default function AddExpenseModal(props) {
     useEffect(function() {
         contr.inputErrorHandler(theme, error.expense, name, setNameLabelClass, setNameInputClass);
         contr.inputErrorHandler(theme, error.amount, amount, setAmountLabelClass, setAmountInputClass);
-        contr.inputErrorHandler(theme, error.expenseDate, date, setDateLabelClass, setDateInputClass, true, true);
-        contr.inputErrorHandler(theme, error.category, category?._id, setCategoryLabelClass, setCategoryInputClass, false, true);
+        contr.inputErrorHandler(theme, error.expenseDate, date, setDateLabelClass, setDateInputClass, true);
+        contr.inputErrorHandler(theme, error.category, category?._id, setCategoryLabelClass, setCategoryInputClass, true);
     }, [error, modal, theme]); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
@@ -82,6 +84,15 @@ export default function AddExpenseModal(props) {
     function amountInputBlur() {
         if (error.amount) setAmountLabelClass(amount ? css(theme).labelTopError : css(theme).labelMiddleError)
         else setAmountLabelClass(amount ? css(theme).labelTopBlur : css(theme).labelMiddle);
+    }
+
+    function dateHandler(date) {
+        if (!processing) {
+            setDateLabelClass(error.expenseDate
+                ? date ? css(theme).labelTopError : css(theme).labelMiddleError
+                : date ? css(theme).labelTopBlur : css(theme).labelMiddle);
+            setDate(date);
+        }
     }
 
     function categoryHandler(category) {
@@ -133,14 +144,15 @@ export default function AddExpenseModal(props) {
                             <div className="relative">
                                 {
                                     error.expenseDate
-                                    &&  <div className="px-3 py-3 absolute left-0 top-0 rounded-tr-md rounded-br-md">
+                                    &&  <div className="px-3 py-3 absolute left-0 top-0 rounded-tr-md rounded-br-md z-10">
                                             <Tooltip title={error.expenseDate} placement="top-start" posY={-8} className={`w-fit max-w-32 phone:max-w-40 tablet:max-w-48 desktop:max-w-56 px-4 py-1 text-sm ${getOppositeTextColor(theme)} ${getBgErrorColor(theme)} rounded-md`}>
                                                 <MdErrorOutline className={`text-lg ${getTextErrorColor(theme)}`} />
                                             </Tooltip>
                                         </div>
                                 }
-                                <label htmlFor="date" className={dateLabelClass}>Date</label>
-                                <input type="date" id="date" value={date} disabled={processing} onChange={(e) => setDate(e.target.value)} onClick={(e) => e.target.showPicker()} className={dateInputClass} />
+                                <label htmlFor="date" className={`${dateLabelClass} z-10 ${processing ? '!cursor-text' : '!cursor-pointer'}`}>Date</label>
+                                <DatePicker id="date" disabled={processing} selected={date} popperPlacement="top" onChange={dateHandler} customInput={<input type="text" disabled={processing} className={`${dateInputClass} cursor-pointer`} />} wrapperClassName="w-full" />
+                                {date && <IoIosCloseCircle onClick={() => dateHandler('')} className={`absolute top-1/2 -translate-y-1/2 right-2 text-xl ${processing ? 'cursor-not-allowed' : 'cursor-pointer'}`} />}
                             </div>
                             <div className="relative">
                                 {
@@ -151,9 +163,9 @@ export default function AddExpenseModal(props) {
                                             </Tooltip>
                                         </div>
                                 }
-                                <label htmlFor="category" className={categoryLabelClass}>Category</label>
+                                <label htmlFor="category" className={`${categoryLabelClass} ${processing ? '!cursor-text' : '!cursor-pointer'}`}>Category</label>
                                 <Menu>
-                                    <MenuButton id="category" ref={categoryButtonRef} disabled={processing} className={`min-h-[42px] text-start ${categoryInputClass}`}>
+                                    <MenuButton id="category" ref={categoryButtonRef} disabled={processing} className={`min-h-[42px] text-start truncate ${categoryInputClass}`}>
                                         {category?.name}
                                     </MenuButton>
                                     <MenuItems transition anchor="top start" style={{width: categoryWidth}} className={`h-64 py-1 flex flex-col ${getTextColor(theme)} ${getBackgroundColor(theme)} shadow-lg ${getShadowColor(theme)} overflow-auto scrollbar-thin ${getScrollbarTrackBackground(theme)} ${getScrollbarThumbText(theme)} rounded-lg z-[99999] origin-top-right transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0`}>
@@ -194,7 +206,10 @@ AddExpenseModal.propTypes = {
     setName: PropTypes.func,
     amount: PropTypes.string,
     setAmount: PropTypes.func,
-    date: PropTypes.string,
+    date: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.instanceOf(Date)
+    ]),
     setDate: PropTypes.func,
     category: PropTypes.object,
     setCategory: PropTypes.func,
