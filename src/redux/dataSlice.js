@@ -1,4 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
+import {format} from 'date-fns';
 
 export const dataSlice = createSlice({
     name: 'data',
@@ -11,7 +12,7 @@ export const dataSlice = createSlice({
         setExpenses: function(state, action) {
             const expenses = {};
             action.payload.forEach(expense => {
-                const date = new Date(expense.expense_date).toLocaleDateString();
+                const date = format(new Date(expense.expense_date), 'd/M/yyyy');
                 if (!expenses[date]) expenses[date] = [];
                 expenses[date].push(expense);
             });
@@ -19,7 +20,7 @@ export const dataSlice = createSlice({
         },
         addExpense: function(state, action) {
             const expenses = {...(state.expenses || {})};
-            const date = new Date(action.payload.expense_date).toLocaleDateString();
+            const date = format(new Date(action.payload.expense_date), 'd/M/yyyy');
             if (!expenses[date]) expenses[date] = [];
             expenses[date].push(action.payload);
             state.expenses = expenses;
@@ -34,7 +35,7 @@ export const dataSlice = createSlice({
                 }
             }));
 
-            const date = new Date(action.payload.expense_date).toLocaleDateString();
+            const date = format(new Date(action.payload.expense_date), 'd/M/yyyy');
             if (!newExpenses[date]) newExpenses[date] = [];
             newExpenses[date].push({...action.payload, category_id: action.payload.category_id._id});
             state.expenses = newExpenses;
