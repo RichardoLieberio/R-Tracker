@@ -5,7 +5,7 @@ import {setToast} from '../services/toastService';
 
 import store from '../redux/store';
 import {setExpenses, addExpense, updateExpense, removeExpense, setExpenseCategories} from '../redux/dataSlice';
-import {setExpense} from '../redux/expensePageSlice';
+import {setExpense, setMonth, setYear} from '../redux/expensePageSlice';
 
 import css from '../css/expense';
 
@@ -84,6 +84,8 @@ async function createExpense(expense, amount, expenseDate, category, csrfToken, 
     switch (status) {
         case 201:
             store.dispatch(addExpense(response.data.expense));
+            store.dispatch(setMonth(new Date(response.data.expense.expense_date).getMonth()));
+            store.dispatch(setYear(new Date(response.data.expense.expense_date).getFullYear()));
             toast.success(response.data.msg);
             resetModal();
             break;
@@ -125,6 +127,8 @@ async function editExpense(id, expense, amount, expenseDate, category, csrfToken
                 const newExpense = {...response.data.expense, category: {name, color, icon}};
                 newExpense.category_id = _id;
                 store.dispatch(setExpense(newExpense));
+                store.dispatch(setMonth(new Date(newExpense.expense_date).getMonth()));
+                store.dispatch(setYear(new Date(newExpense.expense_date).getFullYear()));
             }
             break;
         case 403:
