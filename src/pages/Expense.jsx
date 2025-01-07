@@ -88,12 +88,12 @@ export default function Expense() {
 
         return Object.keys(expenses)
             .filter(expenseDate => {
-                const [expenseMonth, , expenseYear] = expenseDate.split('/');
+                const [, expenseMonth, expenseYear] = expenseDate.split('/');
                 return +expenseMonth === month + 1 && +expenseYear === year;
             })
-            .sort((a, b) => +b.split('/')[1] - +a.split('/')[1])
+            .sort((a, b) => +b.split('/')[0] - +a.split('/')[0])
             .map(expenseDate => {
-                const [month, date,] = expenseDate.split('/');
+                const [date, month,] = expenseDate.split('/');
                 return {
                     date: `${phoneBreakpoint ? months[+month - 1] : months[+month - 1].slice(0, 3)} ${date}`,
                     amount: expenses[expenseDate].reduce((total, {amount}) => total + amount, 0),
@@ -105,7 +105,8 @@ export default function Expense() {
     const calendarExpense = useMemo(function() {
         if (!expenseDate || !expenses || !expenses[expenseDate]) return null;
 
-        const [month, date, year] = expenseDate.split('/');
+
+        const [date, month, year] = expenseDate.split('/');
         const categories = expenseCategories.reduce((obj, {_id, name, color, icon}) => ({...obj, [_id]: {name, color, icon}}), {});
 
         return {
@@ -158,7 +159,7 @@ export default function Expense() {
     return (
         <HelmetProvider>
             <ExpenseHead />
-            <section className="w-5/6 mx-auto py-8 pb-16 flex flex-col desktop:flex-row justify-center gap-6 desktop:gap-24">
+            <section className="w-5/6 mx-auto py-8 pb-16 flex flex-col desktop:flex-row justify-center gap-4 desktop:gap-24">
                 {
                     desktopBreakpoint
                     ? <section className="flex flex-col gap-8 flex-shrink-0">
@@ -227,7 +228,7 @@ export default function Expense() {
                         <FaRegCalendarAlt className="text-xl cursor-pointer" />
                     </div>
                 }
-                <section className="w-full max-w-96 tablet:w-3/5 tablet:max-w-none desktop:w-1/3 desktop:min-w-96 desktop:max-w-none mx-auto desktop:mx-0 flex flex-col gap-8">
+                <section className="w-full max-w-96 tablet:w-3/5 tablet:max-w-none desktop:w-1/3 desktop:min-w-96 desktop:max-w-none mx-auto desktop:mx-0 flex flex-col gap-12">
                     <header className="flex flex-col-reverse phone:flex-row phone:items-center phone:justify-between gap-4">
                         <div className="flex items-center gap-2 phone:flex-col phone:items-start phone:gap-0 overflow-hidden">
                             <span className={`text-xs ${getTextNeutralColor(theme)}`}>Expenses:</span>
@@ -243,7 +244,7 @@ export default function Expense() {
                         </div>
                         <button onClick={() => setAddExpense(true)} className={`w-full phone:w-fit h-fit py-1 px-8 relative ${getOppositeTextColor(theme)} ${getBgPrimaryColor(theme)} rounded-md ${getHoverBgHighlightColor(theme)} shrink-0`}>Add expense</button>
                     </header>
-                    <main className="flex flex-col gap-8">
+                    <main className="flex flex-col gap-4">
                         {
                             displayExpense
                             ? displayExpense.map(expense => <ExpenseSection key={expense.date} expense={expense} setModal={setShowExpense} />)
