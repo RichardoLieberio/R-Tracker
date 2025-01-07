@@ -1,5 +1,6 @@
 import {useMemo} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
+import {format} from 'date-fns';
 
 import days from '../../config/days';
 
@@ -29,21 +30,21 @@ export default function ExpenseCalendar() {
 
         let calendar = Array.from({length: firstDay === 0 ? 7 : firstDay}, (_, i) => {
             const date = lastMonthLastDate - (firstDay === 0 ? 7 : firstDay) + 1 + i;
-            const fullDate = new Date(year, month - 1, date).toLocaleDateString();
+            const fullDate = format(new Date(year, month - 1, date), 'd/M/yyyy');
             const expense = expenses ? expenses[fullDate]?.reduce((val, {amount}) => val + amount, 0) : null;
             return {date, expense, included: false, fullDate};
         });
 
         calendar = [...calendar, ...Array.from({length: monthLastDate}, (_, i) => {
             const date = i + 1;
-            const fullDate = new Date(year, month, date).toLocaleDateString();
+            const fullDate = format(new Date(year, month, date), 'd/M/yyyy');
             const expense = expenses ? expenses[fullDate]?.reduce((val, {amount}) => val + amount, 0) : null;
             return {date, expense, included: true, fullDate};
         })];
 
         if (calendar.length !== 42) calendar = [...calendar, ...Array.from({length: 42 % calendar.length}, (_, i) => {
             const date = i + 1;
-            const fullDate = new Date(year, month + 1, date).toLocaleDateString();
+            const fullDate = format(new Date(year, month + 1, date), 'd/M/yyyy');
             const expense = expenses ? expenses[fullDate]?.reduce((val, {amount}) => val + amount, 0) : null;
             return {date, expense, included: false, fullDate};
         })];
