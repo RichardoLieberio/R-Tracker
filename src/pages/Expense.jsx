@@ -254,7 +254,7 @@ export default function Expense() {
                 </section>
             </section>
             <AddExpenseModal modal={addExpense} setModal={setAddExpense} name={newExpenseName} setName={setNewExpenseName} amount={newExpenseAmount} setAmount={setNewExpenseAmount} date={newExpenseDate} setDate={setNewExpenseDate} category={newExpenseCategory} setCategory={setNewExpenseCategory} error={newExpenseError} processing={proccessingNewExpense} submit={addHandler} />
-            <EditExpenseModal modal={editExpense} setModal={setEditExpense} error={editExpenseError[expense?._id] || {}} submit={editHandler} />
+            <EditExpenseModal modal={editExpense} setModal={setEditExpense} error={editExpenseError[expense?._id] || {}} removeError={removeError} submit={editHandler} />
             <ExpenseModal modal={showExpense} setModal={setShowExpense} setEditModal={setEditExpense} deleteHandler={deleteHandler} />
         </HelmetProvider>
     );
