@@ -9,13 +9,13 @@ import {setExpense} from '../redux/expensePageSlice';
 
 import css from '../css/expense';
 
-function inputErrorHandler(theme, error, value, setLabelClass, setInputClass, label=false, input=false) {
+function inputErrorHandler(theme, error, value, setLabelClass, setInputClass, nonFocus=false) {
     if (error) {
-        setLabelClass(value || label ? css(theme).labelTopError : css(theme).labelMiddleError);
+        setLabelClass(value ? css(theme).labelTopError : css(theme).labelMiddleError);
         setInputClass(css(theme).defaultInputError);
     } else {
-        setLabelClass(value || label ? css(theme).labelTopBlur : css(theme).labelMiddle);
-        setInputClass(input ? css(theme).nonFocusInput : css(theme).defaultInput);
+        setLabelClass(value ? css(theme).labelTopBlur : css(theme).labelMiddle);
+        setInputClass(nonFocus ? css(theme).nonFocusInput : css(theme).defaultInput);
     }
 }
 
@@ -93,6 +93,7 @@ async function createExpense(expense, amount, expenseDate, category, csrfToken, 
             break;
         case 422:
             setError(response.data.msg);
+            toast.error('Add expense failed');
             break;
     }
 }
