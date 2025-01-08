@@ -31,14 +31,12 @@ export default function ExpenseSection(props) {
             <div className="flex flex-col">
                 {
                     expenses.map(expense => (
-                        <span key={expense._id} onClick={() => clickHandler(expense)} className={`py-2 flex items-center justify-between gap-4 cursor-pointer ${getHoverBgNeutral50Color(theme)} rounded-md overflow-hidden`}>
-                            <span className="flex items-center gap-4">
-                                <div className="p-2 mx-auto rounded-full shrink-0" style={{backgroundColor: `#${expense.category.color}`}}>
-                                    <img src={`${process.env.EXPENSE_CATEGORY_URI}/${expense.category.icon}`} alt={expense.category.name} className="w-6 h-6 shrink-0" />
-                                </div>
-                                <span className="truncate">{expense.expense}</span>
-                            </span>
-                            {phoneBreakpoint && <span>{expense.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</span>}
+                        <span key={expense._id} onClick={() => clickHandler(expense)} className={`py-2 grid grid-cols-[auto,1fr] phone:grid-cols-[auto,1fr,auto] items-center gap-4 cursor-pointer ${getHoverBgNeutral50Color(theme)} rounded-md overflow-hidden`}>
+                            <div className="w-fit p-2 rounded-full" style={{backgroundColor: `#${expense.category.color}`}}>
+                                <img src={`${process.env.EXPENSE_CATEGORY_URI}/${expense.category.icon}`} alt={expense.category.name} className="w-6 h-6 shrink-0" />
+                            </div>
+                            <span className="w-full truncate">{expense.expense}</span>
+                            {phoneBreakpoint && <span className="max-w-24 truncate">{expense.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</span>}
                         </span>
                     ))
                 }
