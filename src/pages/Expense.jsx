@@ -4,6 +4,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import {useMediaQuery} from '@mui/material';
 
 import months from '../../config/months';
+import days from '../../config/days';
 import breakpoints from '../../config/breakpoints';
 
 import {axiosController} from '../services/axios';
@@ -11,33 +12,31 @@ import getCSRFToken from '../services/getCSRFToken';
 import {getToast} from '../services/toastService';
 
 import {changePage} from '../redux/webSlice';
-import {setYear, setMonth, prevMonth, nextMonth, addProcess, deleteProcess} from '../redux/expensePageSlice';
+import {addProcess, deleteProcess} from '../redux/expensePageSlice';
 
 import {
-    getBgPrimaryColor, getBackgroundColor,
-    getTextColor, getTextNeutralColor, getOppositeTextColor,
-    getHoverBgHighlightColor, getHoverBgNeutral50Color,
-    getShadowColor,
-    getScrollbarTrackBackground, getScrollbarThumbText
+    getBgPrimaryColor,
+    getTextNeutralColor, getOppositeTextColor,
+    getHoverBgHighlightColor
 } from '../css/color';
 
 import contr from '../controllers/expense';
 
 import {HelmetProvider} from 'react-helmet-async';
-import {Menu, MenuButton, MenuItems, MenuItem} from '@headlessui/react';
-import {TiArrowSortedDown} from 'react-icons/ti';
-import {RiArrowLeftSLine, RiArrowRightSLine} from 'react-icons/ri';
 import {FaRegCalendarAlt} from 'react-icons/fa';
 import ExpenseHead from '../head/ExpenseHead';
+import CalendarSetting from '../components/CalendarSetting';
 import ExpenseCalendar from '../components/ExpenseCalendar';
 import ExpenseSection from '../components/ExpenseSection';
 import AddExpenseModal from '../components/AddExpenseModal';
 import EditExpenseModal from '../components/EditExpenseModal';
 import ExpenseModal from '../components/ExpenseModal';
+import CalendarModal from '../components/CalendarModal';
 import Skeleton from '../components/Skeleton';
 
 export default function Expense() {
     const [csrfToken, setCSRFToken] = useState('');
+    const [showCalendar, setShowCalendar] = useState(false);
     const [addExpense, setAddExpense] = useState(false);
     const [editExpense, setEditExpense] = useState(false);
     const [showExpense, setShowExpense] = useState(false);
@@ -81,6 +80,10 @@ export default function Expense() {
         }
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+    useEffect(function() {
+        setShowCalendar(false);
+    }, [phoneBreakpoint, desktopBreakpoint]);
+
     const displayExpense = useMemo(function() {
         if (!expenses || !expenseCategories) return null;
 
@@ -93,14 +96,16 @@ export default function Expense() {
             })
             .sort((a, b) => +b.split('/')[0] - +a.split('/')[0])
             .map(expenseDate => {
-                const [date, month,] = expenseDate.split('/');
+                const [date, month, year] = expenseDate.split('/');
+                const displayMonth = phoneBreakpoint ? months[+month - 1] : months[+month - 1].slice(0, 3);
+                const displayDay = desktopBreakpoint ? days[new Date(year, month - 1, date).getDay()] : days[new Date(year, month - 1, date).getDay()].slice(0, 3)
                 return {
-                    date: `${phoneBreakpoint ? months[+month - 1] : months[+month - 1].slice(0, 3)} ${date}`,
+                    date: `${displayMonth} ${date} \u00A0\u00A0 ${displayDay}`,
                     amount: expenses[expenseDate].reduce((total, {amount}) => total + amount, 0),
                     expenses: expenses[expenseDate].map(expense => ({...expense, category: categories[expense.category_id]}))
                 };
             });
-    }, [month, year, expenses, expenseCategories, phoneBreakpoint]);
+    }, [month, year, expenses, expenseCategories, phoneBreakpoint, desktopBreakpoint]);
 
     const calendarExpense = useMemo(function() {
         if (!expenseDate || !expenses || !expenses[expenseDate]) return null;
@@ -109,12 +114,15 @@ export default function Expense() {
         const [date, month, year] = expenseDate.split('/');
         const categories = expenseCategories.reduce((obj, {_id, name, color, icon}) => ({...obj, [_id]: {name, color, icon}}), {});
 
+        const displayMonth = months[+month - 1];
+        const displayDay = desktopBreakpoint ? days[new Date(year, month - 1, date).getDay()] : days[new Date(year, month - 1, date).getDay()].slice(0, 3)
+
         return {
-            date: `${year} ${months[+month - 1]} ${date}`,
+            date: desktopBreakpoint ? `${displayMonth} ${date} \u00A0\u00A0 ${displayDay}` : `${displayMonth} ${date}`,
             amount: expenses[expenseDate].reduce((total, {amount}) => total + amount, 0),
             expenses: expenses[expenseDate].map(expense => ({...expense, category: categories[expense.category_id]}))
         };
-    }, [expenses, expenseDate, expenseCategories]);
+    }, [expenses, expenseDate, expenseCategories, desktopBreakpoint]);
 
     async function addHandler() {
         if (!proccessingNewExpense) {
@@ -162,77 +170,25 @@ export default function Expense() {
             <section className="w-5/6 mx-auto py-8 pb-16 flex flex-col desktop:flex-row justify-center gap-4 desktop:gap-24">
                 {
                     desktopBreakpoint
-                    ? <section className="flex flex-col gap-8 flex-shrink-0">
+                    ? <section className="w-fit flex flex-col gap-8 shrink-0">
                         <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-8">
-                                <Menu>
-                                    <MenuButton className="flex items-center gap-2 cursor-pointer">{year} <TiArrowSortedDown /></MenuButton>
-                                    <MenuItems transition anchor="bottom center" className={`w-28 ${new Date().getFullYear() - +process.env.START_YEAR + 1 > 7 && `h-72 overflow-auto scrollbar-thin ${getScrollbarTrackBackground(theme)} ${getScrollbarThumbText(theme)}`} mt-2 py-1 flex flex-col ${getTextColor(theme)} ${getBackgroundColor(theme)} shadow-lg ${getShadowColor(theme)} rounded-lg origin-top-right transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0`}>
-                                        {
-                                            Array.from({length: new Date().getFullYear() - +process.env.START_YEAR + 1}, (_, i) => new Date().getFullYear() - i).map(year => (
-                                                <MenuItem key={year}>
-                                                    <button onClick={() => dispatch(setYear(year))} className={`px-4 py-2 text-start ${getHoverBgNeutral50Color(theme)}`}>{year}</button>
-                                                </MenuItem>
-                                            ))
-                                        }
-                                    </MenuItems>
-                                </Menu>
-                                <Menu>
-                                    <MenuButton className="flex items-center gap-2 cursor-pointer">{months[month].slice(0, 3)} <TiArrowSortedDown /></MenuButton>
-                                    <MenuItems transition anchor="bottom center" className={`w-28 h-72 mt-2 py-1 flex flex-col ${getTextColor(theme)} ${getBackgroundColor(theme)} shadow-lg ${getShadowColor(theme)} rounded-lg overflow-auto scrollbar-thin ${getScrollbarTrackBackground(theme)} ${getScrollbarThumbText(theme)} origin-top-right transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0`}>
-                                        {
-                                            months.map((month, i) => (
-                                                <MenuItem key={month}>
-                                                    <button onClick={() => dispatch(setMonth(i))} className={`px-4 py-2 text-start ${getHoverBgNeutral50Color(theme)}`}>{month.slice(0, 3)}</button>
-                                                </MenuItem>
-                                            ))
-                                        }
-                                    </MenuItems>
-                                </Menu>
-                            </div>
-                            <div className="flex items-center gap-8">
-                                <span onClick={() => dispatch(prevMonth())} className={`p-1 text-2xl ${year === +process.env.START_YEAR && month === 0 && getTextNeutralColor(theme)} cursor-pointer`}><RiArrowLeftSLine /></span>
-                                <span onClick={() => dispatch(nextMonth())} className={`p-1 text-2xl ${year === new Date().getFullYear() && month === 11 && getTextNeutralColor(theme)} cursor-pointer`}><RiArrowRightSLine /></span>
-                            </div>
+                            <CalendarSetting arrow={true} />
                         </div>
                         <ExpenseCalendar />
-                        {calendarExpense && <ExpenseSection expense={calendarExpense} setModal={setShowExpense} />}
+                        <div className="w-[496px] mx-auto">
+                            {calendarExpense && <ExpenseSection expense={calendarExpense} setModal={setShowExpense} />}
+                        </div>
                     </section>
                     : <div className="w-full max-w-96 tablet:w-3/5 tablet:max-w-none mx-auto flex items-center justify-between">
-                        <div className="flex items-center gap-8">
-                            <Menu>
-                                <MenuButton className="flex items-center gap-2 cursor-pointer">{year} <TiArrowSortedDown /></MenuButton>
-                                <MenuItems transition anchor="bottom center" className={`w-28 ${new Date().getFullYear() - +process.env.START_YEAR + 1 > 7 && `h-72 overflow-auto scrollbar-thin ${getScrollbarTrackBackground(theme)} ${getScrollbarThumbText(theme)}`} mt-2 py-1 flex flex-col ${getTextColor(theme)} ${getBackgroundColor(theme)} shadow-lg ${getShadowColor(theme)} rounded-lg origin-top-right transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0`}>
-                                    {
-                                        Array.from({length: new Date().getFullYear() - +process.env.START_YEAR + 1}, (_, i) => new Date().getFullYear() - i).map(year => (
-                                            <MenuItem key={year}>
-                                                <button onClick={() => dispatch(setYear(year))} className={`px-4 py-2 text-start ${getHoverBgNeutral50Color(theme)}`}>{year}</button>
-                                            </MenuItem>
-                                        ))
-                                    }
-                                </MenuItems>
-                            </Menu>
-                            <Menu>
-                                <MenuButton className="flex items-center gap-2 cursor-pointer">{months[month].slice(0, 3)} <TiArrowSortedDown /></MenuButton>
-                                <MenuItems transition anchor="bottom center" className={`w-28 h-72 mt-2 py-1 flex flex-col ${getTextColor(theme)} ${getBackgroundColor(theme)} shadow-lg ${getShadowColor(theme)} rounded-lg overflow-auto scrollbar-thin ${getScrollbarTrackBackground(theme)} ${getScrollbarThumbText(theme)} origin-top-right transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0`}>
-                                    {
-                                        months.map((month, i) => (
-                                            <MenuItem key={month}>
-                                                <button onClick={() => dispatch(setMonth(i))} className={`px-4 py-2 text-start ${getHoverBgNeutral50Color(theme)}`}>{month.slice(0, 3)}</button>
-                                            </MenuItem>
-                                        ))
-                                    }
-                                </MenuItems>
-                            </Menu>
-                        </div>
-                        <FaRegCalendarAlt className="text-xl cursor-pointer" />
+                        <CalendarSetting />
+                        {phoneBreakpoint && <FaRegCalendarAlt onClick={() => setShowCalendar(true)} className="text-xl cursor-pointer" />}
                     </div>
                 }
                 <section className="w-full max-w-96 tablet:w-3/5 tablet:max-w-none desktop:w-1/3 desktop:min-w-96 desktop:max-w-none mx-auto desktop:mx-0 flex flex-col gap-12">
                     <header className="flex flex-col-reverse phone:flex-row phone:items-center phone:justify-between gap-4">
                         <div className="flex items-center gap-2 phone:flex-col phone:items-start phone:gap-0 overflow-hidden">
                             <span className={`text-xs ${getTextNeutralColor(theme)}`}>Expenses:</span>
-                            <span className="text-xl truncate">
+                            <span className="w-full text-xl truncate">
                                 {
                                     displayExpense
                                     ? displayExpense.reduce((total, {amount}) => total + amount, 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
@@ -253,6 +209,7 @@ export default function Expense() {
                     </main>
                 </section>
             </section>
+            <CalendarModal modal={showCalendar} setModal={setShowCalendar} expense={calendarExpense} setShowExpense={setShowExpense} />
             <AddExpenseModal modal={addExpense} setModal={setAddExpense} name={newExpenseName} setName={setNewExpenseName} amount={newExpenseAmount} setAmount={setNewExpenseAmount} date={newExpenseDate} setDate={setNewExpenseDate} category={newExpenseCategory} setCategory={setNewExpenseCategory} error={newExpenseError} processing={proccessingNewExpense} submit={addHandler} />
             <EditExpenseModal modal={editExpense} setModal={setEditExpense} error={editExpenseError[expense?._id] || {}} removeError={removeError} submit={editHandler} />
             <ExpenseModal modal={showExpense} setModal={setShowExpense} setEditModal={setEditExpense} deleteHandler={deleteHandler} />
