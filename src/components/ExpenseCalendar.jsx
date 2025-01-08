@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import {useMemo} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {format} from 'date-fns';
@@ -15,7 +16,9 @@ import {
 
 import Skeleton from './Skeleton';
 
-export default function ExpenseCalendar() {
+export default function ExpenseCalendar(props) {
+    const {small} = props;
+
     const theme = useSelector((state) => state.web.theme);
     const expenses = useSelector((state) => state.data.expenses);
     const year = useSelector((state) => state.expensePage.year);
@@ -56,14 +59,14 @@ export default function ExpenseCalendar() {
         <div className="flex flex-col gap-4">
             <header className="grid grid-cols-7 grid-rows-1 gap-2">
                 {
-                    days.map(day => <span key={day} className="w-16 text-center">{day.slice(0, 3)}</span>)
+                    days.map(day => <span key={day} className={`${small ? 'w-8 tablet:w-10 text-sm' : 'w-16'} text-center`}>{day.slice(0, 3)}</span>)
                 }
             </header>
             <main className="grid grid-cols-7 grid-rows-6 gap-2">
                 {
                     calendar.map(({date, expense, included, fullDate}, i) => (
-                        <div key={i} onClick={() => dispatch(setExpenseDate(fullDate))} className={`w-16 h-14 p-1 flex flex-col justify-between text-center ${expense && getBgHighlight20Color(theme)} border ${included ? getBorderText20Color(theme) : `border-transparent ${getBgNeutral10Color(theme)}`} rounded-md cursor-pointer ${getHoverBorderHighlightColor(theme)}`}>
-                            <span className="text-sm">{date}</span>
+                        <div key={i} onClick={() => dispatch(setExpenseDate(fullDate))} className={`${small ? 'w-8 tablet:w-10 h-12 text-xs' : 'w-16 h-14'} p-1 flex flex-col justify-between text-center ${expense && getBgHighlight20Color(theme)} border ${included ? getBorderText20Color(theme) : `border-transparent ${getBgNeutral10Color(theme)}`} rounded-md cursor-pointer ${getHoverBorderHighlightColor(theme)}`}>
+                            <span className={small ? 'text-xs' : 'text-sm'}>{date}</span>
                             {
                                 expense === null
                                 ? <Skeleton className="w-full h-3" />
@@ -76,3 +79,7 @@ export default function ExpenseCalendar() {
         </div>
     );
 }
+
+ExpenseCalendar.propTypes = {
+    small: PropTypes.bool
+};
