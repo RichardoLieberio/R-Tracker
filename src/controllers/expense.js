@@ -123,6 +123,7 @@ async function editExpense(id, expense, amount, expenseDate, category, csrfToken
             toast.success(response.data.msg);
             if (store.getState().expensePage.expense._id === id) {
                 setEditModal(false);
+                setShowModal(false);
                 const {_id, name, color, icon} = response.data.expense.category_id;
                 const newExpense = {...response.data.expense, category: {name, color, icon}};
                 newExpense.category_id = _id;
