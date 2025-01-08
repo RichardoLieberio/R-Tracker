@@ -30,18 +30,18 @@ export default function ExpenseModal(props) {
 
     return (
         <Modal open={modal} onClose={() => setModal(false)} aria-labelledby="Expense Modal" aria-describedby="Expense detail">
-            <Box className={`w-1/3 min-w-56 phone:min-w-72 tablet:min-w-80 desktop:min-w-96 h-auto py-7 phone:py-8 absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 flex flex-col gap-8 rounded-lg tablet:rounded-xl ${getBackgroundColor(theme)} ${getTextColor(theme)}`}>
+            <Box className={`w-1/3 min-w-56 phone:min-w-72 tablet:min-w-80 desktop:min-w-fit h-auto py-7 phone:py-8 absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 flex flex-col gap-8 rounded-lg tablet:rounded-xl ${getBackgroundColor(theme)} ${getTextColor(theme)}`}>
                 <main className={`max-h-96 px-7 phone:px-8 flex flex-col gap-8 overflow-auto scrollbar-thin ${getScrollbarTrackBackground(theme)} ${getScrollbarThumbText(theme)}`}>
                     <section className="flex flex-col gap-8">
                         <header className="flex items-center justify-between text-xl font-semibold">Expense Detail</header>
                         <main className="flex flex-col desktop:flex-row gap-8">
-                            <section className="flex desktop:flex-col items-center gap-4 overflow-hidden">
+                            <section className="flex desktop:flex-col items-center gap-4 overflow-hidden shrink-0">
                                 <div className="p-4 rounded-full shrink-0" style={{backgroundColor: `#${expense?.category.color}`}}>
                                     <img src={`${process.env.EXPENSE_CATEGORY_URI}/${expense?.category.icon}`} alt={expense?.category.name} className="w-8 h-8 desktop:w-16 desktop:h-16 shrink-0" />
                                 </div>
-                                <span className="desktop:w-20 text-start text-wrap break-words">{expense ? expense.category.name : '-'}</span>
+                                <span className="desktop:w-20 text-start desktop:text-center text-wrap break-words">{expense ? expense.category.name : '-'}</span>
                             </section>
-                            <section className="desktop:flex-1 flex flex-col gap-4">
+                            <section className="desktop:flex-1 desktop:w-96 flex flex-col gap-4">
                                 <div className="relative flex flex-col">
                                     <span className={`px-2 absolute left-1 -top-3 text-sm ${getBackgroundColor(theme)}`}>Expense</span>
                                     <span className={`px-3 py-2 text-wrap border ${getBorderNeutralColor(theme)} rounded-md break-words`}>{expense ? expense.expense : '-'}</span>
