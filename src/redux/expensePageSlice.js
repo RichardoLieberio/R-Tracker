@@ -49,10 +49,17 @@ export const expensePageSlice = createSlice({
         },
         deleteProcess: function(state, action) {
             state.processing = state.processing.filter(id => id !== action.payload);
+        },
+        logout: function(state) {
+            state.year = new Date().getFullYear();
+            state.month = new Date().getMonth();
+            state.expense = null;
+            state.expenseDate = null;
+            state.processing = [];
         }
     }
 });
 
-export const {prevMonth, nextMonth, setMonth, setYear, setExpense, setExpenseDate, addProcess, deleteProcess} = expensePageSlice.actions;
+export const {prevMonth, nextMonth, setMonth, setYear, setExpense, setExpenseDate, addProcess, deleteProcess, logout} = expensePageSlice.actions;
 
 export default expensePageSlice.reducer;
