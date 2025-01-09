@@ -25,7 +25,7 @@ export default function CalendarModal(props) {
                     <header className="text-xl">Expense Calendar</header>
                     <main className="flex flex-col gap-4">
                         <div className="flex items-center justify-between">
-                            <CalendarSetting arrow={true} smallGap={true} />
+                            <CalendarSetting arrow={true} smallGap={true} inModal />
                         </div>
                         <ExpenseCalendar small />
                         <div className="mx-auto w-[272px] tablet:w-[328px]">
