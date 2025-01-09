@@ -19,7 +19,7 @@ import {TiArrowSortedDown} from 'react-icons/ti';
 import {RiArrowLeftSLine, RiArrowRightSLine} from 'react-icons/ri';
 
 export default function CalendarSetting(props) {
-    const {arrow, smallGap, chartPage} = props;
+    const {arrow, smallGap, chartPage, inModal} = props;
 
     const theme = useSelector((state) => state.web.theme);
     const year = useSelector((state) => chartPage ? state.chartPage.year : state.expensePage.year);
@@ -32,7 +32,7 @@ export default function CalendarSetting(props) {
             <div className={`flex items-center ${smallGap ? 'gap-4' : 'gap-8'}`}>
                 <Menu>
                     <MenuButton className="flex items-center gap-2 cursor-pointer">{year} <TiArrowSortedDown /></MenuButton>
-                    <MenuItems transition anchor="bottom center" className={`w-28 ${new Date().getFullYear() - +process.env.START_YEAR + 1 > 7 && `h-72 overflow-auto scrollbar-thin ${getScrollbarTrackBackground(theme)} ${getScrollbarThumbText(theme)}`} mt-2 py-1 flex flex-col ${getTextColor(theme)} ${getBackgroundColor(theme)} shadow-lg ${getShadowColor(theme)} rounded-lg origin-top-right transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0`}>
+                    <MenuItems transition anchor="bottom center" className={`w-28 ${new Date().getFullYear() - +process.env.START_YEAR + 1 > 7 && `h-72 overflow-auto scrollbar-thin ${getScrollbarTrackBackground(theme)} ${getScrollbarThumbText(theme)}`} mt-2 py-1 flex flex-col ${getTextColor(theme)} ${getBackgroundColor(theme)} shadow-lg ${getShadowColor(theme)} rounded-lg ${inModal && 'z-[9999]'} origin-top-right transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0`}>
                         {
                             Array.from({length: new Date().getFullYear() - +process.env.START_YEAR + 1}, (_, i) => new Date().getFullYear() - i).map(year => (
                                 <MenuItem key={year}>
@@ -44,7 +44,7 @@ export default function CalendarSetting(props) {
                 </Menu>
                 <Menu>
                     <MenuButton className="flex items-center gap-2 cursor-pointer">{months[month].slice(0, 3)} <TiArrowSortedDown /></MenuButton>
-                    <MenuItems transition anchor="bottom center" className={`w-28 h-72 mt-2 py-1 flex flex-col ${getTextColor(theme)} ${getBackgroundColor(theme)} shadow-lg ${getShadowColor(theme)} rounded-lg overflow-auto scrollbar-thin ${getScrollbarTrackBackground(theme)} ${getScrollbarThumbText(theme)} origin-top-right transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0`}>
+                    <MenuItems transition anchor="bottom center" className={`w-28 h-72 mt-2 py-1 flex flex-col ${getTextColor(theme)} ${getBackgroundColor(theme)} shadow-lg ${getShadowColor(theme)} rounded-lg ${inModal && 'z-[9999]'} overflow-auto scrollbar-thin ${getScrollbarTrackBackground(theme)} ${getScrollbarThumbText(theme)} origin-top-right transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0`}>
                         {
                             months.map((month, i) => (
                                 <MenuItem key={month}>
@@ -69,5 +69,6 @@ export default function CalendarSetting(props) {
 CalendarSetting.propTypes = {
     arrow: PropTypes.bool,
     smallGap: PropTypes.bool,
-    chartPage: PropTypes.bool
+    chartPage: PropTypes.bool,
+    inModal: PropTypes.bool
 };
