@@ -14,6 +14,8 @@ import {changePage} from '../redux/webSlice';
 
 import contr from '../controllers/chart';
 
+import {HelmetProvider} from 'react-helmet-async';
+import ExpenseAndChartHead from '../head/ExpenseAndChartHead';
 import CalendarSetting from '../components/CalendarSetting';
 import ExpensePieChart from '../components/ExpensePieChart';
 import ExpenseList from '../components/ExpenseList';
@@ -64,7 +66,8 @@ export default function Chart() {
                 if (expenseDate.getMonth() !== month || expenseDate.getFullYear() !== year) return;
 
                 if (!obj[expense.category_id]) obj[expense.category_id] = {...categories[expense.category_id], expenses: [], amount: 0};
-                obj[expense.category_id].expenses.push(expense);
+                const {name, color, icon} = categories[expense.category_id];
+                obj[expense.category_id].expenses.push({...expense, category: {name, color, icon}});
                 obj[expense.category_id].amount += expense.amount;
             });
             return obj;
@@ -78,19 +81,22 @@ export default function Chart() {
     }, [expenses, expenseCategories, month, year]);
 
     return (
-        <section className="w-1/2 min-w-56 phone:min-w-72 tablet:w-fit mx-auto py-8 pb-16 flex flex-col gap-12">
-            <div className="w-full max-w-96 flex items-center justify-between">
-                <CalendarSetting arrow={phoneBreakpoint} chartPage />
-            </div>
-            <ExpensePieChart chart={data?.chart.length ? data.chart : [{value: 1, label: 'No data', color: themes[theme].neutral}]} total={data?.total ?? 0} />
-            <section className="flex flex-col">
-                {
-                    Object.values(data?.data ?? {}).map(({name, color, icon, amount, expenses}, i) => (
-                        <ExpenseList key={i} openModal={openChartModal} name={name} color={color} icon={icon} amount={amount} expenses={expenses} total={data.total} />
-                    ))
-                }
+        <HelmetProvider>
+            <ExpenseAndChartHead />
+            <section className="w-1/2 min-w-56 phone:min-w-72 tablet:w-fit mx-auto py-8 pb-16 flex flex-col gap-12">
+                <div className="w-full max-w-96 flex items-center justify-between">
+                    <CalendarSetting arrow={phoneBreakpoint} chartPage />
+                </div>
+                <ExpensePieChart chart={data?.chart.length ? data.chart : [{value: 1, label: 'No data', color: themes[theme].neutral}]} total={data?.total ?? 0} />
+                <section className="flex flex-col">
+                    {
+                        Object.values(data?.data ?? {}).map(({name, color, icon, amount, expenses}, i) => (
+                            <ExpenseList key={i} openModal={openChartModal} name={name} color={color} icon={icon} amount={amount} expenses={expenses} total={data.total} />
+                        ))
+                    }
+                </section>
+                <ChartModal modal={chartModal} setModal={setChartModal} expense={expense} />
             </section>
-            <ChartModal modal={chartModal} setModal={setChartModal} expense={expense} />
-        </section>
+        </HelmetProvider>
     );
 }
