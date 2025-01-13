@@ -27,11 +27,10 @@ import Tooltip from './Tooltip';
 import ButtonSpinner from './ButtonSpinner';
 
 export default function EditExpenseModal(props) {
-    const {modal, setModal, error, removeError, submit} = props;
+    const {modal, setModal, expense, error, removeError, submit} = props;
 
     const theme = useSelector((state) => state.web.theme);
     const expenseCategories = useSelector((state) => state.data.expenseCategories);
-    const expense = useSelector((state) => state.expensePage.expense);
     const processing = useSelector((state) => state.expensePage.processing);
 
     const [name, setName] = useState('');
@@ -240,6 +239,7 @@ export default function EditExpenseModal(props) {
 EditExpenseModal.propTypes = {
     modal: PropTypes.bool,
     setModal: PropTypes.func,
+    expense: PropTypes.object,
     error: PropTypes.object,
     removeError: PropTypes.func,
     submit: PropTypes.func
