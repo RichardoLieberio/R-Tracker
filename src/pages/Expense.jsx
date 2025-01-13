@@ -24,7 +24,7 @@ import contr from '../controllers/expense';
 
 import {HelmetProvider} from 'react-helmet-async';
 import {FaRegCalendarAlt} from 'react-icons/fa';
-import ExpenseHead from '../head/ExpenseHead';
+import ExpenseAndChartHead from '../head/ExpenseAndChartHead';
 import CalendarSetting from '../components/CalendarSetting';
 import ExpenseCalendar from '../components/ExpenseCalendar';
 import ExpenseSection from '../components/ExpenseSection';
@@ -166,7 +166,7 @@ export default function Expense() {
 
     return (
         <HelmetProvider>
-            <ExpenseHead />
+            <ExpenseAndChartHead />
             <section className="w-5/6 mx-auto py-8 pb-16 flex flex-col desktop:flex-row justify-center gap-4 desktop:gap-24">
                 {
                     desktopBreakpoint
@@ -212,7 +212,7 @@ export default function Expense() {
             <CalendarModal modal={showCalendar} setModal={setShowCalendar} expense={calendarExpense} setShowExpense={setShowExpense} />
             <AddExpenseModal modal={addExpense} setModal={setAddExpense} name={newExpenseName} setName={setNewExpenseName} amount={newExpenseAmount} setAmount={setNewExpenseAmount} date={newExpenseDate} setDate={setNewExpenseDate} category={newExpenseCategory} setCategory={setNewExpenseCategory} error={newExpenseError} processing={proccessingNewExpense} submit={addHandler} />
             <EditExpenseModal modal={editExpense} setModal={setEditExpense} error={editExpenseError[expense?._id] || {}} removeError={removeError} submit={editHandler} />
-            <ExpenseModal modal={showExpense} setModal={setShowExpense} setEditModal={setEditExpense} deleteHandler={deleteHandler} />
+            <ExpenseModal modal={showExpense} setModal={setShowExpense} expense={expense} setEditModal={setEditExpense} deleteHandler={deleteHandler} />
         </HelmetProvider>
     );
 }
