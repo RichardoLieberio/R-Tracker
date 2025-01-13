@@ -16,6 +16,7 @@ import {
 
 import {Modal, Box} from '@mui/material';
 import ExpenseLineChart from './ExpenseLineChart';
+import ExpenseListDetail from './ExpenseListDetail';
 
 export default function ChartModal(props) {
     const {modal, setModal, expense} = props;
@@ -44,7 +45,7 @@ export default function ChartModal(props) {
     return (
         <Modal open={modal} onClose={() => setModal(false)} aria-labelledby="Chart Modal" aria-describedby="Expense chart by category">
             <Box className={`w-5/6 min-w-56 phone:w-2/3 phone:min-w-72 phone:max-w-[430px] tablet:w-[430px] h-auto py-7 phone:py-8 absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 flex flex-col gap-8 rounded-lg tablet:rounded-xl ${getBackgroundColor(theme)} ${getTextColor(theme)}`}>
-                <main className={`max-h-96 px-7 phone:px-8 flex flex-col gap-8 overflow-auto scrollbar-thin ${getScrollbarTrackBackground(theme)} ${getScrollbarThumbText(theme)}`}>
+                <main className={`max-h-96 px-7 phone:px-8 flex flex-col gap-8 overflow-y-auto overflow-x-hidden scrollbar-thin ${getScrollbarTrackBackground(theme)} ${getScrollbarThumbText(theme)}`}>
                     <section className="flex flex-col gap-8">
                         <header className="flex items-center justify-between text-xl font-semibold">{expense.name}</header>
                         <main className="flex flex-col">
@@ -54,6 +55,13 @@ export default function ChartModal(props) {
                                     <ExpenseLineChart size={chartSize} {...data} month={months[month]} />
                                 </div>
                             </div>
+                            <section className="flex flex-col">
+                                {
+                                    expense?.expenses?.map(eachExpense => (
+                                        <ExpenseListDetail key={eachExpense._id} expense={eachExpense} total={expense.amount} />
+                                    ))
+                                }
+                            </section>
                         </main>
                     </section>
                 </main>
