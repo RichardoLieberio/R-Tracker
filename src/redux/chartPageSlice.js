@@ -4,7 +4,8 @@ export const chartPageSlice = createSlice({
     name: 'chartPage',
     initialState: {
         year: new Date().getFullYear(),
-        month: new Date().getMonth()
+        month: new Date().getMonth(),
+        expense: null
     },
     reducers: {
         prevMonth: function(state) {
@@ -35,13 +36,17 @@ export const chartPageSlice = createSlice({
         setYear: function(state, action) {
             state.year = action.payload;
         },
+        setExpense: function(state, action) {
+            state.expense = action.payload;
+        },
         logout: function(state) {
             state.year = new Date().getFullYear();
             state.month = new Date().getMonth();
+            state.expense = null;
         }
     }
 });
 
-export const {prevMonth, nextMonth, setMonth, setYear} = chartPageSlice.actions;
+export const {prevMonth, nextMonth, setMonth, setYear, setExpense, logout} = chartPageSlice.actions;
 
 export default chartPageSlice.reducer;
