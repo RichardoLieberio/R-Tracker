@@ -11,6 +11,8 @@ import getCSRFToken from '../services/getCSRFToken';
 import {getToast} from '../services/toastService';
 
 import {changePage} from '../redux/webSlice';
+import {addProcess, deleteProcess} from '../redux/expensePageSlice';
+import {setExpense} from '../redux/chartPageSlice';
 
 import contr from '../controllers/chart';
 
@@ -20,11 +22,17 @@ import CalendarSetting from '../components/CalendarSetting';
 import ExpensePieChart from '../components/ExpensePieChart';
 import ExpenseList from '../components/ExpenseList';
 import ChartModal from '../components/ChartModal';
+import ExpenseModal from '../components/ExpenseModal';
+import EditExpenseModal from '../components/EditExpenseModal';
 
 export default function Chart() {
     const [csrfToken, setCSRFToken] = useState('');
-    const [expense, setExpense] = useState({});
+    const [showExpense, setShowExpense] = useState(false);
+    const [chartExpense, setChartExpense] = useState({});
     const [chartModal, setChartModal] = useState(false);
+
+    const [editExpense, setEditExpense] = useState(false);
+    const [editExpenseError, setEditExpenseError] = useState({});
 
     const theme = useSelector((state) => state.web.theme);
     const expenses = useSelector((state) => state.data.expenses);
@@ -32,6 +40,8 @@ export default function Chart() {
     const accessToken = useSelector((state) => state.auth.accessToken);
     const month = useSelector((state) => state.chartPage.month);
     const year = useSelector((state) => state.chartPage.year);
+    const expense = useSelector((state) => state.chartPage.expense);
+    const processing = useSelector((state) => state.expensePage.processing);
 
     const phoneBreakpoint = useMediaQuery(`(min-width: ${breakpoints.phone})`);
 
@@ -51,9 +61,37 @@ export default function Chart() {
         }
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-    function openChartModal(name, amount, expenses) {
-        setExpense({name, amount, expenses});
+    function openChartModal(_id, name, amount, expenses) {
+        setChartExpense({_id, name, amount, expenses});
         setChartModal(true);
+    }
+
+    function openExpenseModal(expense) {
+        dispatch(setExpense(expense));
+        setShowExpense(true);
+    }
+
+    async function editHandler(id, name, amount, date, category) {
+        if (!processing.includes(id)) {
+            dispatch(addProcess(id));
+            removeError(id);
+            await contr.editExpense(id, name, +amount, date, category, csrfToken, accessToken, setEditExpenseError, setEditExpense, setShowExpense);
+            dispatch(deleteProcess(id));
+        }
+    }
+
+    async function deleteHandler() {
+        if (!processing.includes(expense?._id)) {
+            dispatch(addProcess(expense._id));
+            await contr.deleteExpense(expense._id, csrfToken, accessToken, setShowExpense);
+            dispatch(deleteProcess(expense._id));
+        }
+    }
+
+    function removeError(id) {
+        const newError = {...editExpenseError};
+        delete newError[id];
+        setEditExpenseError({...newError});
     }
 
     const data = useMemo(function() {
@@ -80,6 +118,18 @@ export default function Chart() {
         };
     }, [expenses, expenseCategories, month, year]);
 
+    useEffect(function() {
+        if (chartModal && Object.keys(chartExpense).length) {
+            const expenses = data?.data[chartExpense._id]?.expenses || [];
+            if (expenses.length) {
+                const amount = expenses.reduce((total, expense) => total + expense.amount, 0);
+                setChartExpense({...chartExpense, amount, expenses});
+            } else {
+                setChartModal(false);
+            }
+        }
+    }, [data]); // eslint-disable-line react-hooks/exhaustive-deps
+
     return (
         <HelmetProvider>
             <ExpenseAndChartHead />
@@ -90,12 +140,14 @@ export default function Chart() {
                 <ExpensePieChart chart={data?.chart.length ? data.chart : [{value: 1, label: 'No data', color: themes[theme].neutral}]} total={data?.total ?? 0} />
                 <section className="flex flex-col">
                     {
-                        Object.values(data?.data ?? {}).map(({name, color, icon, amount, expenses}, i) => (
-                            <ExpenseList key={i} openModal={openChartModal} name={name} color={color} icon={icon} amount={amount} expenses={expenses} total={data.total} />
+                        Object.entries(data?.data ?? {}).map(([id, {name, color, icon, amount, expenses}]) => (
+                            <ExpenseList key={id} openModal={openChartModal} id={id} name={name} color={color} icon={icon} amount={amount} expenses={expenses} total={data.total} />
                         ))
                     }
                 </section>
-                <ChartModal modal={chartModal} setModal={setChartModal} expense={expense} />
+                <ChartModal modal={chartModal} setModal={setChartModal} expense={chartExpense} openExpenseModal={openExpenseModal} />
+                <ExpenseModal modal={showExpense} setModal={setShowExpense} expense={expense} setEditModal={setEditExpense} deleteHandler={deleteHandler} />
+                <EditExpenseModal modal={editExpense} setModal={setEditExpense} expense={expense} error={editExpenseError[expense?._id] || {}} removeError={removeError} submit={editHandler} />
             </section>
         </HelmetProvider>
     );
