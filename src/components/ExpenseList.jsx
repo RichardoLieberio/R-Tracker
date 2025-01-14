@@ -4,12 +4,12 @@ import {useSelector} from 'react-redux';
 import {getBgPrimaryColor, getBgHighlightColor, getHoverBgNeutral50Color} from '../css/color';
 
 export default function ExpenseList(props) {
-    const {openModal, name, color, icon, amount, expenses, total} = props;
+    const {openModal, id, name, color, icon, amount, expenses, total} = props;
 
     const theme = useSelector((state) => state.web.theme);
 
     return (
-        <div onClick={() => openModal(name, amount, expenses)} className={`px-2 py-3 flex items-center gap-4 ${getHoverBgNeutral50Color(theme)} rounded-md cursor-pointer`}>
+        <div onClick={() => openModal(id, name, amount, expenses)} className={`px-2 py-3 flex items-center gap-4 ${getHoverBgNeutral50Color(theme)} rounded-md cursor-pointer`}>
             <div className="w-fit p-2 rounded-full shrink-0" style={{backgroundColor: `#${color}`}}>
                 <img src={`${process.env.EXPENSE_CATEGORY_URI}/${icon}`} alt={name} className="w-6 h-6 shrink-0" />
             </div>
@@ -29,6 +29,7 @@ export default function ExpenseList(props) {
 
 ExpenseList.propTypes = {
     openModal: PropTypes.func,
+    id: PropTypes.string,
     name: PropTypes.string,
     color: PropTypes.string,
     icon: PropTypes.string,
