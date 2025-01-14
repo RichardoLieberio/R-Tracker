@@ -19,7 +19,7 @@ import ExpenseLineChart from './ExpenseLineChart';
 import ExpenseListDetail from './ExpenseListDetail';
 
 export default function ChartModal(props) {
-    const {modal, setModal, expense} = props;
+    const {modal, setModal, expense, openExpenseModal} = props;
 
     const theme = useSelector((state) => state.web.theme);
     const month = useSelector((state) => state.chartPage.month);
@@ -52,13 +52,13 @@ export default function ChartModal(props) {
                             <span>Total: {expense?.amount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</span>
                             <div className="relative" style={{height: chartSize / 5 * 4}}>
                                 <div className="absolute -top-8 left-1/2 -translate-x-1/2">
-                                    <ExpenseLineChart size={chartSize} {...data} month={months[month]} />
+                                    <ExpenseLineChart size={chartSize} {...data} month={months[month]} year={year} />
                                 </div>
                             </div>
                             <section className="flex flex-col">
                                 {
                                     expense?.expenses?.map(eachExpense => (
-                                        <ExpenseListDetail key={eachExpense._id} expense={eachExpense} total={expense.amount} />
+                                        <ExpenseListDetail key={eachExpense._id} expense={eachExpense} total={expense.amount} setModal={openExpenseModal} />
                                     ))
                                 }
                             </section>
@@ -76,5 +76,6 @@ export default function ChartModal(props) {
 ChartModal.propTypes = {
     modal: PropTypes.bool,
     setModal: PropTypes.func,
-    expense: PropTypes.object
+    expense: PropTypes.object,
+    openExpenseModal: PropTypes.func
 };
