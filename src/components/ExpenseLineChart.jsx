@@ -7,7 +7,7 @@ import {LineChart} from '@mui/x-charts/LineChart';
 import {axisClasses} from '@mui/x-charts/ChartsAxis';
 
 export default function ExpenseLineChart(props) {
-    const {size, dates, expenses, month} = props;
+    const {size, dates, expenses, month, year} = props;
 
     const theme = useSelector((state) => state.web.theme);
 
@@ -17,7 +17,7 @@ export default function ExpenseLineChart(props) {
                 data: dates,
                 min: 1,
                 max: dates.length,
-                label: month,
+                label: `${month} ${year}`,
                 labelStyle: {fill: themes[theme].text}
             }]}
             leftAxis={null}
@@ -48,5 +48,6 @@ ExpenseLineChart.propTypes = {
     size: PropTypes.number,
     dates: PropTypes.array,
     expenses: PropTypes.array,
-    month: PropTypes.string
+    month: PropTypes.string,
+    year: PropTypes.number
 };
