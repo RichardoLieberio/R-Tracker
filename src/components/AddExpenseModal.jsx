@@ -172,16 +172,18 @@ export default function AddExpenseModal(props) {
                                     </MenuButton>
                                     <MenuItems transition anchor="top start" style={{width: categoryWidth}} className={`h-64 py-1 flex flex-col ${getTextColor(theme)} ${getBackgroundColor(theme)} shadow-lg ${getShadowColor(theme)} overflow-auto scrollbar-thin ${getScrollbarTrackBackground(theme)} ${getScrollbarThumbText(theme)} rounded-lg z-[99999] origin-top-right transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0`}>
                                         {
-                                            expenseCategories?.map(category => (
-                                                <MenuItem key={category._id}>
-                                                    <button onClick={() => categoryHandler(category)} className={`px-4 py-2 flex items-center gap-2 text-start ${getHoverBgNeutral50Color(theme)}`}>
-                                                        <div className="p-2 rounded-full flex-shrink-0" style={{backgroundColor: `#${category.color}`}}>
-                                                            <img src={`${process.env.EXPENSE_CATEGORY_URI}/${category.icon}`} alt={category.name} className="w-4 h-4" />
-                                                        </div>
-                                                        <span className="truncate">{category.name}</span>
-                                                    </button>
-                                                </MenuItem>
-                                            ))
+                                            expenseCategories?.map(category => {
+                                                if (!category.hidden) return (
+                                                    <MenuItem key={category._id}>
+                                                        <button onClick={() => categoryHandler(category)} className={`px-4 py-2 flex items-center gap-2 text-start ${getHoverBgNeutral50Color(theme)}`}>
+                                                            <div className="p-2 rounded-full flex-shrink-0" style={{backgroundColor: `#${category.color}`}}>
+                                                                <img src={`${process.env.EXPENSE_CATEGORY_URI}/${category.icon}`} alt={category.name} className="w-4 h-4" />
+                                                            </div>
+                                                            <span className="truncate">{category.name}</span>
+                                                        </button>
+                                                    </MenuItem>
+                                                )
+                                            })
                                         }
                                     </MenuItems>
                                 </Menu>
