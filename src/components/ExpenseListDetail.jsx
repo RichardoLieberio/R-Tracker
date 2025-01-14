@@ -5,12 +5,12 @@ import {format} from 'date-fns';
 import {getBgPrimaryColor, getHoverBgNeutral50Color, getBgHighlightColor} from '../css/color';
 
 export default function ExpenseListDetail(props) {
-    const {expense, total} = props;
+    const {expense, total, setModal} = props;
 
     const theme = useSelector((state) => state.web.theme);
 
     return (
-        <div className={`py-2 flex items-center gap-4 ${getHoverBgNeutral50Color(theme)} rounded-md cursor-pointer`}>
+        <div onClick={() => setModal(expense)} className={`py-2 flex items-center gap-4 ${getHoverBgNeutral50Color(theme)} rounded-md cursor-pointer`}>
             <div className="w-fit p-2 rounded-full shrink-0" style={{backgroundColor: `#${expense.category.color}`}}>
                 <img src={`${process.env.EXPENSE_CATEGORY_URI}/${expense.category.icon}`} alt={expense.category.name} className="w-6 h-6 shrink-0" />
             </div>
@@ -31,5 +31,6 @@ export default function ExpenseListDetail(props) {
 
 ExpenseListDetail.propTypes = {
     expense: PropTypes.object,
-    total: PropTypes.number
+    total: PropTypes.number,
+    setModal: PropTypes.func
 };
