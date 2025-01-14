@@ -28,3 +28,7 @@ input[type="number"] {
 input[type="date"]::-webkit-calendar-picker-indicator {
     display: none;
 }
+
+.react-datepicker-popper {
+    z-index: 9999 !important;
+}

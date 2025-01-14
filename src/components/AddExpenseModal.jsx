@@ -40,6 +40,7 @@ export default function AddExpenseModal(props) {
     const [dateInputClass, setDateInputClass] = useState(css(theme).nonFocusInput);
     const [categoryLabelClass, setCategoryLabelClass] = useState(css(theme).labelMiddle);
     const [categoryInputClass, setCategoryInputClass] = useState(css(theme).nonFocusInput);
+    const [openDatePicker, setOpenDatePicker] = useState(false);
     const [categoryWidth, setCategoryWidth] = useState('auto');
 
     const categoryButtonRef = useRef(null);
@@ -87,6 +88,7 @@ export default function AddExpenseModal(props) {
     }
 
     function dateHandler(date) {
+        setOpenDatePicker(false);
         if (!processing) {
             setDateLabelClass(error.expenseDate
                 ? date ? css(theme).labelTopError : css(theme).labelMiddleError
@@ -151,7 +153,7 @@ export default function AddExpenseModal(props) {
                                         </div>
                                 }
                                 <label htmlFor="date" className={`${dateLabelClass} z-10 ${processing ? '!cursor-text' : '!cursor-pointer'}`}>Date</label>
-                                <DatePicker id="date" disabled={processing} selected={date} popperPlacement="top" onChange={dateHandler} customInput={<input type="text" disabled={processing} className={`${dateInputClass} cursor-pointer`} />} wrapperClassName="w-full" />
+                                <DatePicker id="date" open={openDatePicker} readOnly disabled={processing} selected={date} popperPlacement="top" onInputClick={() => setOpenDatePicker(true)} onClickOutside={() => setOpenDatePicker(false)} onChange={dateHandler} customInput={<input type="text" className={`${dateInputClass} cursor-pointer`} />} todayButton={<span>Today</span>} minDate={new Date(process.env.START_YEAR, 0, 1)} maxDate={new Date(new Date().getFullYear(), 12, 0)} wrapperClassName="w-full" />
                                 {date && <IoIosCloseCircle onClick={() => dateHandler('')} className={`absolute top-1/2 -translate-y-1/2 right-2 text-xl ${processing ? 'cursor-not-allowed' : 'cursor-pointer'}`} />}
                             </div>
                             <div className="relative">
