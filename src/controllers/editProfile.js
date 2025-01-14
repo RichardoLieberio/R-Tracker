@@ -2,9 +2,10 @@ import {toast} from 'react-toastify';
 
 import axios from '../services/axios';
 import {setToast} from '../services/toastService';
+import logout from '../services/logout';
 
 import store from '../redux/store';
-import {setName, setEmail, logout} from '../redux/authSlice';
+import {setName, setEmail} from '../redux/authSlice';
 
 import css from '../css/editProfile';
 
@@ -230,7 +231,7 @@ async function deactivate(csrfToken, accessToken, navigate) {
 
     switch (status) {
         case 200:
-            store.dispatch(logout());
+            logout();
             setToast('success', response.data.msg);
             navigate('/login', {replace: true});
             break;
