@@ -35,7 +35,7 @@ export default function ChartModal(props) {
         const dates = Array.from({length: lastDate}, (_, i) => i + 1);
         const expenses = Array.from({length: lastDate}, () => 0);
 
-        expense.expenses.map(({amount, expense_date}) => expenses[new Date(expense_date).getDate()] = expenses[new Date(expense_date).getDate()] + amount);
+        expense.expenses.map(({amount, expense_date}) => expenses[new Date(expense_date).getDate() - 1] = expenses[new Date(expense_date).getDate() - 1] + amount);
 
         return {dates, expenses};
     }, [expense, month, year]);
