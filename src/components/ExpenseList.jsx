@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types';
 import {useSelector} from 'react-redux';
 
-import {getBgPrimaryColor, getBgHighlightColor, getHoverBgNeutral50Color} from '../css/color';
+import {getBgPrimaryColor, getBgHighlightColor, getHoverBgNeutral50Color, getTextErrorColor} from '../css/color';
+
+import {FaExclamation} from 'react-icons/fa6';
 
 export default function ExpenseList(props) {
     const {openModal, id, name, color, icon, amount, expenses, total} = props;
@@ -11,7 +13,13 @@ export default function ExpenseList(props) {
     return (
         <div onClick={() => openModal(id, name, amount, expenses)} className={`px-2 py-3 flex items-center gap-4 ${getHoverBgNeutral50Color(theme)} rounded-md cursor-pointer`}>
             <div className="w-fit p-2 rounded-full shrink-0" style={{backgroundColor: `#${color}`}}>
-                <img src={`${process.env.EXPENSE_CATEGORY_URI}/${icon}`} alt={name} className="w-6 h-6 shrink-0" />
+                {
+                    icon
+                    ? <img src={`${process.env.EXPENSE_CATEGORY_URI}/${icon}`} alt={name} className="w-6 h-6 shrink-0" />
+                    : <div className="w-6 h-6 shrink-0 flex items-center justify-center">
+                        <FaExclamation className={`text-xl ${getTextErrorColor(theme)}`} />
+                    </div>
+                }
             </div>
             <div className="flex-1 flex flex-col gap-2">
                 <div className="flex-1 flex items-center justify-between gap-2 phone:gap-4">

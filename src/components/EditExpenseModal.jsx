@@ -69,8 +69,8 @@ export default function EditExpenseModal(props) {
 
             setName(error.expense?.value ?? expense?.expense);
             setAmount(error.amount?.value ?? expense?.amount);
-            setDate(error.expenseDate?.value ?? expense?.expense_date.split('T')[0]);
-            setCategory(category);
+            setDate(error.expenseDate?.value ?? new Date(expense?.expense_date));
+            setCategory(category._id ? category : {_id: 'not found', name: 'Category not found'});
 
             contr.inputErrorHandler(theme, error.expense?.msg, error.expense?.value ?? expense?.expense, setNameLabelClass, setNameInputClass);
             contr.inputErrorHandler(theme, error.amount?.msg, error.amount?.value ?? expense?.amount, setAmountLabelClass, setAmountInputClass);
@@ -134,7 +134,7 @@ export default function EditExpenseModal(props) {
         setDate(expense.expense_date);
         setCategory({
             _id: expense.category_id,
-            name: expense.category.name
+            name: expense.category?.name ?? 'Category not found'
         });
         removeError(expense._id);
     }

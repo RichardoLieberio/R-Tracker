@@ -103,10 +103,11 @@ export default function Chart() {
                 const expenseDate = new Date(expense.expense_date);
                 if (expenseDate.getMonth() !== month || expenseDate.getFullYear() !== year) return;
 
-                if (!obj[expense.category_id]) obj[expense.category_id] = {...categories[expense.category_id], expenses: [], amount: 0};
-                const {name, color, icon} = categories[expense.category_id];
-                obj[expense.category_id].expenses.push({...expense, category: {name, color, icon}});
-                obj[expense.category_id].amount += expense.amount;
+                const category = categories[expense.category_id] ? expense.category_id : 'undefined';
+                const {name, color, icon} = categories[category] || {name: 'Category not found', color: themes[theme].neutral.replace('#', '')};
+                if (!obj[category]) obj[category] = {name, color, icon, expenses: [], amount: 0};
+                obj[category].expenses.push({...expense, category: {name, color, icon}});
+                obj[category].amount += expense.amount;
             });
             return obj;
         }, {});
@@ -116,7 +117,7 @@ export default function Chart() {
             chart: Object.values(data).reduce((obj, {amount, name, color}) => [...obj, {value: amount, label: name, color: `#${color}`}], []),
             total: Object.values(data).reduce((total, {amount}) => total + amount, 0)
         };
-    }, [expenses, expenseCategories, month, year]);
+    }, [expenses, expenseCategories, month, year, theme]);
 
     useEffect(function() {
         if (chartModal && Object.keys(chartExpense).length) {

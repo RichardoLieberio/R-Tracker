@@ -4,12 +4,13 @@ import {useMediaQuery} from '@mui/material';
 import {format} from 'date-fns';
 
 import breakpoints from '../../config/breakpoints';
+import themes from '../../config/theme';
 
 import {
     getBgPrimaryColor, getBackgroundColor,
     getHoverBgHighlightColor,
     getDisabledBgNeutralColor,
-    getTextColor, getTextPrimaryColor, getOppositeTextColor,
+    getTextColor, getTextPrimaryColor, getOppositeTextColor, getTextErrorColor,
     getHoverTextHighlightColor,
     getBorderPrimaryColor, getBorderNeutralColor,
     getHoverBorderHighlightColor,
@@ -17,6 +18,7 @@ import {
 } from '../css/color';
 
 import {Modal, Box} from '@mui/material';
+import {FaExclamation} from 'react-icons/fa6';
 import ButtonSpinner from './ButtonSpinner';
 
 export default function ExpenseModal(props) {
@@ -35,10 +37,16 @@ export default function ExpenseModal(props) {
                         <header className="flex items-center justify-between text-xl font-semibold">Expense Detail</header>
                         <main className="flex flex-col desktop:flex-row gap-8">
                             <section className="flex desktop:flex-col items-center gap-4 overflow-hidden shrink-0">
-                                <div className="p-4 rounded-full shrink-0" style={{backgroundColor: `#${expense?.category.color}`}}>
-                                    <img src={`${process.env.EXPENSE_CATEGORY_URI}/${expense?.category.icon}`} alt={expense?.category.name} className="w-8 h-8 desktop:w-16 desktop:h-16 shrink-0" />
+                                <div className="p-4 rounded-full shrink-0" style={{backgroundColor: expense?.category ? `#${expense.category.color}` : themes[theme].neutral}}>
+                                    {
+                                        expense?.category?.icon
+                                        ? <img src={`${process.env.EXPENSE_CATEGORY_URI}/${expense.category.icon}`} alt={expense.category.name} className="w-8 h-8 desktop:w-16 desktop:h-16 shrink-0" />
+                                        : <div className="w-8 h-8 desktop:w-16 desktop:h-16 shrink-0 flex items-center justify-center">
+                                            <FaExclamation className={`text-4xl desktop:text-6xl ${getTextErrorColor(theme)}`} />
+                                        </div>
+                                    }
                                 </div>
-                                <span className="desktop:w-20 text-start desktop:text-center text-wrap break-words">{expense ? expense.category.name : '-'}</span>
+                                <span className="desktop:w-20 text-start desktop:text-center text-wrap break-words">{expense ? (expense.category?.name ?? 'Category not found') : '-'}</span>
                             </section>
                             <section className="desktop:flex-1 desktop:w-96 flex flex-col gap-4">
                                 <div className="relative flex flex-col">

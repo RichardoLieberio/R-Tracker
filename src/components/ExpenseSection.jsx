@@ -3,10 +3,13 @@ import {useSelector, useDispatch} from 'react-redux';
 import {useMediaQuery} from '@mui/material';
 
 import breakpoints from '../../config/breakpoints';
+import themes from '../../config/theme';
 
 import {setExpense} from '../redux/expensePageSlice';
 
-import {getTextNeutralColor, getHoverBgNeutral50Color} from '../css/color';
+import {getTextNeutralColor, getTextErrorColor, getHoverBgNeutral50Color} from '../css/color';
+
+import {FaExclamation} from 'react-icons/fa6';
 
 export default function ExpenseSection(props) {
     const {expense, setModal} = props;
@@ -32,8 +35,14 @@ export default function ExpenseSection(props) {
                 {
                     expenses.map(expense => (
                         <span key={expense._id} onClick={() => clickHandler(expense)} className={`py-2 grid grid-cols-[auto,1fr] phone:grid-cols-[auto,1fr,auto] items-center gap-4 cursor-pointer ${getHoverBgNeutral50Color(theme)} rounded-md overflow-hidden`}>
-                            <div className="w-fit p-2 rounded-full" style={{backgroundColor: `#${expense.category.color}`}}>
-                                <img src={`${process.env.EXPENSE_CATEGORY_URI}/${expense.category.icon}`} alt={expense.category.name} className="w-6 h-6 shrink-0" />
+                            <div className="w-fit p-2 rounded-full" style={{backgroundColor: expense.category ? `#${expense.category.color}` : themes[theme].neutral}}>
+                                {
+                                    expense.category
+                                    ? <img src={`${process.env.EXPENSE_CATEGORY_URI}/${expense.category.icon}`} alt={expense.category.name} className="w-6 h-6 shrink-0" />
+                                    : <div className="w-6 h-6 shrink-0 flex items-center justify-center">
+                                        <FaExclamation className={`text-xl ${getTextErrorColor(theme)}`} />
+                                    </div>
+                                }
                             </div>
                             <span className="w-full truncate">{expense.expense}</span>
                             {phoneBreakpoint && <span className="max-w-24 truncate">{expense.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</span>}
