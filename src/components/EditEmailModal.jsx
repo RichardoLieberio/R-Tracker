@@ -45,18 +45,20 @@ export default function EditEmailModal(props) {
     }, [theme]); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(function() {
-        if (second > 0) {
-            const interval = setInterval(function() {
-                setSecond((second) => second - 1);
-            }, 1000);
+        if (emailModal) {
+            if (second > 0) {
+                const interval = setInterval(function() {
+                    setSecond((second) => second - 1);
+                }, 1000);
 
-            return function() {
-                clearInterval(interval);
-            };
-        } else {
-            if (!savingNewEmail) setResendClass(`${theme === 'dark' ? getTextLinkColor(theme) : getTextPrimaryColor(theme)} cursor-pointer hover:underline`);
+                return function() {
+                    clearInterval(interval);
+                };
+            } else {
+                if (!savingNewEmail) setResendClass(`${theme === 'dark' ? getTextLinkColor(theme) : getTextPrimaryColor(theme)} cursor-pointer hover:underline`);
+            }
         }
-    }, [second, savingNewEmail]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [second, savingNewEmail, emailModal]); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(function() {
         setOtp('')
@@ -68,9 +70,6 @@ export default function EditEmailModal(props) {
         if (step !== 'email') {
             if (savingNewEmail) setResendClass(theme  === 'dark' ? getTextDisabledColor(theme) : getTextLinkColor(theme));
             if (!savingNewEmail && second === 0) setResendClass(`${theme === 'dark' ? getTextLinkColor(theme) : getTextPrimaryColor(theme)} cursor-pointer hover:underline`);
-            // savingNewEmail
-            // ? setResendClass(theme  === 'dark' ? getTextDisabledColor(theme) : getTextLinkColor(theme))
-            // : setResendClass(`${theme === 'dark' ? getTextLinkColor(theme) : getTextPrimaryColor(theme)} cursor-pointer hover:underline`);
         }
     }, [savingNewEmail]); // eslint-disable-line react-hooks/exhaustive-deps
 
