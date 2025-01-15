@@ -141,7 +141,6 @@ export default function ForgotPwdForm(props) {
     function resendOtp() {
         if (second === 0 && !isSubmitting) {
             resendRef.current.className = 'text-purple-link';
-            resendRef.current.textContent = `Resend (${process.env.RESEND_EMAIL_TIMEOUT})`;
             setSecond(+process.env.RESEND_EMAIL_TIMEOUT);
 
             contr.resendOtp(email, csrfToken, accessToken, setFormError);
