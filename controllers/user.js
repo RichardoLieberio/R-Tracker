@@ -65,10 +65,10 @@ async function getInfo(req, res) {
 }
 
 async function changeName(req, res) {
-    const changed = await User.changeName(req.userId, req.data.name);
-    if (!changed) return notFoundHandler(req, res, 'Failed to change name. Account not found.');
+    const data = await User.changeName(req.userId, req.data.name);
+    if (!data) return notFoundHandler(req, res, 'Failed to change name. Account not found.');
 
-    res.json({status: 200, msg: 'Name updated successfully.', name: req.data.name});
+    res.json({status: 200, msg: 'Name updated successfully.', data});
 }
 
 async function changeEmail(req, res) {
@@ -76,21 +76,21 @@ async function changeEmail(req, res) {
     const request = await ChangeEmailToken.checkRequest(req.userId, email, otp, req.mongooseSession);
     if (!request) throw new TransactionError({status: 400, msg: 'Invalid email or OTP.'});
 
-    const changed = await User.changeEmail(req.userId, email, req.mongooseSession);
-    if (!changed) return notFoundHandler(req, res, 'Failed to change email. Account not found.');
+    const data = await User.changeEmail(req.userId, email, req.mongooseSession);
+    if (!data) return notFoundHandler(req, res, 'Failed to change email. Account not found.');
 
-    sendMail('new-email-verified', {to: email});
+    sendMail('new-email-verified', {to: data.email});
 
-    res.json({status: 200, msg: 'Email updated successfully.', email});
+    res.json({status: 200, msg: 'Email updated successfully.', data});
 }
 
 async function changePwd(req, res) {
-    const changed = await (new User()).changePwd(req.userId, req.data);
+    const data = await (new User()).changePwd(req.userId, req.data);
 
-    if (changed === null) return notFoundHandler(req, res, 'Failed to change password. Account not found.');
-    if (!changed) return res.json({status: 400, msg: 'Current password is incorrect.'});
+    if (data === null) return notFoundHandler(req, res, 'Failed to change password. Account not found.');
+    if (!data) return res.json({status: 400, msg: 'Current password is incorrect.'});
 
-    res.json({status: 200, msg: 'Password updated successfully.'});
+    res.json({status: 200, msg: 'Password updated successfully.', data});
 }
 
 async function deleteAccount(req, res) {
