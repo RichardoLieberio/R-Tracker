@@ -65,6 +65,7 @@ export const dataSlice = createSlice({
             state.users = action.payload;
         },
         changeInfo: function(state, action) {
+            if (!state.users) return;
             const {_id, ...props} = action.payload;
             state.users = state.users.map(user => {
                 if (user._id !== _id) return user;
