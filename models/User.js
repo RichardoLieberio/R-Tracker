@@ -81,11 +81,11 @@ userSchema.statics.getInfo = async function(id) {
 }
 
 userSchema.statics.changeName = async function(_id, name) {
-    return !!await this.findOneAndUpdate({_id}, {name, updated_at: Date.now()});
+    return await this.findOneAndUpdate({_id}, {name, updated_at: Date.now()}, {new: true});
 }
 
 userSchema.statics.changeEmail = async function(_id, email, session) {
-    return !!await this.findOneAndUpdate({_id}, {email, updated_at: Date.now()}, {session});
+    return await this.findOneAndUpdate({_id}, {email, updated_at: Date.now()}, {session, new: true});
 }
 
 userSchema.statics.deleteAccount = async function(id, session) {
@@ -131,9 +131,7 @@ userSchema.methods.changePwd = async function(_id, pwds) {
     if (!await bcrypt.compare(oldPwd, user.pwd)) return false;
 
     const pwd = await bcrypt.hash(newPwd, +process.env.SALT_ROUNDS);
-    await this.constructor.findOneAndUpdate({_id}, {pwd, updated_at: Date.now()});
-
-    return true;
+    return await this.constructor.findOneAndUpdate({_id}, {pwd, updated_at: Date.now()}, {new: true});
 }
 
 const User = mongoose.model('User', userSchema);
