@@ -5,7 +5,7 @@ const csrfProtection = csrf({
         httpOnly: true,
         maxAge: 3600,
         secure: process.env.MODE === 'production',
-        sameSite: process.env.MODE === 'production' ? 'Lax' : 'Strict'
+        sameSite: process.env.MODE === 'production' ? 'None' : 'Strict'
     }
 });
 

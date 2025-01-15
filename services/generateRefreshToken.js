@@ -6,7 +6,7 @@ function generateRefreshToken(res, user, rememberMe) {
         httpOnly: true,
         maxAge: rememberMe ? 30 * 24 * 60 * 60 * 1000 : 60 * 60 * 1000,
         secure: process.env.MODE === 'production',
-        sameSite: process.env.MODE === 'production' ? 'Lax' : 'Strict'
+        sameSite: process.env.MODE === 'production' ? 'None' : 'Strict'
     });
     return refreshToken;
 }
