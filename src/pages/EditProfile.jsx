@@ -230,7 +230,7 @@ export default function EditProfile() {
     }
 
     const editNameProps = {newName, setNewName, nameModal, setNameModal, nameError, savingNewName, saveName};
-    const editEmailProps = {step, setStep, newEmail, setNewEmail, emailError, otp, setOtp, otpError, emailModal, setEmailModal, savingNewEmail, requestChangeEmail, resendOtp, changeEmail};
+    const editEmailProps = {step, setStep, newEmail, setNewEmail, emailError, setEmailError, otp, setOtp, otpError, emailModal, setEmailModal, savingNewEmail, requestChangeEmail, resendOtp, changeEmail};
     const deactiveProps = {confirmationModal, setConfirmationModal, deactivating, deactivate};
 
     return (

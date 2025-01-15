@@ -23,7 +23,7 @@ import OtpInput from 'react-otp-input';
 import {MdErrorOutline} from 'react-icons/md';
 
 export default function EditEmailModal(props) {
-    const {step, setStep, newEmail, setNewEmail, emailError, otp, setOtp, otpError, emailModal, setEmailModal, savingNewEmail, requestChangeEmail, resendOtp, changeEmail} = props;
+    const {step, setStep, newEmail, setNewEmail, emailError, setEmailError, otp, setOtp, otpError, emailModal, setEmailModal, savingNewEmail, requestChangeEmail, resendOtp, changeEmail} = props;
 
     const theme = useSelector((state) => state.web.theme);
 
@@ -54,19 +54,23 @@ export default function EditEmailModal(props) {
                 clearInterval(interval);
             };
         } else {
-            setResendClass(`${theme === 'dark' ? getTextLinkColor(theme) : getTextPrimaryColor(theme)} cursor-pointer hover:underline`);
+            if (!savingNewEmail) setResendClass(`${theme === 'dark' ? getTextLinkColor(theme) : getTextPrimaryColor(theme)} cursor-pointer hover:underline`);
         }
-    }, [second]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [second, savingNewEmail]); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(function() {
-        step === 'email' ? setOtp('') : disableOtp();
+        setOtp('')
+        disableOtp();
+        setEmailError({});
     }, [step]); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(function() {
         if (step !== 'email') {
-            savingNewEmail
-            ? setResendClass(theme  === 'dark' ? getTextDisabledColor(theme) : getTextLinkColor(theme))
-            : setResendClass(`${theme === 'dark' ? getTextLinkColor(theme) : getTextPrimaryColor(theme)} cursor-pointer hover:underline`);
+            if (savingNewEmail) setResendClass(theme  === 'dark' ? getTextDisabledColor(theme) : getTextLinkColor(theme));
+            if (!savingNewEmail && second === 0) setResendClass(`${theme === 'dark' ? getTextLinkColor(theme) : getTextPrimaryColor(theme)} cursor-pointer hover:underline`);
+            // savingNewEmail
+            // ? setResendClass(theme  === 'dark' ? getTextDisabledColor(theme) : getTextLinkColor(theme))
+            // : setResendClass(`${theme === 'dark' ? getTextLinkColor(theme) : getTextPrimaryColor(theme)} cursor-pointer hover:underline`);
         }
     }, [savingNewEmail]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -186,6 +190,7 @@ EditEmailModal.propTypes = {
     newEmail: PropTypes.string,
     setNewEmail: PropTypes.func,
     emailError: PropTypes.object,
+    setEmailError: PropTypes.func,
     otp: PropTypes.string,
     setOtp: PropTypes.func,
     otpError: PropTypes.string,
