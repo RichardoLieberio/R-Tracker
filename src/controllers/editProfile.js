@@ -6,6 +6,8 @@ import logout from '../services/logout';
 
 import store from '../redux/store';
 import {setName, setEmail} from '../redux/authSlice';
+import {changeInfo} from '../redux/dataSlice';
+import {changeUserInfo} from '../redux/userPageSlice';
 
 import css from '../css/editProfile';
 
@@ -52,7 +54,9 @@ async function changeName(name, csrfToken, accessToken, setNameError, setNewName
 
     switch (status) {
         case 200:
-            store.dispatch(setName(response.data.name));
+            store.dispatch(setName(response.data.data.name));
+            store.dispatch(changeInfo(response.data.data));
+            store.dispatch(changeUserInfo(response.data.data));
             toast.success(response.data.msg);
             setNameModal(false);
             setNewName('');
@@ -151,7 +155,9 @@ async function changeEmail(email, setNewEmail, setEmailError, otp, setOtp, setOt
 
     switch (status) {
         case 200:
-            store.dispatch(setEmail(response.data.email));
+            store.dispatch(setEmail(response.data.data.email));
+            store.dispatch(changeInfo(response.data.data));
+            store.dispatch(changeUserInfo(response.data.data));
             toast.success(response.data.msg);
             setEmailModal(false);
             setNewEmail('');
@@ -195,6 +201,8 @@ async function changePwd(oldPwd, setOldPwd, newPwd, setNewPwd, confPwd, setConfP
 
     switch (status) {
         case 200:
+            store.dispatch(changeInfo(response.data.data));
+            store.dispatch(changeUserInfo(response.data.data));
             toast.success(response.data.msg);
             setOldPwd('');
             setNewPwd('');
